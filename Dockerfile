@@ -16,4 +16,4 @@ RUN cd /home/web && ~/.bun/bin/bun install && ~/.bun/bin/bun run build
 RUN cd /home && /usr/local/go/bin/go mod download \
     && /usr/local/go/bin/go build -ldflags "-s -w" -o jugueteriaApi . 
 
-CMD [ "cd /home","./jugueteriaApi","-D" ]
+CMD ["/home/jugueteriaApi","-D" ]
