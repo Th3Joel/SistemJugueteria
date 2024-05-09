@@ -1,7 +1,7 @@
 FROM debian:latest
 
 RUN apt update && apt install -y \
-    wget curl \
+    wget curl unzip \
     && apt clean && rm -rf /var/lib/apt/list/*
 
 RUN curl -fsSL https://bun.sh/install | bash
