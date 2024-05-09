@@ -24,10 +24,12 @@ func main() {
 	// 	AllowHeaders: "*",
 	// }))
 
+	//servir archivos staticos dentro del binario
 	app.Use("/", filesystem.New(filesystem.Config{
 		Root: web.Dist(),
 	}))
 
+	//Sistema api
 	api := app.Group("/api")
 	//AuthR
 	routes.AuthR(api)
