@@ -4,11 +4,14 @@ import (
 	"Jugueteria/config"
 	"Jugueteria/routes"
 	"Jugueteria/web"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )
+
+var port = os.Getenv("PORT")
 
 func main() {
 
@@ -36,5 +39,5 @@ func main() {
 	//AccountR
 	routes.AccountR(api)
 
-	app.Listen(":4000")
+	app.Listen(":2000")
 }
