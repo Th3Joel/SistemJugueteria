@@ -39,5 +39,5 @@ func main() {
 	//AccountR
 	routes.AccountR(api)
 
-	app.Listen(":2000")
+	app.Listen(":" + port)
 }
