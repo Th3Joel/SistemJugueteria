@@ -14,6 +14,7 @@ COPY . ./home
 
 RUN cd /home/web && ~/.bun/bin/bun install && ~/.bun/bin/bun run build
 
-RUN cd /home && go mod download && go build -ldflags "-s -w" -o jugueteriaApi . 
+RUN cd /home && /usr/local/go/bin/go mod download \
+    && /usr/local/go/bin/go build -ldflags "-s -w" -o jugueteriaApi . 
 
 CMD [ "/home/.jugueteriaApi","-D" ]
