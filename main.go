@@ -1,7 +1,6 @@
 package main
 
 import (
-	"Jugueteria/config"
 	"Jugueteria/routes"
 	"Jugueteria/web"
 	"os"
@@ -16,7 +15,7 @@ var port = os.Getenv("PORT")
 
 func main() {
 
-	config.ConnectDB()
+	//config.ConnectDB()
 	app := fiber.New(fiber.Config{
 		Prefork: true,
 		AppName: "Jugueteria",
@@ -40,5 +39,5 @@ func main() {
 	//AccountR
 	routes.AccountR(api)
 
-	app.Listen(":8040")
+	app.Listen(":8080")
 }
