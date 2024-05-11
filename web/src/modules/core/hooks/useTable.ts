@@ -15,6 +15,14 @@ interface IAll<T> {
     pageSize:number
 }
 
+
+export interface IUseTable<T>{
+  all:IAll<T> | undefined
+  remove(url:string):Promise<void>
+  loading:boolean
+  get(url:string):Promise<void>
+}
+
 export const useTable = <T>() => {
   const [all,setAll] = useState<IAll<T>>();
   const [loading,setLoading] = useState(true);

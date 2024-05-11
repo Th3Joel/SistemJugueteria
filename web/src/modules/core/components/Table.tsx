@@ -3,22 +3,27 @@ import LoaderSmall from "@/modules/core/components/LoaderSmall";
 import alertBox from "@/modules/core/utils/alertBox";
 import { AuthState } from "../globalStates/auth-state";
 import { Link } from "react-router-dom";
-import { KeyboardArrowLeftTwoTone, KeyboardArrowRightTwoTone } from "@mui/icons-material";
+import {
+  KeyboardArrowLeftTwoTone,
+  KeyboardArrowRightTwoTone,
+} from "@mui/icons-material";
 import { Button, TextField } from "@mui/material";
+import { IUseTable } from "../hooks/useTable";
 
 interface ITable {
   ruta: string | undefined;
   colunms: string[];
-  hook: any;
-  body: any;
+  hook: IUseTable<any>;
+  body(
+    eliminar: (id: string, texto: string) => void,
+    img: (name: string) => string
+  ): React.ReactNode;
 }
 
+const Table: React.FC<ITable> = ({ ruta, colunms, hook, body }) => {
+  const { user } = AuthState();
 
-const Table = ({ ruta, colunms, hook, body }: ITable) => {
-
-  const {user} = AuthState();
-
-  const { get, all, loading } = hook;
+  const { get, all, loading,remove } = hook;
 
   const [pageSize, setPageSize] = useState(10); //Registros por pagina
   const [page, setPage] = useState(1); //Numero de pagina
@@ -31,7 +36,7 @@ const Table = ({ ruta, colunms, hook, body }: ITable) => {
   const [ac2, setAc2] = useState(pageSize);
 
   const pagSig = () => {
-    if (page < all.pages) {
+    if (page < (all?.pages ?? 0)) {
       setPage(page + 1);
       setAc(ac + pageSize);
     }
@@ -44,14 +49,12 @@ const Table = ({ ruta, colunms, hook, body }: ITable) => {
   };
 
   const getDatos = () => {
-    //send(`/${ruta}/all?page=${page}&pageSize=${pageSize}`, "GET");
     get(`/${ruta}/all?page=${page}&pageSize=${pageSize}`);
-    
   };
 
-  const img = (name:string) =>{
-    return  `${process.env.NEXT_PUBLIC_URL}/${ruta}/picture/${name}`;
-  }
+  const img = (name: string) => {
+    return `${process.env.NEXT_PUBLIC_URL}/${ruta}/picture/${name}`;
+  };
 
   //Reinicia cuando el select cambia de el numero de pagina
   const initSetPageSize = (e: { target: { value: string } }) => {
@@ -64,30 +67,26 @@ const Table = ({ ruta, colunms, hook, body }: ITable) => {
 
   const buscador = (e: { target: { value: string } }) => {
     const val = e.target.value;
-    console.log(val)
+    console.log(val);
     //Agregar retraso
     clearTimeout(setTime);
     setTime = setTimeout(() => {
-      // send(
-      //   `/${ruta}/all?page=${page}&pageSize=${pageSize}&search=${val}`,
-      //   "GET"
-      // );
+      get(`/${ruta}/all?page=${page}&pageSize=${pageSize}&search=${val}`);
       setAc(1);
       setPage(1);
     }, 500);
   };
 
   const eliminar = (id: string, texto: string) => {
-    console.log(id)
-    
+    console.log(id);
     alertBox("warning", "Está seguro?", texto, "Si, eliminar", async () => {
-      //await send(`/${ruta}/${id}`, "DELETE"); 
+      await remove(`/${ruta}/${id}`);
       getDatos();
     });
   };
 
   useEffect(() => {
-    setAc2(ac + (all?.data.length - 1));
+    setAc2(ac + ((all?.data.length ?? 0) - 1));
   }, [all]);
 
   useEffect(() => {
@@ -103,7 +102,7 @@ const Table = ({ ruta, colunms, hook, body }: ITable) => {
     }
   }, [user]);
 
-  return  (
+  return (
     <>
       <div className="h-12 flex items-center">
         <Link to={`/${ruta}/agregar`}>
@@ -155,8 +154,8 @@ const Table = ({ ruta, colunms, hook, body }: ITable) => {
                     </div>
                   </td>
                 </tr>
-              ) : all.data.length ? (
-                body(eliminar,img)
+              ) : all?.data.length ? (
+                body(eliminar, img)
               ) : (
                 <tr>
                   <td colSpan={6} className="text-center">

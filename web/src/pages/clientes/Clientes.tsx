@@ -32,7 +32,7 @@ const hook = useTable<ICliente>()
           "Dirección",
           "Acciones",
         ]}
-        body={(eliminar: (id: string, text: string) => null) =>
+        body={(eliminar) =>
           hook.all?.data.map((d, i) => (
             <tr key={i}>
               <td>{d.nombre}</td>
