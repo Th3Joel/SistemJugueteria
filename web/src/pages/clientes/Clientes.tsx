@@ -2,7 +2,6 @@ import { Card } from "@/modules/core/components/Card";
 import Table from "@/modules/core/components/Table";
 import { useTable } from "@/modules/core/hooks/useTable";
 import { DeleteRounded, EditRounded } from "@mui/icons-material";
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 interface ICliente {
@@ -19,17 +18,10 @@ export const Clientes = () => {
   window.document.title = "Clientes"
 const hook = useTable<ICliente>()
 
-  useEffect(()=>{
-    hook.get(`/clientes/all?page=${1}&pageSize=${10}`);
-  },[]);
 
-useEffect(()=>{
-  console.log(hook.all?.data)
-},[hook.all]);
   return (
     <Card>
-      <h1>hola</h1>
-      {/* <Table
+      <Table
         hook={hook}
         ruta="clientes"
         colunms={[
@@ -68,7 +60,7 @@ useEffect(()=>{
             </tr>
           ))
         }
-      /> */}
+      />
     </Card>
   );
 };

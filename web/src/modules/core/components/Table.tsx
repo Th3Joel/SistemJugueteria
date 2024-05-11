@@ -46,6 +46,7 @@ const Table = ({ ruta, colunms, hook, body }: ITable) => {
   const getDatos = () => {
     //send(`/${ruta}/all?page=${page}&pageSize=${pageSize}`, "GET");
     get(`/${ruta}/all?page=${page}&pageSize=${pageSize}`);
+    
   };
 
   const img = (name:string) =>{
@@ -63,6 +64,7 @@ const Table = ({ ruta, colunms, hook, body }: ITable) => {
 
   const buscador = (e: { target: { value: string } }) => {
     const val = e.target.value;
+    console.log(val)
     //Agregar retraso
     clearTimeout(setTime);
     setTime = setTimeout(() => {
@@ -76,6 +78,8 @@ const Table = ({ ruta, colunms, hook, body }: ITable) => {
   };
 
   const eliminar = (id: string, texto: string) => {
+    console.log(id)
+    
     alertBox("warning", "Está seguro?", texto, "Si, eliminar", async () => {
       //await send(`/${ruta}/${id}`, "DELETE"); 
       getDatos();
@@ -83,7 +87,7 @@ const Table = ({ ruta, colunms, hook, body }: ITable) => {
   };
 
   useEffect(() => {
-    setAc2(ac + (all.data.length - 1));
+    setAc2(ac + (all?.data.length - 1));
   }, [all]);
 
   useEffect(() => {
@@ -165,14 +169,14 @@ const Table = ({ ruta, colunms, hook, body }: ITable) => {
         </div>
         <div className="flex flex-col gap-1 sm:flex-row justify-between mt-2 items-center">
           <div>
-            Mostrando {ac} a {ac2} de {all.count} elementos
+            Mostrando {ac} a {ac2} de {all?.count} elementos
           </div>
           <div className="flex items-center justify-end">
             <button disabled={loading} onClick={pagAnt}>
               <KeyboardArrowLeftTwoTone />
             </button>
             <span className="p-2">
-              page {page} de {all.pages}
+              page {page} de {all?.pages}
             </span>
             <button disabled={loading} onClick={pagSig}>
               <KeyboardArrowRightTwoTone />
