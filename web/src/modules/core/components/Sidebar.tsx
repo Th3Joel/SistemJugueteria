@@ -1,14 +1,16 @@
 import { useEffect } from "react";
-import { SidebarStore } from "../globalStates/sidebar-store";
+import { SidebarState } from "@/modules/core/globalStates/sidebar-state";
 import logoImg from "@/assets/logo.jpg";
 import userImg from "@/assets/user.png";
 import { Link, useLocation } from "react-router-dom";
 import { Home, People } from "@mui/icons-material";
+import { AuthState } from "../globalStates/auth-state";
 
 export const Sidebar = () => {
+  const {user} = AuthState();
   const { pathname } = useLocation();
   let oo = false;
-  const { estado, inc } = SidebarStore();
+  const { estado, inc } = SidebarState();
   useEffect(() => {
     function verificar() {
       if (innerWidth < 800 && oo) {
@@ -53,8 +55,8 @@ export const Sidebar = () => {
           alt=""
         />
         <div className="ml-2">
-          <p className="text-lg font-semibold -mb-1">Joel Urbina</p>
-          <p className="text-slate-300">Administrador</p>
+          <p className="text-lg font-semibold -mb-1">{user.name}</p>
+          <p className="text-slate-300">{user.role}</p>
         </div>
       </div>
       <hr className="border-gray-500" />

@@ -5,7 +5,7 @@ interface ISidebar{
     inc(param:boolean):void
 }
 
-export const SidebarStore = create<ISidebar>(set => ({
+export const SidebarState = create<ISidebar>(set => ({
     estado:false,
     inc:(param)=>set(()=>({estado:param}))
 }))
