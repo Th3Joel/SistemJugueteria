@@ -19,12 +19,17 @@ export const Clientes = () => {
   window.document.title = "Clientes"
 const hook = useTable<ICliente>()
 
+  useEffect(()=>{
+    hook.get(`/clientes/all?page=${1}&pageSize=${10}`);
+  },[]);
+
 useEffect(()=>{
   console.log(hook.all?.data)
 },[hook.all]);
   return (
     <Card>
-      <Table
+      <h1>hola</h1>
+      {/* <Table
         hook={hook}
         ruta="clientes"
         colunms={[
@@ -63,7 +68,7 @@ useEffect(()=>{
             </tr>
           ))
         }
-      />
+      /> */}
     </Card>
   );
 };

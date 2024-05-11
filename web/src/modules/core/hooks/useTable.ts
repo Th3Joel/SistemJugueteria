@@ -21,7 +21,7 @@ export const useTable = <T>() => {
   
   const get=async(url:string)=>{
     setLoading(true)
-    const res = await useFetch<ITableResponse<T>>(url,"POST");
+    const res = await useFetch<ITableResponse<T>>(url,"GET");
     setAll(res.all);
     setLoading(false)
   }
