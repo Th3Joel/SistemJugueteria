@@ -1,19 +1,19 @@
-FROM golang:1.22.2
+FROM debian:latest
 
- #RUN apt-get update && apt-get install -y \
- #    wget curl unzip 
-#     && apt-get clean && rm -rf /var/lib/apt/list/*
+RUN apt-get update && apt-get install -y \
+    wget curl unzip \
+    && apt-get clean && rm -rf /var/lib/apt/list/*
 
-#RUN curl -fsSL https://bun.sh/install | bash
+RUN curl -fsSL https://bun.sh/install | bash
 
-# RUN wget https://go.dev/dl/go1.22.2.linux-amd64.tar.gz \
-#     && tar -C /usr/local -xzf go1.22.2.linux-amd64.tar.gz
+RUN wget https://go.dev/dl/go1.22.2.linux-amd64.tar.gz \
+    && tar -C /usr/local -xzf go1.22.2.linux-amd64.tar.gz
+
 WORKDIR /app
-COPY ./jugueteriaApi .
+COPY . .
 
-#RUN cd web && ~/.bun/bin/bun install && ~/.bun/bin/bun run build
+RUN cd web && ~/.bun/bin/bun install && ~/.bun/bin/bun run build
 
-# RUN go mod download \
-#     && CGO_ENABLED=0 GOOS=linux go build -o /jugue
-EXPOSE 8080
-ENTRYPOINT ["./jugueteriaApi"]
+RUN /usr/local/go/bin/go mod download \
+    && /usr/local/go/bin/go build -ldflags "-s -w" -o sis .
+CMD ./sis

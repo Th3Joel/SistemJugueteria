@@ -18,7 +18,7 @@ func main() {
 
 	config.ConnectDB()
 	app := fiber.New(fiber.Config{
-		Prefork: false,
+		Prefork: true,
 		AppName: "Jugueteria",
 	})
 	app.Use(logger.New())
