@@ -12,10 +12,11 @@ const TableNameCategoria = "Categorias"
 
 // Categoria mapped from table <Categorias>
 type Categoria struct {
-	ID        string    `gorm:"column:id;primaryKey" json:"id"`
-	Nombre    string    `gorm:"column:nombre;not null" json:"nombre"`
-	CreatedAt time.Time `gorm:"column:createdAt;not null;default:CURRENT_TIMESTAMP(3)" json:"createdAt"`
-	UpdateAt  time.Time `gorm:"column:updateAt;not null" json:"updateAt"`
+	ID          string    `gorm:"column:id;primaryKey" json:"id"`
+	Nombre      string    `gorm:"column:nombre;not null" json:"nombre"`
+	Descripcion string    `gorm:"column:descripcion;not null" json:"descripcion"`
+	CreatedAt   time.Time `gorm:"column:createdAt;not null;default:CURRENT_TIMESTAMP(3)" json:"createdAt"`
+	UpdateAt    time.Time `gorm:"column:updateAt;not null" json:"updateAt"`
 }
 
 // TableName Categoria's table name

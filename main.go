@@ -15,7 +15,7 @@ import (
 var port = os.Getenv("PORT")
 
 func main() {
-
+	//config.GetStruct()
 	config.ConnectDB()
 	app := fiber.New(fiber.Config{
 		Prefork: true,
@@ -38,7 +38,7 @@ func main() {
 	//AuthR
 	routes.AuthR(api)
 	//AccountR
-	routes.AccountR(api)
+	routes.UserR(api)
 
 	app.Listen(":" + port)
 }

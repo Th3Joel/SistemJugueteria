@@ -10,7 +10,7 @@ import {
 import { Button, TextField } from "@mui/material";
 import { IUseTable } from "../hooks/useTable";
 
-interface ITable {
+interface IProps {
   ruta: string | undefined;
   colunms: string[];
   hook: IUseTable<any>;
@@ -20,7 +20,7 @@ interface ITable {
   ): React.ReactNode;
 }
 
-const Table: React.FC<ITable> = ({ ruta, colunms, hook, body }) => {
+const Table: React.FC<IProps> = ({ ruta, colunms, hook, body }) => {
   const { user } = AuthState();
 
   const { get, all, loading,remove } = hook;
@@ -115,7 +115,7 @@ const Table: React.FC<ITable> = ({ ruta, colunms, hook, body }) => {
           <div>
             <select
               onChange={initSetPageSize}
-              className="mr-2 p-[3px] text-center"
+              className="mr-2 p-[3px] text-center rounded-md"
             >
               <option value="10">10</option>
               <option value="25">25</option>
@@ -171,15 +171,15 @@ const Table: React.FC<ITable> = ({ ruta, colunms, hook, body }) => {
             Mostrando {ac} a {ac2} de {all?.count} elementos
           </div>
           <div className="flex items-center justify-end">
-            <button disabled={loading} onClick={pagAnt}>
+            <Button variant="outlined" disabled={loading} onClick={pagAnt}>
               <KeyboardArrowLeftTwoTone />
-            </button>
+            </Button>
             <span className="p-2">
               page {page} de {all?.pages}
             </span>
-            <button disabled={loading} onClick={pagSig}>
+            <Button variant="outlined" className="w-[50px]" disabled={loading} onClick={pagSig}>
               <KeyboardArrowRightTwoTone />
-            </button>
+            </Button>
           </div>
         </div>
       </div>

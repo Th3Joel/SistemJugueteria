@@ -1,12 +1,17 @@
 package val
 
-type AccountV struct {
+type UserV struct {
+	Name     string `validate:"required"`
 	Email    string `validate:"required,email"`
 	Password string `validate:"required,gte=4"`
+	Role     string `validate:"required"`
+	Picture  string `validate:"omitempty"`
 }
 
 // Mapa de mensajes de validación personalizados
-var MsjAccountVal = map[string]string{
+var MsjUserVal = map[string]string{
+	"Name.required":     "Correo requerido.",
+	"Role.required":     "Correo requerido.",
 	"Email.required":    "Correo requerido.",
 	"Email.email":       "Correo inválido.",
 	"Password.required": "La contraseña es requerida.",
@@ -14,8 +19,8 @@ var MsjAccountVal = map[string]string{
 }
 
 type AuthV struct {
-	Email    string `validate:"required,email"`
-	Password string `validate:"required"`
+	Email    string `form:"email" validate:"required,email"`
+	Password string `form:"password" validate:"required"`
 }
 
 var MsjAuthVal = map[string]string{

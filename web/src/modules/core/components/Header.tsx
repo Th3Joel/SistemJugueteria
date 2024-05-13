@@ -1,6 +1,7 @@
 import { Logout, Menu } from "@mui/icons-material"
 import { SidebarState } from "@/modules/core/globalStates/sidebar-state"
 import { logoutFetch } from "@/modules/auth/utils/authFetch";
+import { Tooltip } from "@mui/material";
 
 export const Header = () => {
     const {estado ,inc} = SidebarState();
@@ -13,12 +14,12 @@ export const Header = () => {
         />
         <p className="ml-2 text-xl font-semibold text-gray-500">Inicio</p>
       </div>
-      <div>
+      <Tooltip title="Cerrar sessión" arrow>
         <Logout
         className="cursor-pointer"
         onClick={logoutFetch}
         />
-      </div>
+      </Tooltip>
     </div>
   )
 }

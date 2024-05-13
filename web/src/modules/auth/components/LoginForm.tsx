@@ -19,7 +19,7 @@ export const LoginForm = () => {
       <h1 className="text-2xl font-bold text-center mt-2 mb-2">Coleccióname</h1>
       <hr className="border-gray-200" />
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3 px-6 py-2">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3 px-6 py-3">
         <h3 className="text-center">Bienvenido</h3>
         <TextField
           name="email"

@@ -2,6 +2,7 @@ import { Card } from "@/modules/core/components/Card";
 import Table from "@/modules/core/components/Table";
 import { useTable } from "@/modules/core/hooks/useTable";
 import { DeleteRounded, EditRounded } from "@mui/icons-material";
+import {  IconButton } from "@mui/material";
 import { Link } from "react-router-dom";
 
 interface ICliente {
@@ -43,18 +44,18 @@ const hook = useTable<ICliente>()
               <td>
                 <div className="flex gap-1 justify-center">
                   <Link to={`/clientes/editar/${d.id}`}>
-                    <button>
+                    <IconButton color="success">
                       <EditRounded />
-                    </button>
+                    </IconButton>
                   </Link>
-                  <button
+                  <IconButton
+                  color="error"
                     onClick={() =>
                       eliminar(d.id, `Eliminar a: ${d.nombre} ${d.apellido}`)
                     }
-                    className="bg-red-500 hover:bg-red-400"
                   >
                     <DeleteRounded />
-                  </button>
+                  </IconButton>
                 </div>
               </td>
             </tr>

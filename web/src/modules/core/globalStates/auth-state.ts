@@ -26,10 +26,10 @@ export const AuthState = create<IAuth>((set) => ({
   loading: true,
   verify: async () => {
     if (useStorage().get()) {
-      const res = await useFetch<{status:boolean,user:IUser}>("/users/profile","GET");
+      const res = await useFetch<{status:boolean,find:IUser}>("/users","GET");
       if (res.status) {
         set({estado: true });
-        set({ user: res.user });
+        set({ user: res.find });
       } 
       if(!res.status) {
         set({estado:false})
