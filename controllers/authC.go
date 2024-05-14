@@ -16,18 +16,17 @@ type AuthC struct {
 	Password string `json:"password" validate:"required"`
 }
 
-func (a *AuthC) Login(f *fiber.Ctx) error {
-
+func (AuthC) Login(f *fiber.Ctx) error {
+	authBody := AuthC{}
 	//Si no se le agrega el & no se puede modificar el original y solo se crea una copia
-	tokenH := new(helpers.TokenH)
-	passwdH := new(helpers.PasswdH)
+	tokenH := helpers.TokenH{}
+	passwdH := helpers.PasswdH{}
 
-	userFind := new(models.User)
+	userFind := models.User{}
 
-	f.BodyParser(&a)
-	db := config.DB.Select("id", "email", "password").Find(&userFind, "email = ?", a.Email)
-
-	if !passwdH.Verify(a.Password, userFind.Password) || db.RowsAffected == 0 {
+	f.BodyParser(&authBody)
+	db := config.DB.Select("id", "email", "password").First(&userFind, "email = ?", authBody.Email)
+	if !passwdH.Verify(authBody.Password, userFind.Password) || db.RowsAffected == 0 {
 		return f.JSON(fiber.Map{
 			"status": false,
 			"msj":    "Credenciales incorrectas",
@@ -58,7 +57,7 @@ func (a *AuthC) Login(f *fiber.Ctx) error {
 func (AuthC) Logout(f *fiber.Ctx) error {
 	tok := f.Get("key")
 
-	db := config.DB.Delete(&models.Token{}, "token = ?", tok)
+	db := config.DB.Delete(models.Token{}, "token = ?", tok)
 	if db.RowsAffected == 0 {
 		return f.JSON(fiber.Map{
 			"status": false,

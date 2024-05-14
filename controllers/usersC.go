@@ -4,6 +4,7 @@ import (
 	"Jugueteria/config"
 	"Jugueteria/helpers"
 	"Jugueteria/models"
+	"fmt"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -33,7 +34,7 @@ type all struct {
 	PageSize int
 }
 
-func (u UserC) All(c *fiber.Ctx) error {
+func (UserC) All(c *fiber.Ctx) error {
 	type QueriesParams struct {
 		Page     int    `query:"page"`
 		PageSize int    `query:"pageSize"`
@@ -74,49 +75,64 @@ func (u UserC) All(c *fiber.Ctx) error {
 	})
 }
 
-func (u *UserC) ShowId(c *fiber.Ctx) error {
+func (UserC) ShowId(c *fiber.Ctx) error {
 	id := c.Params("id")
 
-	re := config.DB.Model(models.User{ID: id}).Select("id", "email", "name", "role", "picture").First(&u)
-	if re.RowsAffected == 0 {
-		return c.JSON(Response{
+	useModel := models.User{ID: id}
+	sql := config.DB.Select("id", "email", "name", "role", "picture").First(&useModel)
+
+	if sql.RowsAffected == 0 {
+		return c.Status(200).JSON(Response{
 			Status: false,
 			Msj:    "Usuario no encontrado",
 		})
 	}
+
 	//us := c.Locals("user").(map[string]interface{})["id"]
 	//us["id"].(string)
 	return c.Status(200).JSON(Response{
 		Status: true,
-		Find:   u,
+		Find: &UserC{
+			Email:   useModel.Email,
+			Name:    useModel.Name,
+			Role:    useModel.Role,
+			Picture: useModel.Picture,
+		},
 	})
 }
 
-func (u *UserC) Show(c *fiber.Ctx) error {
+func (UserC) Show(c *fiber.Ctx) error {
 	id := c.Locals("userId").(string)
-	config.DB.Model(models.User{ID: id}).Select("id", "email", "name", "role", "picture").First(&u)
 
+	useModel := models.User{ID: id}
+	config.DB.Select("id", "email", "name", "role", "picture").First(&useModel)
+	fmt.Println(id)
 	//us := c.Locals("user").(map[string]interface{})["id"]
 	//us["id"].(string)
 	return c.Status(200).JSON(Response{
 		Status: true,
-		Find:   u,
+		Find: &UserC{
+			Email:   useModel.Email,
+			Name:    useModel.Name,
+			Role:    useModel.Role,
+			Picture: useModel.Picture,
+		},
 	})
 }
 
-func (u UserC) Save(c *fiber.Ctx) error {
-	passwdH := new(helpers.PasswdH)
-	user := new(models.User)
+func (UserC) Save(c *fiber.Ctx) error {
+	passwdH := helpers.PasswdH{}
+	user := models.User{}
 
 	//Pasar el body a la estructura
-	c.BodyParser(user)
+	c.BodyParser(&user)
 	antePass := user.Password
 
 	user.ID = uuid.NewString()
 	user.Password = passwdH.Hash(antePass)
 	user.UpdateAt = time.Now()
 
-	config.DB.Create(&user)
+	config.DB.Create(user)
 
 	// if errors.Is(db.Error, gorm.ErrDuplicatedKey) {
 	// 	return c.JSON(Response{
@@ -135,14 +151,15 @@ func (u UserC) Save(c *fiber.Ctx) error {
 // y el & es para poder modificar el espacio
 //
 //	de memoria o el datos del espacio de memoria
-func (u UserC) Update(c *fiber.Ctx) error {
+func (UserC) Update(c *fiber.Ctx) error {
 
 	id := c.Params("id")
+	userBody := UserC{}
 
-	userFound := &models.User{ID: id}
-	c.BodyParser(&u)
+	userFound := models.User{ID: id}
+	c.BodyParser(&userBody)
 
-	sql := config.DB.First(userFound)
+	sql := config.DB.First(&userFound)
 	if sql.RowsAffected == 0 {
 		return c.JSON(fiber.Map{
 			"status": false,
@@ -150,7 +167,7 @@ func (u UserC) Update(c *fiber.Ctx) error {
 		})
 	}
 
-	config.DB.Model(userFound).Updates(u)
+	config.DB.Model(userFound).Updates(userBody)
 
 	return c.JSON(Response{
 		Status: true,
@@ -158,7 +175,7 @@ func (u UserC) Update(c *fiber.Ctx) error {
 	})
 }
 
-func (ac UserC) Delete(c *fiber.Ctx) error {
+func (UserC) Delete(c *fiber.Ctx) error {
 	id := c.Params("id")
 	user := models.User{ID: id}
 	sql := config.DB.Delete(user)

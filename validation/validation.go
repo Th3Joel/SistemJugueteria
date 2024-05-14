@@ -20,7 +20,7 @@ var MsjUserVal = map[string]string{
 
 func EmailRepeat(fl validator.FieldLevel) bool {
 	field := fl.Field().String()
-	sql := config.DB.Select("email").First(&models.User{}, "email = ?", field)
+	sql := config.DB.Select("email").First(models.User{}, "email = ?", field)
 	return sql.RowsAffected == 0
 }
 

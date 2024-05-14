@@ -12,7 +12,7 @@ type TokenH struct{}
 
 var secret []byte = []byte("ksnbkajgrkyg7a874ylha")
 
-func (th TokenH) Gen(t jwt.Token) string {
+func (TokenH) Gen(t jwt.Token) string {
 	key, _ := jwk.FromRaw(secret)
 	key.Set(jwk.AlgorithmKey, jwa.HS256)
 	sign, err := jwt.Sign(t, jwt.WithKey(jwa.HS256, key))

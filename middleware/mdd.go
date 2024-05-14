@@ -21,8 +21,8 @@ func AuthMiddleware(c *fiber.Ctx) error {
 	token := c.Get("key")
 
 	//Verificar si el token esta almacenado
-	modelToken := &models.Token{}
-	db := config.DB.First(modelToken, "token = ?", token)
+	modelToken := models.Token{}
+	db := config.DB.First(&modelToken, "token = ?", token)
 
 	// Cargar la clave secreta
 	key, _ := jwk.FromRaw([]byte("ksnbkajgrkyg7a874ylha"))
