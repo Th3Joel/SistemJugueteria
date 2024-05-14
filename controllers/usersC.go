@@ -158,7 +158,7 @@ func (UserC) Update(c *fiber.Ctx) error {
 
 	userFound := models.User{ID: id}
 	c.BodyParser(&userBody)
-
+	userBody.Password = ""
 	sql := config.DB.First(&userFound)
 	if sql.RowsAffected == 0 {
 		return c.JSON(fiber.Map{
