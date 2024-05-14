@@ -9,14 +9,14 @@ import (
 )
 
 func UserR(f fiber.Router) {
-	userC := new(controllers.UserC)
+	userC := controllers.UserC{}
 	r := f.Group("/users", mdd.AuthMiddleware)
 
 	r.Get("", userC.Show)
-	r.Get("/:id", userC.ShowId)
 	r.Get("/all", userC.All)
+	r.Get("/:id", userC.ShowId)
 	r.Post("",
-		mdd.ValM(val.UserV{}, val.MsjUserVal),
+		mdd.ValM(userC, val.MsjUserVal),
 		userC.Save,
 	)
 	r.Put("/:id", userC.Update)

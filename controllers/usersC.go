@@ -4,20 +4,19 @@ import (
 	"Jugueteria/config"
 	"Jugueteria/helpers"
 	"Jugueteria/models"
-	"errors"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
-	"gorm.io/gorm"
 )
 
 type UserC struct {
-	ID      string `json:"id,omitempty"`
-	Name    string `json:"name,omitempty"`
-	Role    string `json:"role,omitempty"`
-	Picture string `json:"picture,omitempty"`
-	Email   string `json:"email,omitempty"`
+	ID       string `json:"id,omitempty"`
+	Name     string `json:"name,omitempty" validate:"required"`
+	Role     string `json:"role,omitempty" validate:"required"`
+	Picture  string `json:"picture,omitempty"`
+	Password string `json:"password,omitempty" validate:"required,gte=4"`
+	Email    string `form:"email" json:"email,omitempty" validate:"required,email,isRepeat"`
 }
 
 type Response struct {
@@ -63,7 +62,7 @@ func (u UserC) All(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.JSON(Response{
+	return c.Status(200).JSON(Response{
 		Status: true,
 		All: &all{
 			Data:     data,
@@ -87,7 +86,7 @@ func (u *UserC) ShowId(c *fiber.Ctx) error {
 	}
 	//us := c.Locals("user").(map[string]interface{})["id"]
 	//us["id"].(string)
-	return c.JSON(Response{
+	return c.Status(200).JSON(Response{
 		Status: true,
 		Find:   u,
 	})
@@ -117,16 +116,16 @@ func (u UserC) Save(c *fiber.Ctx) error {
 	user.Password = passwdH.Hash(antePass)
 	user.UpdateAt = time.Now()
 
-	db := config.DB.Create(&user)
+	config.DB.Create(&user)
 
-	if errors.Is(db.Error, gorm.ErrDuplicatedKey) {
-		return c.JSON(Response{
-			Status: false,
-			Msj:    "El email ya existe",
-		})
-	}
+	// if errors.Is(db.Error, gorm.ErrDuplicatedKey) {
+	// 	return c.JSON(Response{
+	// 		Status: false,
+	// 		Msj:    "El email ya existe",
+	// 	})
+	// }
 
-	return c.JSON(Response{
+	return c.Status(200).JSON(Response{
 		Status: true,
 		Msj:    "Usuario creado",
 	})
@@ -153,7 +152,10 @@ func (u UserC) Update(c *fiber.Ctx) error {
 
 	config.DB.Model(userFound).Updates(u)
 
-	return c.JSON(u)
+	return c.JSON(Response{
+		Status: true,
+		Msj:    "Usuario actualizado correctamente",
+	})
 }
 
 func (ac UserC) Delete(c *fiber.Ctx) error {

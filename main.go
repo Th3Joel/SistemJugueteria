@@ -21,16 +21,12 @@ func main() {
 		Prefork: true,
 		AppName: "Jugueteria",
 	})
+	defer app.Shutdown()
 	app.Use(logger.New())
 
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
 		AllowHeaders: "*",
-	}))
-
-	//servir archivos staticos dentro del binario
-	app.Use("/", filesystem.New(filesystem.Config{
-		Root: web.Dist(),
 	}))
 
 	//Sistema api
@@ -39,6 +35,13 @@ func main() {
 	routes.AuthR(api)
 	//AccountR
 	routes.UserR(api)
+
+	//servir archivos staticos dentro del binario
+	app.Get("/*", filesystem.New(filesystem.Config{
+		Root:         web.Dist(),
+		Index:        "index.html",
+		NotFoundFile: "index.html",
+	}))
 
 	app.Listen(":" + port)
 }

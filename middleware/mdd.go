@@ -3,6 +3,7 @@ package mdd
 import (
 	"Jugueteria/config"
 	"Jugueteria/models"
+	val "Jugueteria/validation"
 	"encoding/json"
 	"fmt"
 	"reflect"
@@ -49,6 +50,7 @@ func AuthMiddleware(c *fiber.Ctx) error {
 func ValM(data interface{}, valMsj map[string]string) func(*fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 		validate := validator.New()
+		validate.RegisterValidation("isRepeat", val.EmailRepeat)
 
 		/*La variable v se inicializa utilizando reflexión.
 		Crea una nueva instancia del tipo del parámetro data
@@ -59,7 +61,7 @@ func ValM(data interface{}, valMsj map[string]string) func(*fiber.Ctx) error {
 		v := reflect.New(reflect.TypeOf(data)).Interface()
 
 		c.BodyParser(v)
-
+		//return c.JSON(v)
 		if err := validate.Struct(v); err != nil {
 			// Crea un mapa para almacenar los mensajes de error de validación
 			errorMsj := make(map[string]string)

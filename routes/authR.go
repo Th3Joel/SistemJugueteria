@@ -12,6 +12,6 @@ func AuthR(f fiber.Router) {
 	authC := new(controllers.AuthC)
 	r := f.Group("/auth")
 
-	r.Post("/login", mdd.ValM(val.AuthV{}, val.MsjAuthVal), authC.Login)
+	r.Post("/login", mdd.ValM(controllers.AuthC{}, val.MsjAuthVal), authC.Login)
 	r.Get("/logout", mdd.AuthMiddleware, authC.Logout)
 }
