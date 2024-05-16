@@ -20,6 +20,7 @@ type User struct {
 	Role      string    `gorm:"column:role;not null;default:vendedor" form:"role" json:"role"`
 	UpdateAt  time.Time `gorm:"column:updateAt;not null" json:"updateAt"`
 	Picture   string    `gorm:"column:picture;not null" json:"picture"`
+	Tokens []Token
 }
 
 // TableName User's table name

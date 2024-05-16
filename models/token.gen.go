@@ -17,6 +17,7 @@ type Token struct {
 	IP        string    `gorm:"column:ip" json:"ip"`
 	Token     string    `gorm:"column:token;not null" json:"token"`
 	CreatedAt time.Time `gorm:"column:createdAt;not null;default:CURRENT_TIMESTAMP(3)" json:"createdAt"`
+	User User `gorm:"foreignkey:userId"`
 }
 
 // TableName Token's table name

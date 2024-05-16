@@ -5,6 +5,7 @@ import (
 	"Jugueteria/helpers"
 	"Jugueteria/models"
 	"fmt"
+	"math"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -13,11 +14,11 @@ import (
 
 type UserC struct {
 	ID       string `json:"id,omitempty"`
-	Name     string `json:"name,omitempty" validate:"required"`
-	Role     string `json:"role,omitempty" validate:"required"`
+	Name     string `json:"name,omitempty"`
+	Role     string `json:"role,omitempty"`
 	Picture  string `json:"picture,omitempty"`
-	Password string `json:"password,omitempty" validate:"required,gte=4"`
-	Email    string `form:"email" json:"email,omitempty" validate:"required,email,isRepeat"`
+	Password string `json:"password,omitempty"`
+	Email    string `json:"email,omitempty"`
 }
 
 type Response struct {
@@ -68,7 +69,7 @@ func (UserC) All(c *fiber.Ctx) error {
 		All: &all{
 			Data:     data,
 			Count:    count,
-			Pages:    (count / q.PageSize) + 1,
+			Pages:    int(math.Ceil(float64(count) / float64(q.PageSize))),
 			Page:     q.Page,
 			PageSize: q.PageSize,
 		},
@@ -151,9 +152,32 @@ func (UserC) Save(c *fiber.Ctx) error {
 // y el & es para poder modificar el espacio
 //
 //	de memoria o el datos del espacio de memoria
-func (UserC) Update(c *fiber.Ctx) error {
+func (UserC) UpdateId(c *fiber.Ctx) error {
 
 	id := c.Params("id")
+	userBody := UserC{}
+
+	userFound := models.User{ID: id}
+	c.BodyParser(&userBody)
+	userBody.Password = ""
+	sql := config.DB.First(&userFound)
+	if sql.RowsAffected == 0 {
+		return c.JSON(fiber.Map{
+			"status": false,
+			"msj":    "Usuario no encontrado",
+		})
+	}
+
+	config.DB.Model(userFound).Updates(userBody)
+
+	return c.JSON(Response{
+		Status: true,
+		Msj:    "Usuario actualizado correctamente",
+	})
+}
+func (UserC) Update(c *fiber.Ctx) error {
+
+	id := c.Locals("userId").(string)
 	userBody := UserC{}
 
 	userFound := models.User{ID: id}

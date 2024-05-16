@@ -26,7 +26,7 @@ export const AuthState = create<IAuth>((set) => ({
   loading: true,
   verify: async () => {
     if (useStorage().get()) {
-      const res = await useFetch<{status:boolean,find:IUser}>("/users","GET");
+      const res = await useFetch<{status:boolean,find:IUser}>("/users/user","GET");
       if (res.status) {
         set({estado: true });
         set({ user: res.find });

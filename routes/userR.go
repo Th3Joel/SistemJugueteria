@@ -10,16 +10,30 @@ import (
 
 func UserR(f fiber.Router) {
 	userC := controllers.UserC{}
-	r := f.Group("/users", mdd.AuthMiddleware)
+	r := f.Group("/users", mdd.AuthM)
 
-	r.Get("", userC.Show)
-	r.Get("/all", userC.All)
-	r.Get("/:id", userC.ShowId)
-	r.Post("",
-		mdd.ValM(userC, val.MsjUserVal),
+	//Mostrar usuario logeado
+	r.Get("/user", userC.Show)
+
+	//Ruta protegidas solo el administrador
+	admin := r.Group("", mdd.RoleM([]string{}))
+	//Lista todos los usuarios
+	admin.Get("", userC.All)
+	//Mostrar usuario por id
+	admin.Get("/user/:id", userC.ShowId)
+	//Crear usuario
+	admin.Post("",
+		mdd.ValM(val.UserPost{}, val.MsjUserVal),
 		userC.Save,
 	)
-	r.Put("/:id", userC.Update)
-	r.Delete("/:id", userC.Delete)
-
+	//Actualizar usuario por id
+	admin.Put("/",
+		mdd.ValM(val.UserPut{}, val.MsjUserVal),
+		userC.Update)
+	//Actualizar usuario logeado
+	admin.Put("/:id",
+		mdd.ValM(val.UserPut{}, val.MsjUserVal),
+		userC.UpdateId)
+	//Eliminar usuario
+	admin.Delete("/:id", userC.Delete)
 }

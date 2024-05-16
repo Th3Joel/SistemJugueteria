@@ -16,14 +16,13 @@ import (
 	"github.com/lestrrat-go/jwx/v2/jwt"
 )
 
-func AuthMiddleware(c *fiber.Ctx) error {
+func AuthM(c *fiber.Ctx) error {
 	// Obtiene el token de la cabecera de autorización
 	token := c.Get("key")
 
 	//Verificar si el token esta almacenado
 	modelToken := models.Token{}
-	db := config.DB.First(&modelToken, "token = ?", token)
-
+	db := config.DB.Preload("User").First(&modelToken, "token = ?", token)
 	// Cargar la clave secreta
 	key, _ := jwk.FromRaw([]byte("ksnbkajgrkyg7a874ylha"))
 
@@ -41,8 +40,9 @@ func AuthMiddleware(c *fiber.Ctx) error {
 	jsonClaims, _ := json.Marshal(t)
 	fmt.Println(string(jsonClaims))
 	//Almacenar lso datos en la req
-	tokeData := t.PrivateClaims()
-	c.Locals("userId", tokeData["id"])
+	//tokeData := t.PrivateClaims()
+	c.Locals("userId", modelToken.User.ID)
+	c.Locals("role", modelToken.User.Role)
 	// Si el token es válido, permite continuar con la solicitud
 	return c.Next()
 }
@@ -50,7 +50,15 @@ func AuthMiddleware(c *fiber.Ctx) error {
 func ValM(data interface{}, valMsj map[string]string) func(*fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 		validate := validator.New()
-		validate.RegisterValidation("isRepeat", val.EmailRepeat)
+		validate.RegisterValidation("isRepeat", func(fl validator.FieldLevel) bool {
+			var id string
+			if c.Params("id") != "" {
+				id = c.Params("id")
+			} else {
+				id = c.Locals("userId").(string)
+			}
+			return val.EmailRepeat(fl, id)
+		})
 
 		/*La variable v se inicializa utilizando reflexión.
 		Crea una nueva instancia del tipo del parámetro data
@@ -85,5 +93,23 @@ func ValM(data interface{}, valMsj map[string]string) func(*fiber.Ctx) error {
 		}
 
 		return c.Next()
+	}
+}
+
+func RoleM(roles []string) func(*fiber.Ctx) error {
+	return func(c *fiber.Ctx) error {
+		role := c.Locals("role").(string)
+		for _, r := range roles {
+			if r == role {
+				return c.Next()
+			}
+		}
+		if role == "admin" {
+			return c.Next()
+		}
+		return c.JSON(fiber.Map{
+			"status": false,
+			"msj":    "No tiene permisos",
+		})
 	}
 }
