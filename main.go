@@ -27,7 +27,7 @@ func main() {
 	defer app.Shutdown()
 	app.Use(csrf.New(csrf.Config{
 		KeyLookup:      "header:X-Csrf-Token",
-		CookieName:     "_csrf",
+		CookieName:     "csrf_",
 		CookieSameSite: "Lax",
 		Expiration:     1 * time.Hour,
 		CookieHTTPOnly: true,
@@ -35,7 +35,7 @@ func main() {
 		KeyGenerator:   utils.UUIDv4,
 		SingleUseToken: true,
 		Extractor: func(c *fiber.Ctx) (string, error) {
-			return c.Cookies("_csrf"), nil
+			return c.Cookies("csrf_"), nil
 		},
 		SessionKey:        "fiber.csrf.token",
 		HandlerContextKey: "fiber.csrf.handler",
