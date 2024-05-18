@@ -24,7 +24,7 @@ func main() {
 		Prefork: true,
 		AppName: "Jugueteria",
 	})
-	defer app.Shutdown()
+	//defer app.Shutdown()
 	app.Use(csrf.New(csrf.Config{
 		KeyLookup:      "header:X-Csrf-Token",
 		CookieName:     "csrf_",
