@@ -31,6 +31,7 @@ func main() {
 		CookieSameSite: "Lax",
 		Expiration:     1 * time.Hour,
 		CookieHTTPOnly: true,
+		CookieSecure:   true,
 		KeyGenerator:   utils.UUIDv4,
 		SingleUseToken: true,
 		Extractor: func(c *fiber.Ctx) (string, error) {
