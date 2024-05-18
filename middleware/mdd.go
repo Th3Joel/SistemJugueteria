@@ -18,7 +18,8 @@ import (
 
 func AuthM(c *fiber.Ctx) error {
 	// Obtiene el token de la cabecera de autorización
-	token := c.Get("key")
+	//token := c.Get("key")
+	token := c.Cookies("_key")
 
 	//Verificar si el token esta almacenado
 	modelToken := models.Token{}
@@ -68,6 +69,7 @@ func ValM(data interface{}, valMsj map[string]string) func(*fiber.Ctx) error {
 
 		v := reflect.New(reflect.TypeOf(data)).Interface()
 
+		TrimSpaces(v)
 		c.BodyParser(v)
 		//return c.JSON(v)
 		if err := validate.Struct(v); err != nil {
@@ -111,5 +113,16 @@ func RoleM(roles []string) func(*fiber.Ctx) error {
 			"status": false,
 			"msj":    "No tiene permisos",
 		})
+	}
+}
+
+// TrimSpaces recorre los campos de la estructura y elimina los espacios en blanco.
+func TrimSpaces(s interface{}) {
+	v := reflect.ValueOf(s).Elem()
+	for i := 0; i < v.NumField(); i++ {
+		field := v.Field(i)
+		if field.Kind() == reflect.String {
+			field.SetString(strings.TrimSpace(field.String()))
+		}
 	}
 }

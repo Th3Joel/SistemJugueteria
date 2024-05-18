@@ -6,6 +6,7 @@ import (
 	"Jugueteria/models"
 	"fmt"
 	"math"
+	"strings"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -123,17 +124,25 @@ func (UserC) Show(c *fiber.Ctx) error {
 
 func (UserC) Save(c *fiber.Ctx) error {
 	passwdH := helpers.PasswdH{}
-	user := models.User{}
+	user := UserC{}
 
 	//Pasar el body a la estructura
 	c.BodyParser(&user)
+	trim(&user)
 	antePass := user.Password
 
 	user.ID = uuid.NewString()
 	user.Password = passwdH.Hash(antePass)
-	user.UpdateAt = time.Now()
 
-	config.DB.Create(user)
+	config.DB.Create(models.User{
+		ID:       user.ID,
+		Email:    user.Email,
+		Name:     user.Name,
+		Role:     user.Role,
+		Picture:  user.Picture,
+		Password: user.Password,
+		UpdateAt: time.Now(),
+	})
 
 	// if errors.Is(db.Error, gorm.ErrDuplicatedKey) {
 	// 	return c.JSON(Response{
@@ -159,6 +168,7 @@ func (UserC) UpdateId(c *fiber.Ctx) error {
 
 	userFound := models.User{ID: id}
 	c.BodyParser(&userBody)
+	trim(&userBody) //Eliminar los espacios en blanco
 	userBody.Password = ""
 	sql := config.DB.First(&userFound)
 	if sql.RowsAffected == 0 {
@@ -182,6 +192,7 @@ func (UserC) Update(c *fiber.Ctx) error {
 
 	userFound := models.User{ID: id}
 	c.BodyParser(&userBody)
+	trim(&userBody) //Eliminar los espacios en blanco
 	userBody.Password = ""
 	sql := config.DB.First(&userFound)
 	if sql.RowsAffected == 0 {
@@ -214,4 +225,11 @@ func (UserC) Delete(c *fiber.Ctx) error {
 		"status": true,
 		"msj":    "Usuario eliminado",
 	})
+}
+
+func trim(u *UserC) {
+	u.Name = strings.TrimSpace(u.Name)
+	u.Email = strings.TrimSpace(u.Email)
+	u.Role = strings.TrimSpace(u.Role)
+	u.Picture = strings.TrimSpace(u.Picture)
 }

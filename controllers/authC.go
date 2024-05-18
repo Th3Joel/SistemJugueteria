@@ -47,15 +47,24 @@ func (AuthC) Login(f *fiber.Ctx) error {
 
 	config.DB.Save(tokenSave)
 
+	cookie := new(fiber.Cookie)
+	cookie.Name = "_key"
+	cookie.Value = token
+	cookie.Expires = time.Now().Add(time.Hour * 24)
+	cookie.HTTPOnly = true
+	cookie.SameSite = "Lax"
+	f.Cookie(cookie)
+
 	return f.JSON(fiber.Map{
 		"status": true,
-		"token":  token,
+		//"token":  token,
 	})
 
 }
 
 func (AuthC) Logout(f *fiber.Ctx) error {
-	tok := f.Get("key")
+	//tok := f.Get("key")
+	tok := f.Cookies("_key")
 
 	db := config.DB.Delete(models.Token{}, "token = ?", tok)
 	if db.RowsAffected == 0 {
@@ -64,6 +73,7 @@ func (AuthC) Logout(f *fiber.Ctx) error {
 			"msj":    "No se pudo cerrar la sesión",
 		})
 	}
+	f.ClearCookie()
 	return f.JSON(fiber.Map{
 		"status": true,
 		"msj":    "Sesión cerrada",

@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { useFetch } from "../hooks/useFetch";
-import { useStorage } from "../hooks/useStorage";
 interface IUser{
     name: string;
     email: string;
@@ -25,7 +24,7 @@ export const AuthState = create<IAuth>((set) => ({
   estado: false,
   loading: true,
   verify: async () => {
-    if (useStorage().get()) {
+    
       const res = await useFetch<{status:boolean,find:IUser}>("/users/user","GET");
       if (res.status) {
         set({estado: true });
@@ -34,9 +33,7 @@ export const AuthState = create<IAuth>((set) => ({
       if(!res.status) {
         set({estado:false})
       }
-    }else{
-      set({ estado: false });
-    }
+    
     set({ loading: false });
 
   }

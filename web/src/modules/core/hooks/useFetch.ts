@@ -1,4 +1,3 @@
-import { useStorage } from "./useStorage";
 
 export const useFetch = async <T>(
   url: string,
@@ -6,7 +5,7 @@ export const useFetch = async <T>(
   body?: object | FormData,
   isFormData?: boolean
 ): Promise<T> => {
-  const uri = "/api";
+  const uri = "http://localhost:3000/api";
 
   const content_type = isFormData ? null : {
     "Content-Type": "application/json",
@@ -15,9 +14,9 @@ export const useFetch = async <T>(
   const req = await fetch(uri + url, {
     method,
     body: isFormData ? (body as FormData) : JSON.stringify(body),
+    credentials:"include",
     headers: {
-       ...content_type,
-      key: `${useStorage().get()}`,
+       ...content_type
     },
   });
   const res: T = await req.json();

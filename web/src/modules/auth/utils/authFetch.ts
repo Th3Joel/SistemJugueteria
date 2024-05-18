@@ -17,8 +17,19 @@ interface IUseFetch {
 }
 
 export const loginFetch = async (form: FormData,setErrors:Dispatch<SetStateAction<IErrors>>) => {
+  
+  //Limpiar formdata
+  let cleanedForm = new FormData();
+  form.forEach((value,key)=>{
+    if(typeof value === 'string'){
+      cleanedForm.append(key,value.trim())
+    }else{
+      cleanedForm.append(key,value)
+    }
+  });
+  
   setErrors({loading:true})
-  const res = await useFetch<IUseFetch>("/auth/login", "POST", form,true);
+  const res = await useFetch<IUseFetch>("/auth/login", "POST", cleanedForm,true);
   console.log(res)
   if (res.status) {
     useStorage().set(res.token ?? "")
