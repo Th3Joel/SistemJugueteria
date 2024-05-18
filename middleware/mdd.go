@@ -2,21 +2,19 @@ package mdd
 
 import (
 	"Jugueteria/config"
+	"Jugueteria/helpers"
 	"Jugueteria/models"
 	val "Jugueteria/validation"
-	"encoding/json"
 	"fmt"
 	"reflect"
 	"strings"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
-	"github.com/lestrrat-go/jwx/v2/jwa"
-	"github.com/lestrrat-go/jwx/v2/jwk"
-	"github.com/lestrrat-go/jwx/v2/jwt"
 )
 
 func AuthM(c *fiber.Ctx) error {
+	tokenH := helpers.TokenH{}
 	// Obtiene el token de la cabecera de autorización
 	//token := c.Get("key")
 	token := c.Cookies("_key")
@@ -24,22 +22,16 @@ func AuthM(c *fiber.Ctx) error {
 	//Verificar si el token esta almacenado
 	modelToken := models.Token{}
 	db := config.DB.Preload("User").First(&modelToken, "token = ?", token)
-	// Cargar la clave secreta
-	key, _ := jwk.FromRaw([]byte("ksnbkajgrkyg7a874ylha"))
 
-	// Verifica si el token es válido
-	t, err := jwt.Parse([]byte(token), jwt.WithKey(jwa.HS256, key))
 	// Verificacion
-	if token == "" || err != nil || db.RowsAffected == 0 {
+	if token == "" || !tokenH.Verify(token) || db.RowsAffected == 0 {
 		// Si el token no es válido, responde con un error de autorización
 		return c.JSON(fiber.Map{
 			"status": false,
 			"error":  "No autorizado",
 		})
 	}
-	//Para imprimir en json
-	jsonClaims, _ := json.Marshal(t)
-	fmt.Println(string(jsonClaims))
+
 	//Almacenar lso datos en la req
 	//tokeData := t.PrivateClaims()
 	c.Locals("userId", modelToken.User.ID)

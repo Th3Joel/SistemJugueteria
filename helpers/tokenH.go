@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/lestrrat-go/jwx/v2/jwa"
@@ -21,4 +22,21 @@ func (TokenH) Gen(t jwt.Token) string {
 	}
 
 	return string(sign)
+}
+
+func (TokenH) Verify(token string) bool {
+	// Cargar la clave secreta
+	key, _ := jwk.FromRaw(secret)
+
+	// Verifica si el token es válido
+	t, err := jwt.Parse([]byte(token), jwt.WithKey(jwa.HS256, key))
+	//Para imprimir en json
+	jsonClaims, _ := json.Marshal(t)
+	fmt.Println(string(jsonClaims))
+
+	if err != nil {
+		return false
+	} else {
+		return true
+	}
 }
