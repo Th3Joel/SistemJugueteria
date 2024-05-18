@@ -18,6 +18,7 @@ func AuthM(c *fiber.Ctx) error {
 	// Obtiene el token de la cabecera de autorización
 	//token := c.Get("key")
 	token := c.Cookies("_key")
+	return c.JSON(c.Cookies("csrf_"))
 
 	//Verificar si el token esta almacenado
 	modelToken := models.Token{}
