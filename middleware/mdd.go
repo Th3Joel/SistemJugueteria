@@ -134,6 +134,7 @@ func Csrf(f *fiber.Ctx) error {
 		Value:    tok,
 		Expires:  tiempo,
 		HTTPOnly: true,
+		Secure:   true,
 	})
 	//Valida en token csrf
 	if !helpers.Csrf.Verify([]byte(coo), []byte(t)) || exp < time.Now().Unix() {
