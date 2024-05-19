@@ -26,7 +26,17 @@ func main() {
 	})
 
 	defer app.Shutdown()
-	app.Use(csrf.New(csrf.Config{
+
+	app.Use(logger.New())
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins:     "http://localhost:5173,https://dark.serveo.net,https://a--cosas-th3joel.sierranegra.cloud",
+		AllowCredentials: true,
+		AllowMethods:     "GET,POST,PUT,DELETE",
+	}))
+
+	//Sistema api
+	api := app.Group("/api", csrf.New(csrf.Config{
 		KeyLookup:      "header:X-Csrf-Token",
 		CookieName:     "csrf_",
 		CookieSameSite: "Lux",
@@ -40,16 +50,6 @@ func main() {
 		},
 		ContextKey: "token",
 	}))
-	app.Use(logger.New())
-
-	app.Use(cors.New(cors.Config{
-		AllowOrigins:     "http://localhost:5173,https://dark.serveo.net,https://a--cosas-th3joel.sierranegra.cloud",
-		AllowCredentials: true,
-		AllowMethods:     "GET,POST,PUT,DELETE",
-	}))
-
-	//Sistema api
-	api := app.Group("/api")
 	//AuthR
 	routes.AuthR(api)
 	//AccountR
