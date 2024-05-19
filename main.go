@@ -2,6 +2,7 @@ package main
 
 import (
 	"Jugueteria/config"
+	mdd "Jugueteria/middleware"
 	"Jugueteria/routes"
 	"Jugueteria/web"
 	"os"
@@ -27,29 +28,13 @@ func main() {
 	app.Use(logger.New())
 
 	app.Use(cors.New(cors.Config{
-		AllowOrigins:     "http://localhost:5173,https://dark.serveo.net,https://a--cosas-th3joel.sierranegra.cloud",
+		AllowOrigins:     "http://localhost:5173,https://dark.serveo.net",
 		AllowCredentials: true,
 		AllowMethods:     "GET,POST,PUT,DELETE",
 	}))
 
-	//! implementarlo propio
-	// csrfConfig := csrf.Config{
-	// 	CookieName:     "csrf_",
-	// 	CookieSameSite: "Lux",
-	// 	Expiration:     1 * time.Hour,
-	// 	CookieHTTPOnly: true,
-	// 	CookieSecure:   true,
-	// 	KeyGenerator:   utils.UUIDv4,
-	// 	SingleUseToken: true,
-	// 	Extractor: func(c *fiber.Ctx) (string, error) {
-	// 		return c.Cookies("csrf_"), nil
-	// 	},
-	// 	Storage: sqlite3.New(),
-	// }
-	// //Sistema api
-	// api := app.Group("/api", csrf.New(csrfConfig))
 	//Sistema api
-	api := app.Group("/api")
+	api := app.Group("/api", mdd.Csrf)
 	//AuthR
 	routes.AuthR(api)
 	//AccountR

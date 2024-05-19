@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+	"time"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -117,4 +118,30 @@ func TrimSpaces(s interface{}) {
 			field.SetString(strings.TrimSpace(field.String()))
 		}
 	}
+}
+
+func Csrf(f *fiber.Ctx) error {
+	coo := f.Cookies("csrf")
+	exp, t := helpers.Csrf.Get(coo)
+
+	helpers.Csrf.Delete(coo)
+
+	tok := helpers.Csrf.Gen()
+	tiempo := time.Now().Add(time.Hour * 24)
+	helpers.Csrf.Set(tok, tiempo.Unix())
+	f.Cookie(&fiber.Cookie{
+		Name:     "csrf",
+		Value:    tok,
+		Expires:  tiempo,
+		HTTPOnly: true,
+	})
+	//Valida en token csrf
+	if !helpers.Csrf.Verify([]byte(coo), []byte(t)) || exp < time.Now().Unix() {
+		return f.JSON(fiber.Map{
+			"status": false,
+			"msj":    "Solicitud expirada",
+		})
+	}
+
+	return f.Next()
 }
