@@ -28,7 +28,7 @@ func main() {
 	app.Use(logger.New())
 
 	app.Use(cors.New(cors.Config{
-		AllowOrigins:     "http://localhost:5173,https://a--cosas-th3joel.sierranegra.cloud",
+		AllowOrigins:     "http://localhost:5173",
 		AllowCredentials: true,
 		AllowMethods:     "GET,POST,PUT,DELETE",
 	}))

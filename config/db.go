@@ -34,7 +34,6 @@ func ConnectDB() {
 	if err != nil {
 		log.Fatal("No se pudo conectar a la base de datos sqlite3. \n")
 	}
-
 	createTableSQL := `
     CREATE TABLE IF NOT EXISTS csrf (
         key VARCHAR(64) NOT NULL PRIMARY KEY,

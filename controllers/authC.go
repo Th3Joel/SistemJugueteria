@@ -52,6 +52,7 @@ func (AuthC) Login(f *fiber.Ctx) error {
 	cookie.Value = token
 	cookie.Expires = time.Now().Add(time.Hour * 24)
 	cookie.HTTPOnly = true
+	cookie.Secure = true
 	cookie.SameSite = "Lax"
 	f.Cookie(cookie)
 
@@ -73,7 +74,11 @@ func (AuthC) Logout(f *fiber.Ctx) error {
 			"msj":    "No se pudo cerrar la sesión",
 		})
 	}
-	f.ClearCookie()
+	f.Cookie(&fiber.Cookie{
+		Name:    "_key",
+		Value:   "",
+		Expires: time.Now().Add(time.Hour * -23),
+	})
 	return f.JSON(fiber.Map{
 		"status": true,
 		"msj":    "Sesión cerrada",
