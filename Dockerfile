@@ -1,7 +1,7 @@
 FROM debian:latest
 
 RUN apt-get update && apt-get install -y \
-    wget curl unzip \
+    wget curl unzip gcc \
     && apt-get clean && rm -rf /var/lib/apt/list/*
 
 RUN curl -fsSL https://bun.sh/install | bash
@@ -15,5 +15,5 @@ COPY . .
 RUN cd web && ~/.bun/bin/bun install && ~/.bun/bin/bun run build
 
 RUN /usr/local/go/bin/go mod download \
-    && /usr/local/go/bin/go build -ldflags "-s -w" -o sis .
+    && CGO_ENABLED=1 /usr/local/go/bin/go build -ldflags "-s -w" -o sis .
 CMD ./sis

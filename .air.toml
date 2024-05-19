@@ -5,7 +5,7 @@ tmp_dir = "tmp"
 [build]
   args_bin = []
   #bin = "./tmp/main"
-  cmd = "go build -ldflags '-s -w' -o ./tmp/main ."
+  cmd = "CGO_ENABLED=1 go build -ldflags '-s -w' -o ./tmp/main ."
   delay = 1000
   exclude_dir = ["assets", "tmp", "vendor", "testdata","web"]
   exclude_file = []

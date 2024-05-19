@@ -35,19 +35,18 @@ func main() {
 		AllowCredentials: true,
 		AllowMethods:     "GET,POST,PUT,DELETE",
 	}))
-	storage := sqlite3.New()
 	csrfConfig := csrf.Config{
 		CookieName:     "csrf_",
 		CookieSameSite: "Lux",
 		Expiration:     1 * time.Hour,
 		CookieHTTPOnly: true,
-		//CookieSecure:   true,
+		CookieSecure:   true,
 		KeyGenerator:   utils.UUIDv4,
 		SingleUseToken: true,
 		Extractor: func(c *fiber.Ctx) (string, error) {
 			return c.Cookies("csrf_"), nil
 		},
-		Storage: storage,
+		Storage: sqlite3.New(),
 	}
 	//Sistema api
 	api := app.Group("/api", csrf.New(csrfConfig))
