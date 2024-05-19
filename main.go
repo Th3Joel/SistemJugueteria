@@ -8,6 +8,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/csrf"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )
@@ -21,6 +22,11 @@ func main() {
 		Prefork: true,
 		AppName: "Jugueteria",
 	})
+	app.Use(csrf.New(csrf.Config{
+		Extractor: func(c *fiber.Ctx) (string, error) {
+			return c.Cookies("csrf_"), nil
+		},
+	}))
 	//defer app.Shutdown()
 	// app.Use(csrf.New(csrf.Config{
 	// 	KeyLookup:      "header:X-Csrf-Token",
