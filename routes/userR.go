@@ -3,6 +3,7 @@ package routes
 import (
 	"Jugueteria/controllers"
 	mdd "Jugueteria/middleware"
+	"Jugueteria/models"
 	val "Jugueteria/validation"
 
 	"github.com/gofiber/fiber/v2"
@@ -23,16 +24,16 @@ func UserR(f fiber.Router) {
 	admin.Get("/user/:id", userC.ShowId)
 	//Crear usuario
 	admin.Post("",
-		mdd.ValM(val.UserPost{}, val.MsjUserVal),
+		mdd.ValM(val.MsjUserVal, val.UserPost{}, models.User{}),
 		userC.Save,
 	)
 	//Actualizar usuario por id
 	admin.Put("/",
-		mdd.ValM(val.UserPut{}, val.MsjUserVal),
+		mdd.ValM(val.MsjUserVal, val.UserPut{}, models.User{}),
 		userC.Update)
 	//Actualizar usuario logeado
 	admin.Put("/:id",
-		mdd.ValM(val.UserPut{}, val.MsjUserVal),
+		mdd.ValM(val.MsjUserVal, val.UserPut{}, models.User{}),
 		userC.UpdateId)
 	//Eliminar usuario
 	admin.Delete("/:id", userC.Delete)

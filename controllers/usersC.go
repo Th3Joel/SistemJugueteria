@@ -122,13 +122,13 @@ func (UserC) Show(c *fiber.Ctx) error {
 	})
 }
 
-func (UserC) Save(c *fiber.Ctx) error {
+func (u UserC) Save(c *fiber.Ctx) error {
 	passwdH := helpers.PasswdH{}
 	user := UserC{}
 
 	//Pasar el body a la estructura
 	c.BodyParser(&user)
-	trim(&user)
+	u.trim(&user)
 	antePass := user.Password
 
 	user.ID = uuid.NewString()
@@ -161,14 +161,14 @@ func (UserC) Save(c *fiber.Ctx) error {
 // y el & es para poder modificar el espacio
 //
 //	de memoria o el datos del espacio de memoria
-func (UserC) UpdateId(c *fiber.Ctx) error {
+func (u UserC) UpdateId(c *fiber.Ctx) error {
 
 	id := c.Params("id")
 	userBody := UserC{}
 
 	userFound := models.User{ID: id}
 	c.BodyParser(&userBody)
-	trim(&userBody) //Eliminar los espacios en blanco
+	u.trim(&userBody) //Eliminar los espacios en blanco
 	userBody.Password = ""
 	sql := config.DB.First(&userFound)
 	if sql.RowsAffected == 0 {
@@ -185,14 +185,14 @@ func (UserC) UpdateId(c *fiber.Ctx) error {
 		Msj:    "Usuario actualizado correctamente",
 	})
 }
-func (UserC) Update(c *fiber.Ctx) error {
+func (u UserC) Update(c *fiber.Ctx) error {
 
 	id := c.Locals("userId").(string)
 	userBody := UserC{}
 
 	userFound := models.User{ID: id}
 	c.BodyParser(&userBody)
-	trim(&userBody) //Eliminar los espacios en blanco
+	u.trim(&userBody) //Eliminar los espacios en blanco
 	userBody.Password = ""
 	sql := config.DB.First(&userFound)
 	if sql.RowsAffected == 0 {
@@ -202,7 +202,13 @@ func (UserC) Update(c *fiber.Ctx) error {
 		})
 	}
 
-	config.DB.Model(userFound).Updates(userBody)
+	sql2 := config.DB.Model(userFound).Updates(userBody)
+	if sql2.RowsAffected == 0 {
+		return c.JSON(fiber.Map{
+			"status": false,
+			"msj":    "Ha ocurrido un error",
+		})
+	}
 
 	return c.JSON(Response{
 		Status: true,
@@ -227,7 +233,7 @@ func (UserC) Delete(c *fiber.Ctx) error {
 	})
 }
 
-func trim(u *UserC) {
+func (UserC) trim(u *UserC) {
 	u.Name = strings.TrimSpace(u.Name)
 	u.Email = strings.TrimSpace(u.Email)
 	u.Role = strings.TrimSpace(u.Role)

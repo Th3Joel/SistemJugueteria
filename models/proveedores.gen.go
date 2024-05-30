@@ -12,13 +12,13 @@ const TableNameProveedore = "Proveedores"
 
 // Proveedore mapped from table <Proveedores>
 type Proveedore struct {
-	ID        string    `gorm:"column:id;primaryKey" json:"id"`
-	Nombre    string    `gorm:"column:nombre;not null" json:"nombre"`
-	Direccion string    `gorm:"column:direccion" json:"direccion"`
+	ID        string    `gorm:"column:id;primaryKey;" json:"id"`
+	Name    string    `gorm:"column:name;not null" json:"name"`
+	Address string    `gorm:"column:address" json:"address"`
 	CreatedAt time.Time `gorm:"column:createdAt;not null;default:CURRENT_TIMESTAMP(3)" json:"createdAt"`
 	UpdateAt  time.Time `gorm:"column:updateAt;not null" json:"updateAt"`
-	Telefono  string    `gorm:"column:telefono" json:"telefono"`
-	Correo    string    `gorm:"column:correo" json:"correo"`
+	Phone  string    `gorm:"column:phone" json:"phone"`
+	Email    string    `gorm:"column:email" json:"email"`
 }
 
 // TableName Proveedore's table name

@@ -41,9 +41,11 @@ func AuthM(c *fiber.Ctx) error {
 	return c.Next()
 }
 
-func ValM(data interface{}, valMsj map[string]string) func(*fiber.Ctx) error {
+func ValM[T any, R any](valMsj map[string]string, data T, model R) func(*fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
+
 		validate := validator.New()
+		v := &data
 		validate.RegisterValidation("isRepeat", func(fl validator.FieldLevel) bool {
 			var id string
 			if c.Params("id") != "" {
@@ -51,7 +53,7 @@ func ValM(data interface{}, valMsj map[string]string) func(*fiber.Ctx) error {
 			} else {
 				id = c.Locals("userId").(string)
 			}
-			return val.EmailRepeat(fl, id)
+			return val.Repeat(fl, id, model)
 		})
 
 		/*La variable v se inicializa utilizando reflexión.
@@ -59,8 +61,6 @@ func ValM(data interface{}, valMsj map[string]string) func(*fiber.Ctx) error {
 		utilizando reflect.New(reflect.TypeOf(data)).Interface().
 		 Esto permite que el middleware funcione con cualquier
 		 estructura de datos pasada.*/
-
-		v := reflect.New(reflect.TypeOf(data)).Interface()
 
 		TrimSpaces(v)
 		c.BodyParser(v)

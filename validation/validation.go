@@ -2,11 +2,20 @@ package val
 
 import (
 	"Jugueteria/config"
-	"Jugueteria/models"
-	"fmt"
+	"strings"
 
 	"github.com/go-playground/validator/v10"
 )
+
+func Repeat[T any](fl validator.FieldLevel, id string, model T) bool {
+
+	field := fl.Field().String()
+	fieldName := strings.ToLower(fl.FieldName())
+	sql := config.DB.Select(fieldName).First(&model, "LOWER("+fieldName+") = LOWER(?) AND id != ?", field, id)
+	return sql.RowsAffected == 0
+}
+
+//*Usuario
 
 type UserPut struct {
 	Name    string `json:"name"`
@@ -33,16 +42,20 @@ var MsjUserVal = map[string]string{
 	"Password.gte":      "La contraseña debe ser mayor o igual a 4.",
 }
 
-func EmailRepeat(fl validator.FieldLevel, id string) bool {
-	field := fl.Field().String()
-	fmt.Println(field)
-	sql := config.DB.Select("email").First(&models.User{}, "email = ? AND id != ?", field, id)
-	return sql.RowsAffected == 0
-}
-
-// Validaciones del login
+// *Authentication
+// Validaciones del login mensajes
 var MsjAuthVal = map[string]string{
 	"Email.required":    "Correo requerido.",
 	"Email.email":       "Correo inválido.",
 	"Password.required": "La contraseña es requerida.",
+}
+
+// *Proveedor
+// Proveedor mensajes de validaciones
+var MsjProveedorVal = map[string]string{
+	"Name.required": "Nombre requerido.",
+	"Name.isRepeat": "Nombre ya existe",
+	"Email.email":   "Correo inválido.",
+	"Phone.numeric": "Debe se numérico.",
+	"Address.lte":   "Caracteres máximo 50",
 }
