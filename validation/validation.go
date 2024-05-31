@@ -59,3 +59,14 @@ var MsjProveedorVal = map[string]string{
 	"Phone.numeric": "Debe se numérico.",
 	"Address.lte":   "Caracteres máximo 50",
 }
+
+// *Costumers
+// Proveedor mensajes de validaciones
+var MsjCostumerVal = map[string]string{
+	"Name.required": "Nombre requerido.",
+	"Name.isRepeat": "Nombre ya existe",
+	"Surname.lte":   "Caracteres maximo 20",
+	"Email.email":   "Correo inválido.",
+	"Phone.numeric": "Debe se numérico.",
+	"Address.lte":   "Caracteres máximo 50",
+}

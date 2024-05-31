@@ -41,6 +41,8 @@ func main() {
 	routes.UserR(api)
 	//ProveedorR
 	routes.ProveedorR(api)
+	//ClienteR
+	routes.ClienteR(api)
 
 	//servir archivos staticos dentro del binario
 	app.Get("/*", filesystem.New(filesystem.Config{

@@ -49,7 +49,7 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body }) => {
   };
 
   const getDatos = () => {
-    get(`/${ruta}/all?page=${page}&pageSize=${pageSize}`);
+    get(`/${ruta}?page=${page}&pageSize=${pageSize}`);
   };
 
   const img = (name: string) => {
@@ -71,7 +71,7 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body }) => {
     //Agregar retraso
     clearTimeout(setTime);
     setTime = setTimeout(() => {
-      get(`/${ruta}/all?page=${page}&pageSize=${pageSize}&search=${val}`);
+      get(`/${ruta}?page=${page}&pageSize=${pageSize}&search=${val}`);
       setAc(1);
       setPage(1);
     }, 500);

@@ -7,11 +7,11 @@ import { Link } from "react-router-dom";
 
 interface ICliente {
   id:string
-  nombre:string
-  apellido:string
-  celular:string
-  correo:string
-  direccion:string
+  name:string
+  surname:string
+  phone:string
+  email:string
+  address:string
 
 }
 
@@ -36,11 +36,11 @@ const hook = useTable<ICliente>()
         body={(eliminar) =>
           hook.all?.data.map((d, i) => (
             <tr key={i}>
-              <td>{d.nombre}</td>
-              <td>{d.apellido}</td>
-              <td>{d.celular}</td>
-              <td>{d.correo}</td>
-              <td>{d.direccion}</td>
+              <td>{d.name}</td>
+              <td>{d.surname}</td>
+              <td>{d.phone}</td>
+              <td>{d.email}</td>
+              <td>{d.address}</td>
               <td>
                 <div className="flex gap-1 justify-center">
                   <Link to={`/clientes/editar/${d.id}`}>
@@ -51,7 +51,7 @@ const hook = useTable<ICliente>()
                   <IconButton
                   color="error"
                     onClick={() =>
-                      eliminar(d.id, `Eliminar a: ${d.nombre} ${d.apellido}`)
+                      eliminar(d.id, `Eliminar a: ${d.name} ${d.surname ?? ""}`)
                     }
                   >
                     <DeleteRounded />

@@ -9,11 +9,11 @@ const TableNameCliente = "Cliente"
 // Cliente mapped from table <Cliente>
 type Cliente struct {
 	ID        string `gorm:"column:id;primaryKey" json:"id"`
-	Nombre    string `gorm:"column:nombre;not null" json:"nombre"`
-	Celular   string `gorm:"column:celular" json:"celular"`
-	Correo    string `gorm:"column:correo" json:"correo"`
-	Direccion string `gorm:"column:direccion" json:"direccion"`
-	Apellido  string `gorm:"column:apellido" json:"apellido"`
+	Name    string `gorm:"column:name;not null" json:"name"`
+	Phone   string `gorm:"column:phone" json:"phone"`
+	Email    string `gorm:"column:email" json:"email"`
+	Address string `gorm:"column:address" json:"address"`
+	Surname  string `gorm:"column:surname" json:"surname"`
 }
 
 // TableName Cliente's table name

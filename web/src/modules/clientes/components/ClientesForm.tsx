@@ -16,20 +16,20 @@ interface IProps {
 }
 
 interface IFormData {
-  nombre: string;
-  apellido: string;
-  celular: string;
-  correo: string;
-  direccion: string;
+  name: string;
+  surname: string;
+  phone: string;
+  email: string;
+  address: string;
 }
 
 export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
   const { post, errors,loading, data, get, inputChange } = useForm<IFormData>({
-    nombre: "",
-    apellido: "",
-    celular: "",
-    correo: "",
-    direccion: "",
+    name: "",
+    surname: "",
+    phone: "",
+    email: "",
+    address: "",
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -50,13 +50,13 @@ export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <TextField
           label="Nombre"
-          name="nombre"
-          value={data?.nombre}
+          name="name"
+          value={data?.name}
           placeholder="               (requerido)"
           variant="filled"
           onChange={inputChange}
-          error={!!errors?.nombre}
-          helperText={errors?.nombre}
+          error={!!errors?.name}
+          helperText={errors?.name}
           size="small"
           className="w-full"
           InputProps={{
@@ -71,11 +71,11 @@ export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
           label="Apellido"
           variant="filled"
           onChange={inputChange}
-          name="apellido"
-          value={data?.apellido}
+          name="surname"
+          value={data?.surname}
           size="small"
-          error={!!errors?.apellido}
-          helperText={errors?.apellido}
+          error={!!errors?.surname}
+          helperText={errors?.surname}
           className="w-full"
           InputProps={{
             startAdornment: (
@@ -89,10 +89,10 @@ export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
           label="Celular"
           onChange={inputChange}
           variant="filled"
-          name="celular"
-          value={data?.celular}
-          error={!!errors?.celular}
-          helperText={errors?.celular}
+          name="phone"
+          value={data?.phone}
+          error={!!errors?.phone}
+          helperText={errors?.phone}
           size="small"
           className="w-full"
           InputProps={{
@@ -106,12 +106,12 @@ export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
         <TextField
           label="Correo electrónico"
           variant="filled"
-          value={data?.correo}
+          value={data?.email}
           size="small"
           onChange={inputChange}
-          name="correo"
-          error={!!errors?.correo}
-          helperText={errors?.correo}
+          name="email"
+          error={!!errors?.email}
+          helperText={errors?.email}
           className="w-full"
           InputProps={{
             startAdornment: (
@@ -125,11 +125,11 @@ export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
           label="Dirección"
           variant="filled"
           size="small"
-          value={data?.direccion}
+          value={data?.address}
           onChange={inputChange}
-          name="direccion"
-          error={!!errors?.direccion}
-          helperText={errors?.direccion}
+          name="address"
+          error={!!errors?.address}
+          helperText={errors?.address}
           className="w-full"
           InputProps={{
             startAdornment: (
