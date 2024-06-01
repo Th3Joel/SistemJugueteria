@@ -24,16 +24,16 @@ func UserR(f fiber.Router) {
 	admin.Get("/user/:id", userC.ShowId)
 	//Crear usuario
 	admin.Post("",
-		mdd.ValM(val.MsjUserVal, val.UserPost{}, models.User{}),
+		mdd.ValM(val.MsjUserVal, val.UserPost{}, models.Users{}),
 		userC.Save,
 	)
 	//Actualizar usuario por id
 	admin.Put("/",
-		mdd.ValM(val.MsjUserVal, val.UserPut{}, models.User{}),
+		mdd.ValM(val.MsjUserVal, val.UserPut{}, models.Users{}),
 		userC.Update)
 	//Actualizar usuario logeado
 	admin.Put("/:id",
-		mdd.ValM(val.MsjUserVal, val.UserPut{}, models.User{}),
+		mdd.ValM(val.MsjUserVal, val.UserPut{}, models.Users{}),
 		userC.UpdateId)
 	//Eliminar usuario
 	admin.Delete("/:id", userC.Delete)

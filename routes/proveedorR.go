@@ -14,7 +14,7 @@ func ProveedorR(f fiber.Router) {
 	r := f.Group("/proveedores", mdd.AuthM)
 	r.Get("", proveedorC.All)
 	r.Get("/:id", proveedorC.ShowId)
-	r.Post("", mdd.ValM(val.MsjProveedorVal, proveedorC, models.Proveedore{}), proveedorC.Save)
-	r.Put("/:id", mdd.ValM(val.MsjProveedorVal, proveedorC, models.Proveedore{}), proveedorC.UpdateId)
+	r.Post("", mdd.ValM(val.MsjProveedorVal, proveedorC, models.Suppliers{}), proveedorC.Save)
+	r.Put("/:id", mdd.ValM(val.MsjProveedorVal, proveedorC, models.Suppliers{}), proveedorC.UpdateId)
 	r.Delete("/:id", proveedorC.Delete)
 }

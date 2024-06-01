@@ -19,7 +19,7 @@ func main() {
 	//config.GetStruct()
 	config.ConnectDB()
 	app := fiber.New(fiber.Config{
-		Prefork: true,
+		Prefork: false,
 		AppName: "Jugueteria",
 	})
 

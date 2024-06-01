@@ -22,7 +22,7 @@ func AuthM(c *fiber.Ctx) error {
 
 	//Verificar si el token esta almacenado
 	modelToken := models.Token{}
-	db := config.DB.Preload("User").First(&modelToken, "token = ?", token)
+	db := config.DB.Select("UserID").First(&modelToken, "token = ?", token)
 
 	// Verificacion
 	if token == "" || !tokenH.Verify(token) || db.RowsAffected == 0 {
@@ -33,10 +33,13 @@ func AuthM(c *fiber.Ctx) error {
 		})
 	}
 
+	modelUser := models.Users{}
+	config.DB.First(&modelUser, "id = ?", modelToken.UserID)
+	fmt.Println("Usuario enconrado: ", modelUser)
 	//Almacenar lso datos en la req
 	//tokeData := t.PrivateClaims()
-	c.Locals("userId", modelToken.User.ID)
-	c.Locals("role", modelToken.User.Role)
+	c.Locals("userId", modelUser.ID)
+	c.Locals("role", modelUser.Role)
 	// Si el token es válido, permite continuar con la solicitud
 	return c.Next()
 }

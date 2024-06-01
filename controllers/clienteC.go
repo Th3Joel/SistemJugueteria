@@ -13,10 +13,9 @@ import (
 type ClienteC struct {
 	ID      string `json:"id,omitempty"`
 	Name    string `json:"name,omitempty" validate:"required,isRepeat"`
-	Surname string `json:"surname,omitempty" validate:"lte=15"`
-	Address string `json:"address,omitempty" validate:"lte=50"`
-	Phone   string `json:"phone,omitempty" validate:"numeric"`
-	Email   string `json:"email,omitempty" validate:"email"`
+	Address string `json:"address,omitempty" validate:"omitempty,lte=50"`
+	Phone   string `json:"phone,omitempty" validate:"omitempty,numeric"`
+	Email   string `json:"email,omitempty" validate:"omitempty,email"`
 }
 
 type ResponseC struct {
@@ -39,7 +38,7 @@ func (ClienteC) All(c *fiber.Ctx) error {
 		PageSize int    `query:"pageSize"`
 		Search   string `query:"search"`
 	}
-	var costumers []models.Cliente
+	var costumers []models.Costumers
 	//Se escribe & para hacer una referencia al espacio de memoria
 	//en resumen permite modificar el original y no crear una copia
 	q := new(QueriesParams)
@@ -51,7 +50,7 @@ func (ClienteC) All(c *fiber.Ctx) error {
 		config.DB.Offset(skip).Limit(take).Find(&costumers)
 	} else {
 		config.DB.Offset(skip).Limit(take).
-			Where("LOWER(name) LIKE LOWER(?) OR LOWER(surname) LIKE LOWER(?)", "%"+q.Search+"%", "%"+q.Search+"%").
+			Where("LOWER(name) LIKE LOWER(?)", "%"+q.Search+"%").
 			Find(&costumers)
 	}
 	count := len(costumers)
@@ -62,7 +61,6 @@ func (ClienteC) All(c *fiber.Ctx) error {
 		data = append(data, ClienteC{
 			ID:      costumer.ID,
 			Name:    costumer.Name,
-			Surname: costumer.Surname,
 			Email:   costumer.Email,
 			Address: costumer.Address,
 			Phone:   costumer.Phone,
@@ -84,8 +82,8 @@ func (ClienteC) All(c *fiber.Ctx) error {
 func (ClienteC) ShowId(c *fiber.Ctx) error {
 	id := c.Params("id")
 
-	costumerModel := models.Cliente{ID: id}
-	sql := config.DB.Select("id", "email", "name", "surname", "address", "phone").First(&costumerModel)
+	costumerModel := models.Costumers{ID: id}
+	sql := config.DB.Select("id", "email", "name", "address", "phone").First(&costumerModel)
 
 	if sql.RowsAffected == 0 {
 		return c.Status(200).JSON(ResponseC{
@@ -98,7 +96,6 @@ func (ClienteC) ShowId(c *fiber.Ctx) error {
 		Status: true,
 		Find: &ClienteC{
 			Name:    costumerModel.Name,
-			Surname: costumerModel.Surname,
 			Email:   costumerModel.Email,
 			Address: costumerModel.Address,
 			Phone:   costumerModel.Phone,
@@ -115,11 +112,10 @@ func (p ClienteC) Save(c *fiber.Ctx) error {
 
 	costumer.ID = uuid.NewString()
 
-	sql := config.DB.Create(models.Cliente{
+	sql := config.DB.Create(&models.Costumers{
 		ID:      costumer.ID,
 		Email:   costumer.Email,
 		Name:    costumer.Name,
-		Surname: costumer.Surname,
 		Address: costumer.Address,
 		Phone:   costumer.Phone,
 	})
@@ -145,7 +141,7 @@ func (p ClienteC) UpdateId(c *fiber.Ctx) error {
 	id := c.Params("id")
 	costumerBody := ClienteC{}
 
-	costumerFound := models.Cliente{ID: id}
+	costumerFound := models.Costumers{ID: id}
 	c.BodyParser(&costumerBody)
 	p.trim(&costumerBody) //Eliminar los espacios en blanco
 	sql := config.DB.First(&costumerFound)
@@ -166,7 +162,7 @@ func (p ClienteC) UpdateId(c *fiber.Ctx) error {
 
 func (ClienteC) Delete(c *fiber.Ctx) error {
 	id := c.Params("id")
-	costumer := models.Cliente{ID: id}
+	costumer := models.Costumers{ID: id}
 	sql := config.DB.Delete(costumer)
 	if sql.RowsAffected == 0 {
 		return c.JSON(fiber.Map{
@@ -183,7 +179,6 @@ func (ClienteC) Delete(c *fiber.Ctx) error {
 
 func (ClienteC) trim(u *ClienteC) {
 	u.Name = strings.TrimSpace(u.Name)
-	u.Surname = strings.TrimSpace(u.Surname)
 	u.Email = strings.TrimSpace(u.Email)
 	u.Address = strings.TrimSpace(u.Address)
 	u.Phone = strings.TrimSpace(u.Phone)

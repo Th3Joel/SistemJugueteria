@@ -17,7 +17,6 @@ interface IProps {
 
 interface IFormData {
   name: string;
-  surname: string;
   phone: string;
   email: string;
   address: string;
@@ -26,7 +25,6 @@ interface IFormData {
 export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
   const { post, errors,loading, data, get, inputChange } = useForm<IFormData>({
     name: "",
-    surname: "",
     phone: "",
     email: "",
     address: "",
@@ -67,24 +65,7 @@ export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
             ),
           }}
         />
-        <TextField
-          label="Apellido"
-          variant="filled"
-          onChange={inputChange}
-          name="surname"
-          value={data?.surname}
-          size="small"
-          error={!!errors?.surname}
-          helperText={errors?.surname}
-          className="w-full"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <DriveFileRenameOutlineRounded />
-              </InputAdornment>
-            ),
-          }}
-        />
+
         <TextField
           label="Celular"
           onChange={inputChange}

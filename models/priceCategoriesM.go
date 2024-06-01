@@ -1,0 +1,16 @@
+package models
+
+import (
+	"time"
+)
+
+type PriceCategories struct {
+	ID          string  `gorm:"primaryKey"`
+	BoxID       string  `gorm:"size:255"`
+	Name        string  `gorm:"size:255"`
+	Description *string `gorm:"size:255"`
+	Price       float64
+	Stock       int
+	CreatedAt   time.Time
+	UpdateAt    time.Time `gorm:"autoUpdateTime"`
+}

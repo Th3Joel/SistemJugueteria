@@ -22,7 +22,7 @@ func (AuthC) Login(f *fiber.Ctx) error {
 	tokenH := helpers.TokenH{}
 	passwdH := helpers.PasswdH{}
 
-	userFind := models.User{}
+	userFind := models.Users{}
 
 	f.BodyParser(&authBody)
 	db := config.DB.Select("id", "email", "password").First(&userFind, "email = ?", authBody.Email)
@@ -45,8 +45,7 @@ func (AuthC) Login(f *fiber.Ctx) error {
 		Token:  token,
 	}
 
-	config.DB.Save(tokenSave)
-
+	config.DB.Save(&tokenSave)
 	cookie := new(fiber.Cookie)
 	cookie.Name = "_key"
 	cookie.Value = token

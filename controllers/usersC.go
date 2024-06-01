@@ -42,7 +42,7 @@ func (UserC) All(c *fiber.Ctx) error {
 		PageSize int    `query:"pageSize"`
 		Search   string `query:"search"`
 	}
-	var users []models.User
+	var users []models.Users
 	//Se escribe & para hacer una referencia al espacio de memoria
 	//en resumen permite modificar el original y no crear una copia
 	q := new(QueriesParams)
@@ -80,7 +80,7 @@ func (UserC) All(c *fiber.Ctx) error {
 func (UserC) ShowId(c *fiber.Ctx) error {
 	id := c.Params("id")
 
-	useModel := models.User{ID: id}
+	useModel := models.Users{ID: id}
 	sql := config.DB.Select("id", "email", "name", "role", "picture").First(&useModel)
 
 	if sql.RowsAffected == 0 {
@@ -106,7 +106,7 @@ func (UserC) ShowId(c *fiber.Ctx) error {
 func (UserC) Show(c *fiber.Ctx) error {
 	id := c.Locals("userId").(string)
 
-	useModel := models.User{ID: id}
+	useModel := models.Users{ID: id}
 	config.DB.Select("id", "email", "name", "role", "picture").First(&useModel)
 	fmt.Println(id)
 	//us := c.Locals("user").(map[string]interface{})["id"]
@@ -134,7 +134,7 @@ func (u UserC) Save(c *fiber.Ctx) error {
 	user.ID = uuid.NewString()
 	user.Password = passwdH.Hash(antePass)
 
-	config.DB.Create(models.User{
+	config.DB.Create(models.Users{
 		ID:       user.ID,
 		Email:    user.Email,
 		Name:     user.Name,
@@ -166,7 +166,7 @@ func (u UserC) UpdateId(c *fiber.Ctx) error {
 	id := c.Params("id")
 	userBody := UserC{}
 
-	userFound := models.User{ID: id}
+	userFound := models.Users{ID: id}
 	c.BodyParser(&userBody)
 	u.trim(&userBody) //Eliminar los espacios en blanco
 	userBody.Password = ""
@@ -190,7 +190,7 @@ func (u UserC) Update(c *fiber.Ctx) error {
 	id := c.Locals("userId").(string)
 	userBody := UserC{}
 
-	userFound := models.User{ID: id}
+	userFound := models.Users{ID: id}
 	c.BodyParser(&userBody)
 	u.trim(&userBody) //Eliminar los espacios en blanco
 	userBody.Password = ""
@@ -218,7 +218,7 @@ func (u UserC) Update(c *fiber.Ctx) error {
 
 func (UserC) Delete(c *fiber.Ctx) error {
 	id := c.Params("id")
-	user := models.User{ID: id}
+	user := models.Users{ID: id}
 	sql := config.DB.Delete(user)
 	if sql.RowsAffected == 0 {
 		return c.JSON(fiber.Map{

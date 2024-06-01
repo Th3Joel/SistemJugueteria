@@ -39,7 +39,7 @@ func (ProveedorC) All(c *fiber.Ctx) error {
 		PageSize int    `query:"pageSize"`
 		Search   string `query:"search"`
 	}
-	var providers []models.Proveedore
+	var providers []models.Suppliers
 	//Se escribe & para hacer una referencia al espacio de memoria
 	//en resumen permite modificar el original y no crear una copia
 	q := new(QueriesParams)
@@ -77,7 +77,7 @@ func (ProveedorC) All(c *fiber.Ctx) error {
 func (ProveedorC) ShowId(c *fiber.Ctx) error {
 	id := c.Params("id")
 
-	useModel := models.Proveedore{ID: id}
+	useModel := models.Suppliers{ID: id}
 	sql := config.DB.Select("id", "email", "name", "address", "phone").First(&useModel)
 
 	if sql.RowsAffected == 0 {
@@ -107,7 +107,7 @@ func (p ProveedorC) Save(c *fiber.Ctx) error {
 
 	provider.ID = uuid.NewString()
 
-	sql := config.DB.Create(models.Proveedore{
+	sql := config.DB.Create(models.Suppliers{
 		ID:       provider.ID,
 		Email:    provider.Email,
 		Name:     provider.Name,
@@ -137,7 +137,7 @@ func (p ProveedorC) UpdateId(c *fiber.Ctx) error {
 	id := c.Params("id")
 	proveedorBody := ProveedorC{}
 
-	proveedorFound := models.Proveedore{ID: id}
+	proveedorFound := models.Suppliers{ID: id}
 	c.BodyParser(&proveedorBody)
 	p.trim(&proveedorBody) //Eliminar los espacios en blanco
 	sql := config.DB.First(&proveedorFound)
@@ -158,7 +158,7 @@ func (p ProveedorC) UpdateId(c *fiber.Ctx) error {
 
 func (ProveedorC) Delete(c *fiber.Ctx) error {
 	id := c.Params("id")
-	proveedor := models.Proveedore{ID: id}
+	proveedor := models.Suppliers{ID: id}
 	sql := config.DB.Delete(proveedor)
 	if sql.RowsAffected == 0 {
 		return c.JSON(fiber.Map{

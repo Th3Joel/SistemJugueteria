@@ -27,7 +27,6 @@ const hook = useTable<ICliente>()
         ruta="clientes"
         colunms={[
           "Nombre",
-          "Apellido",
           "Celular",
           "Correo",
           "Dirección",
@@ -37,7 +36,6 @@ const hook = useTable<ICliente>()
           hook.all?.data.map((d, i) => (
             <tr key={i}>
               <td>{d.name}</td>
-              <td>{d.surname}</td>
               <td>{d.phone}</td>
               <td>{d.email}</td>
               <td>{d.address}</td>

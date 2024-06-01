@@ -1,7 +1,6 @@
 package config
 
 import (
-	"Jugueteria/models"
 	"database/sql"
 	"log"
 
@@ -16,18 +15,25 @@ var (
 )
 
 func ConnectDB() {
-	dsn := "VwgHAVyMup7XfY6.root:D21sfVrtNmTuZPgy@tcp(gateway01.us-east-1.prod.aws.tidbcloud.com:4000)/jugueteria?parseTime=true&tls=true"
+	dsn := "VwgHAVyMup7XfY6.root:D21sfVrtNmTuZPgy@tcp(gateway01.us-east-1.prod.aws.tidbcloud.com:4000)/jugueteriav2?parseTime=true&tls=true"
 	//dsn := "joel:jo12el34@tcp(localhost:3306)/jugueteria?parseTime=true"
-	//dsn := "joel:1234@tcp(localhost)/sisventa?parseTime=true"
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{TranslateError: true})
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{TranslateError: true, SkipDefaultTransaction: true})
 	if err != nil {
 		log.Fatal("No se pudo conectar a la base de datos. \n")
 	}
-	db.AutoMigrate(models.User{})
-	db.AutoMigrate(models.Cliente{})
-	db.AutoMigrate(models.Proveedore{})
-	db.AutoMigrate(models.Token{})
 	log.Println("Conectado a la base de datos")
+	// db.AutoMigrate(models.Company{})
+	// db.AutoMigrate(models.Token{})
+	// db.AutoMigrate(models.Users{})
+	// db.AutoMigrate(models.Costumers{})
+	// db.AutoMigrate(models.Suppliers{})
+	// db.AutoMigrate(models.PriceCategories{})
+	// db.AutoMigrate(models.Articles{})
+	// db.AutoMigrate(models.Categories{})
+	// db.AutoMigrate(models.Boxes{})
+	// db.AutoMigrate(models.Sales{})
+	// db.AutoMigrate(models.Purchases{})
+	// db.AutoMigrate(models.DetailSale{})
 	DB = db
 
 	//base de datos utilizada para los tokens csfr
