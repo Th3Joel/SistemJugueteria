@@ -21,21 +21,20 @@ func AuthM(c *fiber.Ctx) error {
 	token := c.Cookies("_key")
 
 	//Verificar si el token esta almacenado
-	modelToken := models.Token{}
-	db := config.DB.Select("UserID").First(&modelToken, "token = ?", token)
-
+	//modelToken := models.Token{}
+	//db := config.DB.Select("UserID").First(&modelToken, "token = ?", token)
+	queryToken, queryUserID := tokenH.Get(token)
+	fmt.Println("Consulta: ", queryToken, "Consulta 2", queryUserID)
 	// Verificacion
-	if token == "" || !tokenH.Verify(token) || db.RowsAffected == 0 {
+	if token == "" || !tokenH.Verify(queryToken) || queryToken == "" {
 		// Si el token no es válido, responde con un error de autorización
 		return c.JSON(fiber.Map{
 			"status": false,
 			"error":  "No autorizado",
 		})
 	}
-
 	modelUser := models.Users{}
-	config.DB.First(&modelUser, "id = ?", modelToken.UserID)
-	fmt.Println("Usuario enconrado: ", modelUser)
+	config.DB.Select("id", "Role").First(&modelUser, "id = ?", queryUserID)
 	//Almacenar lso datos en la req
 	//tokeData := t.PrivateClaims()
 	c.Locals("userId", modelUser.ID)

@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/google/uuid"
 	"github.com/lestrrat-go/jwx/v2/jwt"
 )
 
@@ -39,13 +38,15 @@ func (AuthC) Login(f *fiber.Ctx) error {
 
 	token := tokenH.Gen(t)
 	//Guardar token
-	tokenSave := models.Token{
-		ID:     uuid.NewString(),
-		UserID: userFind.ID,
-		Token:  token,
-	}
+	tokenH.Save(token, userFind.ID)
 
-	config.DB.Save(&tokenSave)
+	// tokenSave := models.Token{
+	// 	ID:     uuid.NewString(),
+	// 	UserID: userFind.ID,
+	// 	Token:  token,
+	// }
+	//config.DB.Save(&tokenSave)
+
 	cookie := new(fiber.Cookie)
 	cookie.Name = "_key"
 	cookie.Value = token
@@ -64,10 +65,11 @@ func (AuthC) Login(f *fiber.Ctx) error {
 
 func (AuthC) Logout(f *fiber.Ctx) error {
 	//tok := f.Get("key")
+	tokenH := helpers.TokenH{}
 	tok := f.Cookies("_key")
 
-	db := config.DB.Delete(models.Token{}, "token = ?", tok)
-	if db.RowsAffected == 0 {
+	//db := config.DB.Delete(models.Token{}, "token = ?", tok)
+	if tokenH.Remove(tok) {
 		return f.JSON(fiber.Map{
 			"status": false,
 			"msj":    "No se pudo cerrar la sesión",

@@ -1,9 +1,11 @@
 package helpers
 
 import (
+	"Jugueteria/config"
 	"encoding/json"
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/lestrrat-go/jwx/v2/jwa"
 	"github.com/lestrrat-go/jwx/v2/jwk"
 	"github.com/lestrrat-go/jwx/v2/jwt"
@@ -39,4 +41,28 @@ func (TokenH) Verify(token string) bool {
 	} else {
 		return true
 	}
+}
+
+func (TokenH) Save(tok, userID string) bool {
+	sql := `
+        INSERT INTO token (ID,UserID,Token) VALUES (?,?,?)`
+	_, err := config.Slite.Exec(sql, uuid.NewString(), userID, tok)
+	return err != nil
+}
+
+func (TokenH) Remove(tok string) bool {
+	sql := `
+        DELETE FROM token WHERE Token = ?`
+	_, err := config.Slite.Exec(sql, tok)
+	return err != nil
+}
+
+func (TokenH) Get(tok string) (string, string) {
+	sql := `
+        SELECT Token,UserID FROM token WHERE Token = ?`
+	var token string
+	var userID string
+	config.Slite.QueryRow(sql, tok).Scan(&token, &userID)
+
+	return token, userID
 }

@@ -10,7 +10,7 @@ type Articles struct {
 	BoxID       string `gorm:"size:255"`
 	Code        string `gorm:"size:255"`
 	Description string
-	State       int `gorm:"autoIncrement"`
+	State       int `gorm:"default:0"`
 	Stock       int
 	SalePrice   float64
 	Profit      float64

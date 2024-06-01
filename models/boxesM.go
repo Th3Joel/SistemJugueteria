@@ -7,7 +7,7 @@ import (
 type Boxes struct {
 	ID                string `gorm:"primaryKey"`
 	PurchaseID        string `gorm:"size:255"`
-	Code              int    `gorm:"autoIncrement"`
+	Code              string `gorm:"size:255"`
 	Weight            float64
 	ToysQuantity      int
 	Price             float64
