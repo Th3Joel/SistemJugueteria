@@ -34,7 +34,7 @@ func ConnectDB() {
 	// db.AutoMigrate(models.Purchases{})
 	// db.AutoMigrate(models.Sales{})
 	// db.AutoMigrate(models.DetailSale{})
-	//Seed(db)
+	// Seed(db)
 	DB = db
 
 	//base de datos utilizada para los tokens csfr
