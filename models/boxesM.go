@@ -6,7 +6,6 @@ import (
 
 type Boxes struct {
 	ID                string `gorm:"primaryKey"`
-	PurchaseID        string `gorm:"size:255"`
 	Code              string `gorm:"size:255"`
 	Weight            float64
 	ToysQuantity      int
@@ -17,4 +16,5 @@ type Boxes struct {
 
 	Articles      []Articles        `gorm:"foreignKey:BoxID"`
 	PriceCategory []PriceCategories `gorm:"foreignKey:BoxID"`
+	Purchases     []DetailPurchase  `gorm:"foreignKey:BoxID"`
 }

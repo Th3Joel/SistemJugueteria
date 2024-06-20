@@ -16,7 +16,6 @@ import (
 var port = os.Getenv("PORT")
 
 func main() {
-	//config.GetStruct()
 	config.ConnectDB()
 	app := fiber.New(fiber.Config{
 		Prefork: false,

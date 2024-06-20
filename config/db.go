@@ -1,8 +1,10 @@
 package config
 
 import (
+	"Jugueteria/models"
 	"database/sql"
 	"log"
+	"os"
 
 	_ "github.com/mattn/go-sqlite3"
 	"gorm.io/driver/mysql"
@@ -23,18 +25,21 @@ func ConnectDB() {
 	}
 
 	log.Println("Conectado a la base de datos")
-	// db.AutoMigrate(models.Company{})
-	// db.AutoMigrate(models.Users{})
-	// db.AutoMigrate(models.Costumers{})
-	// db.AutoMigrate(models.Suppliers{})
-	// db.AutoMigrate(models.PriceCategories{})
-	// db.AutoMigrate(models.Articles{})
-	// db.AutoMigrate(models.Categories{})
-	// db.AutoMigrate(models.Boxes{})
-	// db.AutoMigrate(models.Purchases{})
-	// db.AutoMigrate(models.Sales{})
-	// db.AutoMigrate(models.DetailSale{})
-	// Seed(db)
+	db.AutoMigrate(models.Company{})
+	db.AutoMigrate(models.Users{})
+	db.AutoMigrate(models.Costumers{})
+	db.AutoMigrate(models.Suppliers{})
+	db.AutoMigrate(models.PriceCategories{})
+	db.AutoMigrate(models.Articles{})
+	db.AutoMigrate(models.Categories{})
+	db.AutoMigrate(models.Boxes{})
+	db.AutoMigrate(models.Purchases{})
+	db.AutoMigrate(models.DetailPurchase{})
+	db.AutoMigrate(models.Sales{})
+	db.AutoMigrate(models.DetailSale{})
+	if len(os.Args) > 1 && os.Args[1] == "seed" {
+		Seed(db)
+	}
 	DB = db
 
 	//base de datos utilizada para los tokens csfr
