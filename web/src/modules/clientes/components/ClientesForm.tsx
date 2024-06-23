@@ -8,7 +8,7 @@ import {
 } from "@mui/icons-material";
 import { Button, InputAdornment, TextField } from "@mui/material";
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface IProps {
   isEdit?: boolean;
@@ -23,16 +23,22 @@ interface IFormData {
 }
 
 export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
-  const { post, errors,loading, data, get, inputChange } = useForm<IFormData>({
+  const { post, errors, loading, data, get, inputChange } = useForm<IFormData>({
     name: "",
     phone: "",
     email: "",
     address: "",
   });
 
+  const navigate = useNavigate();
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    post(isEdit ? `/clientes/${id}` : "/clientes", e, isEdit);
+    post(isEdit ? `/clientes/${id}` : "/clientes", e, isEdit).then((res) => {
+      if (res) {
+        navigate("/clientes");
+      }
+    });
   };
 
   useEffect(() => {
@@ -127,7 +133,7 @@ export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
             </Button>
           </Link>
           <Button type="submit" disabled={loading} variant="contained">
-           {loading ? <LoaderBtn/> : "Guardar"} 
+            {loading ? <LoaderBtn /> : "Guardar"}
           </Button>
         </div>
       </form>

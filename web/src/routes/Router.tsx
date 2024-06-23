@@ -6,6 +6,7 @@ import { AddClientes } from "@/pages/clientes/AddClientes";
 import { Clientes } from "@/pages/clientes/Clientes";
 import { EditClientes } from "@/pages/clientes/EditClientes";
 import { Dashboard } from "@/pages/home/Dashboard";
+import { Setting } from "@/pages/settings/Setting";
 import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 export const Router = () => {
@@ -26,6 +27,8 @@ export const Router = () => {
               <Route path="/clientes" element={<Clientes />}/>
               <Route path="/clientes/editar/:id" element={<EditClientes/>}/>
               <Route path="/clientes/agregar" element={<AddClientes/>}/>
+
+              <Route path="/configuracion" element={<Setting />} />
           </Route>
           <Route path="/auth/login" element={<Login />} />
           <Route path="*" element={<div>Not fount</div>} />

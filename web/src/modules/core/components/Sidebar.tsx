@@ -3,13 +3,13 @@ import { SidebarState } from "@/modules/core/globalStates/sidebar-state";
 import logoImg from "@/assets/logo.jpg";
 import userImg from "@/assets/user.png";
 import { Link, useLocation } from "react-router-dom";
-import { Home, People } from "@mui/icons-material";
+import { Home, People, Settings } from "@mui/icons-material";
 import { AuthState } from "../globalStates/auth-state";
 
 export const Sidebar = () => {
-  const {user} = AuthState();
-  const { pathname } = useLocation();
-  let oo = false;
+  const { user } = AuthState();
+  const { pathname} = useLocation();
+  let oo = true;
   const { estado, inc } = SidebarState();
   useEffect(() => {
     function verificar() {
@@ -22,8 +22,8 @@ export const Sidebar = () => {
         oo = true;
       }
     }
+    verificar();
     window.addEventListener("resize", verificar);
-
     //Se remueve cuando se desmonta
     return () => {
       window.removeEventListener("resize", verificar);
@@ -80,6 +80,17 @@ export const Sidebar = () => {
           <Link to="/clientes" className="flex">
             <People />
             <p className="pl-2">Clientes</p>
+          </Link>
+        </div>
+
+        <div
+          className={`border duration-300 border-[#0071BC] ${
+            pathname.startsWith("/configuracion") && "bg-[#E261B1] border-[#E261B1]"
+          } rounded-lg px-3 py-2 my-3`}
+        >
+          <Link to="/configuracion" className="flex">
+            <Settings />
+            <p className="pl-2">Configuración</p>
           </Link>
         </div>
       </div>

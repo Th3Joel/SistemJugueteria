@@ -22,16 +22,17 @@ export const useForm = <T>(object:IData<T>) => {
     setData({...data, [name]: value });
   };
 
-  const post = async (url: string, f: React.FormEvent<HTMLFormElement>,isEdit?:boolean) => {
+  const post = async (url: string, f: React.FormEvent<HTMLFormElement>,isEdit?:boolean): Promise<boolean> => {
     const form = new FormData(f.target as HTMLFormElement);
     setLoading(true);
     const res = await useFetch<IUseForm<T>>(url,isEdit ? "PUT" : "POST", form, true);
     setLoading(false);
     if (res.status) {
       Alert("success", res.msj);
-      return;
+      return true;
     }
     setErrors(res.errors);
+    return false;
   };
 
   const get = async (url:string) => {
