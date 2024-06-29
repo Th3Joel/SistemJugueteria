@@ -11,7 +11,7 @@ import (
 
 func UserR(f fiber.Router) {
 	userC := controllers.UserC{}
-	r := f.Group("/users", mdd.AuthM)
+	r := f.Group("settings/users", mdd.AuthM)
 
 	//Mostrar usuario logeado
 	r.Get("/user", userC.Show)

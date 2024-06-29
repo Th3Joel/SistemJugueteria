@@ -11,6 +11,7 @@ table {
     border: 1px solid rgba(71, 68, 68, 0.322);
     border-collapse: collapse;
     padding: 2px 7px 2px 7px;
+    text-align: center;
   }
 
   /* Animations */

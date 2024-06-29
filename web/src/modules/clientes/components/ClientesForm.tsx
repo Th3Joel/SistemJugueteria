@@ -6,9 +6,10 @@ import {
   EmailRounded,
   LocalPhoneRounded,
 } from "@mui/icons-material";
-import { Button, InputAdornment, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import {InputText} from "@/modules/core/components/InputText.tsx";
 
 interface IProps {
   isEdit?: boolean;
@@ -48,84 +49,53 @@ export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
     } else {
       window.document.title = "Crear Cliente";
     }
+
   }, []);
   return (
-    <div className="w-[300px]">
+    <div className="w-[340px] shadow-lg rounded-lg p-3">
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <TextField
-          label="Nombre"
-          name="name"
-          value={data?.name}
-          placeholder="               (requerido)"
-          variant="filled"
-          onChange={inputChange}
-          error={!!errors?.name}
-          helperText={errors?.name}
-          size="small"
-          className="w-full"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <DriveFileRenameOutlineRounded />
-              </InputAdornment>
-            ),
-          }}
+
+        <InputText
+            label="Nombre"
+            name="name"
+            value={data?.name}
+            isRequired={true}
+            onChange={inputChange}
+            error={!!errors?.name}
+            helperText={errors?.name}
+            icon={<DriveFileRenameOutlineRounded/>}
+        />
+        <InputText
+            label="Celular"
+            name="phone"
+            value={data?.phone}
+            onChange={inputChange}
+            error={!!errors?.phone}
+            helperText={errors?.phone}
+            icon={<LocalPhoneRounded />}
         />
 
-        <TextField
-          label="Celular"
-          onChange={inputChange}
-          variant="filled"
-          name="phone"
-          value={data?.phone}
-          error={!!errors?.phone}
-          helperText={errors?.phone}
-          size="small"
-          className="w-full"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <LocalPhoneRounded />
-              </InputAdornment>
-            ),
-          }}
+        <InputText
+            label="Correo electrónico"
+            name="email"
+            value={data?.email}
+            onChange={inputChange}
+            error={!!errors?.email}
+            helperText={errors?.email}
+            type="email"
+            icon={<EmailRounded />}
         />
-        <TextField
-          label="Correo electrónico"
-          variant="filled"
-          value={data?.email}
-          size="small"
-          onChange={inputChange}
-          name="email"
-          error={!!errors?.email}
-          helperText={errors?.email}
-          className="w-full"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <EmailRounded />
-              </InputAdornment>
-            ),
-          }}
+
+        <InputText
+            label="Dirección"
+            name="address"
+            value={data?.address}
+            onChange={inputChange}
+            error={!!errors?.address}
+            helperText={errors?.address}
+            icon={<BusinessRounded />}
         />
-        <TextField
-          label="Dirección"
-          variant="filled"
-          size="small"
-          value={data?.address}
-          onChange={inputChange}
-          name="address"
-          error={!!errors?.address}
-          helperText={errors?.address}
-          className="w-full"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <BusinessRounded />
-              </InputAdornment>
-            ),
-          }}
-        />
+
         <div className="flex justify-between">
           <Link to="/clientes">
             <Button variant="contained" type="button">

@@ -7,8 +7,12 @@ import { Clientes } from "@/pages/clientes/Clientes";
 import { EditClientes } from "@/pages/clientes/EditClientes";
 import { Dashboard } from "@/pages/home/Dashboard";
 import { Setting } from "@/pages/settings/Setting";
+import { Company } from "@/pages/settings/tabs/Company";
+import { Profile } from "@/pages/settings/tabs/Profile";
+import { Users } from "@/pages/settings/tabs/users/Users";
 import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
+import {Maintenance} from "@/pages/settings/tabs/maintenance.tsx";
 export const Router = () => {
   const auth = AuthState();
 
@@ -16,19 +20,25 @@ export const Router = () => {
     auth.verify();
   }, []);
 
-  return (<>
-   
+  return (
+    <>
       {auth.loading ? (
         <LoaderSplash />
       ) : (
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Dashboard />} />
-              <Route path="/clientes" element={<Clientes />}/>
-              <Route path="/clientes/editar/:id" element={<EditClientes/>}/>
-              <Route path="/clientes/agregar" element={<AddClientes/>}/>
+            <Route path="/clientes" element={<Clientes />} />
+            <Route path="/clientes/editar/:id" element={<EditClientes />} />
+            <Route path="/clientes/agregar" element={<AddClientes />} />
 
-              <Route path="/configuracion" element={<Setting />} />
+            <Route path="/settings" element={<Setting />}>
+              <Route index element={<Users />} />
+              <Route path="users" element={<Users />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="company" element={<Company />} />
+              <Route path="maintenance" element={<Maintenance/>} />
+            </Route>
           </Route>
           <Route path="/auth/login" element={<Login />} />
           <Route path="*" element={<div>Not fount</div>} />

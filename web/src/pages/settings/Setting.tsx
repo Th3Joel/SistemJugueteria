@@ -1,9 +1,7 @@
 import { Card } from "@/modules/core/components/Card";
 import { Box, Tab, Tabs } from "@mui/material";
-import { useState } from "react";
-import { Users } from "./tabs/Users";
-import { Profile } from "./tabs/Profile";
-import { Company } from "./tabs/Company";
+import { useEffect, useState } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -22,49 +20,71 @@ const CustomTabPanel = (props: TabPanelProps) => {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: 1 }}>{children}</Box>}
+      {value === index && (
+        <Box sx={{ p: 1 }}>
+          <Outlet />
+        </Box>
+      )}
     </div>
   );
 };
 
-const a11yProps = (index: number) => {
+const a11yProps = (index: number, event: (id: number) => void) => {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
+    onClick: () => event(index),
   };
 };
 
 export const Setting = () => {
   const [value, setValue] = useState(0);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+  const nv = (i: number) => {
+    i == 0 && navigate("/settings/users");
+    i == 1 && navigate("/settings/profile");
+    i == 2 && navigate("/settings/company");
+    i == 3 && navigate("/settings/maintenance");
   };
 
+
+  useEffect(() => {
+    switch (location.pathname) {
+      case "/settings":
+        setValue(0);
+        break;
+      case "/settings/users":
+        setValue(0);
+        break;
+      case "/settings/profile":
+        setValue(1);
+        break;
+      case "/settings/company":
+        setValue(2);
+        break;
+      case "/settings/maintenance":
+        setValue(3);
+        break;
+    }
+  }, [location]);
+
+  
+
   return (
-    <Card>
-      <Box sx={{ width: "100%" }}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-          >
-            <Tab label="Usuarios" {...a11yProps(0)} />
-            <Tab label="Perfil" {...a11yProps(1)} />
-            <Tab label="Empresa" {...a11yProps(2)} />
-          </Tabs>
-        </Box>
-        <CustomTabPanel value={value} index={0}>
-          <Users />
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}>
-          <Profile />
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={2}>
-          <Company />
-        </CustomTabPanel>
-      </Box>
-    </Card>
+    <div>
+      <div className="px-5 -mb-3 mt-2">
+        <Tabs value={value} aria-label="basic tabs example" variant="scrollable" scrollButtons="auto">
+          <Tab label="Usuarios" {...a11yProps(0, nv)} />
+          <Tab label="Perfil" {...a11yProps(1, nv)} />
+          <Tab label="Empresa" {...a11yProps(2, nv)} />
+          <Tab label="Mantenimiento" {...a11yProps(3,nv)} />
+        </Tabs>
+      </div>
+      <Card>
+        <CustomTabPanel value={value} index={value} />
+      </Card>
+    </div>
   );
 };

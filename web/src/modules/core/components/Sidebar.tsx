@@ -8,25 +8,23 @@ import { AuthState } from "../globalStates/auth-state";
 
 export const Sidebar = () => {
   const { user } = AuthState();
-  const { pathname} = useLocation();
-  let oo = true;
+  const { pathname } = useLocation();
   const { estado, inc } = SidebarState();
-  useEffect(() => {
-    function verificar() {
-      if (innerWidth < 800 && oo) {
-        inc(true);
-        oo = false;
-      }
-      if (innerWidth > 800 && !oo) {
-        inc(false);
-        oo = true;
-      }
+  const mq = window.matchMedia("(max-width: 720px)");
+
+  function verified(est:boolean) {
+    if (est) {
+      inc(true);
+    } else {
+      inc(false);
     }
-    verificar();
-    window.addEventListener("resize", verificar);
+  }
+  useEffect(() => {
+    mq.addEventListener("change", (e)=>verified(e.matches));
+    verified(mq.matches);
     //Se remueve cuando se desmonta
     return () => {
-      window.removeEventListener("resize", verificar);
+      mq.removeEventListener("change",(e)=>verified(e.matches));
     };
   }, []);
   return (
@@ -85,10 +83,11 @@ export const Sidebar = () => {
 
         <div
           className={`border duration-300 border-[#0071BC] ${
-            pathname.startsWith("/configuracion") && "bg-[#E261B1] border-[#E261B1]"
+            pathname.startsWith("/settings") &&
+            "bg-[#E261B1] border-[#E261B1]"
           } rounded-lg px-3 py-2 my-3`}
         >
-          <Link to="/configuracion" className="flex">
+          <Link to="/settings" className="flex">
             <Settings />
             <p className="pl-2">Configuración</p>
           </Link>

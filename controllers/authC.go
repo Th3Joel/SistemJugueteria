@@ -52,7 +52,7 @@ func (AuthC) Login(f *fiber.Ctx) error {
 	cookie.Value = token
 	cookie.Expires = time.Now().Add(time.Hour * 24)
 	cookie.HTTPOnly = true
-	cookie.Secure = true
+	//cookie.Secure = true
 	cookie.SameSite = "Lax"
 	f.Cookie(cookie)
 

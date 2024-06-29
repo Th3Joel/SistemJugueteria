@@ -22,12 +22,14 @@ func main() {
 		AppName: "Jugueteria",
 	})
 
-	defer app.Shutdown()
+	defer func(app *fiber.App) {
+		_ = app.Shutdown()
+	}(app)
 
 	app.Use(logger.New())
 
 	app.Use(cors.New(cors.Config{
-		AllowOrigins:     "http://localhost:5173,http://localhost:4173",
+		AllowOrigins:     "http://localhost:5173,http://192.168.1.3:5173",
 		AllowCredentials: true,
 		AllowMethods:     "GET,POST,PUT,DELETE",
 	}))
@@ -42,7 +44,6 @@ func main() {
 	routes.ProveedorR(api)
 	//ClienteR
 	routes.ClienteR(api)
-
 	//servir archivos staticos dentro del binario
 	app.Get("/*", filesystem.New(filesystem.Config{
 		Root:         web.Dist(),
@@ -50,5 +51,8 @@ func main() {
 		NotFoundFile: "index.html",
 	}))
 
-	app.Listen(":" + port)
+	err := app.Listen(":" + port)
+	if err != nil {
+		println("Error al iniciar el servidor", err.Error())
+	}
 }

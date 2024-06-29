@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useFetch } from "./useFetch";
-import Alert from "../utils/alert";
+import { toast } from "sonner";
 
 type IErrors<T> = T;
 type IData<T> = T;
@@ -28,7 +28,7 @@ export const useForm = <T>(object:IData<T>) => {
     const res = await useFetch<IUseForm<T>>(url,isEdit ? "PUT" : "POST", form, true);
     setLoading(false);
     if (res.status) {
-      Alert("success", res.msj);
+      toast.success(res.msj);
       return true;
     }
     setErrors(res.errors);
@@ -43,7 +43,7 @@ export const useForm = <T>(object:IData<T>) => {
       setData(res.find);
       return;
     }
-    Alert("error",res.msj)
+    toast.error(res.msj);
   };
 
   return {

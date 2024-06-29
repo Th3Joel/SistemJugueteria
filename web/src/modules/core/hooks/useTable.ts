@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useFetch } from "./useFetch";
-import Alert from "../utils/alert";
+import { toast } from "sonner";
 
 interface ITableResponse<T>{
   status: boolean;
@@ -38,7 +38,7 @@ export const useTable = <T>() => {
     setLoading(true)
     const res = await useFetch<ITableResponse<T>>(url,"DELETE")
     if(res.status){
-      Alert("success",res.msj)
+      toast.success(res.msj)
     }
   }
 

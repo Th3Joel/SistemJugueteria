@@ -12,14 +12,10 @@ interface ICliente {
   phone:string
   email:string
   address:string
-
 }
-
 export const Clientes = () => {
   window.document.title = "Clientes"
 const hook = useTable<ICliente>()
-
-
   return (
     <Card>
       <Table
