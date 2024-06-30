@@ -1,6 +1,7 @@
 import dbImage from "@/assets/db.png";
 import {Button} from "@mui/material";
 export const Maintenance = () =>{
+    window.document.title = "Mantenimiento";
     return(
         <div className="flex justify-center m-3">
             <div className="w-[350px] flex flex-col gap-3 p-2 items-center shadow-md rounded-lg">

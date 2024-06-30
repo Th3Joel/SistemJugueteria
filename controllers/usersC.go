@@ -46,15 +46,16 @@ func (UserC) All(c *fiber.Ctx) error {
 	//Se escribe & para hacer una referencia al espacio de memoria
 	//en resumen permite modificar el original y no crear una copia
 	q := new(QueriesParams)
-	c.QueryParser(q)
+	_ = c.QueryParser(q)
 
 	skip := (q.Page - 1) * q.PageSize
 	take := q.PageSize
-	config.DB.Offset(skip).Limit(take).Find(&users)
+	config.DB.Offset(skip).Limit(take).Find(&users, "id != ?", c.Locals("userId").(string))
 	count := len(users)
 
 	//Rellena la vista
-	data := []UserC{}
+	var data []UserC
+	data = []UserC{}
 	for _, user := range users {
 		data = append(data, UserC{
 			ID:      user.ID,
@@ -123,18 +124,21 @@ func (UserC) Show(c *fiber.Ctx) error {
 }
 
 func (u UserC) Save(c *fiber.Ctx) error {
+
 	passwdH := helpers.PasswdH{}
 	user := UserC{}
 
 	//Pasar el body a la estructura
-	c.BodyParser(&user)
+	_ = c.BodyParser(&user)
+
 	u.trim(&user)
+
 	antePass := user.Password
 
 	user.ID = uuid.NewString()
 	user.Password = passwdH.Hash(antePass)
 
-	config.DB.Create(models.Users{
+	config.DB.Create(&models.Users{
 		ID:       user.ID,
 		Email:    user.Email,
 		Name:     user.Name,
@@ -157,24 +161,34 @@ func (u UserC) Save(c *fiber.Ctx) error {
 	})
 }
 
-// El * es para tipos y autocompletado,
+// UpdateId El * es para tipos y autocompletado,
 // y el & es para poder modificar el espacio
 //
-//	de memoria o el datos del espacio de memoria
+//	de memoria o el dato del espacio de memoria
 func (u UserC) UpdateId(c *fiber.Ctx) error {
-
+	passwdH := helpers.PasswdH{}
+	idCurrent := c.Locals("userId").(string)
 	id := c.Params("id")
 	userBody := UserC{}
 
 	userFound := models.Users{ID: id}
-	c.BodyParser(&userBody)
+	_ = c.BodyParser(&userBody)
 	u.trim(&userBody) //Eliminar los espacios en blanco
-	userBody.Password = ""
+	if userBody.Password != "" {
+		userBody.Password = passwdH.Hash(userBody.Password)
+	}
+	if id == idCurrent {
+		return c.JSON(Response{
+			Status: false,
+			Msj:    "No puedes editar tu propio usuario",
+		})
+	}
 	sql := config.DB.First(&userFound)
+
 	if sql.RowsAffected == 0 {
-		return c.JSON(fiber.Map{
-			"status": false,
-			"msj":    "Usuario no encontrado",
+		return c.JSON(Response{
+			Status: false,
+			Msj:    "Usuario no encontrado",
 		})
 	}
 
@@ -186,33 +200,29 @@ func (u UserC) UpdateId(c *fiber.Ctx) error {
 	})
 }
 func (u UserC) Update(c *fiber.Ctx) error {
-
+	passwdH := helpers.PasswdH{}
 	id := c.Locals("userId").(string)
 	userBody := UserC{}
 
 	userFound := models.Users{ID: id}
-	c.BodyParser(&userBody)
+	_ = c.BodyParser(&userBody)
 	u.trim(&userBody) //Eliminar los espacios en blanco
-	userBody.Password = ""
+	if userBody.Password != "" {
+		userBody.Password = passwdH.Hash(userBody.Password)
+	}
 	sql := config.DB.First(&userFound)
 	if sql.RowsAffected == 0 {
-		return c.JSON(fiber.Map{
-			"status": false,
-			"msj":    "Usuario no encontrado",
+		return c.JSON(Response{
+			Status: false,
+			Msj:    "Usuario no encontrado",
 		})
 	}
 
-	sql2 := config.DB.Model(userFound).Updates(userBody)
-	if sql2.RowsAffected == 0 {
-		return c.JSON(fiber.Map{
-			"status": false,
-			"msj":    "Ha ocurrido un error",
-		})
-	}
+	config.DB.Model(userFound).Updates(userBody)
 
 	return c.JSON(Response{
 		Status: true,
-		Msj:    "Usuario actualizado correctamente",
+		Msj:    "Perfil actualizado",
 	})
 }
 
@@ -221,15 +231,15 @@ func (UserC) Delete(c *fiber.Ctx) error {
 	user := models.Users{ID: id}
 	sql := config.DB.Delete(user)
 	if sql.RowsAffected == 0 {
-		return c.JSON(fiber.Map{
-			"status": false,
-			"msj":    "Usuario no encontrado",
+		return c.JSON(Response{
+			Status: false,
+			Msj:    "Usuario no encontrado",
 		})
 	}
 
-	return c.JSON(fiber.Map{
-		"status": true,
-		"msj":    "Usuario eliminado",
+	return c.JSON(Response{
+		Status: true,
+		Msj:    "Usuario no eliminado",
 	})
 }
 

@@ -1,6 +1,10 @@
+import {UsersForm} from "@/modules/settings/components/UsersForm.tsx";
 
 export const AddUsers = () => {
-  return (
-    <div>AddUsers</div>
-  )
+    window.document.title = "Crear Usuario";
+    return (
+        <div className="flex justify-center">
+            <UsersForm/>
+        </div>
+    )
 }

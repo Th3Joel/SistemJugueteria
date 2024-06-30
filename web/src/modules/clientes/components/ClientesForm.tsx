@@ -45,9 +45,6 @@ export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
   useEffect(() => {
     if (isEdit) {
       get("/clientes/" + id);
-      window.document.title = "Editar Cliente";
-    } else {
-      window.document.title = "Crear Cliente";
     }
 
   }, []);

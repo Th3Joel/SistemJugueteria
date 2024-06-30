@@ -42,7 +42,7 @@ func (ClienteC) All(c *fiber.Ctx) error {
 	//Se escribe & para hacer una referencia al espacio de memoria
 	//en resumen permite modificar el original y no crear una copia
 	q := new(QueriesParams)
-	c.QueryParser(q)
+	_ = c.QueryParser(q)
 
 	skip := (q.Page - 1) * q.PageSize
 	take := q.PageSize
@@ -56,7 +56,8 @@ func (ClienteC) All(c *fiber.Ctx) error {
 	count := len(costumers)
 
 	//Rellena la vista
-	data := []ClienteC{}
+	var data []ClienteC
+	data = []ClienteC{}
 	for _, costumer := range costumers {
 		data = append(data, ClienteC{
 			ID:      costumer.ID,
@@ -107,7 +108,7 @@ func (p ClienteC) Save(c *fiber.Ctx) error {
 	costumer := ClienteC{}
 
 	//Pasar el body a la estructura
-	c.BodyParser(&costumer)
+	_ = c.BodyParser(&costumer)
 	p.trim(&costumer)
 
 	costumer.ID = uuid.NewString()
@@ -142,7 +143,7 @@ func (p ClienteC) UpdateId(c *fiber.Ctx) error {
 	costumerBody := ClienteC{}
 
 	costumerFound := models.Costumers{ID: id}
-	c.BodyParser(&costumerBody)
+	_ = c.BodyParser(&costumerBody)
 	p.trim(&costumerBody) //Eliminar los espacios en blanco
 	sql := config.DB.First(&costumerFound)
 	if sql.RowsAffected == 0 {

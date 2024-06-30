@@ -27,11 +27,11 @@ func UserR(f fiber.Router) {
 		mdd.ValM(val.MsjUserVal, val.UserPost{}, models.Users{}),
 		userC.Save,
 	)
-	//Actualizar usuario por id
+	//Actualizar usuario registrado
 	admin.Put("/",
 		mdd.ValM(val.MsjUserVal, val.UserPut{}, models.Users{}),
 		userC.Update)
-	//Actualizar usuario logeado
+	//Actualizar usuario por id
 	admin.Put("/:id",
 		mdd.ValM(val.MsjUserVal, val.UserPut{}, models.Users{}),
 		userC.UpdateId)

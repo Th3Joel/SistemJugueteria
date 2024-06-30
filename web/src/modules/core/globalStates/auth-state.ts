@@ -11,7 +11,7 @@ interface IAuth {
   estado: boolean;
   loading: boolean;
   user:IUser;
-  verify(): Promise<void>;
+  verify(): void;
 }
 
 export const AuthState = create<IAuth>((set) => ({

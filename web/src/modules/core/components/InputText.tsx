@@ -1,4 +1,13 @@
-import {FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, TextFieldProps} from "@mui/material";
+import {
+    FormControl,
+    FormHelperText,
+    InputLabel,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    TextField,
+    TextFieldProps
+} from "@mui/material";
 import React, {ReactElement, useState} from "react";
 
 
@@ -42,7 +51,7 @@ export const InputText: React.FC<InputProps> = ({
     });
     const InputSelect = () => {
         return (
-            <FormControl fullWidth variant="filled" size="small">
+            <FormControl fullWidth variant="filled" size="small" error={error}>
                 <InputLabel id="demo-simple-select-filled-label">
                     {label}
                 </InputLabel>
@@ -50,6 +59,7 @@ export const InputText: React.FC<InputProps> = ({
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
                     value={selected}
+                    name={name}
                     onChange={handleSelectChange}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
@@ -59,8 +69,8 @@ export const InputText: React.FC<InputProps> = ({
                             {data.value}
                         </MenuItem>
                     ))}
-
                 </Select>
+                {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
         );
     }

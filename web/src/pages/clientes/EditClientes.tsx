@@ -8,6 +8,7 @@ interface Params{
 }
 export const EditClientes:React.FC = () => {
     const {id} = useParams<Params>();
+  window.document.title = "Editar Cliente";
   return (
     <Card>
       <div className="flex justify-center m-5">

@@ -28,7 +28,7 @@ export const Users = () => {
             <td>{d.role}</td>
             <td>
               <div className="flex gap-1 justify-center">
-                <Link to={`settings/users/user/${d.id}`}>
+                <Link to={`/settings/users/editar/${d.id}`}>
                   <IconButton color="success">
                     <EditRounded />
                   </IconButton>

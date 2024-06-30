@@ -45,44 +45,21 @@ func AuthM(c *fiber.Ctx) error {
 
 func ValM[T any, R any](valMsj map[string]string, data T, model R) func(*fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
-
-		validate := validator.New()
+		//Crea un puntero a la estructura pasada como argumento
 		v := &data
-		validate.RegisterValidation("isRepeat", func(fl validator.FieldLevel) bool {
-			var id string
-			if c.Params("id") != "" {
-				id = c.Params("id")
-			} else {
-				id = c.Locals("userId").(string)
-			}
-			return val.Repeat(fl, id, model)
-		})
 
-		/*La variable v se inicializa utilizando reflexión.
-		Crea una nueva instancia del tipo del parámetro data
-		utilizando reflect.New(reflect.TypeOf(data)).Interface().
-		 Esto permite que el middleware funcione con cualquier
-		 estructura de datos pasada.*/
-
+		// Parsea el body
+		_ = c.BodyParser(v)
+		//Borra los espacios en blanco
 		TrimSpaces(v)
-		c.BodyParser(v)
-		//return c.JSON(v)
-		if err := validate.Struct(v); err != nil {
-			// Crea un mapa para almacenar los mensajes de error de validación
-			errorMsj := make(map[string]string)
-			for _, errVal := range err.(validator.ValidationErrors) {
-				// Crea la clave en el formato "campo.regla"
-				key := fmt.Sprintf("%s.%s", errVal.StructField(), errVal.Tag())
+		validate := validator.New()
+		// Registra la validaciones perzonalizadas
+		_ = validate.RegisterValidation("isRepeat", val.IsRepeat(model, c))
 
-				// Verifica si hay un mensaje personalizado para esa clave
-				if message, ok := valMsj[key]; ok {
-					// Añade el mensaje de error personalizado al mapa de mensajes de error
-					errorMsj[strings.ToLower(errVal.Field())] = message
-				} else {
-					// Si no hay un mensaje personalizado, añade un mensaje genérico
-					errorMsj[strings.ToLower(errVal.Field())] = fmt.Sprintf("%s no es válido", errVal.Field())
-				}
-			}
+		_ = validate.RegisterValidation("confirmPasswd", val.ConfirmPassword(v))
+
+		is, errorMsj := helpers.ParseMsj(v, validate, valMsj)
+		if is {
 			return c.JSON(fiber.Map{
 				"status": false,
 				"errors": errorMsj,

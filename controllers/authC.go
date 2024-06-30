@@ -23,7 +23,7 @@ func (AuthC) Login(f *fiber.Ctx) error {
 
 	userFind := models.Users{}
 
-	f.BodyParser(&authBody)
+	_ = f.BodyParser(&authBody)
 	db := config.DB.Select("id", "email", "password").First(&userFind, "email = ?", authBody.Email)
 	if !passwdH.Verify(authBody.Password, userFind.Password) || db.RowsAffected == 0 {
 		return f.JSON(fiber.Map{
@@ -33,8 +33,8 @@ func (AuthC) Login(f *fiber.Ctx) error {
 	}
 
 	t := jwt.New()
-	t.Set("id", userFind.ID)
-	t.Set("exp", time.Now().Add(time.Hour*120).Unix())
+	_ = t.Set("id", userFind.ID)
+	_ = t.Set("exp", time.Now().Add(time.Hour*120).Unix())
 
 	token := tokenH.Gen(t)
 	//Guardar token
