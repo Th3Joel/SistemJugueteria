@@ -4,8 +4,8 @@ import (
 	"Jugueteria/config"
 	"Jugueteria/helpers"
 	"Jugueteria/models"
+	"Jugueteria/types"
 	val "Jugueteria/validation"
-	"fmt"
 	"reflect"
 	"strings"
 	"time"
@@ -24,17 +24,17 @@ func AuthM(c *fiber.Ctx) error {
 	//modelToken := models.Token{}
 	//db := config.DB.Select("UserID").First(&modelToken, "token = ?", token)
 	queryToken, queryUserID := tokenH.Get(token)
-	fmt.Println("Consulta: ", queryToken, "Consulta 2", queryUserID)
+	var modelUser models.Users
+	config.DB.Select("id", "Role").First(&modelUser, "id = ?", queryUserID)
 	// Verificacion
-	if token == "" || !tokenH.Verify(queryToken) || queryToken == "" {
+	if token == "" || !tokenH.Verify(queryToken) || queryToken == "" || modelUser.ID == "" {
 		// Si el token no es válido, responde con un error de autorización
-		return c.JSON(fiber.Map{
-			"status": false,
-			"error":  "No autorizado",
+		return c.JSON(types.Response{
+			Status: false,
+			Msj:    "No autorizado",
 		})
 	}
-	modelUser := models.Users{}
-	config.DB.Select("id", "Role").First(&modelUser, "id = ?", queryUserID)
+
 	//Almacenar lso datos en la req
 	//tokeData := t.PrivateClaims()
 	c.Locals("userId", modelUser.ID)
@@ -44,6 +44,7 @@ func AuthM(c *fiber.Ctx) error {
 }
 
 func ValM[T any, R any](valMsj map[string]string, data T, model R) func(*fiber.Ctx) error {
+
 	return func(c *fiber.Ctx) error {
 		//Crea un puntero a la estructura pasada como argumento
 		v := &data
@@ -57,6 +58,7 @@ func ValM[T any, R any](valMsj map[string]string, data T, model R) func(*fiber.C
 		_ = validate.RegisterValidation("isRepeat", val.IsRepeat(model, c))
 
 		_ = validate.RegisterValidation("confirmPasswd", val.ConfirmPassword(v))
+		_ = validate.RegisterValidation("omitCustom", val.OmitCustom(v))
 
 		is, errorMsj := helpers.ParseMsj(v, validate, valMsj)
 		if is {
@@ -81,9 +83,9 @@ func RoleM(roles []string) func(*fiber.Ctx) error {
 		if role == "admin" {
 			return c.Next()
 		}
-		return c.JSON(fiber.Map{
-			"status": false,
-			"msj":    "No tiene permisos",
+		return c.JSON(types.Response{
+			Status: false,
+			Msj:    "No tiene permisos",
 		})
 	}
 }
@@ -116,9 +118,9 @@ func Csrf(f *fiber.Ctx) error {
 	})
 	//Valida en token csrf
 	if !helpers.Csrf.Verify([]byte(coo), []byte(t)) || exp < time.Now().Unix() {
-		return f.JSON(fiber.Map{
-			"status": false,
-			"msj":    "Solicitud expirada",
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "Solicitud expirada",
 		})
 	}
 

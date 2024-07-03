@@ -29,9 +29,11 @@ export const useForm = <T>(object:IData<T>) => {
       setLoading(false);
       if (res.status) {
         toast.success(res.msj);
+        setErrors(undefined);
         return true;
       }
       setErrors(res.errors);
+        toast.error(res.msj);
       return false;
     };
 

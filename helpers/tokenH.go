@@ -17,7 +17,7 @@ var secret []byte = []byte("ksnbkajgrkyg7a874ylha")
 
 func (TokenH) Gen(t jwt.Token) string {
 	key, _ := jwk.FromRaw(secret)
-	key.Set(jwk.AlgorithmKey, jwa.HS256)
+	_ = key.Set(jwk.AlgorithmKey, jwa.HS256)
 	sign, err := jwt.Sign(t, jwt.WithKey(jwa.HS256, key))
 	if err != nil {
 		fmt.Printf("failed to sign token: %s\n", err)
@@ -62,7 +62,7 @@ func (TokenH) Get(tok string) (string, string) {
         SELECT Token,UserID FROM token WHERE Token = ?`
 	var token string
 	var userID string
-	config.Slite.QueryRow(sql, tok).Scan(&token, &userID)
+	_ = config.Slite.QueryRow(sql, tok).Scan(&token, &userID)
 
 	return token, userID
 }

@@ -1,10 +1,11 @@
 package models
 
 import (
-	"time"
+	"gorm.io/gorm"
 )
 
 type Articles struct {
+	gorm.Model
 	ID          string `gorm:"primaryKey"`
 	CategoryID  string `gorm:"size:255"`
 	BoxID       string `gorm:"size:255"`
@@ -14,8 +15,8 @@ type Articles struct {
 	Stock       int
 	SalePrice   float64
 	Profit      float64
-	CreatedAt   time.Time
-	UpdateAt    time.Time `gorm:"autoUpdateTime"`
+	//CreatedAt   time.Time
+	//UpdateAt    time.Time `gorm:"autoUpdateTime"`
 
 	DetailSale []DetailSale `gorm:"foreignKey:ArticleID"`
 }

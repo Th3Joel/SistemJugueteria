@@ -11,6 +11,7 @@ var MsjUserVal = map[string]string{
 	"Password.gte":          "La contraseña debe ser mayor o igual a 4.",
 	"Confirm.required":      "Confirmación requerida.",
 	"Confirm.confirmPasswd": "Las contraseñas no coinciden",
+	"Confirm.omitCustom":    "Confirmación requerida",
 }
 
 // MsjAuthVal *Authentication

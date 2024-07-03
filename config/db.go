@@ -1,6 +1,7 @@
 package config
 
 import (
+	"Jugueteria/models"
 	"database/sql"
 	"log"
 	"os"
@@ -24,24 +25,31 @@ func ConnectDB() {
 	}
 
 	log.Println("Conectado a la base de datos")
-	// db.AutoMigrate(models.Company{})
-	// db.AutoMigrate(models.Users{})
-	// db.AutoMigrate(models.Costumers{})
-	// db.AutoMigrate(models.Suppliers{})
-	// db.AutoMigrate(models.PriceCategories{})
-	// db.AutoMigrate(models.Articles{})
-	// db.AutoMigrate(models.Categories{})
-	// db.AutoMigrate(models.Boxes{})
-	// db.AutoMigrate(models.Purchases{})
-	// db.AutoMigrate(models.DetailPurchase{})
-	// db.AutoMigrate(models.Sales{})
-	// db.AutoMigrate(models.DetailSale{})
-	if len(os.Args) > 1 && os.Args[1] == "seed" {
-		Seed(db)
+
+	if len(os.Args) > 1 {
+		if os.Args[1] == "migrate" {
+			_ = db.AutoMigrate(
+				models.Company{},
+				models.Users{},
+				models.Costumers{},
+				models.Suppliers{},
+				models.PriceCategories{},
+				models.Articles{},
+				models.Categories{},
+				models.Boxes{},
+				models.Purchases{},
+				models.DetailPurchase{},
+				models.Sales{},
+				models.DetailSale{},
+			)
+		}
+		if os.Args[2] == "seed" {
+			Seed(db)
+		}
 	}
 	DB = db
 
-	//base de datos utilizada para los tokens csfr
+	//base de datos utilizada para los tokens y token csfr
 	d, err := sql.Open("sqlite3", "./system.sqlite3")
 	if err != nil {
 		log.Fatal("No se pudo conectar a la base de datos sqlite3. \n")

@@ -45,7 +45,7 @@ func (csrfH) Get(tok string) (int64, string) {
 		Key string
 	}
 	tt := t{}
-	config.Slite.QueryRow(sql, tok).Scan(&tt.Exp, &tt.Key)
+	_ = config.Slite.QueryRow(sql, tok).Scan(&tt.Exp, &tt.Key)
 
 	return tt.Exp, tt.Key
 }

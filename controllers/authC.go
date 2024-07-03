@@ -4,6 +4,7 @@ import (
 	"Jugueteria/config"
 	"Jugueteria/helpers"
 	"Jugueteria/models"
+	"Jugueteria/types"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -11,34 +12,41 @@ import (
 )
 
 type AuthC struct {
+	ID       string `json:"-"`
 	Email    string `json:"email" validate:"required,email"`
 	Password string `json:"password" validate:"required"`
+
+	Model models.Users `gorm:"-" json:"-"`
 }
 
-func (AuthC) Login(f *fiber.Ctx) error {
-	authBody := AuthC{}
+func (auth AuthC) Login(f *fiber.Ctx) error {
+	db := config.DB.Model(auth.Model)
 	//Si no se le agrega el & no se puede modificar el original y solo se crea una copia
 	tokenH := helpers.TokenH{}
 	passwdH := helpers.PasswdH{}
 
-	userFind := models.Users{}
+	_ = f.BodyParser(&auth)
 
-	_ = f.BodyParser(&authBody)
-	db := config.DB.Select("id", "email", "password").First(&userFind, "email = ?", authBody.Email)
-	if !passwdH.Verify(authBody.Password, userFind.Password) || db.RowsAffected == 0 {
-		return f.JSON(fiber.Map{
-			"status": false,
-			"msj":    "Credenciales incorrectas",
+	passwdText := auth.Password
+	db.
+		Select("id", "email", "password").
+		Where("email = ?", auth.Email).
+		First(&auth)
+
+	if !passwdH.Verify(passwdText, auth.Password) || db.RowsAffected == 0 {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "Credenciales incorrectas",
 		})
 	}
 
 	t := jwt.New()
-	_ = t.Set("id", userFind.ID)
+	_ = t.Set("id", auth.ID)
 	_ = t.Set("exp", time.Now().Add(time.Hour*120).Unix())
 
 	token := tokenH.Gen(t)
 	//Guardar token
-	tokenH.Save(token, userFind.ID)
+	tokenH.Save(token, auth.ID)
 
 	// tokenSave := models.Token{
 	// 	ID:     uuid.NewString(),
@@ -56,8 +64,8 @@ func (AuthC) Login(f *fiber.Ctx) error {
 	cookie.SameSite = "Lax"
 	f.Cookie(cookie)
 
-	return f.JSON(fiber.Map{
-		"status": true,
+	return f.JSON(types.Response{
+		Status: true,
 		//"token":  token,
 	})
 
@@ -70,9 +78,9 @@ func (AuthC) Logout(f *fiber.Ctx) error {
 
 	//db := config.DB.Delete(models.Token{}, "token = ?", tok)
 	if tokenH.Remove(tok) {
-		return f.JSON(fiber.Map{
-			"status": false,
-			"msj":    "No se pudo cerrar la sesión",
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "No se pudo cerrar la sesión",
 		})
 	}
 	f.Cookie(&fiber.Cookie{
@@ -80,8 +88,8 @@ func (AuthC) Logout(f *fiber.Ctx) error {
 		Value:   "",
 		Expires: time.Now().Add(time.Hour * -23),
 	})
-	return f.JSON(fiber.Map{
-		"status": true,
-		"msj":    "Sesión cerrada",
+	return f.JSON(types.Response{
+		Status: true,
+		Msj:    "Sesión cerrada",
 	})
 }

@@ -7,6 +7,7 @@ import (
 )
 
 func ParseMsj[T any](data T, validate *validator.Validate, valMsj map[string]string) (bool, map[string]string) {
+
 	if err := validate.Struct(data); err != nil {
 		// Crea un mapa para almacenar los mensajes de error de validación
 		errorMsj := make(map[string]string)

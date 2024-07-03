@@ -33,9 +33,22 @@ func ConfirmPassword[T any](str T) func(validator.FieldLevel) bool {
 		val := reflect.ValueOf(str).Elem()
 		passField := val.FieldByName("Password").String()
 		field := fl.Field().String()
-		p := strings.ToLower(passField)
-		if field != p {
+		if field != passField && field != "" {
 			return false
+		}
+		return true
+	}
+}
+
+// OmitCustom Ejemplo utilizando: Si los dos campos son vacíos, no se muestra el error de validación
+// SI el campo password está lleno y el campo passwordConfirm está vacío, se muestra el error de validación
+func OmitCustom[T any](str T) func(level validator.FieldLevel) bool {
+	return func(fl validator.FieldLevel) bool {
+		val := reflect.ValueOf(str).Elem()
+		field := val.FieldByName(fl.Param()).String()
+		fieldCurrent := fl.Field().String()
+		if field != "" && fieldCurrent == "" {
+			return false // Muestra el error de validación
 		}
 		return true
 	}

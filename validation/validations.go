@@ -8,7 +8,7 @@ type UserPut struct {
 	Picture  string `json:"picture"`
 	Email    string `json:"email" validate:"required,email,isRepeat"`
 	Password string `json:"password" validate:"omitempty,gte=4"`
-	Confirm  string `json:"confirm" validate:"omitempty,confirmPasswd"`
+	Confirm  string `json:"confirm" validate:"omitCustom=Password,confirmPasswd"`
 }
 
 type UserPost struct {
@@ -18,4 +18,29 @@ type UserPost struct {
 	Password string `json:"password" validate:"required,gte=4"`
 	Email    string `json:"email" validate:"required,email,isRepeat"`
 	Confirm  string `json:"confirm" validate:"required,confirmPasswd"`
+}
+
+// CostumerPost Costumers
+type CostumerPost struct {
+	Name    string `json:"name" validate:"required,isRepeat"`
+	Address string `json:"address" validate:"omitempty,lte=50"`
+	Phone   string `json:"phone" validate:"omitempty,numeric"`
+	Email   string `json:"email" validate:"omitempty,email"`
+}
+
+// CompanyPost
+type CompanyPost struct {
+	Name    string `json:"name" validate:"required,isRepeat"`
+	Ruc     string `json:"ruc"`
+	Phone   string `json:"phone" validate:"numeric"`
+	Address string `json:"address" validate:"lte=50"`
+	Email   string `json:"email" validate:"email"`
+}
+
+// SupplierPost
+type SupplierPost struct {
+	Name    string `json:"name" validate:"required,isRepeat"`
+	Address string `json:"address" validate:"omitempty,lte=50"`
+	Phone   string `json:"phone" validate:"omitempty,numeric"`
+	Email   string `json:"email" validare:"omitempty,email"`
 }

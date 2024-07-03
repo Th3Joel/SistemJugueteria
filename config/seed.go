@@ -20,9 +20,16 @@ func Seed(db *gorm.DB) {
 		Picture:  "",
 	}
 
-	err := db.Save(&user)
+	db.Save(&user)
 
-	if err.Error != nil {
+	company := models.Company{
+		ID:   "1",
+		Name: "Jugueteria",
+	}
+
+	db.Save(&company)
+
+	if db.Error != nil {
 		fmt.Println("No se pudo ejecutar el seeder")
 	}
 	fmt.Println("Seeder ejecutado correctamente")

@@ -41,9 +41,12 @@ func main() {
 	//AccountR
 	routes.UserR(api)
 	//ProveedorR
-	routes.ProveedorR(api)
+	routes.SupllierR(api)
 	//ClienteR
-	routes.ClienteR(api)
+	routes.CostumerR(api)
+	//CompanyR
+	routes.CompanyR(api)
+
 	//servir archivos staticos dentro del binario
 	app.Get("/*", filesystem.New(filesystem.Config{
 		Root:         web.Dist(),
