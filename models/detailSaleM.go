@@ -1,11 +1,10 @@
 package models
 
 import (
-	"gorm.io/gorm"
+	"time"
 )
 
 type DetailSale struct {
-	gorm.Model
 	ID              string `gorm:"primaryKey"`
 	SaleID          string `gorm:"size:255"`
 	ArticleID       string `gorm:"size:255"`
@@ -13,6 +12,6 @@ type DetailSale struct {
 	Amount          int
 	Subtotal        float64
 	Profit          float64
-	//CreatedAt       time.Time
-	//UpdatedAt       time.Time `gorm:"autoUpdateTime"`
+	CreatedAt       time.Time
+	UpdatedAt       time.Time `gorm:"autoUpdateTime"`
 }

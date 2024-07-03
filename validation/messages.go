@@ -42,3 +42,11 @@ var MsjCostumerVal = map[string]string{
 	"Phone.numeric": "Debe se numérico.",
 	"Address.lte":   "Caracteres máximo 50",
 }
+
+// Company
+var MsjCompanyVal = map[string]string{
+	"Name.required": "Nombre requerido.",
+	"Email.email":   "Correo inválido.",
+	"Phone.numeric": "Debe se numérico.",
+	"Address.lte":   "Caracteres máximo 50",
+}

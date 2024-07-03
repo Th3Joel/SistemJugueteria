@@ -30,11 +30,11 @@ type CostumerPost struct {
 
 // CompanyPost
 type CompanyPost struct {
-	Name    string `json:"name" validate:"required,isRepeat"`
+	Name    string `json:"name" validate:"required"`
 	Ruc     string `json:"ruc"`
-	Phone   string `json:"phone" validate:"numeric"`
-	Address string `json:"address" validate:"lte=50"`
-	Email   string `json:"email" validate:"email"`
+	Phone   string `json:"phone" validate:"omitempty,numeric"`
+	Address string `json:"address" validate:"omitempty,lte=50"`
+	Email   string `json:"email" validate:"omitempty,email"`
 }
 
 // SupplierPost

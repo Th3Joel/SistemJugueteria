@@ -1,19 +1,19 @@
 package models
 
 import (
-	"gorm.io/gorm"
+	"time"
 )
 
 type PriceCategories struct {
-	gorm.Model
-	ID          string `gorm:"primaryKey"`
-	BoxID       string `gorm:"size:255"`
-	Name        string `gorm:"size:255"`
-	Description string `gorm:"size:255"`
-	Price       float64
-	Stock       int
-	//CreatedAt   time.Time
-	//UpdateAt    time.Time `gorm:"autoUpdateTime"`
+	ID           string `gorm:"primaryKey"`
+	ArticleBoxID string `gorm:"size:255"`
+	Code         string `gorm:"size:255"`
+	Name         string `gorm:"size:255"`
+	Description  string `gorm:"size:255"`
+	SalePrice    float64
+	Stock        int
+	CreatedAt    time.Time
+	UpdateAt     time.Time `gorm:"autoUpdateTime"`
 
 	DetailSale []DetailSale `gorm:"foreignKey:PriceCategoryID"`
 }

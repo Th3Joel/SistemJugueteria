@@ -1,15 +1,12 @@
 package models
 
-import (
-	"gorm.io/gorm"
-)
+import "time"
 
 type DetailPurchase struct {
-	gorm.Model
-	ID         string `gorm:"primaryKey"`
-	PurchaseID string `gorm:"size:255"`
-	BoxID      string `gorm:"size:255"`
-	Total      float64
-	//CreatedAt  time.Time
-	//UpdatedAt  time.Time `gorm:"autoUpdateTime"`
+	ID           string `gorm:"primaryKey"`
+	PurchaseID   string `gorm:"size:255"`
+	ArticleBoxID string `gorm:"size:255"`
+	//Total        float64
+	CreatedAt time.Time
+	UpdatedAt time.Time `gorm:"autoUpdateTime"`
 }

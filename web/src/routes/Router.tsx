@@ -15,6 +15,9 @@ import {Route, Routes} from "react-router-dom";
 import {Maintenance} from "@/pages/settings/tabs/maintenance.tsx";
 import {AddUsers} from "@/pages/settings/tabs/users/AddUsers.tsx";
 import {EditUsers} from "@/pages/settings/tabs/users/EditUsers.tsx";
+import {ArticleBox} from "@/pages/articleBox/ArticleBox.tsx";
+import {EditArticleBox} from "@/pages/articleBox/EditArticleBox.tsx";
+import {AddArticleBox} from "@/pages/articleBox/AddArticleBox.tsx";
 
 export const Router = () => {
     const auth = AuthState();
@@ -44,6 +47,11 @@ export const Router = () => {
                             <Route path="company" element={<Company/>}/>
                             <Route path="maintenance" element={<Maintenance/>}/>
                         </Route>
+
+                        <Route path="/articles-box" element={<ArticleBox/>}/>
+                        <Route path="/articles-box/edit/:id" element={<EditArticleBox/>}/>
+                        <Route path="/articles-box/add" element={<AddArticleBox/>}/>
+
                     </Route>
                     <Route path="/auth/login" element={<Login/>}/>
                     <Route path="*" element={<div>Not fount</div>}/>

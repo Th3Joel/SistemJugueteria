@@ -3,6 +3,7 @@ package routes
 import (
 	"Jugueteria/controllers"
 	mdd "Jugueteria/middleware"
+	val "Jugueteria/validation"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -12,5 +13,5 @@ func CompanyR(f fiber.Router) {
 	auth := f.Group("/settings/company", mdd.AuthM)
 
 	auth.Get("", companyC.Show)
-	auth.Put("", companyC.Update)
+	auth.Put("", mdd.ValM(val.MsjCompanyVal, val.CompanyPost{}, 0), companyC.Update)
 }

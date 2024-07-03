@@ -33,7 +33,7 @@ export const useForm = <T>(object:IData<T>) => {
         return true;
       }
       setErrors(res.errors);
-        toast.error(res.msj);
+       if(!res.errors) toast.error(res.msj);
       return false;
     };
 

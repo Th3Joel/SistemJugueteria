@@ -199,7 +199,7 @@ func (user UserC) Delete(c *fiber.Ctx) error {
 
 	sql := db.
 		Where("id = ?", id).
-		Delete(&user.Model)
+		Delete(user.Model)
 	if sql.RowsAffected == 0 {
 		return c.JSON(types.Response{
 			Status: false,
@@ -209,7 +209,7 @@ func (user UserC) Delete(c *fiber.Ctx) error {
 
 	return c.JSON(types.Response{
 		Status: true,
-		Msj:    "Usuario no eliminado",
+		Msj:    "Usuario eliminado",
 	})
 }
 

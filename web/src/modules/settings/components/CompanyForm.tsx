@@ -16,6 +16,7 @@ interface IFormData {
     name: string;
     email: string;
     phone: string;
+    ruc: string;
     address: string;
 }
 
@@ -24,6 +25,7 @@ export const CompanyForm = () => {
         name: '',
         email: '',
         phone: '',
+        ruc: '',
         address: ''
     });
 
@@ -76,11 +78,11 @@ export const CompanyForm = () => {
 
                     <InputText
                         label="Número de registro"
-                        name="phone"
+                        name="ruc"
                         onChange={inputChange}
-                        error={!!errors?.phone}
-                        helperText={errors?.phone}
-                        value={data?.phone}
+                        error={!!errors?.ruc}
+                        helperText={errors?.ruc}
+                        value={data?.ruc}
                         icon={<BusinessRounded/>}
                     />
 

@@ -134,6 +134,7 @@ func (costumer CostumerC) UpdateId(f *fiber.Ctx) error {
 	costumer.trim(&costumer)
 	db.
 		Where("id = ?", id).
+		Select("name", "email", "address", "phone").
 		Updates(costumer)
 
 	return f.JSON(types.Response{
@@ -148,7 +149,7 @@ func (costumer CostumerC) Delete(f *fiber.Ctx) error {
 	id := f.Params("id")
 	sql := db.
 		Where("id = ?", id).
-		Delete(&costumer.Model)
+		Delete(costumer.Model)
 
 	if sql.RowsAffected == 0 {
 		return f.JSON(types.Response{

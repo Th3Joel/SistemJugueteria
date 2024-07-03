@@ -5,12 +5,12 @@ import (
 	mdd "Jugueteria/middleware"
 	"Jugueteria/routes"
 	"Jugueteria/web"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"os"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
-	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
 var port = os.Getenv("PORT")

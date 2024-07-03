@@ -28,22 +28,21 @@ func ConnectDB() {
 
 	if len(os.Args) > 1 {
 		if os.Args[1] == "migrate" {
-			_ = db.AutoMigrate(
-				models.Company{},
-				models.Users{},
-				models.Costumers{},
-				models.Suppliers{},
-				models.PriceCategories{},
-				models.Articles{},
-				models.Categories{},
-				models.Boxes{},
-				models.Purchases{},
-				models.DetailPurchase{},
-				models.Sales{},
-				models.DetailSale{},
-			)
+
+			_ = db.AutoMigrate(models.Company{})
+			_ = db.AutoMigrate(models.Users{})
+			_ = db.AutoMigrate(models.Costumers{})
+			_ = db.AutoMigrate(models.Suppliers{})
+			_ = db.AutoMigrate(models.Category{})
+			_ = db.AutoMigrate(models.Articles{})
+			_ = db.AutoMigrate(models.PriceCategories{})
+			_ = db.AutoMigrate(models.ArticlesBox{})
+			_ = db.AutoMigrate(models.Purchases{})
+			_ = db.AutoMigrate(models.DetailPurchase{})
+			_ = db.AutoMigrate(models.Sales{})
+			_ = db.AutoMigrate(models.DetailSale{})
 		}
-		if os.Args[2] == "seed" {
+		if os.Args[1] == "seed" {
 			Seed(db)
 		}
 	}
