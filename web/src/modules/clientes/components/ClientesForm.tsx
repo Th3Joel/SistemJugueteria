@@ -1,15 +1,10 @@
 import LoaderBtn from "@/modules/core/components/LoaderBtn";
 import { useForm } from "@/modules/core/hooks/useForm";
-import {
-  BusinessRounded,
-  DriveFileRenameOutlineRounded,
-  EmailRounded,
-  LocalPhoneRounded,
-} from "@mui/icons-material";
 import { Button } from "@mui/material";
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {InputText} from "@/modules/core/components/InputText.tsx";
+import {FaPhone, FaICursor, FaMapLocationDot, FaEnvelope} from "react-icons/fa6";
 
 interface IProps {
   isEdit?: boolean;
@@ -60,7 +55,7 @@ export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
             onChange={inputChange}
             error={!!errors?.name}
             helperText={errors?.name}
-            icon={<DriveFileRenameOutlineRounded/>}
+            icon={<FaICursor/>}
         />
         <InputText
             label="Celular"
@@ -69,7 +64,7 @@ export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
             onChange={inputChange}
             error={!!errors?.phone}
             helperText={errors?.phone}
-            icon={<LocalPhoneRounded />}
+            icon={<FaPhone />}
         />
 
         <InputText
@@ -80,7 +75,7 @@ export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
             error={!!errors?.email}
             helperText={errors?.email}
             type="email"
-            icon={<EmailRounded />}
+            icon={<FaEnvelope />}
         />
 
         <InputText
@@ -90,7 +85,7 @@ export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
             onChange={inputChange}
             error={!!errors?.address}
             helperText={errors?.address}
-            icon={<BusinessRounded />}
+            icon={<FaMapLocationDot />}
         />
 
         <div className="flex justify-between">

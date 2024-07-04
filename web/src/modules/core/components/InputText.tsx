@@ -24,7 +24,7 @@ interface IProps{
 type InputProps = TextFieldProps & IProps;
 export const InputText: React.FC<InputProps> = ({
                                                                      label,
-                                                                     name,
+                                                                    name,
                                                                      value,
                                                                      onChange,
                                                                      error,
@@ -32,7 +32,9 @@ export const InputText: React.FC<InputProps> = ({
                                                                      type = "text",
                                                                      isRequired = false,
                                                                      icon,
-                                                                     options = []
+                                                                     options = [],
+                                                                     rows,
+                                                                     multiline,
                                                                  }) => {
     const [isFocused, setIsFocused] = useState(false);
     const [selected, setSelected] = useState(options[0]?.key);
@@ -46,8 +48,13 @@ export const InputText: React.FC<InputProps> = ({
         setSelected(event.target.value as string);
     }
     const cloneIcon = React.cloneElement(icon, {
-        color:error ? 'error' : isFocused ? (error ? 'error' : 'primary') : 'action',
-        sx:{transform: isFocused ? 'rotate(0deg)' : 'rotate(-90deg)',transition: 'all 0.3s ease-in-out'}
+        style:{
+            margin:"0 2px 0 2px",
+            transform: isFocused ? 'rotate(0deg)' : 'rotate(-90deg)',
+            transition: 'all 0.3s ease-in-out',
+            color:error ? 'red' : isFocused ? (error ? 'red' : '#1976d2') : 'gray',
+            fontSize: '18px',
+        }
     });
     const InputSelect = () => {
         return (
@@ -87,7 +94,9 @@ export const InputText: React.FC<InputProps> = ({
             onFocus={handleFocus}
             onBlur={handleBlur}
             size="small"
+            multiline={multiline}
             type={type}
+            rows={rows}
             fullWidth
         />
     }

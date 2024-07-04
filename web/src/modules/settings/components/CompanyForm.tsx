@@ -1,16 +1,10 @@
 import logoImg from '@/assets/logo.jpg'
 import {Button} from "@mui/material";
-import {
-    BusinessRounded,
-    DriveFileRenameOutlineRounded,
-    EditRoadRounded,
-    EmailRounded,
-    PhoneRounded
-} from "@mui/icons-material";
 import {InputText} from "@/modules/core/components/InputText.tsx";
 import {useForm} from "@/modules/core/hooks/useForm.ts";
 import {useEffect} from "react";
 import LoaderBtn from "@/modules/core/components/LoaderBtn.tsx";
+import {FaBuilding, FaBuildingUser, FaEnvelope, FaMapLocationDot, FaPhone} from "react-icons/fa6";
 
 interface IFormData {
     name: string;
@@ -63,7 +57,7 @@ export const CompanyForm = () => {
                         error={!!errors?.name}
                         helperText={errors?.name}
                         value={data?.name}
-                        icon={<DriveFileRenameOutlineRounded/>}
+                        icon={<FaBuilding/>}
                     />
 
                     <InputText
@@ -73,7 +67,7 @@ export const CompanyForm = () => {
                         error={!!errors?.email}
                         helperText={errors?.email}
                         value={data?.email}
-                        icon={<EmailRounded/>}
+                        icon={<FaEnvelope/>}
                     />
 
                     <InputText
@@ -83,7 +77,7 @@ export const CompanyForm = () => {
                         error={!!errors?.ruc}
                         helperText={errors?.ruc}
                         value={data?.ruc}
-                        icon={<BusinessRounded/>}
+                        icon={<FaBuildingUser/>}
                     />
 
                     <InputText
@@ -93,7 +87,7 @@ export const CompanyForm = () => {
                         error={!!errors?.phone}
                         helperText={errors?.phone}
                         value={data?.phone}
-                        icon={<PhoneRounded/>}
+                        icon={<FaPhone/>}
                     />
 
                     <InputText
@@ -103,7 +97,7 @@ export const CompanyForm = () => {
                         error={!!errors?.address}
                         helperText={errors?.address}
                         value={data?.address}
-                        icon={<EditRoadRounded/>}
+                        icon={<FaMapLocationDot/>}
                     />
 
                     <Button variant="contained" color="primary" type="submit" size="small" fullWidth>{loading ? <LoaderBtn/> : "Actualizar"}</Button>

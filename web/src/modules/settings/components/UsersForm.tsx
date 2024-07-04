@@ -1,18 +1,12 @@
 import userImg from "@/assets/user.png";
 import {InputText} from "@/modules/core/components/InputText.tsx";
-import {
-    DriveFileRenameOutlineRounded,
-    EmailRounded,
-    KeyRounded,
-    LockPersonRounded,
-    LockRounded
-} from "@mui/icons-material";
 import {Button} from "@mui/material";
 import {Link, useNavigate} from "react-router-dom";
 import {useForm} from "@/modules/core/hooks/useForm.ts";
 import React, {useEffect} from "react";
 import LoaderBtn from "@/modules/core/components/LoaderBtn.tsx";
 import {AuthState} from "@/modules/core/globalStates/auth-state.ts";
+import {FaEnvelope, FaICursor, FaKey, FaUnlockKeyhole, FaUserLock} from "react-icons/fa6";
 
 interface IProps {
     isEdit?: boolean;
@@ -80,7 +74,7 @@ export const UsersForm:React.FC<IProps> = ({isEdit,id,isProfile}) => {
                     <InputText
                         label="Nombre"
                         name="name"
-                        icon={<DriveFileRenameOutlineRounded/>}
+                        icon={<FaICursor/>}
                         isRequired
                         onChange={inputChange}
                         error={!!errors?.name}
@@ -92,7 +86,7 @@ export const UsersForm:React.FC<IProps> = ({isEdit,id,isProfile}) => {
                         label="Correo electrónico"
                         name="email"
                         isRequired
-                        icon={<EmailRounded/>}
+                        icon={<FaEnvelope/>}
                         onChange={inputChange}
                         error={!!errors?.email}
                         helperText={errors?.email}
@@ -101,7 +95,7 @@ export const UsersForm:React.FC<IProps> = ({isEdit,id,isProfile}) => {
                     {!isProfile && <InputText
                         label="Tipo de usuario"
                         name="role"
-                        icon={<LockPersonRounded/>}
+                        icon={<FaUserLock/>}
                         type="select"
                         error={!!errors?.role}
                         helperText={errors?.role}
@@ -116,7 +110,7 @@ export const UsersForm:React.FC<IProps> = ({isEdit,id,isProfile}) => {
                         label="Contraseña"
                         name="password"
                         isRequired
-                        icon={<LockRounded/>}
+                        icon={<FaUnlockKeyhole/>}
                         onChange={inputChange}
                         error={!!errors?.password}
                         helperText={errors?.password}
@@ -129,7 +123,7 @@ export const UsersForm:React.FC<IProps> = ({isEdit,id,isProfile}) => {
                         onChange={inputChange}
                         error={!!errors?.confirm}
                         helperText={errors?.confirm}
-                        icon={<KeyRounded/>}
+                        icon={<FaKey/>}
                         value={data?.confirm}
                     />
                     <div className="flex justify-between">
