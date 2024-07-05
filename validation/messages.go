@@ -50,3 +50,20 @@ var MsjCompanyVal = map[string]string{
 	"Phone.numeric": "Debe se numérico.",
 	"Address.lte":   "Caracteres máximo 50",
 }
+
+// ArticleBox
+var MsjArticleBoxVal = map[string]string{
+	"Code.required": "Código requerido.",
+	"Code.isRepeat": "Código ya existe",
+
+	"Description.required": "Descripción requerida.",
+	"Description.isRepeat": "Descripción ya existe",
+
+	"ToysQuantity.required": "Cantidad requerida.",
+	"ToysQuantity.integer":  "Solo se aceptan números enteros",
+	"ToysQuantity.gtC":      "Cantidad debe ser mayor a 0",
+
+	"PurchasePrice.required": "Precio requerido.",
+	"PurchasePrice.numeric":  "Precio debe ser numérico",
+	"PurchasePrice.gtC":      "Precio debe ser mayor 0",
+}

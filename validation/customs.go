@@ -4,6 +4,7 @@ import (
 	"Jugueteria/config"
 	"github.com/gofiber/fiber/v2"
 	"reflect"
+	"strconv"
 	"strings"
 
 	"github.com/go-playground/validator/v10"
@@ -49,6 +50,30 @@ func OmitCustom[T any](str T) func(level validator.FieldLevel) bool {
 		fieldCurrent := fl.Field().String()
 		if field != "" && fieldCurrent == "" {
 			return false // Muestra el error de validación
+		}
+		return true
+	}
+}
+
+func Gt() func(fl validator.FieldLevel) bool {
+	return func(fl validator.FieldLevel) bool {
+		field := fl.Field().String()
+		param, _ := strconv.ParseFloat(fl.Param(), 64)
+		num, _ := strconv.ParseFloat(field, 64)
+
+		if num < param {
+			return false
+		}
+		return true
+	}
+}
+
+func Integer() func(fl validator.FieldLevel) bool {
+	return func(fl validator.FieldLevel) bool {
+		field := fl.Field().String()
+		_, err := strconv.Atoi(field)
+		if err != nil {
+			return false
 		}
 		return true
 	}

@@ -35,14 +35,14 @@ export const Router = () => {
                     <Route path="/" element={<Layout/>}>
                         <Route index element={<Dashboard/>}/>
                         <Route path="/clientes" element={<Clientes/>}/>
-                        <Route path="/clientes/editar/:id" element={<EditClientes/>}/>
-                        <Route path="/clientes/agregar" element={<AddClientes/>}/>
+                        <Route path="/clientes/edit/:id" element={<EditClientes/>}/>
+                        <Route path="/clientes/add" element={<AddClientes/>}/>
 
                         <Route path="/settings" element={<Setting/>}>
                             <Route index element={<Users/>}/>
                             <Route path="users" element={<Users/>}/>
-                            <Route path="users/agregar" element={<AddUsers/>}/>
-                            <Route path="users/editar/:id" element={<EditUsers/>}/>
+                            <Route path="users/add" element={<AddUsers/>}/>
+                            <Route path="users/edit/:id" element={<EditUsers/>}/>
                             <Route path="profile" element={<Profile/>}/>
                             <Route path="company" element={<Company/>}/>
                             <Route path="maintenance" element={<Maintenance/>}/>

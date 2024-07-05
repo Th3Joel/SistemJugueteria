@@ -47,20 +47,21 @@ func ValM[T any, R any](valMsj map[string]string, data T, model R) func(*fiber.C
 
 	return func(c *fiber.Ctx) error {
 		//Crea un puntero a la estructura pasada como argumento
-		v := &data
 
 		// Parsea el body
-		_ = c.BodyParser(v)
+		_ = c.BodyParser(&data)
 		//Borra los espacios en blanco
-		TrimSpaces(v)
+		TrimSpaces(&data)
 		validate := validator.New()
 		// Registra la validaciones perzonalizadas
 		_ = validate.RegisterValidation("isRepeat", val.IsRepeat(model, c))
 
-		_ = validate.RegisterValidation("confirmPasswd", val.ConfirmPassword(v))
-		_ = validate.RegisterValidation("omitCustom", val.OmitCustom(v))
+		_ = validate.RegisterValidation("confirmPasswd", val.ConfirmPassword(data))
+		_ = validate.RegisterValidation("omitCustom", val.OmitCustom(data))
+		_ = validate.RegisterValidation("gtC", val.Gt())
+		_ = validate.RegisterValidation("integer", val.Integer())
 
-		is, errorMsj := helpers.ParseMsj(v, validate, valMsj)
+		is, errorMsj := helpers.ParseMsj(data, validate, valMsj)
 		if is {
 			return c.JSON(fiber.Map{
 				"status": false,

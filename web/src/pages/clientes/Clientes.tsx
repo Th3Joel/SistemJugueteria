@@ -28,7 +28,7 @@ const hook = useTable<ICliente>()
           "Dirección",
           "Acciones",
         ]}
-        body={(eliminar) =>
+        body={(urlEdit,eliminar) =>
           hook.all?.data.map((d, i) => (
             <tr key={i}>
               <td>{d.name}</td>
@@ -37,7 +37,7 @@ const hook = useTable<ICliente>()
               <td>{d.address}</td>
               <td>
                 <div className="flex gap-1 justify-center">
-                  <Link to={`/clientes/editar/${d.id}`}>
+                  <Link to={urlEdit+d.id}>
                     <IconButton color="success">
                       <EditRounded />
                     </IconButton>

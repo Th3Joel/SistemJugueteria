@@ -42,5 +42,13 @@ type SupplierPost struct {
 	Name    string `json:"name" validate:"required,isRepeat"`
 	Address string `json:"address" validate:"omitempty,lte=50"`
 	Phone   string `json:"phone" validate:"omitempty,numeric"`
-	Email   string `json:"email" validare:"omitempty,email"`
+	Email   string `json:"email" validate:"omitempty,email"`
+}
+
+// ArticleBoxPost
+type ArticleBoxPost struct {
+	Code          string `validate:"required,isRepeat"`
+	Description   string `validate:"required,isRepeat"`
+	ToysQuantity  string `validate:"required,integer,gtC=1"`
+	PurchasePrice string `validate:"required,numeric,gtC=1"`
 }

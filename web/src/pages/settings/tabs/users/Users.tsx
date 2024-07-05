@@ -19,7 +19,7 @@ export const Users = () => {
       hook={hook}
       ruta="settings/users"
       colunms={["Foto", "Nombre", "Correo", "Rol", "Acciones"]}
-      body={(eliminar) =>
+      body={(urlEdit,eliminar) =>
         hook.all?.data.map((d, i) => (
           <tr key={i}>
             <td>{d.picture}</td>
@@ -28,7 +28,7 @@ export const Users = () => {
             <td>{d.role}</td>
             <td>
               <div className="flex gap-1 justify-center">
-                <Link to={`/settings/users/editar/${d.id}`}>
+                <Link to={urlEdit+d.id}>
                   <IconButton color="success">
                     <EditRounded />
                   </IconButton>

@@ -11,12 +11,14 @@ import { Button, TextField } from "@mui/material";
 import { IUseTable } from "../hooks/useTable";
 
 interface IProps {
-  ruta: string | undefined;
+  ruta: string;
   colunms: string[];
   hook: IUseTable<any>;
   body(
+      ruta:string,
     eliminar: (id: string, texto: string) => void,
     img: (name: string) => string
+
   ): React.ReactNode;
 }
 
@@ -67,7 +69,6 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body }) => {
 
   const buscador = (e: { target: { value: string } }) => {
     const val = e.target.value;
-    console.log(val);
     //Agregar retraso
     clearTimeout(setTime);
     setTime = setTimeout(() => {
@@ -105,7 +106,7 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body }) => {
   return (
     <>
       <div className="h-12 flex items-center">
-        <Link to={`/${ruta}/agregar`}>
+        <Link to={`/${ruta}/add`}>
           <Button variant="contained">Agregar</Button>
         </Link>
       </div>
@@ -155,7 +156,7 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body }) => {
                   </td>
                 </tr>
               ) : all?.data.length ? (
-                body(eliminar, img)
+                body(`/${ruta}/edit/`,eliminar, img)
               ) : (
                 <tr>
                   <td colSpan={6} className="text-center">
