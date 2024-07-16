@@ -11,7 +11,7 @@ import {
 import React, {ReactElement, useState} from "react";
 
 
-interface IOptions {
+export interface IOptions {
     key: string;
     value: string;
 }
@@ -21,10 +21,12 @@ interface IProps{
     options?: IOptions[];
 }
 
+
+
 type InputProps = TextFieldProps & IProps;
 export const InputText: React.FC<InputProps> = ({
                                                                      label,
-                                                                    name,
+                                                                     name,
                                                                      value,
                                                                      onChange,
                                                                      error,
@@ -56,6 +58,8 @@ export const InputText: React.FC<InputProps> = ({
             fontSize: '18px',
         }
     });
+
+
     const InputSelect = () => {
         return (
             <FormControl fullWidth variant="filled" size="small" error={error}>
@@ -71,8 +75,8 @@ export const InputText: React.FC<InputProps> = ({
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                 >
-                    {options.map((data, index) => (
-                        <MenuItem key={index} value={data.key}>
+                    {options.map((data) => (
+                        <MenuItem key={data.key} value={data.key}>
                             {data.value}
                         </MenuItem>
                     ))}

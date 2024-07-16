@@ -2,7 +2,6 @@ package helpers
 
 import (
 	"Jugueteria/config"
-	"encoding/json"
 	"fmt"
 
 	"github.com/google/uuid"
@@ -31,10 +30,10 @@ func (TokenH) Verify(token string) bool {
 	key, _ := jwk.FromRaw(secret)
 
 	// Verifica si el token es válido
-	t, err := jwt.Parse([]byte(token), jwt.WithKey(jwa.HS256, key))
+	_, err := jwt.Parse([]byte(token), jwt.WithKey(jwa.HS256, key))
 	//Para imprimir en json
-	jsonClaims, _ := json.Marshal(t)
-	fmt.Println(string(jsonClaims))
+	//jsonClaims, _ := json.Marshal(t)
+	//fmt.Println(string(jsonClaims))
 
 	if err != nil {
 		return false

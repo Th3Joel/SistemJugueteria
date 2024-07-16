@@ -10,11 +10,11 @@ import (
 
 type CompanyC struct {
 	//Data
-	Name    string `json:"name"`
-	Email   string `json:"email,omitempty"`
-	Ruc     string `json:"ruc,omitempty"`
-	Phone   string `json:"phone,omitempty"`
-	Address string `json:"address,omitempty"`
+	Name    string `json:"Name"`
+	Email   string `json:"Email,omitempty"`
+	Ruc     string `json:"Ruc,omitempty"`
+	Phone   string `json:"Phone,omitempty"`
+	Address string `json:"Address,omitempty"`
 	//Settings
 	Model models.Company `gorm:"-" json:"-"`
 }

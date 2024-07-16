@@ -58,6 +58,30 @@ func (article ArticleBoxC) All(c *fiber.Ctx) error {
 	})
 }
 
+func (article ArticleBoxC) AllSelect(f *fiber.Ctx) error {
+	db := config.DB.Model(article.Model)
+
+	db.Find(&article.Array)
+
+	type Perz struct {
+		ID          string `json:"id"`
+		Code        string `json:"code"`
+		Description string `json:"description"`
+	}
+
+	var perz []Perz
+	for _, v := range article.Array {
+		perz = append(perz, Perz{
+			ID:          v.ID,
+			Code:        v.Code,
+			Description: v.Description,
+		})
+	}
+
+	return f.JSON(perz)
+
+}
+
 func (article ArticleBoxC) ShowId(c *fiber.Ctx) error {
 	db := config.DB.Model(article.Model)
 	id := c.Params("id")

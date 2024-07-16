@@ -56,8 +56,8 @@ func ValM[T any, R any](valMsj map[string]string, data T, model R) func(*fiber.C
 		// Registra la validaciones perzonalizadas
 		_ = validate.RegisterValidation("isRepeat", val.IsRepeat(model, c))
 
-		_ = validate.RegisterValidation("confirmPasswd", val.ConfirmPassword(data))
-		_ = validate.RegisterValidation("omitCustom", val.OmitCustom(data))
+		_ = validate.RegisterValidation("confirmPasswd", val.ConfirmPassword(&data))
+		_ = validate.RegisterValidation("omitCustom", val.OmitCustom(&data))
 		_ = validate.RegisterValidation("gtC", val.Gt())
 		_ = validate.RegisterValidation("integer", val.Integer())
 

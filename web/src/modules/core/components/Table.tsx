@@ -149,7 +149,7 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body }) => {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={6}>
+                  <td colSpan={colunms.length}>
                     <div className="p-6 flex justify-center">
                       <LoaderSmall />
                     </div>
@@ -159,7 +159,7 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body }) => {
                 body(`/${ruta}/edit/`,eliminar, img)
               ) : (
                 <tr>
-                  <td colSpan={6} className="text-center">
+                  <td colSpan={colunms.length} className="text-center">
                     No hay elementos
                   </td>
                 </tr>

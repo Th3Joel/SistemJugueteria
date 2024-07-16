@@ -29,7 +29,7 @@ func IsRepeat[T any](model T, f *fiber.Ctx) func(validator.FieldLevel) bool {
 }
 
 // ConfirmPassword Validaciones de cuentas de usuario
-func ConfirmPassword[T any](str T) func(validator.FieldLevel) bool {
+func ConfirmPassword[T any](str *T) func(validator.FieldLevel) bool {
 	return func(fl validator.FieldLevel) bool {
 		val := reflect.ValueOf(str).Elem()
 		passField := val.FieldByName("Password").String()
@@ -43,7 +43,7 @@ func ConfirmPassword[T any](str T) func(validator.FieldLevel) bool {
 
 // OmitCustom Ejemplo utilizando: Si los dos campos son vacíos, no se muestra el error de validación
 // SI el campo password está lleno y el campo passwordConfirm está vacío, se muestra el error de validación
-func OmitCustom[T any](str T) func(level validator.FieldLevel) bool {
+func OmitCustom[T any](str *T) func(level validator.FieldLevel) bool {
 	return func(fl validator.FieldLevel) bool {
 		val := reflect.ValueOf(str).Elem()
 		field := val.FieldByName(fl.Param()).String()

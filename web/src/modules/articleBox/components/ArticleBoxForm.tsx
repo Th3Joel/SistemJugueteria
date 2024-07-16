@@ -50,7 +50,6 @@ export const ArticleBoxForm:React.FC<IProps> = ({ isEdit, id }) => {
             <InputText
                 label="Descripción"
                 name="Description"
-                placeholder="Enter title"
                 multiline
                 rows={2}
                 icon={<FaArrowDownWideShort/>}

@@ -12,18 +12,18 @@ interface IProps {
 }
 
 interface IFormData {
-  name: string;
-  phone: string;
-  email: string;
-  address: string;
+  Name: string;
+  Phone: string;
+  Email: string;
+  Address: string;
 }
 
 export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
   const { post, errors, loading, data, get, inputChange } = useForm<IFormData>({
-    name: "",
-    phone: "",
-    email: "",
-    address: "",
+    Name: "",
+    Phone: "",
+    Email: "",
+    Address: "",
   });
 
   const navigate = useNavigate();
@@ -50,30 +50,30 @@ export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
         <InputText
             label="Nombre"
             name="name"
-            value={data?.name}
+            value={data?.Name}
             isRequired={true}
             onChange={inputChange}
-            error={!!errors?.name}
-            helperText={errors?.name}
+            error={!!errors?.Name}
+            helperText={errors?.Name}
             icon={<FaICursor/>}
         />
         <InputText
             label="Celular"
             name="phone"
-            value={data?.phone}
+            value={data?.Phone}
             onChange={inputChange}
-            error={!!errors?.phone}
-            helperText={errors?.phone}
+            error={!!errors?.Phone}
+            helperText={errors?.Phone}
             icon={<FaPhone />}
         />
 
         <InputText
             label="Correo electrónico"
             name="email"
-            value={data?.email}
+            value={data?.Email}
             onChange={inputChange}
-            error={!!errors?.email}
-            helperText={errors?.email}
+            error={!!errors?.Email}
+            helperText={errors?.Email}
             type="email"
             icon={<FaEnvelope />}
         />
@@ -81,10 +81,10 @@ export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
         <InputText
             label="Dirección"
             name="address"
-            value={data?.address}
+            value={data?.Address}
             onChange={inputChange}
-            error={!!errors?.address}
-            helperText={errors?.address}
+            error={!!errors?.Address}
+            helperText={errors?.Address}
             icon={<FaMapLocationDot />}
         />
 

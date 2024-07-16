@@ -47,6 +47,10 @@ func main() {
 	routes.CompanyR(api)
 	//ArticleBoxR
 	routes.ArticleBoxR(api)
+	//CategoryR
+	routes.CategoryR(api)
+	//PriceCategoryR
+	routes.PriceCategoryR(api)
 
 	//servir archivos staticos dentro del binario
 	app.Get("/*", filesystem.New(filesystem.Config{

@@ -18,6 +18,12 @@ import {EditUsers} from "@/pages/settings/tabs/users/EditUsers.tsx";
 import {ArticleBox} from "@/pages/articleBox/ArticleBox.tsx";
 import {EditArticleBox} from "@/pages/articleBox/EditArticleBox.tsx";
 import {AddArticleBox} from "@/pages/articleBox/AddArticleBox.tsx";
+import {Category} from "@/pages/category/Category.tsx";
+import {EditCategory} from "@/pages/category/EditCategory.tsx";
+import {AddCategory} from "@/pages/category/AddCategory.tsx";
+import {PriceCategory} from "@/pages/priceCategory/PriceCategory.tsx";
+import {AddPriceCategory} from "@/pages/priceCategory/AddPriceCategory.tsx";
+import {EditPriceCategory} from "@/pages/priceCategory/EditPriceCategory.tsx";
 
 export const Router = () => {
     const auth = AuthState();
@@ -51,6 +57,14 @@ export const Router = () => {
                         <Route path="/articles-box" element={<ArticleBox/>}/>
                         <Route path="/articles-box/edit/:id" element={<EditArticleBox/>}/>
                         <Route path="/articles-box/add" element={<AddArticleBox/>}/>
+
+                        <Route path="/categories" element={<Category/>}/>
+                        <Route path="/categories/edit/:id" element={<EditCategory/>}/>
+                        <Route path="/categories/add" element={<AddCategory/>}/>
+
+                        <Route path="/price-categories" element={<PriceCategory/>}/>
+                        <Route path="/price-categories/edit/:id" element={<EditPriceCategory/>}/>
+                        <Route path="/price-categories/add" element={<AddPriceCategory/>}/>
 
                     </Route>
                     <Route path="/auth/login" element={<Login/>}/>

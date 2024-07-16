@@ -15,5 +15,7 @@ type PriceCategories struct {
 	CreatedAt    time.Time
 	UpdateAt     time.Time `gorm:"autoUpdateTime"`
 
+	ArticleBox ArticlesBox `gorm:"foreignKey:ArticleBoxID"`
+
 	DetailSale []DetailSale `gorm:"foreignKey:PriceCategoryID"`
 }

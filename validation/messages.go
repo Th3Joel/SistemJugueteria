@@ -67,3 +67,26 @@ var MsjArticleBoxVal = map[string]string{
 	"PurchasePrice.numeric":  "Precio debe ser numérico",
 	"PurchasePrice.gtC":      "Precio debe ser mayor 0",
 }
+
+// Category
+var MsjCategoryVal = map[string]string{
+	"Name.required": "Nombre requerido.",
+	"Name.isRepeat": "Nombre ya existe",
+}
+
+// PriceCategory
+var MsjPriceCategoryVal = map[string]string{
+	"ArticleBoxID.required": "Caja de artículos requerido.",
+	"Code.required":         "Código requerido.",
+	"Code.isRepeat":         "Código ya existe",
+	"Name.required":         "Nombre requerido.",
+	"Name.isRepeat":         "Nombre ya existe",
+	"Description.required":  "Descripción requerida.",
+
+	"Stock.required":     "Cantidad requerida.",
+	"Stock.integer":      "Solo se aceptan números enteros",
+	"Stock.gtC":          "Cantidad debe ser mayor a 0",
+	"SalePrice.required": "Precio requerido.",
+	"SalePrice.numeric":  "Precio debe ser numérico",
+	"SalePrice.gtC":      "Precio debe ser mayor 0",
+}

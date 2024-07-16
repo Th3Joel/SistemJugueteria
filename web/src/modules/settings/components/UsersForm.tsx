@@ -15,22 +15,22 @@ interface IProps {
 }
 
 interface IFormData {
-    name: string;
-    email: string;
-    role: string;
-    password: string;
-    confirm: string;
+    Name: string;
+    Email: string;
+    Role: string;
+    Password: string;
+    Confirm: string;
 }
 
 export const UsersForm:React.FC<IProps> = ({isEdit,id,isProfile}) => {
     const {user,verify} = AuthState();
 
     const {post, errors, loading, data, get, inputChange} = useForm<IFormData>({
-        name: isProfile ? user.name : '',
-        email: isProfile ? user.email : '',
-        role:'',
-        password: "",
-        confirm: ""
+        Name: isProfile ? user.name : '',
+        Email: isProfile ? user.email : '',
+        Role:'',
+        Password: "",
+        Confirm: ""
     });
 
     const navigate = useNavigate();
@@ -77,9 +77,9 @@ export const UsersForm:React.FC<IProps> = ({isEdit,id,isProfile}) => {
                         icon={<FaICursor/>}
                         isRequired
                         onChange={inputChange}
-                        error={!!errors?.name}
-                        helperText={errors?.name}
-                        value={data?.name}
+                        error={!!errors?.Name}
+                        helperText={errors?.Name}
+                        value={data?.Name}
                     />
 
                     <InputText
@@ -88,17 +88,17 @@ export const UsersForm:React.FC<IProps> = ({isEdit,id,isProfile}) => {
                         isRequired
                         icon={<FaEnvelope/>}
                         onChange={inputChange}
-                        error={!!errors?.email}
-                        helperText={errors?.email}
-                        value={data?.email}
+                        error={!!errors?.Email}
+                        helperText={errors?.Email}
+                        value={data?.Email}
                     />
                     {!isProfile && <InputText
                         label="Tipo de usuario"
                         name="role"
                         icon={<FaUserLock/>}
                         type="select"
-                        error={!!errors?.role}
-                        helperText={errors?.role}
+                        error={!!errors?.Role}
+                        helperText={errors?.Role}
                         options={[{key: "admin", value: "Administrador"}, {
                             key: "vendedor",
                             value: "Vendedor"
@@ -112,19 +112,19 @@ export const UsersForm:React.FC<IProps> = ({isEdit,id,isProfile}) => {
                         isRequired
                         icon={<FaUnlockKeyhole/>}
                         onChange={inputChange}
-                        error={!!errors?.password}
-                        helperText={errors?.password}
-                        value={data?.password}
+                        error={!!errors?.Password}
+                        helperText={errors?.Password}
+                        value={data?.Password}
                     />
                     <InputText
                         label="Repetir contraseña"
                         name="confirm"
                         isRequired
                         onChange={inputChange}
-                        error={!!errors?.confirm}
-                        helperText={errors?.confirm}
+                        error={!!errors?.Confirm}
+                        helperText={errors?.Confirm}
                         icon={<FaKey/>}
-                        value={data?.confirm}
+                        value={data?.Confirm}
                     />
                     <div className="flex justify-between">
                         <Link to="/settings/users">
