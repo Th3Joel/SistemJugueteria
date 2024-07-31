@@ -49,7 +49,7 @@ export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
 
         <InputText
             label="Nombre"
-            name="name"
+            name="Name"
             value={data?.Name}
             isRequired={true}
             onChange={inputChange}
@@ -59,7 +59,7 @@ export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
         />
         <InputText
             label="Celular"
-            name="phone"
+            name="Phone"
             value={data?.Phone}
             onChange={inputChange}
             error={!!errors?.Phone}
@@ -69,7 +69,7 @@ export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
 
         <InputText
             label="Correo electrónico"
-            name="email"
+            name="Email"
             value={data?.Email}
             onChange={inputChange}
             error={!!errors?.Email}
@@ -80,7 +80,7 @@ export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
 
         <InputText
             label="Dirección"
-            name="address"
+            name="Address"
             value={data?.Address}
             onChange={inputChange}
             error={!!errors?.Address}

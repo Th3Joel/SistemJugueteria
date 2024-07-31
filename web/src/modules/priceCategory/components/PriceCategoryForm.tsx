@@ -23,7 +23,6 @@ interface ISelect{
     id: string,
     code:string,
     description:string,
-
 }
 export const PriceCategoryForm:React.FC<IProps> = ({ isEdit, id }) => {
     const [select, setSelect] = useState<IOptions[]>([{key:"",value:""}]);
@@ -56,15 +55,14 @@ export const PriceCategoryForm:React.FC<IProps> = ({ isEdit, id }) => {
                 })));
             }
         });
-
     }
 
     useEffect(() => {
         if (isEdit) {
-            get("/price-categories/" + id);
+            get("/price-categories/" + id).then(fetchDataSelect);
+            return;
         }
-        fetchDataSelect();
-
+            fetchDataSelect();
     }, []);
     return (<div className="w-[350px] p-3 shadow-lg rounded-lg">
         <form className="flex flex-col gap-3" onSubmit={handleSubmit}>

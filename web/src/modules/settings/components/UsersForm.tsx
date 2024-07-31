@@ -26,8 +26,8 @@ export const UsersForm:React.FC<IProps> = ({isEdit,id,isProfile}) => {
     const {user,verify} = AuthState();
 
     const {post, errors, loading, data, get, inputChange} = useForm<IFormData>({
-        Name: isProfile ? user.name : '',
-        Email: isProfile ? user.email : '',
+        Name: isProfile ? user.Name : '',
+        Email: isProfile ? user.Email : '',
         Role:'',
         Password: "",
         Confirm: ""
@@ -73,7 +73,7 @@ export const UsersForm:React.FC<IProps> = ({isEdit,id,isProfile}) => {
                 <section className="mt-3 flex flex-col gap-3">
                     <InputText
                         label="Nombre"
-                        name="name"
+                        name="Name"
                         icon={<FaICursor/>}
                         isRequired
                         onChange={inputChange}
@@ -84,7 +84,7 @@ export const UsersForm:React.FC<IProps> = ({isEdit,id,isProfile}) => {
 
                     <InputText
                         label="Correo electrónico"
-                        name="email"
+                        name="Email"
                         isRequired
                         icon={<FaEnvelope/>}
                         onChange={inputChange}
@@ -94,7 +94,7 @@ export const UsersForm:React.FC<IProps> = ({isEdit,id,isProfile}) => {
                     />
                     {!isProfile && <InputText
                         label="Tipo de usuario"
-                        name="role"
+                        name="Role"
                         icon={<FaUserLock/>}
                         type="select"
                         error={!!errors?.Role}
@@ -108,7 +108,7 @@ export const UsersForm:React.FC<IProps> = ({isEdit,id,isProfile}) => {
                     {isEdit && <h4 className="text-gray-500 ml-2 -my-2">Actualizar contraseña (opcional)</h4>}
                     <InputText
                         label="Contraseña"
-                        name="password"
+                        name="Password"
                         isRequired
                         icon={<FaUnlockKeyhole/>}
                         onChange={inputChange}
@@ -118,7 +118,7 @@ export const UsersForm:React.FC<IProps> = ({isEdit,id,isProfile}) => {
                     />
                     <InputText
                         label="Repetir contraseña"
-                        name="confirm"
+                        name="Confirm"
                         isRequired
                         onChange={inputChange}
                         error={!!errors?.Confirm}

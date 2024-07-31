@@ -37,16 +37,17 @@ export const useForm = <T>(object:IData<T>) => {
       return false;
     };
 
-    const get = (url: string) => {
+    const get = async (url: string) => {
       setLoading(true);
-      useFetch<IUseForm<T>>(url, "GET").then(res=>{
+      let res = await useFetch<IUseForm<T>>(url, "GET");
+
+
           setLoading(false);
           if (res.status) {
               setData(res.find);
               return;
           }
           toast.error(res.msj);
-      });
 
     };
 

@@ -6,7 +6,7 @@ import { ThemeProvider } from "@emotion/react";
 
 const theme = createTheme({
     components: {
-      MuiTextField:{
+      MuiTextField: {
         styleOverrides: {
           root: {
             "& .MuiInputBase-input": {
@@ -15,7 +15,7 @@ const theme = createTheme({
           },
         },
       },
-      MuiButton:{
+      MuiButton: {
         styleOverrides: {
           root: {
             textTransform: "none",
@@ -52,7 +52,14 @@ const theme = createTheme({
           },
         },
       },
-    },
+      MuiSelect: {
+        styleOverrides: {
+          select:{
+            textAlign:"center",
+          }
+        },
+      },
+    }
   });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

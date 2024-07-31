@@ -24,6 +24,9 @@ import {AddCategory} from "@/pages/category/AddCategory.tsx";
 import {PriceCategory} from "@/pages/priceCategory/PriceCategory.tsx";
 import {AddPriceCategory} from "@/pages/priceCategory/AddPriceCategory.tsx";
 import {EditPriceCategory} from "@/pages/priceCategory/EditPriceCategory.tsx";
+import {Suppliers} from "@/pages/supplier/Suppliers.tsx";
+import {AddSupplier} from "@/pages/supplier/AddSupplier.tsx";
+import {EditSupplier} from "@/pages/supplier/EditSupplier.tsx";
 
 export const Router = () => {
     const auth = AuthState();
@@ -65,6 +68,11 @@ export const Router = () => {
                         <Route path="/price-categories" element={<PriceCategory/>}/>
                         <Route path="/price-categories/edit/:id" element={<EditPriceCategory/>}/>
                         <Route path="/price-categories/add" element={<AddPriceCategory/>}/>
+
+
+                        <Route path="/suppliers" element={<Suppliers/>}/>
+                        <Route path="/suppliers/add" element={<AddSupplier/>}/>
+                        <Route path="/suppliers/edit/:id" element={<EditSupplier/>}/>
 
                     </Route>
                     <Route path="/auth/login" element={<Login/>}/>

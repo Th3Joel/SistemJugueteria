@@ -14,11 +14,11 @@ import (
 type UserC struct {
 	//Data
 	ID       string `json:"id"`
-	Name     string `json:"name"`
-	Role     string `json:"role"`
+	Name     string `json:"Name"`
+	Role     string `json:"Role"`
 	Picture  string `json:"picture,omitempty"`
-	Password string `json:"password,omitempty"`
-	Email    string `json:"email,omitempty"`
+	Password string `json:"Password,omitempty"`
+	Email    string `json:"Email,omitempty"`
 	//Settings
 	Model models.Users `gorm:"-" json:"-"`
 	Array []UserC      `gorm:"-" json:"-"`

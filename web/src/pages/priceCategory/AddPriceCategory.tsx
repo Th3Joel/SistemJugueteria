@@ -5,7 +5,7 @@ export const AddPriceCategory = () => {
     return (
         <Card>
             <div className="grid place-items-center m-5">
-                <PriceCategoryForm/>
+                <PriceCategoryForm />
             </div>
         </Card>
     )

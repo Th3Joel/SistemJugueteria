@@ -4,6 +4,7 @@ import (
 	"Jugueteria/config"
 	"Jugueteria/models"
 	"Jugueteria/types"
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 	"math"
@@ -11,20 +12,22 @@ import (
 )
 
 type PriceCategoryC struct {
-	ID           string                 `json:"id"`
-	ArticleBoxID string                 `json:"articleBoxID"`
-	Code         string                 `json:"code"`
-	Name         string                 `json:"name"`
-	Description  string                 `json:"description"`
-	Stock        int                    `json:"stock"`
-	SalePrice    float64                `json:"salePrice"`
-	ArticleBox   ArticlesBox            `json:"articlesBox"`
-	Model        models.PriceCategories `gorm:"-" json:"-"`
-	Array        []PriceCategoryC       `gorm:"-" json:"-"`
+	ID           string  `json:"id"`
+	ArticleBoxID string  `json:"ArticleBoxID"`
+	Code         string  `json:"Code"`
+	Name         string  `json:"Name"`
+	Description  string  `json:"Description"`
+	Stock        int     `json:"Stock"`
+	SalePrice    float64 `json:"SalePrice"`
+
+	ArticleBox ArticlesBox `json:"ArticlesBox"`
+
+	Model models.PriceCategories `gorm:"-" json:"-"`
+	Array []PriceCategoryC       `gorm:"-" json:"-"`
 }
 
 type ArticlesBox struct {
-	ID   string `json:"id"`
+	ID   string `json:"-"`
 	Code string `json:"code"`
 }
 
@@ -45,7 +48,7 @@ func (priceCategory PriceCategoryC) All(c *fiber.Ctx) error {
 		db.Find(&priceCategory.Array)
 	} else {
 		db.Where("code LIKE ?", "%"+q.Search+"%").
-			Find(&priceCategory.Array)
+			First(&priceCategory.Array)
 	}
 	db.Count(&count)
 
@@ -70,7 +73,9 @@ func (priceCategory PriceCategoryC) ShowId(f *fiber.Ctx) error {
 	db := config.DB.Model(priceCategory.Model)
 	id := f.Params("id")
 	sql := db.
-		Where("id = ?", id)
+		Preload("ArticleBox").
+		Where("id = ?", id).
+		Find(&priceCategory)
 
 	if sql.RowsAffected == 0 {
 		return f.Status(200).JSON(types.Response{
@@ -120,8 +125,9 @@ func (priceCategory PriceCategoryC) UpdateId(f *fiber.Ctx) error {
 
 	db.
 		Where("id = ?", id).
-		Select("article_box_id, code, name, description, stock, sale_price").
+		Select("article_box_id", " code", "name", "description", "stock", "sale_price").
 		Updates(priceCategory)
+	fmt.Println(priceCategory)
 
 	return f.Status(200).JSON(types.Response{
 		Status: true,

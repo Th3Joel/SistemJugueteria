@@ -6,10 +6,10 @@ import { Link } from "react-router-dom";
 
 interface IUser {
   id: string;
-  name: string;
-  email: string;
-  role: string;
-  picture: string;
+  Name: string;
+  Email: string;
+  Role: string;
+  Picture: string;
 }
 export const Users = () => {
   window.document.title = "Usuarios";
@@ -22,10 +22,10 @@ export const Users = () => {
       body={(urlEdit,eliminar) =>
         hook.all?.data.map((d, i) => (
           <tr key={i}>
-            <td>{d.picture}</td>
-            <td>{d.name}</td>
-            <td>{d.email}</td>
-            <td>{d.role}</td>
+            <td>{d.Picture}</td>
+            <td>{d.Name}</td>
+            <td>{d.Email}</td>
+            <td>{d.Role}</td>
             <td>
               <div className="flex gap-1 justify-center">
                 <Link to={urlEdit+d.id}>
@@ -35,7 +35,7 @@ export const Users = () => {
                 </Link>
                 <IconButton
                   color="error"
-                  onClick={() => eliminar(d.id, `Eliminar a: ${d.name} `)}
+                  onClick={() => eliminar(d.id, `Eliminar a: ${d.Name} `)}
                 >
                   <DeleteRounded />
                 </IconButton>

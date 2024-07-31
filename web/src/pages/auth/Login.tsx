@@ -10,7 +10,7 @@ export const Login = () => {
   }
 
   return (
-    <div className=" grid place-items-center h-screen bg-slate-100">
+    <div className=" grid place-items-center h-[100dvh] bg-slate-100">
         <LoginForm/>
     </div>
   )

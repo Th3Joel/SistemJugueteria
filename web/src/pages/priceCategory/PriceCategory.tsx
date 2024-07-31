@@ -7,12 +7,12 @@ import {FaPencil, FaTrash} from "react-icons/fa6";
 
 interface IPriceCategory {
     id: string;
-    code: string;
-    name: string;
-    description: string;
-    articlesBox: IArticleBox;
-    stock: number;
-    salePrice: number;
+    Code: string;
+    Name: string;
+    Description: string;
+    ArticlesBox: IArticleBox;
+    Stock: number;
+    SalePrice: number;
 }
 
 interface IArticleBox {
@@ -32,12 +32,12 @@ export const PriceCategory = () => {
             body={(urlEdit, eliminar) =>
             hook.all?.data.map((d, i) => (
                 <tr key={i}>
-                    <td>{d.code}</td>
-                    <td>{d.name}</td>
-                    <td>{d.description}</td>
-                    <td>{d.articlesBox.code}</td>
-                    <td>{d.stock}</td>
-                    <td>C$ {d.salePrice}</td>
+                    <td>{d.Code}</td>
+                    <td>{d.Name}</td>
+                    <td>{d.Description}</td>
+                    <td>{d.ArticlesBox.code}</td>
+                    <td>{d.Stock}</td>
+                    <td>C$ {d.SalePrice}</td>
                     <td>
                         <div className="flex gap-1 justify-center">
                             <Link to={urlEdit + d.id}>
@@ -48,7 +48,7 @@ export const PriceCategory = () => {
                             <IconButton
                                 color="error"
                                 onClick={() =>
-                                    eliminar(d.id, `Eliminar a: ${d.name}`)
+                                    eliminar(d.id, `Eliminar a: ${d.Name}`)
                                 }
                             >
                                 <FaTrash/>

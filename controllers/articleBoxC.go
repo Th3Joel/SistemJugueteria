@@ -23,7 +23,6 @@ type ArticleBoxC struct {
 
 func (article ArticleBoxC) All(c *fiber.Ctx) error {
 	db := config.DB.Model(article.Model)
-	fmt.Println("Funcona")
 	var count int64
 	var q types.ParamsTable
 	_ = c.QueryParser(&q)
@@ -69,16 +68,16 @@ func (article ArticleBoxC) AllSelect(f *fiber.Ctx) error {
 		Description string `json:"description"`
 	}
 
-	var perz []Perz
+	var custom []Perz
 	for _, v := range article.Array {
-		perz = append(perz, Perz{
+		custom = append(custom, Perz{
 			ID:          v.ID,
 			Code:        v.Code,
 			Description: v.Description,
 		})
 	}
 
-	return f.JSON(perz)
+	return f.JSON(custom)
 
 }
 

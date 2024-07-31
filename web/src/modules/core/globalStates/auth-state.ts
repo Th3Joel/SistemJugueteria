@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { useFetch } from "../hooks/useFetch";
 interface IUser{
-    name: string;
-    email: string;
-    picture: string;
-    role: string;
+    Name: string;
+    Email: string;
+    Picture: string;
+    Role: string;
 }
 
 interface IAuth {
@@ -16,10 +16,10 @@ interface IAuth {
 
 export const AuthState = create<IAuth>((set) => ({
     user: {
-      name: "",
-      email: "",
-      picture: "",
-      role: "",
+      Name: "",
+      Email: "",
+      Picture: "",
+      Role: "",
     },
   estado: false,
   loading: true,

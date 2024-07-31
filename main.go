@@ -17,7 +17,7 @@ var port = os.Getenv("PORT")
 func main() {
 	config.ConnectDB()
 	app := fiber.New(fiber.Config{
-		Prefork: false,
+		Prefork: true,
 		AppName: "Jugueteria",
 	})
 
@@ -51,6 +51,8 @@ func main() {
 	routes.CategoryR(api)
 	//PriceCategoryR
 	routes.PriceCategoryR(api)
+	//HomeR
+	routes.HomeR(api)
 
 	//servir archivos staticos dentro del binario
 	app.Get("/*", filesystem.New(filesystem.Config{

@@ -1,0 +1,63 @@
+import {Card} from "@/modules/core/components/Card.tsx";
+import Table from "@/modules/core/components/Table.tsx";
+import {Link} from "react-router-dom";
+import {IconButton} from "@mui/material";
+import {FaPencil, FaTrash} from "react-icons/fa6";
+import {useTable} from "@/modules/core/hooks/useTable.ts";
+
+interface ISupplier {
+    id:string
+    Name:string
+    Email:string
+    Phone:string
+    Address:string
+}
+
+export const Suppliers = () => {
+    window.document.title = "Proveedores"
+    const hook = useTable<ISupplier>()
+    return (
+        <Card>
+            <Table
+                hook={hook}
+                ruta="suppliers"
+                colunms={[
+                    "Nombre",
+                    "Email",
+                    "Teléfono",
+                    "Dirección",
+                    "Acciones",
+                ]}
+                body={(urlEdit,eliminar) =>
+                    hook.all?.data.map((d, i) => (
+                        <tr key={i}>
+                            <td>{d.Name}</td>
+                            <td>{d.Email}</td>
+                            <td>{d.Phone}</td>
+                            <td>{d.Address}</td>
+
+                            <td>
+                                <div className="flex gap-1 justify-center">
+                                    <Link to={urlEdit + d.id}>
+                                        <IconButton color="success">
+                                            <FaPencil/>
+                                        </IconButton>
+                                    </Link>
+
+                                    <IconButton
+                                        color="error"
+                                        onClick={() =>
+                                            eliminar(d.id, `Eliminar a: ${d.Name}`)
+                                        }
+                                    >
+                                        <FaTrash/>
+                                    </IconButton>
+                                </div>
+                            </td>
+                        </tr>
+                    ))
+                }
+            />
+        </Card>
+    )
+};

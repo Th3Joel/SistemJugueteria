@@ -12,10 +12,10 @@ import (
 
 type SupplierC struct {
 	ID      string `json:"id"`
-	Name    string `json:"name"`
-	Address string `json:"address,omitempty"`
-	Phone   string `json:"phone,omitempty"`
-	Email   string `json:"email,omitempty"`
+	Name    string `json:"Name"`
+	Address string `json:"Address,omitempty"`
+	Phone   string `json:"Phone,omitempty"`
+	Email   string `json:"Email,omitempty"`
 
 	Model models.Suppliers `gorm:"-" json:"-"`
 	Array []SupplierC      `gorm:"-" json:"-"`

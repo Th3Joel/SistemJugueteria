@@ -19,6 +19,7 @@ interface IProps{
     isRequired?: boolean;
     icon: ReactElement;
     options?: IOptions[];
+    value?: string;
 }
 
 
@@ -39,7 +40,7 @@ export const InputText: React.FC<InputProps> = ({
                                                                      multiline,
                                                                  }) => {
     const [isFocused, setIsFocused] = useState(false);
-    const [selected, setSelected] = useState(options[0]?.key);
+    const [selected, setSelected] = useState(value == "" ? options[0]?.key : value);
     const handleFocus = () => {
         setIsFocused(true);
     };
@@ -77,7 +78,7 @@ export const InputText: React.FC<InputProps> = ({
                 >
                     {options.map((data) => (
                         <MenuItem key={data.key} value={data.key}>
-                            {data.value}
+                            <div className="flex justify-center w-full">{data.value}</div>
                         </MenuItem>
                     ))}
                 </Select>
