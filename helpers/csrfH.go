@@ -11,7 +11,10 @@ var (
 	Csrf csrfH
 )
 
-type csrfH struct{}
+type csrfH struct {
+	Exp int64
+	Key string
+}
 
 func (csrfH) Gen() string {
 	tok := uuid.NewString()
@@ -37,14 +40,10 @@ func (csrfH) Set(tok string, exp int64) bool {
 	return err != nil
 }
 
-func (csrfH) Get(tok string) (int64, string) {
+func (tt csrfH) Get(tok string) (int64, string) {
 	sql := `
         SELECT exp,key FROM csrf WHERE key =?`
-	type t struct {
-		Exp int64
-		Key string
-	}
-	tt := t{}
+
 	_ = config.Slite.QueryRow(sql, tok).Scan(&tt.Exp, &tt.Key)
 
 	return tt.Exp, tt.Key

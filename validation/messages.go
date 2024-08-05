@@ -37,10 +37,7 @@ var MsjProveedorVal = map[string]string{
 var MsjCostumerVal = map[string]string{
 	"Name.required": "Nombre requerido.",
 	"Name.isRepeat": "Nombre ya existe",
-	"Surname.lte":   "Caracteres maximo 20",
-	"Email.email":   "Correo inválido.",
 	"Phone.numeric": "Debe se numérico.",
-	"Address.lte":   "Caracteres máximo 50",
 }
 
 // Company
@@ -86,6 +83,25 @@ var MsjPriceCategoryVal = map[string]string{
 	"Stock.required":     "Cantidad requerida.",
 	"Stock.integer":      "Solo se aceptan números enteros",
 	"Stock.gtC":          "Cantidad debe ser mayor a 0",
+	"SalePrice.required": "Precio requerido.",
+	"SalePrice.numeric":  "Precio debe ser numérico",
+	"SalePrice.gtC":      "Precio debe ser mayor 0",
+}
+
+// ArticleBox
+var MsjArticleVal = map[string]string{
+	"ArticleBoxID.required": "Caja de artículos requerido.",
+	"CategoryID.required":   "Categoría requerida.",
+	"Code.required":         "Código requerido.",
+	"Code.isRepeat":         "Código ya existe",
+
+	"Description.required": "Descripción requerida.",
+	"Description.isRepeat": "Descripción ya existe",
+
+	"Stock.required": "Cantidad requerida.",
+	"Stock.integer":  "Solo se aceptan números enteros",
+	"Stock.gtC":      "Cantidad debe ser mayor a 0",
+
 	"SalePrice.required": "Precio requerido.",
 	"SalePrice.numeric":  "Precio debe ser numérico",
 	"SalePrice.gtC":      "Precio debe ser mayor 0",

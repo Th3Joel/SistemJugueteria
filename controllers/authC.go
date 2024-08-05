@@ -13,8 +13,8 @@ import (
 
 type AuthC struct {
 	ID       string `json:"-"`
-	Email    string `json:"email" validate:"required,email"`
-	Password string `json:"password" validate:"required"`
+	Email    string `json:"Email" validate:"required,email"`
+	Password string `json:"Password" validate:"required"`
 
 	Model models.Users `gorm:"-" json:"-"`
 }

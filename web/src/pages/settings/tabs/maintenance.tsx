@@ -4,7 +4,7 @@ export const Maintenance = () =>{
     window.document.title = "Mantenimiento";
     return(
         <div className="flex justify-center m-3">
-            <div className="w-[350px] flex flex-col gap-3 p-2 items-center shadow-md rounded-lg">
+            <div className="w-[350px] flex flex-col gap-3 p-2 items-center shadow-md rounded-lg  animate__fadeIn">
                 <img src={dbImage} alt="db" width={150}/>
                 <Button variant="contained" color="primary">Crear copia de base de datos</Button>
                 <Button variant="contained" color="primary">Restaurar base de datos</Button>

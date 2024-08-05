@@ -54,7 +54,7 @@ export const LinesChart = () => {
           tension: {
             duration: 1000,
             easing: "linear",
-            from: 0.2,
+            from: 0.1,
             to: 0,
             loop: true,
           },
@@ -67,7 +67,7 @@ export const LinesChart = () => {
     };
   }, []);
   return (
-    <div className="border rounded-lg border-[#28A745] p-2">
+    <div className="border rounded-lg border-[#28A745] p-2 overflow-x-hidden">
       <canvas ref={canvaRef} width="100%" height="400px"></canvas>
     </div>
   );

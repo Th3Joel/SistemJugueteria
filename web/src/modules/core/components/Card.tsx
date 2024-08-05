@@ -1,7 +1,11 @@
+interface CardProps {
+  children: React.ReactNode;
+  notAnimate?: boolean;
+}
 
-export const Card = ({children}:{children:React.ReactNode}) => {
+export const Card:React.FC<CardProps> = ({children,notAnimate}) => {
   return (
-    <div className="m-3 animate__animated animate__fast animate__fadeInLeft bg-white rounded-lg px-2 border border-[#EA4D1C]">
+    <div className={`${!notAnimate && 'animate__fadeInLeft'} bg-white rounded-lg px-2 border border-[#EA4D1C]`}>
         {children}
     </div>
   )

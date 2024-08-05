@@ -6,7 +6,8 @@ import { Tooltip } from "@mui/material";
 export const Header = () => {
     const {estado ,inc} = SidebarState();
   return (
-    <div className="border px-3 h-[50px] bg-white flex items-center justify-between">
+    <div className={`border px-3 h-[50px]
+     bg-white flex items-center justify-between`}>
       <div className="flex items-center">
         <Menu
         className="cursor-pointer"

@@ -5,6 +5,7 @@ import (
 	mdd "Jugueteria/middleware"
 	"Jugueteria/models"
 	val "Jugueteria/validation"
+
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -13,6 +14,7 @@ func CategoryR(f fiber.Router) {
 	r := f.Group("/categories", mdd.AuthM)
 
 	r.Get("", categoryR.All)
+	r.Get("/select", categoryR.AllSelect)
 	r.Get("/:id", categoryR.ShowId)
 	r.Post("", mdd.ValM(val.MsjCategoryVal, val.CategoryPost{}, models.Category{}), categoryR.Save)
 	r.Put("/:id", mdd.ValM(val.MsjCategoryVal, val.CategoryPost{}, models.Category{}), categoryR.UpdateId)

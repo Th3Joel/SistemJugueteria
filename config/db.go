@@ -6,9 +6,9 @@ import (
 	"log"
 	"os"
 
-	_ "github.com/mattn/go-sqlite3"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	_ "modernc.org/sqlite"
 )
 
 var (
@@ -49,7 +49,7 @@ func ConnectDB() {
 	DB = db
 
 	//base de datos utilizada para los tokens y token csfr
-	d, err := sql.Open("sqlite3", "./system.sqlite3")
+	d, err := sql.Open("sqlite", "./system.sqlite3")
 	if err != nil {
 		log.Fatal("No se pudo conectar a la base de datos sqlite3. \n")
 	}

@@ -9,47 +9,48 @@ interface IUseForm<T> {
   status: boolean;
   msj: string;
   errors?: IErrors<T>;
-  find:IData<T>
+  find: IData<T>
 }
 
-export const useForm = <T>(object:IData<T>) => {
-    const [errors, setErrors] = useState<IErrors<T>>();
-    const [data, setData] = useState<IData<T>>(object);
-    const [loading, setLoading] = useState<boolean>(false);
+export const useForm = <T>(object: IData<T>) => {
+  const [errors, setErrors] = useState<IErrors<T>>();
+  const [data, setData] = useState<IData<T>>(object);
+  const [loading, setLoading] = useState<boolean>(false);
 
-    const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const {name, value} = e.target;
-      setData({...data, [name]: value});
-    };
+  const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
 
-    const post = async (url: string, f: React.FormEvent<HTMLFormElement>, isEdit?: boolean): Promise<boolean> => {
-      const form = new FormData(f.target as HTMLFormElement);
-      setLoading(true);
-      const res = await useFetch<IUseForm<T>>(url, isEdit ? "PUT" : "POST", form, true);
-      setLoading(false);
-      if (res.status) {
-        toast.success(res.msj);
-        setErrors(undefined);
-        return true;
-      }
-      setErrors(res.errors);
-       if(!res.errors) toast.error(res.msj);
-      return false;
-    };
+  const post = async (url: string, f: React.FormEvent<HTMLFormElement>, isEdit?: boolean): Promise<boolean> => {
+    const form = new FormData(f.target as HTMLFormElement);
+    setLoading(true);
+    const res = await useFetch<IUseForm<T>>(url, isEdit ? "PUT" : "POST", form, true);
+    setLoading(false);
+    if (res.status) {
+      toast.success(res.msj);
+      setErrors(undefined);
+      return true;
+    }
+    setErrors(res.errors);
+    if (!res.errors) toast.error(res.msj);
+    return false;
+  };
 
-    const get = async (url: string) => {
-      setLoading(true);
-      let res = await useFetch<IUseForm<T>>(url, "GET");
+  const get = async (url: string) => {
+    setLoading(true);
+    let res = await useFetch<IUseForm<T>>(url, "GET");
 
 
-          setLoading(false);
-          if (res.status) {
-              setData(res.find);
-              return;
-          }
-          toast.error(res.msj);
+    setLoading(false);
+    if (res.status) {
+      setData(res.find);
+      return;
+    }
+    toast.error(res.msj);
 
-    };
+  };
+
 
   return {
     post,

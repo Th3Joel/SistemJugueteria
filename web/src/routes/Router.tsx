@@ -27,6 +27,10 @@ import {EditPriceCategory} from "@/pages/priceCategory/EditPriceCategory.tsx";
 import {Suppliers} from "@/pages/supplier/Suppliers.tsx";
 import {AddSupplier} from "@/pages/supplier/AddSupplier.tsx";
 import {EditSupplier} from "@/pages/supplier/EditSupplier.tsx";
+import { Articles } from "@/pages/articles/Articles";
+import { AddArticles } from "@/pages/articles/AddArticles";
+import { EditArticles } from "@/pages/articles/EditArticles";
+import { CashRegister } from "@/pages/cashRegister/CashRegister";
 
 export const Router = () => {
     const auth = AuthState();
@@ -73,6 +77,12 @@ export const Router = () => {
                         <Route path="/suppliers" element={<Suppliers/>}/>
                         <Route path="/suppliers/add" element={<AddSupplier/>}/>
                         <Route path="/suppliers/edit/:id" element={<EditSupplier/>}/>
+
+                        <Route path="/articles" element={<Articles/>}/>
+                        <Route path="/articles/edit/:id" element={<EditArticles/>}/>
+                        <Route path="/articles/add" element={<AddArticles/>}/>
+
+                        <Route path="/cash-register" element={<CashRegister/>}/>
 
                     </Route>
                     <Route path="/auth/login" element={<Login/>}/>

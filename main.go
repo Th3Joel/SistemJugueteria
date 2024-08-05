@@ -53,6 +53,8 @@ func main() {
 	routes.PriceCategoryR(api)
 	//HomeR
 	routes.HomeR(api)
+	//ArticleR
+	routes.ArticleR(api)
 
 	//servir archivos staticos dentro del binario
 	app.Get("/*", filesystem.New(filesystem.Config{

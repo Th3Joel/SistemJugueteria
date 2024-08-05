@@ -14,19 +14,20 @@ export const LoginForm = () => {
     e.preventDefault();
     loginFetch(new FormData(e.target as HTMLFormElement),setErrors);
   };
+  window.document.title = "Iniciar sesión";
   return (
-    <div className="animate__animated animate__zoomIn w-[350px] border-[1px] border-t-blue-600 border-t-4 bg-white border-gray-200 rounded-lg">
+    <div className="animate__fadeIn w-[350px] border-[1px] border-t-blue-600 border-t-4 bg-white border-gray-200 rounded-lg">
       <h1 className="text-2xl font-bold text-center mt-2 mb-2">Coleccióname</h1>
       <hr className="border-gray-200" />
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3 px-6 py-3">
         <h3 className="text-center">Bienvenido</h3>
         <TextField
-          name="email"
+          name="Email"
           size="small"
           label="Correo"
-          error={!(!errors.email)}
-          helperText={errors.email}
+          error={!(!errors.Email)}
+          helperText={errors.Email}
           variant="outlined"
           InputProps={{
             startAdornment: (
@@ -37,11 +38,11 @@ export const LoginForm = () => {
           }}
         />
         <TextField
-          name="password"
+          name="Password"
           size="small"
           type="password"
-          error={!(!errors.password)}
-          helperText={errors.password}
+          error={!(!errors.Password)}
+          helperText={errors.Password}
           label="Contraseña"
           variant="outlined"
           InputProps={{

@@ -1,17 +1,17 @@
-import {InputText, IOptions} from "@/modules/core/components/InputText.tsx";
-import {FaArrowDownWideShort, FaBarcode, FaBoxOpen, FaDatabase, FaICursor} from "react-icons/fa6";
-import {Link, useNavigate} from "react-router-dom";
-import {Button, Skeleton} from "@mui/material";
+import { InputText, IOptions } from "@/modules/core/components/InputText.tsx";
+import { FaArrowDownWideShort, FaBarcode, FaBoxOpen, FaDatabase, FaICursor } from "react-icons/fa6";
+import { Link, useNavigate } from "react-router-dom";
+import { Button, Skeleton } from "@mui/material";
 import LoaderBtn from "@/modules/core/components/LoaderBtn.tsx";
-import {useForm} from "@/modules/core/hooks/useForm.ts";
-import {useEffect, useState} from "react";
-import {useFetch} from "@/modules/core/hooks/useFetch.ts";
+import { useForm } from "@/modules/core/hooks/useForm.ts";
+import { useEffect, useState } from "react";
+import { useFetch } from "@/modules/core/hooks/useFetch.ts";
 
 interface IProps {
     isEdit?: boolean;
     id?: string;
 }
-interface IFormData{
+interface IFormData {
     ArticleBoxID: string,
     Code: string,
     Name: string,
@@ -19,13 +19,13 @@ interface IFormData{
     Stock: string,
     SalePrice: string,
 }
-interface ISelect{
+interface ISelect {
     id: string,
-    code:string,
-    description:string,
+    code: string,
+    description: string,
 }
-export const PriceCategoryForm:React.FC<IProps> = ({ isEdit, id }) => {
-    const [select, setSelect] = useState<IOptions[]>([{key:"",value:""}]);
+export const PriceCategoryForm: React.FC<IProps> = ({ isEdit, id }) => {
+    const [select, setSelect] = useState<IOptions[]>([{ key: "", value: "" }]);
     const { post, errors, loading, data, get, inputChange } = useForm<IFormData>({
         ArticleBoxID: "",
         Code: "",
@@ -46,27 +46,28 @@ export const PriceCategoryForm:React.FC<IProps> = ({ isEdit, id }) => {
         });
     };
 
-    const fetchDataSelect =  () => {
-         useFetch<ISelect[]>("/articles-box/select","GET").then((res) => {
+    const fetchDataSelect = async() => {
+        const res = await useFetch<ISelect[]>("/articles-box/select", "GET");
             if (res) {
                 setSelect(res.map((data) => ({
                     key: data.id,
-                    value:data.code +" - "+data.description,
+                    value: data.code + " - " + data.description,
                 })));
             }
-        });
+        
     }
 
     useEffect(() => {
-        if (isEdit) {
-            get("/price-categories/" + id).then(fetchDataSelect);
-            return;
-        }
-            fetchDataSelect();
+        (async () => {
+            await fetchDataSelect();
+            if (isEdit) {
+                get("/price-categories/" + id);
+            }
+        })()
     }, []);
     return (<div className="w-[350px] p-3 shadow-lg rounded-lg">
         <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
-            {select[0].key === "" ? <Skeleton variant="rounded" height={50} /> : <InputText
+            {<InputText
                 label="Asignar a una caja de artículos"
                 name="ArticleBoxId"
                 value={data?.ArticleBoxID}
@@ -74,7 +75,7 @@ export const PriceCategoryForm:React.FC<IProps> = ({ isEdit, id }) => {
                 error={!!errors?.ArticleBoxID}
                 helperText={errors?.ArticleBoxID}
                 type="select"
-                icon={<FaBoxOpen/>}
+                icon={<FaBoxOpen />}
                 options={select}
             />}
 
@@ -82,7 +83,7 @@ export const PriceCategoryForm:React.FC<IProps> = ({ isEdit, id }) => {
                 label="Nombre"
                 name="Name"
                 placeholder="Nombre"
-                icon={<FaICursor/>}
+                icon={<FaICursor />}
                 value={data?.Name}
                 onChange={inputChange}
                 error={!!errors?.Name}
@@ -94,7 +95,7 @@ export const PriceCategoryForm:React.FC<IProps> = ({ isEdit, id }) => {
                 multiline
                 rows={2}
                 placeholder="Descripción"
-                icon={<FaArrowDownWideShort/>}
+                icon={<FaArrowDownWideShort />}
                 value={data?.Description}
                 onChange={inputChange}
                 error={!!errors?.Description}
@@ -104,7 +105,7 @@ export const PriceCategoryForm:React.FC<IProps> = ({ isEdit, id }) => {
                 label="Código"
                 name="Code"
                 placeholder="Código"
-                icon={<FaBarcode/>}
+                icon={<FaBarcode />}
                 value={data?.Code}
                 onChange={inputChange}
                 error={!!errors?.Code}
@@ -115,7 +116,7 @@ export const PriceCategoryForm:React.FC<IProps> = ({ isEdit, id }) => {
                 label="Cantidad"
                 name="Stock"
                 placeholder="Cantidad"
-                icon={<FaDatabase/>}
+                icon={<FaDatabase />}
                 value={data?.Stock}
                 onChange={inputChange}
                 error={!!errors?.Stock}
@@ -140,7 +141,7 @@ export const PriceCategoryForm:React.FC<IProps> = ({ isEdit, id }) => {
                     </Button>
                 </Link>
                 <Button variant="contained" type="submit">
-                    {loading || select[0].key === "" ? <LoaderBtn/> : "Guardar"}
+                    {loading || select[0].key == "" ? <LoaderBtn /> : "Guardar"}
                 </Button>
             </div>
         </form>

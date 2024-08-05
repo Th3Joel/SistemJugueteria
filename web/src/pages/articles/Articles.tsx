@@ -1,30 +1,34 @@
-import {Card} from "@/modules/core/components/Card.tsx";
-import Table from "@/modules/core/components/Table.tsx";
-import {Link} from "react-router-dom";
-import {IconButton} from "@mui/material";
-import {useTable} from "@/modules/core/hooks/useTable.ts";
-import {FaPencil, FaTrash} from "react-icons/fa6";
+import { Card } from "@/modules/core/components/Card"
+import Table from "@/modules/core/components/Table"
+import { useTable } from "@/modules/core/hooks/useTable"
+import { IconButton } from "@mui/material"
 
-interface IArticleBox {
-    id:string
-    Code:string
-    Description:string
-    ToysQuantity:string
-    PurchasePrice:string
+import { FaPencil, FaTrash } from "react-icons/fa6"
+import { Link } from "react-router-dom"
+
+interface IArticle {
+  id:string
+  Code:string
+  Description:string
+  State:string
+  Stock:string
+  SalePrice:string
+  PurchasePrice:string
+  Profit:string
 }
- 
-export const ArticleBox = () => {
-    const hook = useTable<IArticleBox>()
-    return (
-        <Card>
+
+export const Articles = () => {
+  const hook = useTable<IArticle>()
+  return (
+    <Card>
             <Table
                 hook={hook}
-                ruta="articles-box"
+                ruta="articles"
                 colunms={[
                     "Código",
                     "Descripción",
-                    "Cantidad artículos",
-                    "Precio",
+                    "Stock",
+                    "Precio venta",
                     "Acciones"
                 ]}
                 body={(urlEdit,eliminar) =>
@@ -32,8 +36,8 @@ export const ArticleBox = () => {
                         <tr key={i}>
                             <td>{d.Code}</td>
                             <td>{d.Description}</td>
-                            <td>{d.ToysQuantity}</td>
-                            <td>C$ {d.PurchasePrice}</td>
+                            <td>{d.Stock}</td>
+                            <td>C$ {d.SalePrice}</td>
                             <td>
                                 <div className="flex gap-1 justify-center">
                                     <Link to={urlEdit+d.id}>
@@ -56,5 +60,5 @@ export const ArticleBox = () => {
                 }
             />
         </Card>
-    )
+  )
 }

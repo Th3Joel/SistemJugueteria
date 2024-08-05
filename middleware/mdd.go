@@ -105,10 +105,11 @@ func TrimSpaces(s interface{}) {
 func Csrf(f *fiber.Ctx) error {
 	coo := f.Cookies("_cf")
 	exp, t := helpers.Csrf.Get(coo)
+
 	helpers.Csrf.Delete(coo)
 
 	tok := helpers.Csrf.Gen()
-	tiempo := time.Now().Add(time.Hour * 24)
+	tiempo := time.Now().Add(time.Minute * 10)
 	helpers.Csrf.Set(tok, tiempo.Unix())
 	f.Cookie(&fiber.Cookie{
 		Name:     "_cf",
@@ -117,11 +118,12 @@ func Csrf(f *fiber.Ctx) error {
 		HTTPOnly: true,
 		Secure:   false,
 	})
+
 	//Valida en token csrf
 	if !helpers.Csrf.Verify([]byte(coo), []byte(t)) || exp < time.Now().Unix() {
 		return f.JSON(types.Response{
 			Status: false,
-			Msj:    "Solicitud expirada",
+			Msj:    "Solicitud expirada, intente nuevamente",
 		})
 	}
 

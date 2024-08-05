@@ -116,7 +116,7 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body }) => {
           <div>
             <select
               onChange={initSetPageSize}
-              className="mr-2 p-[3px] text-center rounded-md"
+              className="mr-2 p-[3px] text-center rounded-md outline-none"
             >
               <option value="10">10</option>
               <option value="25">25</option>

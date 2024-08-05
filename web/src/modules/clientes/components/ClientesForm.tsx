@@ -4,7 +4,7 @@ import { Button } from "@mui/material";
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {InputText} from "@/modules/core/components/InputText.tsx";
-import {FaPhone, FaICursor, FaMapLocationDot, FaEnvelope} from "react-icons/fa6";
+import {FaPhone, FaICursor} from "react-icons/fa6";
 
 interface IProps {
   isEdit?: boolean;
@@ -14,16 +14,13 @@ interface IProps {
 interface IFormData {
   Name: string;
   Phone: string;
-  Email: string;
-  Address: string;
+
 }
 
 export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
   const { post, errors, loading, data, get, inputChange } = useForm<IFormData>({
     Name: "",
     Phone: "",
-    Email: "",
-    Address: "",
   });
 
   const navigate = useNavigate();
@@ -67,26 +64,6 @@ export const ClientesForm: React.FC<IProps> = ({ isEdit, id }) => {
             icon={<FaPhone />}
         />
 
-        <InputText
-            label="Correo electrónico"
-            name="Email"
-            value={data?.Email}
-            onChange={inputChange}
-            error={!!errors?.Email}
-            helperText={errors?.Email}
-            type="email"
-            icon={<FaEnvelope />}
-        />
-
-        <InputText
-            label="Dirección"
-            name="Address"
-            value={data?.Address}
-            onChange={inputChange}
-            error={!!errors?.Address}
-            helperText={errors?.Address}
-            icon={<FaMapLocationDot />}
-        />
 
         <div className="flex justify-between">
           <Link to="/clientes">

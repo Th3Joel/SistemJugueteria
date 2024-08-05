@@ -3,8 +3,8 @@ import {Dispatch, SetStateAction} from "react";
 import {toast} from "sonner";
 
 export interface IErrors {
-    email?: string;
-    password?: string;
+    Email?: string;
+    Password?: string;
     loading?: boolean
 }
 

@@ -3,7 +3,7 @@ import { FaCircleArrowLeft } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 interface IProps {
-    counter: number;
+    counter: string;
     title: string;
     color: string;
     link: string;

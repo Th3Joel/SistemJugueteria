@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { SidebarState } from "@/modules/core/globalStates/sidebar-state";
 import logoImg from "@/assets/logo.jpg";
 import userImg from "@/assets/user.png";
@@ -20,28 +19,14 @@ import {
 export const Sidebar = () => {
   const { user } = AuthState();
   const { pathname } = useLocation();
-  const { estado, inc } = SidebarState();
-  const mq = window.matchMedia("(max-width: 720px)");
+  const { estado } = SidebarState();
 
-  function verified(est:boolean) {
-    if (est) {
-      inc(true);
-    } else {
-      inc(false);
-    }
-  }
-  useEffect(() => {
-    mq.addEventListener("change", (e)=>verified(e.matches));
-    verified(mq.matches);
-    //Se remueve cuando se desmonta
-    return () => {
-      mq.removeEventListener("change",(e)=>verified(e.matches));
-    };
-  }, []);
+  
+  
   return (
     <div
-      className={`z-20 px-3 fixed w-[260px] text-white bg-slate-700 h-[100dvh] duration-300 ${
-        estado ? "-translate-x-full" : "translate-x-0"
+      className={`fixed top-0 z-20 px-3 w-[260px] animate__fadeInLeft text-white bg-slate-700 h-[100dvh] duration-300 ${
+        estado ? "-ml-[260px]" : "ml-0"
       }`}
     >
       <div className="px-1 h-16 flex items-center">
@@ -118,7 +103,7 @@ export const Sidebar = () => {
 
           <div
               className={`border duration-300 border-[#0071BC] ${
-                  pathname.startsWith("/articles-box") &&
+                 pathname.startsWith("/articles-box") &&
                   "bg-[#E261B1] border-[#E261B1]"
               } rounded-lg px-3 py-2 my-3`}
           >
@@ -142,7 +127,7 @@ export const Sidebar = () => {
 
           <div
               className={`border duration-300 border-[#0071BC] ${
-                  pathname.startsWith("/price-categories") &&
+                 pathname.startsWith("/price-categories") &&
                   "bg-[#E261B1] border-[#E261B1]"
               } rounded-lg px-3 py-2 my-3`}
           >
@@ -154,13 +139,14 @@ export const Sidebar = () => {
 
           <div
               className={`border duration-300 border-[#0071BC] ${
-                  pathname.endsWith("/articles") &&
+                  !pathname.includes("/articles-box") && 
+                  pathname.startsWith("/articles") &&
                   "bg-[#E261B1] border-[#E261B1]"
               } rounded-lg px-3 py-2 my-3`}
           >
             <Link to="/articles" className="flex">
               <FaTruck className="text-2xl"/>
-              <p className="pl-2">Artículos</p>
+              <p className="pl-2">Artículos únicos</p>
             </Link>
           </div>
 

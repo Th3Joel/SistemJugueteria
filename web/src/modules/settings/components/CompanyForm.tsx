@@ -32,9 +32,9 @@ export const CompanyForm = () => {
         get("/settings/company");
     }, []);
     return (
-        <>
+        <div className="animate__fadeIn">
             <div
-                className="w-[350px] h-[250px] flex flex-col gap-1 py-2 shadow-lg rounded-lg justify-center items-center">
+                className="w-[350px] h-[250px] flex flex-col gap-1 my-3 shadow-lg rounded-lg justify-center items-center">
                 <img src={logoImg} width={150} height={150} alt="logo"/>
                 <h1 className="text-xl font-semibold">{data?.Name}</h1>
                 <h2 className="text-lg font-semibold text-gray-500">{data?.Email}</h2>
@@ -103,6 +103,6 @@ export const CompanyForm = () => {
                     <Button variant="contained" color="primary" type="submit" size="small" fullWidth>{loading ? <LoaderBtn/> : "Actualizar"}</Button>
                 </form>
             </div>
-        </>
+        </div>
     )
 }

@@ -8,7 +8,7 @@ import {
     TextField,
     TextFieldProps
 } from "@mui/material";
-import React, {ReactElement, useState} from "react";
+import React, {ReactElement, useEffect, useState} from "react";
 
 
 export interface IOptions {
@@ -40,7 +40,7 @@ export const InputText: React.FC<InputProps> = ({
                                                                      multiline,
                                                                  }) => {
     const [isFocused, setIsFocused] = useState(false);
-    const [selected, setSelected] = useState(value == "" ? options[0]?.key : value);
+    const [selected, setSelected] = useState("");
     const handleFocus = () => {
         setIsFocused(true);
     };
@@ -51,7 +51,7 @@ export const InputText: React.FC<InputProps> = ({
         setSelected(event.target.value as string);
     }
     const cloneIcon = React.cloneElement(icon, {
-        style:{
+        style:{ 
             margin:"0 2px 0 2px",
             transform: isFocused ? 'rotate(0deg)' : 'rotate(-90deg)',
             transition: 'all 0.3s ease-in-out',
@@ -59,6 +59,11 @@ export const InputText: React.FC<InputProps> = ({
             fontSize: '18px',
         }
     });
+
+    useEffect(() => {
+        if(value != "")
+            setSelected(value!);
+    }, [value])
 
 
     const InputSelect = () => {

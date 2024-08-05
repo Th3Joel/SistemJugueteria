@@ -1,5 +1,5 @@
 import { Card } from "@/modules/core/components/Card";
-import { Box, Tab, Tabs } from "@mui/material";
+import {  Tab, Tabs } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
@@ -21,9 +21,9 @@ const CustomTabPanel = (props: TabPanelProps) => {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 1 }}>
+        <div className="py-1">
           <Outlet />
-        </Box>
+        </div>
       )}
     </div>
   );
@@ -74,7 +74,7 @@ export const Setting = () => {
 
   return (
     <div>
-      <div className="px-5 -mb-3 mt-2">
+      <div className="px-5 mt-2">
         <Tabs value={value} aria-label="basic tabs example" variant="scrollable" scrollButtons="auto">
           <Tab label="Usuarios" {...a11yProps(0, nv)} />
           <Tab label="Perfil" {...a11yProps(1, nv)} />
@@ -82,7 +82,7 @@ export const Setting = () => {
           <Tab label="Mantenimiento" {...a11yProps(3,nv)} />
         </Tabs>
       </div>
-      <Card>
+      <Card notAnimate>
         <CustomTabPanel value={value} index={value} />
       </Card>
     </div>

@@ -15,35 +15,37 @@ export const Users = () => {
   window.document.title = "Usuarios";
   const hook = useTable<IUser>();
   return (
-    <Table
-      hook={hook}
-      ruta="settings/users"
-      colunms={["Foto", "Nombre", "Correo", "Rol", "Acciones"]}
-      body={(urlEdit,eliminar) =>
-        hook.all?.data.map((d, i) => (
-          <tr key={i}>
-            <td>{d.Picture}</td>
-            <td>{d.Name}</td>
-            <td>{d.Email}</td>
-            <td>{d.Role}</td>
-            <td>
-              <div className="flex gap-1 justify-center">
-                <Link to={urlEdit+d.id}>
-                  <IconButton color="success">
-                    <EditRounded />
+    <div className="animate__fadeIn">
+      <Table
+        hook={hook}
+        ruta="settings/users"
+        colunms={["Foto", "Nombre", "Correo", "Rol", "Acciones"]}
+        body={(urlEdit, eliminar) =>
+          hook.all?.data.map((d, i) => (
+            <tr key={i}>
+              <td>{d.Picture}</td>
+              <td>{d.Name}</td>
+              <td>{d.Email}</td>
+              <td>{d.Role === "admin" ? "Administrador" : d.Role === "vendedor" ? "Vendedor" : "Bodega"}</td>
+              <td>
+                <div className="flex gap-1 justify-center">
+                  <Link to={urlEdit + d.id}>
+                    <IconButton color="success">
+                      <EditRounded />
+                    </IconButton>
+                  </Link>
+                  <IconButton
+                    color="error"
+                    onClick={() => eliminar(d.id, `Eliminar a: ${d.Name} `)}
+                  >
+                    <DeleteRounded />
                   </IconButton>
-                </Link>
-                <IconButton
-                  color="error"
-                  onClick={() => eliminar(d.id, `Eliminar a: ${d.Name} `)}
-                >
-                  <DeleteRounded />
-                </IconButton>
-              </div>
-            </td>
-          </tr>
-        ))
-      }
-    />
+                </div>
+              </td>
+            </tr>
+          ))
+        }
+      />
+    </div>
   );
 };

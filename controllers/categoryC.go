@@ -5,10 +5,11 @@ import (
 	"Jugueteria/models"
 	"Jugueteria/types"
 	"fmt"
-	"github.com/gofiber/fiber/v2"
-	"github.com/google/uuid"
 	"math"
 	"strings"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 type CategoryC struct {
@@ -17,6 +18,28 @@ type CategoryC struct {
 	Description string          `json:"Description"`
 	Model       models.Category `gorm:"-" json:"-"`
 	Array       []CategoryC     `gorm:"-" json:"-"`
+}
+
+func (category CategoryC) AllSelect(f *fiber.Ctx) error {
+	db := config.DB.Model(category.Model)
+
+	db.Find(&category.Array)
+
+	type Perz struct {
+		ID   string `json:"id"`
+		Name string `json:"name"`
+	}
+
+	var custom []Perz
+	for _, v := range category.Array {
+		custom = append(custom, Perz{
+			ID:   v.ID,
+			Name: v.Name,
+		})
+	}
+
+	return f.JSON(custom)
+
 }
 
 func (category CategoryC) All(c *fiber.Ctx) error {

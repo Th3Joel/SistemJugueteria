@@ -22,10 +22,8 @@ type UserPost struct {
 
 // CostumerPost Costumers
 type CostumerPost struct {
-	Name    string `validate:"required,isRepeat"`
-	Address string `validate:"omitempty,lte=50"`
-	Phone   string `validate:"omitempty,numeric"`
-	Email   string `validate:"omitempty,email"`
+	Name  string `validate:"required,isRepeat"`
+	Phone string `validate:"omitempty,numeric"`
 }
 
 // CompanyPost
@@ -51,6 +49,16 @@ type ArticleBoxPost struct {
 	Description   string `validate:"required,isRepeat"`
 	ToysQuantity  string `validate:"required,integer,gtC=1"`
 	PurchasePrice string `validate:"required,numeric,gtC=1"`
+}
+
+// Article
+type ArticlePost struct {
+	ArticleBoxID string `validate:"required"`
+	CategoryID   string `validate:"required"`
+	Code         string `validate:"required,isRepeat"`
+	Description  string `validate:"required,isRepeat"`
+	Stock        string `validate:"required,integer,gtC=1"`
+	SalePrice    string `validate:"required,numeric,gtC=1"`
 }
 
 // CategoryPost

@@ -7,11 +7,8 @@ import { Link } from "react-router-dom";
 
 interface ICliente {
   id:string
-  name:string
-  surname:string
-  phone:string
-  email:string
-  address:string
+  Name:string
+  Phone:string
 }
 export const Clientes = () => {
   window.document.title = "Clientes"
@@ -24,17 +21,13 @@ const hook = useTable<ICliente>()
         colunms={[
           "Nombre",
           "Celular",
-          "Correo",
-          "Dirección",
           "Acciones",
         ]}
         body={(urlEdit,eliminar) =>
           hook.all?.data.map((d, i) => (
             <tr key={i}>
-              <td>{d.name}</td>
-              <td>{d.phone}</td>
-              <td>{d.email}</td>
-              <td>{d.address}</td>
+              <td>{d.Name}</td>
+              <td>{d.Phone}</td>
               <td>
                 <div className="flex gap-1 justify-center">
                   <Link to={urlEdit+d.id}>
@@ -45,7 +38,7 @@ const hook = useTable<ICliente>()
                   <IconButton
                   color="error"
                     onClick={() =>
-                      eliminar(d.id, `Eliminar a: ${d.name} ${d.surname ?? ""}`)
+                      eliminar(d.id, `Eliminar a: ${d.Name}`)
                     }
                   >
                     <DeleteRounded />

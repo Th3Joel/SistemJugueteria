@@ -4,9 +4,10 @@ import (
 	"Jugueteria/config"
 	"Jugueteria/models"
 	"Jugueteria/types"
-	"gorm.io/gorm"
 	"math"
 	"strings"
+
+	"gorm.io/gorm"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -14,11 +15,9 @@ import (
 
 type CostumerC struct {
 	//Data
-	ID      string `json:"id"`
-	Name    string `json:"name"`
-	Address string `json:"address,omitempty"`
-	Phone   string `json:"phone,omitempty"`
-	Email   string `json:"email,omitempty"`
+	ID    string `json:"id"`
+	Name  string `json:"Name"`
+	Phone string `json:"Phone,omitempty"`
 	//Settings
 	Model models.Costumers `gorm:"-" json:"-"`
 	Array []CostumerC      `gorm:"-" json:"-"`
@@ -107,11 +106,9 @@ func (costumer CostumerC) Save(f *fiber.Ctx) error {
 
 	sql := db.
 		Create(&models.Costumers{
-			ID:      costumer.ID,
-			Name:    costumer.Name,
-			Email:   costumer.Email,
-			Address: costumer.Address,
-			Phone:   costumer.Phone,
+			ID:    costumer.ID,
+			Name:  costumer.Name,
+			Phone: costumer.Phone,
 		})
 	if sql.RowsAffected == 0 {
 		return f.Status(200).JSON(types.Response{
@@ -134,7 +131,7 @@ func (costumer CostumerC) UpdateId(f *fiber.Ctx) error {
 	costumer.trim(&costumer)
 	db.
 		Where("id = ?", id).
-		Select("name", "email", "address", "phone").
+		Select("name", "phone").
 		Updates(costumer)
 
 	return f.JSON(types.Response{
@@ -166,7 +163,5 @@ func (costumer CostumerC) Delete(f *fiber.Ctx) error {
 
 func (CostumerC) trim(u *CostumerC) {
 	u.Name = strings.TrimSpace(u.Name)
-	u.Email = strings.TrimSpace(u.Email)
-	u.Address = strings.TrimSpace(u.Address)
 	u.Phone = strings.TrimSpace(u.Phone)
 }

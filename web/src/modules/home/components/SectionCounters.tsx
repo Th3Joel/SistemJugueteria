@@ -31,8 +31,8 @@ export const SectionCounters = () => {
   return (
     <div className="flex gap-3 flex-wrap justify-center mb-5">
       <BoxCounterInfo
-        counter={data.purchasesCount}
-        title="Compras"
+        counter={"C$ "+data.purchasesCount}
+        title="Total compras"
         color="#17A2B8"
         link="/"
         isLoading={loading}
@@ -40,8 +40,8 @@ export const SectionCounters = () => {
       />
 
       <BoxCounterInfo
-        counter={data.salesCount}
-        title="Ventas"
+        counter={"C$ "+data.salesCount}
+        title="Total ventas"
         color="#22A745"
         link="/"
         isLoading={loading}
@@ -49,7 +49,7 @@ export const SectionCounters = () => {
       />
 
       <BoxCounterInfo
-        counter={data.usersCount}
+        counter={""+data.usersCount}
         title="Usuarios"
         color="#E261B1"
         link="/settings/users"
@@ -58,7 +58,7 @@ export const SectionCounters = () => {
       />
 
       <BoxCounterInfo
-        counter={data.costumersCount}
+        counter={""+data.costumersCount}
         title="Clientes"
         color="#1976D2"
         link="/clientes"
@@ -67,7 +67,7 @@ export const SectionCounters = () => {
       />
 
       <BoxCounterInfo
-        counter={data.suppliersCount}
+        counter={""+data.suppliersCount}
         title="Proveedores"
         color="#c98c30"
         link="/suppliers"
