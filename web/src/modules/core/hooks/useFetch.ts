@@ -5,8 +5,8 @@ export const useFetch = async <T>(
   body?: object | FormData,
   isFormData?: boolean
 ): Promise<T> => {
-  //const uri = "http://localhost:5000/api";
-  const uri = "/api";
+  const uri = "http://localhost:5000/api";
+  //const uri = "/api";
 
   const content_type = isFormData ? null : {
     "Content-Type": "application/json",

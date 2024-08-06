@@ -5,6 +5,7 @@ import (
 	mdd "Jugueteria/middleware"
 	"Jugueteria/models"
 	val "Jugueteria/validation"
+
 	"github.com/gofiber/fiber/v2"
 )
 

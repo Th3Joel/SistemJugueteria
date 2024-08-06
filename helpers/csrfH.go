@@ -28,12 +28,12 @@ func (csrfH) Verify(a, b []byte) bool {
 
 func (csrfH) Delete(token string) bool {
 	sql := `
-	    DELETE FROM csrf WHERE key =?`
+	    DELETE FROM csrf WHERE key = ?`
 	_, err := config.Slite.Exec(sql, token)
 	return err != nil
 }
 
-func (csrfH) Set(tok string, exp int64) bool {
+func (csrfH) Save(tok string, exp int64) bool {
 	sql := `
 		INSERT INTO csrf (key,exp) VALUES (?,?)`
 	_, err := config.Slite.Exec(sql, tok, exp)
@@ -42,7 +42,7 @@ func (csrfH) Set(tok string, exp int64) bool {
 
 func (tt csrfH) Get(tok string) (int64, string) {
 	sql := `
-        SELECT exp,key FROM csrf WHERE key =?`
+        SELECT exp,key FROM csrf WHERE key = ?`
 
 	_ = config.Slite.QueryRow(sql, tok).Scan(&tt.Exp, &tt.Key)
 

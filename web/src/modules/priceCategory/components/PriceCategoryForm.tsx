@@ -46,24 +46,24 @@ export const PriceCategoryForm: React.FC<IProps> = ({ isEdit, id }) => {
         });
     };
 
-    const fetchDataSelect = async() => {
-        const res = await useFetch<ISelect[]>("/articles-box/select", "GET");
+    const fetchDataSelect = () => {
+        useFetch<ISelect[]>("/articles-box/select", "GET").then((res) => {
             if (res) {
                 setSelect(res.map((data) => ({
                     key: data.id,
                     value: data.code + " - " + data.description,
                 })));
             }
-        
+
+        });
+
     }
 
     useEffect(() => {
-        (async () => {
-            await fetchDataSelect();
-            if (isEdit) {
-                get("/price-categories/" + id);
-            }
-        })()
+        fetchDataSelect();
+        if (isEdit) {
+            get("/price-categories/" + id);
+        }
     }, []);
     return (<div className="w-[350px] p-3 shadow-lg rounded-lg">
         <form className="flex flex-col gap-3" onSubmit={handleSubmit}>

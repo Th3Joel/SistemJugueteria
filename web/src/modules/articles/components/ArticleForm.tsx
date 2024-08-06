@@ -52,32 +52,32 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
     });
   };
 
-  const fetchDataSelect = async () => {
-    const res = await useFetch<ISelect[]>("/articles-box/select", "GET");
+  const fetchDataSelect = () => {
+    useFetch<ISelect[]>("/articles-box/select", "GET").then((res) => {
     if (res) {
       setSelect(res.map((data) => ({
         key: data.id,
         value: data.code + " - " + data.description,
       })));
     }
+  });
 
-    const res2 = await useFetch<ISelect2[]>("/categories/select", "GET");
-    if (res2) {
-      setSelect2(res2.map((data) => ({
+    useFetch<ISelect2[]>("/categories/select", "GET").then((res) => {
+    if (res) {
+      setSelect2(res.map((data) => ({
         key: data.id,
         value: data.name,
       })));
     }
+  });
 
   }
 
   useEffect(() => {
-    (async () => {
-      await fetchDataSelect();
+      fetchDataSelect();
       if (isEdit) {
         get("/articles/" + id);
       }
-    })()
   }, []);
   return (<div className="w-[350px] p-3 shadow-lg rounded-lg">
     <form className="flex flex-col gap-3" onSubmit={handleSubmit}>

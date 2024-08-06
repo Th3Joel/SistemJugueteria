@@ -106,11 +106,30 @@ func Csrf(f *fiber.Ctx) error {
 	coo := f.Cookies("_cf")
 	exp, t := helpers.Csrf.Get(coo)
 
-	helpers.Csrf.Delete(coo)
+	if t == "" {
+		genCookieCSRF(f, t)
+	}
 
+	if t != "" && exp < time.Now().Unix() {
+		genCookieCSRF(f, t)
+	}
+
+	// Valida en token csrf
+	if !helpers.Csrf.Verify([]byte(coo), []byte(t)) {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "Solicitud expirada, intente nuevamente",
+		})
+	}
+	return f.Next()
+}
+
+func genCookieCSRF(f *fiber.Ctx, t string) {
+	helpers.Csrf.Delete(t)
 	tok := helpers.Csrf.Gen()
-	tiempo := time.Now().Add(time.Minute * 10)
-	helpers.Csrf.Set(tok, tiempo.Unix())
+	tiempo := time.Now().Add(time.Second * 10)
+	helpers.Csrf.Save(tok, tiempo.Unix())
+
 	f.Cookie(&fiber.Cookie{
 		Name:     "_cf",
 		Value:    tok,
@@ -118,14 +137,4 @@ func Csrf(f *fiber.Ctx) error {
 		HTTPOnly: true,
 		Secure:   false,
 	})
-
-	//Valida en token csrf
-	if !helpers.Csrf.Verify([]byte(coo), []byte(t)) || exp < time.Now().Unix() {
-		return f.JSON(types.Response{
-			Status: false,
-			Msj:    "Solicitud expirada, intente nuevamente",
-		})
-	}
-
-	return f.Next()
 }
