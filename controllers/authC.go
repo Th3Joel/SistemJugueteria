@@ -102,14 +102,8 @@ func (a AuthC) ForgotPassword(f *fiber.Ctx) error {
 	client := resend.NewClient(apiKey)
 	_ = f.BodyParser(&a)
 
-	sql := db.Where("email = ?", a.Email).First(&a)
-	if sql.RowsAffected == 0 {
-		return f.JSON(types.Response{
-			Status: false,
-			Msj:    "Email no encontrado",
-		})
-	}
-	fmt.Println(a.Email)
+	db.Where("email = ?", a.Email).First(&a)
+
 	genToken, _ := tokenH.Gen()
 	tokenH.Save(genToken, a.ID, time.Minute*30, f.IP())
 
@@ -171,12 +165,6 @@ func (a AuthC) ResetPassword(f *fiber.Ctx) error {
 	_ = f.BodyParser(&da)
 
 	data := tokenH.Get(da.Code)
-	if data.Key == "" || data.Exp < time.Now().Unix() || !tokenH.Compare(da.Code, data.Key) {
-		return f.JSON(types.Response{
-			Status: false,
-			Msj:    "Código inválido",
-		})
-	}
 	tokenH.Remove(da.Code)
 	db.Where("id = ?", data.UserId).Update("password", passwdH.Hash(da.Password))
 

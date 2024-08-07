@@ -78,7 +78,11 @@ type PriceCategoryPost struct {
 }
 
 type PasswordReset struct {
-	Code     string `validate:"required"`
+	Code     string `validate:"required,valToken"`
 	Password string `validate:"required,gte=4"`
 	Confirm  string `validate:"required,confirmPasswd"`
+}
+
+type ForgotPassword struct {
+	Email string `validate:"required,email,exists"`
 }

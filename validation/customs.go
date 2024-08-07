@@ -2,13 +2,38 @@ package val
 
 import (
 	"Jugueteria/config"
-	"github.com/gofiber/fiber/v2"
+	"Jugueteria/helpers"
 	"reflect"
 	"strconv"
 	"strings"
+	"time"
+
+	"github.com/gofiber/fiber/v2"
 
 	"github.com/go-playground/validator/v10"
 )
+
+// Validacion si existe un campo en la base de datos
+func Exists[T any](model T, f *fiber.Ctx) func(validator.FieldLevel) bool {
+	return func(fl validator.FieldLevel) bool {
+		field := fl.Field().String()
+		fieldName := strings.ToLower(fl.FieldName())
+		sql := config.DB.Select(fieldName).First(&model, "LOWER("+fieldName+") = ?", field)
+		return sql.RowsAffected == 1
+
+	}
+}
+
+func ValToken(f *fiber.Ctx) func(validator.FieldLevel) bool {
+	return func(fl validator.FieldLevel) bool {
+		tokenH := helpers.TokenH{}
+		data := tokenH.Get(fl.Field().String())
+		if data.Key == "" || data.Exp < time.Now().Unix() || !tokenH.Compare(fl.Field().String(), data.Key) {
+			return false
+		}
+		return true
+	}
+}
 
 // IsRepeat General
 func IsRepeat[T any](model T, f *fiber.Ctx) func(validator.FieldLevel) bool {
@@ -72,9 +97,7 @@ func Integer() func(fl validator.FieldLevel) bool {
 	return func(fl validator.FieldLevel) bool {
 		field := fl.Field().String()
 		_, err := strconv.Atoi(field)
-		if err != nil {
-			return false
-		}
-		return true
+
+		return err != nil
 	}
 }

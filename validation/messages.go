@@ -109,9 +109,16 @@ var MsjArticleVal = map[string]string{
 
 var MsjPasswordResetVal = map[string]string{
 	"Code.required":         "Código requerido.",
+	"Code.valToken":         "Código inválido",
 	"Password.required":     "La contraseña es requerida.",
 	"Password.gte":          "La contraseña debe ser mayor o igual a 4.",
 	"Confirm.required":      "Confirmación requerida.",
 	"Confirm.confirmPasswd": "Las contraseñas no coinciden",
 	"Confirm.omitCustom":    "Confirmación requerida",
+}
+
+var MsjForgotPasswordVal = map[string]string{
+	"Email.required": "Email requerido.",
+	"Email.email":    "Email no válido.",
+	"Email.exists":   "Email no encontrado.",
 }

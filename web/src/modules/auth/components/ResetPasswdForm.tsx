@@ -24,7 +24,7 @@ export const ResetPasswdForm = () => {
     e.preventDefault();
     post(`/auth/reset-password`, e, false).then((res) => {
         if (res) {
-          navigate("/auth/login");
+          navigate("/auth/login",{replace: true});
         } 
     });
 };

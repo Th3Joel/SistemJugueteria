@@ -20,7 +20,7 @@ export const ForgotPasswdForm = () => {
     e.preventDefault();
     post(`/auth/forgot-password`, e, false).then((res) => {
         if (res) {
-          navigate("/auth/login");
+          navigate("/auth/login",{replace: true});
         } 
     });
 };
