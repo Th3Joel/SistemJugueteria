@@ -9,5 +9,5 @@ type Costumers struct {
 	CreatedAt time.Time
 	UpdateAt  time.Time `gorm:"autoUpdateTime"`
 
-	Sales []Sales `gorm:"foreignKey:CostumerID"`
+	//Sales []Sales `gorm:"foreignKey:CostumerID"`
 }

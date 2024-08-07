@@ -14,6 +14,6 @@ type Users struct {
 	CreatedAt time.Time
 	UpdateAt  time.Time `gorm:"autoUpdateTime"`
 
-	Sales     []Sales     `gorm:"foreignKey:UserID"`
-	Purchases []Purchases `gorm:"foreignKey:UserID"`
+	//Sales     []Sales     `gorm:"foreignKey:UserID"`
+	//Purchases []Purchases `gorm:"foreignKey:UserID"`
 }

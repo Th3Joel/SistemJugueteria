@@ -76,3 +76,9 @@ type PriceCategoryPost struct {
 	Stock        string `validate:"required,integer,gtC=1"`
 	SalePrice    string `validate:"required,numeric,gtC=1"`
 }
+
+type PasswordReset struct {
+	Code     string `validate:"required"`
+	Password string `validate:"required,gte=4"`
+	Confirm  string `validate:"required,confirmPasswd"`
+}

@@ -14,5 +14,8 @@ type Purchases struct {
 	CreatedAt  time.Time
 	UpdatedAt  time.Time `gorm:"autoUpdateTime"`
 
+	User     Users     `gorm:"foreignKey:UserID"`
+	Supplier Suppliers `gorm:"foreignKey:SupplierID"`
+
 	DetailPurchase []DetailPurchase `gorm:"foreignKey:PurchaseID"`
 }

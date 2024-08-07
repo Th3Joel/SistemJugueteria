@@ -18,7 +18,7 @@ var (
 
 func ConnectDB() {
 	dsn := "VwgHAVyMup7XfY6.root:D21sfVrtNmTuZPgy@tcp(gateway01.us-east-1.prod.aws.tidbcloud.com:4000)/jugueteria?parseTime=true&tls=true"
-	//dsn := "joel:jo12el34@tcp(127.0.0.1:3306)/jugueteria?charset=utf8mb4&parseTime=True&loc=Local"
+	//dsn := "joel:joel1234@tcp(127.0.0.1:3306)/jugueteria?charset=utf8mb4&parseTime=true&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{TranslateError: true, SkipDefaultTransaction: true})
 	if err != nil {
 		log.Fatal("No se pudo conectar a la base de datos. \n")
@@ -54,17 +54,15 @@ func ConnectDB() {
 		log.Fatal("No se pudo conectar a la base de datos sqlite3. \n")
 	}
 	createTableSQL := `
-    CREATE TABLE IF NOT EXISTS csrf (
-        key VARCHAR(64) NOT NULL PRIMARY KEY,
-        exp BIGINT NOT NULL DEFAULT(0)
-    );
+
 	
 	CREATE TABLE IF NOT EXISTS token (
-		ID VARCHAR(100) NOT NULL PRIMARY KEY,
-		UserID VARCHAR(100) NOT NULL,
-		Token VARCHAR(255) NOT NULL,
-		IP VARCHAR(100),
-        CreatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+		user_id VARCHAR(100) NOT NULL,
+		key VARCHAR(255) NOT NULL,
+		exp BIGINT,
+		ip VARCHAR(100),
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 	);
 	`
 	_, err = d.Exec(createTableSQL)

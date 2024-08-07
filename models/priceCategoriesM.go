@@ -17,5 +17,5 @@ type PriceCategories struct {
 
 	ArticleBox ArticlesBox `gorm:"foreignKey:ArticleBoxID"`
 
-	DetailSale []DetailSale `gorm:"foreignKey:PriceCategoryID"`
+	//DetailSale []DetailSale `gorm:"foreignKey:PriceCategoryID"`
 }

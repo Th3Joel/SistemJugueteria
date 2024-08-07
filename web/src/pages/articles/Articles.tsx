@@ -15,6 +15,9 @@ interface IArticle {
   SalePrice:string
   PurchasePrice:string
   Profit:string
+  Category:{
+    Name:string
+  }
 }
 
 export const Articles = () => {
@@ -27,6 +30,7 @@ export const Articles = () => {
                 colunms={[
                     "Código",
                     "Descripción",
+                    "Categoria",
                     "Stock",
                     "Precio venta",
                     "Acciones"
@@ -36,6 +40,7 @@ export const Articles = () => {
                         <tr key={i}>
                             <td>{d.Code}</td>
                             <td>{d.Description}</td>
+                            <td>{d.Category.Name}</td>
                             <td>{d.Stock}</td>
                             <td>C$ {d.SalePrice}</td>
                             <td>

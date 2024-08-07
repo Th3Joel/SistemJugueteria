@@ -23,11 +23,15 @@ func AuthM(c *fiber.Ctx) error {
 	//Verificar si el token esta almacenado
 	//modelToken := models.Token{}
 	//db := config.DB.Select("UserID").First(&modelToken, "token = ?", token)
-	queryToken, queryUserID := tokenH.Get(token)
+	data := tokenH.Get(token)
 	var modelUser models.Users
-	config.DB.Select("id", "Role").First(&modelUser, "id = ?", queryUserID)
+	config.DB.Select("id", "Role").First(&modelUser, "id = ?", data.UserId)
 	// Verificacion
-	if token == "" || !tokenH.Verify(queryToken) || queryToken == "" || modelUser.ID == "" {
+	if token == "" ||
+		!tokenH.Compare(token, data.Key) ||
+		data.Key == "" ||
+		data.Exp < time.Now().Unix() ||
+		modelUser.ID == "" {
 		// Si el token no es válido, responde con un error de autorización
 		return c.JSON(types.Response{
 			Status: false,
@@ -103,19 +107,21 @@ func TrimSpaces(s interface{}) {
 }
 
 func Csrf(f *fiber.Ctx) error {
+	tokenH := helpers.TokenH{}
 	coo := f.Cookies("_cf")
-	exp, t := helpers.Csrf.Get(coo)
-
-	if t == "" {
-		genCookieCSRF(f, t)
+	t := tokenH.Get(coo)
+	//fmt.Println("Datos de exoaria: "+coo, t.Exp, t)
+	if t.Key == "" {
+		genCookieCSRF(f, &tokenH)
 	}
 
-	if t != "" && exp < time.Now().Unix() {
-		genCookieCSRF(f, t)
+	if t.Key != "" && t.Exp < time.Now().Unix() {
+		tokenH.Remove(t.Key)
+		genCookieCSRF(f, &tokenH)
 	}
 
 	// Valida en token csrf
-	if !helpers.Csrf.Verify([]byte(coo), []byte(t)) {
+	if !tokenH.Compare(coo, t.Key) {
 		return f.JSON(types.Response{
 			Status: false,
 			Msj:    "Solicitud expirada, intente nuevamente",
@@ -124,16 +130,14 @@ func Csrf(f *fiber.Ctx) error {
 	return f.Next()
 }
 
-func genCookieCSRF(f *fiber.Ctx, t string) {
-	helpers.Csrf.Delete(t)
-	tok := helpers.Csrf.Gen()
-	tiempo := time.Now().Add(time.Second * 10)
-	helpers.Csrf.Save(tok, tiempo.Unix())
+func genCookieCSRF(f *fiber.Ctx, h *helpers.TokenH) {
+	tok, _ := h.Gen()
+	h.Save(tok, "Token csrf", time.Second*10, f.IP())
 
 	f.Cookie(&fiber.Cookie{
 		Name:     "_cf",
 		Value:    tok,
-		Expires:  tiempo,
+		Expires:  time.Now().Add(time.Minute * 1),
 		HTTPOnly: true,
 		Secure:   false,
 	})

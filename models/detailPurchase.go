@@ -9,4 +9,6 @@ type DetailPurchase struct {
 	//Total        float64
 	CreatedAt time.Time
 	UpdatedAt time.Time `gorm:"autoUpdateTime"`
+
+	ArticleBox ArticlesBox `gorm:"foreignKey:ArticleBoxID"`
 }

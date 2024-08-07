@@ -11,5 +11,5 @@ type Category struct {
 	CreatedAt   time.Time
 	UpdateAt    time.Time `gorm:"autoUpdateTime"`
 
-	Articles []Articles `gorm:"foreignKey:CategoryID"`
+	//Articles []Articles `gorm:"foreignKey:CategoryID"`
 }

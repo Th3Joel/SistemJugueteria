@@ -68,7 +68,7 @@ export const ArticleBoxForm:React.FC<IProps> = ({ isEdit, id }) => {
                     helperText={errors?.Code}
                 />
                 <InputText
-                    label="Cantidad"
+                    label="Cantidad de artículos"
                     name="ToysQuantity"
                     icon={<FaDatabase/>}
                     value={data?.ToysQuantity}

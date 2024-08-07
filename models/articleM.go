@@ -11,10 +11,13 @@ type Articles struct {
 	Stock         int
 	SalePrice     float64
 	PurchasePrice float64
-	State         int `gorm:"default:0"`
+	State         int `gorm:"default:1"`
 	Profit        float64
-	CreatedAt     time.Time
-	UpdateAt      time.Time `gorm:"autoUpdateTime"`
 
-	DetailSale []DetailSale `gorm:"foreignKey:ArticleID"`
+	CreatedAt time.Time
+	UpdateAt  time.Time `gorm:"autoUpdateTime"`
+
+	Category Category    `gorm:"foreignKey:CategoryID"`
+	Article  ArticlesBox `gorm:"foreignKey:ArticleBoxID"`
+	//DetailSale []DetailSale `gorm:"foreignKey:ArticleID"`
 }

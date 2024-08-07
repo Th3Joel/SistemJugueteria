@@ -1,18 +1,20 @@
-import { AccountCircle, Key } from "@mui/icons-material";
-import { Button, InputAdornment, Link, TextField } from "@mui/material";
+import { Button} from "@mui/material";
+import { Link as LinkR } from "react-router-dom";
 import { IErrors, loginFetch } from "../utils/authFetch";
 import { FormEvent, useState } from "react";
 import LoaderBtn from "@/modules/core/components/LoaderBtn";
+import { InputText } from "@/modules/core/components/InputText";
+import { FaEnvelope, FaKey } from "react-icons/fa6";
 
 
 
 export const LoginForm = () => {
 
-  const [errors,setErrors] = useState<IErrors>({});
+  const [errors, setErrors] = useState<IErrors>({});
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    loginFetch(new FormData(e.target as HTMLFormElement),setErrors);
+    loginFetch(new FormData(e.target as HTMLFormElement), setErrors);
   };
   window.document.title = "Iniciar sesión";
   return (
@@ -22,41 +24,28 @@ export const LoginForm = () => {
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3 px-6 py-3">
         <h3 className="text-center">Bienvenido</h3>
-        <TextField
+        <InputText
           name="Email"
-          size="small"
-          label="Correo"
+          label="Correo electrónico"
           error={!(!errors.Email)}
           helperText={errors.Email}
-          variant="outlined"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <AccountCircle />
-              </InputAdornment>
-            ),
-          }}
+          icon={<FaEnvelope />}
         />
-        <TextField
+        <InputText
           name="Password"
-          size="small"
           type="password"
           error={!(!errors.Password)}
           helperText={errors.Password}
           label="Contraseña"
-          variant="outlined"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Key />
-              </InputAdornment>
-            ),
-          }}
+          icon={<FaKey />}
         />
         <Button type="submit" disabled={errors.loading} variant="contained">
-         {errors.loading ? <LoaderBtn/> : "Iniciar session"}
+          {errors.loading ? <LoaderBtn /> : "Iniciar sesión"}
         </Button>
-        <Link className="text-center">¿Hás olvidado tu contraseña</Link>
+          <LinkR to="/auth/forgot-password" className="text-center text-blue-500 underline">
+            ¿Hás olvidado tu contraseña?
+
+          </LinkR>
       </form>
     </div>
   );

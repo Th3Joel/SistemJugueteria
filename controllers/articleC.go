@@ -14,8 +14,8 @@ import (
 
 type ArticleC struct {
 	ID            string  `json:"id"`
-	ArticleBoxID  string  `json:"ArticleBoxID"`
 	CategoryID    string  `json:"CategoryID"`
+	ArticleBoxID  string  `json:"ArticleBoxID"`
 	Code          string  `json:"Code"`
 	Description   string  `json:"Description"`
 	State         int     `json:"State"`
@@ -24,8 +24,15 @@ type ArticleC struct {
 	PurchasePrice float64 `json:"PurchasePrice"`
 	Profit        float64 `json:"Profit"`
 
+	Category Category `json:"Category"`
+
 	Model models.Articles `json:"-" gorm:"-"`
 	Array []ArticleC      `json:"-" gorm:"-"`
+}
+
+type Category struct {
+	ID   string `json:"-"`
+	Name string `json:"Name"`
 }
 
 func (article ArticleC) All(c *fiber.Ctx) error {
@@ -36,7 +43,7 @@ func (article ArticleC) All(c *fiber.Ctx) error {
 
 	skip := (q.Page - 1) * q.PageSize
 	take := q.PageSize
-	db.
+	db.Preload("Category").
 		Offset(skip).
 		Limit(take)
 	if q.Search == "" {

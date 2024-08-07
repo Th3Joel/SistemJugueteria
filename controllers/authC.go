@@ -5,10 +5,11 @@ import (
 	"Jugueteria/helpers"
 	"Jugueteria/models"
 	"Jugueteria/types"
+	"fmt"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/lestrrat-go/jwx/v2/jwt"
+	"github.com/resend/resend-go/v2"
 )
 
 type AuthC struct {
@@ -40,13 +41,13 @@ func (auth AuthC) Login(f *fiber.Ctx) error {
 		})
 	}
 
-	t := jwt.New()
-	_ = t.Set("id", auth.ID)
-	_ = t.Set("exp", time.Now().Add(time.Hour*120).Unix())
+	// t := jwt.New()
+	// _ = t.Set("id", auth.ID)
+	// _ = t.Set("exp", time.Now().Add(time.Hour*120).Unix())
 
-	token := tokenH.Gen(t)
+	token, _ := tokenH.Gen()
 	//Guardar token
-	tokenH.Save(token, auth.ID)
+	tokenH.Save(token, auth.ID, time.Hour, f.IP())
 
 	// tokenSave := models.Token{
 	// 	ID:     uuid.NewString(),
@@ -91,5 +92,96 @@ func (AuthC) Logout(f *fiber.Ctx) error {
 	return f.JSON(types.Response{
 		Status: true,
 		Msj:    "Sesión cerrada",
+	})
+}
+
+func (a AuthC) ForgotPassword(f *fiber.Ctx) error {
+	tokenH := helpers.TokenH{}
+	db := config.DB.Model(models.Users{})
+	apiKey := "re_45Qkcicn_ET4XG3kFu949N3LstB8bkjbi"
+	client := resend.NewClient(apiKey)
+	_ = f.BodyParser(&a)
+
+	sql := db.Where("email = ?", a.Email).First(&a)
+	if sql.RowsAffected == 0 {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "Email no encontrado",
+		})
+	}
+	fmt.Println(a.Email)
+	genToken, _ := tokenH.Gen()
+	tokenH.Save(genToken, a.ID, time.Minute*30, f.IP())
+
+	params := &resend.SendEmailRequest{
+		From: "Triceratox <triceratox@triceratox.lat>",
+		To:   []string{a.Email},
+		Html: fmt.Sprintf(`
+			<h1 style="text-align: center;">Hola,</h1>
+
+			<h3>has solicitado restablecer tu contraseña para la cuenta de Sistema de
+				juguetería "Coleccióname"
+			 asociada a esta dirección de correo electrónico ( %s ).</h3>
+
+			<h3>Para obtener el código de restablecimiento de contraseña, haga clic en el siguiente enlace:</h3>
+			http://%s/auth/reset-password?code=%s
+			<h3>También puede copiar y pegar el enlace anterior en una nueva ventana del 
+			navegador o ingresar el código 
+			de restablecimiento directamente en la página http://%s/auth/reset-password :</h3>
+			 %s
+			 <h3>Este código de cambio de contraseña caducará en 30 minutos después 
+			 de que se envió este correo electrónico. Para reiniciar el proceso 
+			 de cambio de contraseña, haga clic aquí:</h3>
+			 http://%s/auth/forgot-password
+			 <h3>Si no realizó la solicitud, ignore este correo electrónico.</h3>
+			 <h2>Gracias.</h2>
+		`, a.Email, f.Hostname(), genToken, f.Hostname(), genToken, f.Hostname()),
+		Subject: "Hello from Golang",
+		//Cc:      []string{"cc@example.com"},
+		//Bcc:     []string{"bcc@example.com"},
+		//ReplyTo: "replyto@example.com",
+	}
+
+	sent, err := client.Emails.Send(params)
+	if err != nil {
+		fmt.Println(err.Error())
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "Ha ocurrido un error",
+		})
+	}
+	fmt.Println(sent.Id)
+
+	return f.JSON(types.Response{
+		Status: true,
+		Msj:    "Email enviado",
+	})
+}
+
+func (a AuthC) ResetPassword(f *fiber.Ctx) error {
+	passwdH := helpers.PasswdH{}
+	tokenH := helpers.TokenH{}
+	type PasswordReset struct {
+		Code     string
+		Password string
+		Confirm  string
+	}
+	var da PasswordReset
+	db := config.DB.Model(models.Users{})
+	_ = f.BodyParser(&da)
+
+	data := tokenH.Get(da.Code)
+	if data.Key == "" || data.Exp < time.Now().Unix() || !tokenH.Compare(da.Code, data.Key) {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "Código inválido",
+		})
+	}
+	tokenH.Remove(da.Code)
+	db.Where("id = ?", data.UserId).Update("password", passwdH.Hash(da.Password))
+
+	return f.JSON(types.Response{
+		Status: true,
+		Msj:    "Contraseña actualizada",
 	})
 }

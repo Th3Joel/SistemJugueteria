@@ -31,6 +31,9 @@ import { Articles } from "@/pages/articles/Articles";
 import { AddArticles } from "@/pages/articles/AddArticles";
 import { EditArticles } from "@/pages/articles/EditArticles";
 import { CashRegister } from "@/pages/cashRegister/CashRegister";
+import { AuthLayout } from "@/pages/auth/AuthLayout";
+import { ForgotPasswd } from "@/pages/auth/ForgotPasswd";
+import { ResetPasswd } from "@/pages/auth/ResetPasswd";
 
 export const Router = () => {
     const auth = AuthState();
@@ -85,7 +88,11 @@ export const Router = () => {
                         <Route path="/cash-register" element={<CashRegister/>}/>
 
                     </Route>
-                    <Route path="/auth/login" element={<Login/>}/>
+                    <Route path="/auth" element={<AuthLayout/>}>
+                        <Route path="login" element={<Login/>}/>
+                        <Route path="forgot-password" element={<ForgotPasswd/>}/>
+                        <Route path="reset-password" element={<ResetPasswd/>}/>
+                    </Route>
                     <Route path="*" element={<div>Not fount</div>}/>
                 </Routes>
             )}

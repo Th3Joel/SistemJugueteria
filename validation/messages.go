@@ -106,3 +106,12 @@ var MsjArticleVal = map[string]string{
 	"SalePrice.numeric":  "Precio debe ser numérico",
 	"SalePrice.gtC":      "Precio debe ser mayor 0",
 }
+
+var MsjPasswordResetVal = map[string]string{
+	"Code.required":         "Código requerido.",
+	"Password.required":     "La contraseña es requerida.",
+	"Password.gte":          "La contraseña debe ser mayor o igual a 4.",
+	"Confirm.required":      "Confirmación requerida.",
+	"Confirm.confirmPasswd": "Las contraseñas no coinciden",
+	"Confirm.omitCustom":    "Confirmación requerida",
+}
