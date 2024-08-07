@@ -20,7 +20,8 @@ interface IProps{
     icon: ReactElement;
     options?: IOptions[];
     value?: string;
-}
+    readonly?: boolean;
+}   
 
 
 
@@ -38,6 +39,7 @@ export const InputText: React.FC<InputProps> = ({
                                                                      options = [],
                                                                      rows,
                                                                      multiline,
+                                                                     readonly,
                                                                  }) => {
     const [isFocused, setIsFocused] = useState(false);
     const [selected, setSelected] = useState("");
@@ -108,6 +110,9 @@ export const InputText: React.FC<InputProps> = ({
             type={type}
             rows={rows}
             fullWidth
+            InputProps={{
+                readOnly:readonly
+            }}
         />
     }
     return (

@@ -24,11 +24,13 @@ func Exists[T any](model T, f *fiber.Ctx) func(validator.FieldLevel) bool {
 	}
 }
 
-func ValToken(f *fiber.Ctx) func(validator.FieldLevel) bool {
+func ValToken() func(validator.FieldLevel) bool {
 	return func(fl validator.FieldLevel) bool {
 		tokenH := helpers.TokenH{}
 		data := tokenH.Get(fl.Field().String())
-		if data.Key == "" || data.Exp < time.Now().Unix() || !tokenH.Compare(fl.Field().String(), data.Key) {
+		if data.Key == "" ||
+			data.Exp < time.Now().Unix() ||
+			!tokenH.Compare(fl.Field().String(), data.Key) {
 			return false
 		}
 		return true

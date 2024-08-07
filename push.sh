@@ -1,27 +1,31 @@
 #!/bin/bash
-
 params=$1
 params2=$2
+params3=$3
 
 #Condicion de if si es igual a git
 
 
-pathFile=web/src/modules/core/hooks/useFetch.ts
+if [ "$params2" == "b" ]
+then    
+    pathFile=web/src/modules/core/hooks/useFetch.ts
 
-#Replace the uri in useFetch.ts
-sed -i '8s/.*/const uri = "\/api"/' $pathFile
+    #Replace the uri in useFetch.ts
+    sed -i '8s/.*/const uri = "\/api"/' $pathFile
 
-cd web
-bun run build
-cd ..
+    cd web
+    bun run build
+    cd ..
 
-sed -i '8s/.*/const uri = "http:\/\/localhost:5000\/api"/' $pathFile
+    sed -i '8s/.*/const uri = "http:\/\/localhost:5000\/api"/' $pathFile
 
-go build -o sis
+    go build -o sis
+fi
 
-if [ "$params" == "git" ]
+
+if [ "$params2" == "g" ]
 then
-    if [ -z "$params2" ]
+    if [ -z "$params3" ]
     then
         echo "No commit message"
         exit 1

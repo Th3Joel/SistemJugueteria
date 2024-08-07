@@ -45,6 +45,7 @@ export const ResetPasswdForm = () => {
           error={!!errors?.Code}
           helperText={errors?.Code}
           onChange={inputChange}
+          readonly={!!code}
         />
         <InputText
           label="Nueva contraseña"
