@@ -4,7 +4,6 @@ import (
 	"Jugueteria/config"
 	"Jugueteria/models"
 	"Jugueteria/types"
-	"fmt"
 	"math"
 	"strings"
 
@@ -98,7 +97,6 @@ func (article ArticleC) Save(c *fiber.Ctx) error {
 	//Pasar el body a la estructura
 	_ = c.BodyParser(&article)
 	article.trim(&article)
-	fmt.Println(article)
 
 	sql := db.Create(&models.Articles{
 		ID:           uuid.NewString(),

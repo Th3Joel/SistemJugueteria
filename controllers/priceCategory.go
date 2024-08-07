@@ -4,7 +4,6 @@ import (
 	"Jugueteria/config"
 	"Jugueteria/models"
 	"Jugueteria/types"
-	"fmt"
 	"math"
 	"strings"
 
@@ -128,7 +127,6 @@ func (priceCategory PriceCategoryC) UpdateId(f *fiber.Ctx) error {
 		Where("id = ?", id).
 		Select("article_box_id", " code", "name", "description", "stock", "sale_price").
 		Updates(priceCategory)
-	fmt.Println(priceCategory)
 
 	return f.Status(200).JSON(types.Response{
 		Status: true,

@@ -4,11 +4,11 @@ import (
 	"Jugueteria/config"
 	"Jugueteria/models"
 	"Jugueteria/types"
-	"fmt"
-	"github.com/gofiber/fiber/v2"
-	"github.com/google/uuid"
 	"math"
 	"strings"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 type ArticleBoxC struct {
@@ -108,7 +108,6 @@ func (article ArticleBoxC) Save(c *fiber.Ctx) error {
 	//Pasar el body a la estructura
 	_ = c.BodyParser(&article)
 	article.trim(&article)
-	fmt.Println(article)
 	article.ID = uuid.NewString()
 
 	sql := db.Create(&models.ArticlesBox{

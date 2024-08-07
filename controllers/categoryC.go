@@ -4,7 +4,6 @@ import (
 	"Jugueteria/config"
 	"Jugueteria/models"
 	"Jugueteria/types"
-	"fmt"
 	"math"
 	"strings"
 
@@ -118,7 +117,6 @@ func (category CategoryC) Save(c *fiber.Ctx) error {
 			Msj:    "Ha ocurrido un error",
 		})
 	}
-	fmt.Println(category)
 	return c.Status(200).JSON(types.Response{
 		Status: true,
 		Msj:    "Categoría creada",
