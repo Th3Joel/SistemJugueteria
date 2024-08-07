@@ -6,7 +6,7 @@ params3=$3
 #Condicion de if si es igual a git
 
 
-if [ "$params2" == "b" ]
+if [ "$params" == "b" ]
 then    
     pathFile=web/src/modules/core/hooks/useFetch.ts
 
