@@ -154,7 +154,7 @@ func (a AuthC) ForgotPassword(f *fiber.Ctx) error {
 
 	return f.JSON(types.Response{
 		Status: true,
-		Msj:    "Email enviado",
+		Msj:    "Hemos enviado un link para restablecer tu contraseña a tu correo",
 	})
 }
 

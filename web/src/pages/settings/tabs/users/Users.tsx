@@ -1,7 +1,7 @@
 import Table from "@/modules/core/components/Table";
 import { useTable } from "@/modules/core/hooks/useTable";
-import { DeleteRounded, EditRounded } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
+import { FaPen, FaTrash } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 interface IUser {
@@ -31,14 +31,14 @@ export const Users = () => {
                 <div className="flex gap-1 justify-center">
                   <Link to={urlEdit + d.id}>
                     <IconButton color="success">
-                      <EditRounded />
+                      <FaPen />
                     </IconButton>
                   </Link>
                   <IconButton
                     color="error"
                     onClick={() => eliminar(d.id, `Eliminar a: ${d.Name} `)}
                   >
-                    <DeleteRounded />
+                    <FaTrash />
                   </IconButton>
                 </div>
               </td>

@@ -3,12 +3,10 @@ import LoaderSmall from "@/modules/core/components/LoaderSmall";
 import alertBox from "@/modules/core/utils/alertBox";
 import { AuthState } from "../globalStates/auth-state";
 import { Link } from "react-router-dom";
-import {
-  KeyboardArrowLeftTwoTone,
-  KeyboardArrowRightTwoTone,
-} from "@mui/icons-material";
+
 import { Button, TextField } from "@mui/material";
 import { IUseTable } from "../hooks/useTable";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
 interface IProps {
   ruta: string;
@@ -173,13 +171,13 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body }) => {
           </div>
           <div className="flex items-center justify-end">
             <Button variant="outlined" disabled={loading} onClick={pagAnt}>
-              <KeyboardArrowLeftTwoTone />
+              <FaChevronLeft />
             </Button>
             <span className="p-2">
               page {page} de {all?.pages}
             </span>
             <Button variant="outlined" className="w-[50px]" disabled={loading} onClick={pagSig}>
-              <KeyboardArrowRightTwoTone />
+              <FaChevronRight />
             </Button>
           </div>
         </div>

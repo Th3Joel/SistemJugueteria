@@ -1,8 +1,8 @@
 import { Card } from "@/modules/core/components/Card";
 import Table from "@/modules/core/components/Table";
 import { useTable } from "@/modules/core/hooks/useTable";
-import { DeleteRounded, EditRounded } from "@mui/icons-material";
 import {  IconButton } from "@mui/material";
+import { FaPen, FaTrash } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 interface ICliente {
@@ -32,7 +32,7 @@ const hook = useTable<ICliente>()
                 <div className="flex gap-1 justify-center">
                   <Link to={urlEdit+d.id}>
                     <IconButton color="success">
-                      <EditRounded />
+                      <FaPen />
                     </IconButton>
                   </Link>
                   <IconButton
@@ -41,7 +41,7 @@ const hook = useTable<ICliente>()
                       eliminar(d.id, `Eliminar a: ${d.Name}`)
                     }
                   >
-                    <DeleteRounded />
+                    <FaTrash />
                   </IconButton>
                 </div>
               </td>
