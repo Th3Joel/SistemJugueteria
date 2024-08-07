@@ -100,6 +100,6 @@ func Integer() func(fl validator.FieldLevel) bool {
 		field := fl.Field().String()
 		_, err := strconv.Atoi(field)
 
-		return err != nil
+		return err == nil
 	}
 }
