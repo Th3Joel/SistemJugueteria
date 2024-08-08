@@ -4,6 +4,7 @@ import (
 	"Jugueteria/config"
 	"Jugueteria/models"
 	"Jugueteria/types"
+	"fmt"
 	"math"
 	"strings"
 
@@ -80,15 +81,16 @@ func (costumer CostumerC) ShowId(f *fiber.Ctx) error {
 	id := f.Params("id")
 	sql := db.
 		Where("id = ?", id).
-		Select("id", "email", "name", "address", "phone").
+		Select("id", "name", "phone").
 		First(&costumer)
 
 	if sql.RowsAffected == 0 {
 		return f.Status(200).JSON(types.Response{
 			Status: false,
-			Msj:    "Proveedor no encontrado",
+			Msj:    "Cliente no encontrado",
 		})
 	}
+	fmt.Println(costumer)
 
 	return f.Status(200).JSON(types.Response{
 		Status: true,

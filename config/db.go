@@ -12,7 +12,7 @@ import (
 	"gorm.io/gorm"
 
 	_ "modernc.org/sqlite"
-	//_ "github.com/mattn/go-sqlite3"
+	//"github.com/mattn/go-sqlite3"
 )
 
 var (
@@ -58,9 +58,8 @@ func ConnectDB() {
 		log.Fatal("No se pudo conectar a la base de datos sqlite3. \n")
 	}
 	d.SetMaxOpenConns(1)
+
 	createTableSQL := `
-	
-	
 	CREATE TABLE IF NOT EXISTS token (
 		id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 		user_id VARCHAR(100) NOT NULL,

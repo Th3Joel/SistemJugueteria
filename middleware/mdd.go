@@ -6,7 +6,6 @@ import (
 	"Jugueteria/models"
 	"Jugueteria/types"
 	val "Jugueteria/validation"
-	"fmt"
 	"reflect"
 	"strings"
 	"time"
@@ -132,19 +131,16 @@ func Csrf(f *fiber.Ctx) error {
 
 	}
 
-	fmt.Println("Datos de exoaria: "+coo, t.Exp, t)
-
 	tokenH.Remove(t.Key)
 	if t.Key == "" || t.Exp < time.Now().Unix() {
-		genCookieCSRF(f)
+		genCookieCSRF(f, &tokenH)
 	}
 	return f.Next()
 }
 
-func genCookieCSRF(f *fiber.Ctx) {
-	h := helpers.TokenH{}
+func genCookieCSRF(f *fiber.Ctx, h *helpers.TokenH) {
 	tok, _ := h.Gen()
-	tiempo := time.Second * 60
+	tiempo := time.Minute * 10
 	h.Save(tok, "Token csrf", tiempo, f.IP())
 
 	f.Cookie(&fiber.Cookie{
