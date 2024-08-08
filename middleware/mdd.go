@@ -128,17 +128,18 @@ func Csrf(f *fiber.Ctx) error {
 				Msj:    "Solicitud expirada, intente nuevamente",
 			})
 		}
-		genCookieCSRF(f, &tokenH)
+		genCookieCSRF(f, &tokenH, t.Key)
 	}
 
 	if t.Key == "" || t.Exp < time.Now().Unix() {
-		genCookieCSRF(f, &tokenH)
+		genCookieCSRF(f, &tokenH, t.Key)
 	}
-	tokenH.Remove(t.Key)
 	return f.Next()
 }
 
-func genCookieCSRF(f *fiber.Ctx, h *helpers.TokenH) {
+func genCookieCSRF(f *fiber.Ctx, h *helpers.TokenH, t string) {
+	h.Remove(t)
+
 	tok, _ := h.Gen()
 	tiempo := time.Minute * 10
 	h.Save(tok, "Token csrf", tiempo, f.IP())
