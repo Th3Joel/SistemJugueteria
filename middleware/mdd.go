@@ -144,7 +144,7 @@ func Csrf(f *fiber.Ctx) error {
 func genCookieCSRF(f *fiber.Ctx) {
 	h := helpers.TokenH{}
 	tok, _ := h.Gen()
-	tiempo := time.Second * 10
+	tiempo := time.Second * 60
 	h.Save(tok, "Token csrf", tiempo, f.IP())
 
 	f.Cookie(&fiber.Cookie{
