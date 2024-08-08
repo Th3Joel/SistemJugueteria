@@ -89,6 +89,7 @@ export const Router = () => {
 
                     </Route>
                     <Route path="/auth" element={<AuthLayout/>}>
+                        <Route index element={<Login/>} />
                         <Route path="login" element={<Login/>}/>
                         <Route path="forgot-password" element={<ForgotPasswd/>}/>
                         <Route path="reset-password" element={<ResetPasswd/>}/>

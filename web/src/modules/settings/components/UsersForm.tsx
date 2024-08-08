@@ -111,22 +111,24 @@ export const UsersForm: React.FC<IProps> = ({ isEdit, id, isProfile }) => {
                     <InputText
                         label="Contraseña"
                         name="Password"
+                        type="password"
                         isRequired
                         icon={<FaUnlockKeyhole />}
                         onChange={inputChange}
                         error={!!errors?.Password}
                         helperText={errors?.Password}
-                        value=""
+                        value={data.Password}
                     />
                     <InputText
                         label="Repetir contraseña"
                         name="Confirm"
+                        type="password"
                         isRequired
                         onChange={inputChange}
                         error={!!errors?.Confirm}
                         helperText={errors?.Confirm}
                         icon={<FaKey />}
-                        value=""
+                        value={data.Confirm}
                     />
                     <div className="flex justify-between">
                         <Link to="/settings/users">

@@ -10,7 +10,7 @@ require (
 	golang.org/x/crypto v0.24.0
 	gorm.io/driver/mysql v1.5.7
 	gorm.io/gorm v1.25.10
-	modernc.org/sqlite v1.31.1
+	modernc.org/sqlite v1.32.0
 )
 
 require (

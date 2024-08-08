@@ -1,19 +1,10 @@
 import { useState } from "react"
 import { useFetch } from "./useFetch";
 import { toast } from "sonner";
+import { IAll, IResponseFetch } from "@/types";
+import { CheckAuth } from "../utils/response";
 
-interface ITableResponse<T>{
-  status: boolean;
-  msj:string
-  all: IAll<T>
-}
-interface IAll<T> {
-    data:T[]
-    count:number
-    pages:number
-    page:number
-    pageSize:number
-}
+
 
 
 export interface IUseTable<T>{
@@ -29,17 +20,19 @@ export const useTable = <T>() => {
   
   const get=async(url:string)=>{
     setLoading(true)
-    const res = await useFetch<ITableResponse<T>>(url,"GET");
+    const res = await useFetch<IResponseFetch<T>>(url,"GET");
     setAll(res.all);
+    CheckAuth<T>(res);
     setLoading(false)
   }
 
   const remove=async(url:string)=>{
     setLoading(true)
-    const res = await useFetch<ITableResponse<T>>(url,"DELETE")
+    const res = await useFetch<IResponseFetch<T>>(url,"DELETE")
     if(res.status){
       toast.success(res.msj)
     }
+    CheckAuth<T>(res);
   }
 
   return{

@@ -58,6 +58,7 @@ func (TokenH) Compare(a, b string) bool {
 }
 
 func (TokenH) Save(tok, userID string, exp time.Duration, ip ...string) bool {
+
 	sql := `
         INSERT INTO token (user_id,key,exp,ip) VALUES (?,?,?,?)`
 	_, err := config.Slite.Exec(sql, userID, tok, time.Now().Add(exp).Unix(), ip[0])

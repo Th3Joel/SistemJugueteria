@@ -6,6 +6,7 @@ import (
 	"Jugueteria/models"
 	"Jugueteria/types"
 	val "Jugueteria/validation"
+	"fmt"
 	"reflect"
 	"strings"
 	"time"
@@ -35,6 +36,7 @@ func AuthM(c *fiber.Ctx) error {
 		// Si el token no es válido, responde con un error de autorización
 		return c.JSON(types.Response{
 			Status: false,
+			Type:   "Unauthorized",
 			Msj:    "No autorizado",
 		})
 	}
@@ -66,12 +68,12 @@ func ValM[T any, R any](valMsj map[string]string, data T, model R) func(*fiber.C
 		_ = validate.RegisterValidation("integer", val.Integer())
 		_ = validate.RegisterValidation("exists", val.Exists(model, c))
 		_ = validate.RegisterValidation("valToken", val.ValToken())
-
 		is, errorMsj := helpers.ParseMsj(data, validate, valMsj)
 		if is {
-			return c.JSON(fiber.Map{
-				"status": false,
-				"errors": errorMsj,
+			return c.JSON(types.Response{
+				Status: false,
+				Type:   "Validation",
+				Errors: errorMsj,
 			})
 		}
 
@@ -92,6 +94,7 @@ func RoleM(roles []string) func(*fiber.Ctx) error {
 		}
 		return c.JSON(types.Response{
 			Status: false,
+			Type:   "Forbidden",
 			Msj:    "No tiene permisos",
 		})
 	}
@@ -112,34 +115,42 @@ func Csrf(f *fiber.Ctx) error {
 	tokenH := helpers.TokenH{}
 	coo := f.Cookies("_cf")
 	t := tokenH.Get(coo)
-	//fmt.Println("Datos de exoaria: "+coo, t.Exp, t)
-	if t.Key == "" {
-		genCookieCSRF(f, &tokenH)
-	}
 
-	if t.Key != "" && t.Exp < time.Now().Unix() {
-		tokenH.Remove(t.Key)
-		genCookieCSRF(f, &tokenH)
-	}
-
-	// Valida en token csrf
-	if !tokenH.Compare(coo, t.Key) {
-		return f.JSON(types.Response{
-			Status: false,
-			Msj:    "Solicitud expirada, intente nuevamente",
+	mt := f.Method()
+	if mt != "GET" {
+		f.Cookie(&fiber.Cookie{
+			Name:    "_cf",
+			Expires: time.Now(),
 		})
+		// Valida en token csrf
+		if !tokenH.Compare(coo, t.Key) || t.Exp < time.Now().Unix() || t.Key == "" {
+			return f.JSON(types.Response{
+				Status: false,
+				Msj:    "Solicitud expirada, intente nuevamente",
+			})
+		}
+
+	}
+
+	fmt.Println("Datos de exoaria: "+coo, t.Exp, t)
+
+	tokenH.Remove(t.Key)
+	if t.Key == "" || t.Exp < time.Now().Unix() {
+		genCookieCSRF(f)
 	}
 	return f.Next()
 }
 
-func genCookieCSRF(f *fiber.Ctx, h *helpers.TokenH) {
+func genCookieCSRF(f *fiber.Ctx) {
+	h := helpers.TokenH{}
 	tok, _ := h.Gen()
-	h.Save(tok, "Token csrf", time.Second*10, f.IP())
+	tiempo := time.Second * 10
+	h.Save(tok, "Token csrf", tiempo, f.IP())
 
 	f.Cookie(&fiber.Cookie{
 		Name:     "_cf",
 		Value:    tok,
-		Expires:  time.Now().Add(time.Minute * 1),
+		Expires:  time.Now().Add(tiempo),
 		HTTPOnly: true,
 		Secure:   false,
 	})

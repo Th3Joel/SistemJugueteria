@@ -16,14 +16,15 @@ var port = os.Getenv("PORT")
 
 func main() {
 	config.ConnectDB()
+	go config.CleanSqliteToken()
 	app := fiber.New(fiber.Config{
 		Prefork: false,
 		AppName: "Jugueteria",
 	})
 
-	defer func(app *fiber.App) {
-		_ = app.Shutdown()
-	}(app)
+	// defer func(app *fiber.App) {
+	// 	_ = app.Shutdown()
+	// }(app)
 
 	//app.Use(logger.New())
 
@@ -32,7 +33,6 @@ func main() {
 		AllowCredentials: true,
 		AllowMethods:     "GET,POST,PUT,DELETE",
 	}))
-
 	//Sistema api
 	api := app.Group("/api", mdd.Csrf)
 	//AuthR

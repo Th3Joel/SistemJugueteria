@@ -50,6 +50,7 @@ export const ResetPasswdForm = () => {
         <InputText
           label="Nueva contraseña"
           name="Password"
+          type="password"
           isRequired
           icon={<FaUnlockKeyhole />}
           value={data.Password}
@@ -60,6 +61,7 @@ export const ResetPasswdForm = () => {
         <InputText
           label="Repetir contraseña"
           name="Confirm"
+          type="password"
           isRequired
           icon={<FaKey />}
           value={data.Confirm}

@@ -3,12 +3,16 @@ package config
 import (
 	"Jugueteria/models"
 	"database/sql"
+	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+
 	_ "modernc.org/sqlite"
+	//_ "github.com/mattn/go-sqlite3"
 )
 
 var (
@@ -49,12 +53,13 @@ func ConnectDB() {
 	DB = db
 
 	//base de datos utilizada para los tokens y token csfr
-	d, err := sql.Open("sqlite", "./system.sqlite3")
+	d, err := sql.Open("sqlite", "./system.db")
 	if err != nil {
 		log.Fatal("No se pudo conectar a la base de datos sqlite3. \n")
 	}
+	d.SetMaxOpenConns(1)
 	createTableSQL := `
-
+	
 	
 	CREATE TABLE IF NOT EXISTS token (
 		id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -66,8 +71,22 @@ func ConnectDB() {
 	);
 	`
 	_, err = d.Exec(createTableSQL)
+
 	if err != nil {
 		log.Fatalf("Error al crear la tabla csrf: %s", err)
 	}
 	Slite = d
+}
+
+func CleanSqliteToken() {
+	sql := "DELETE FROM token WHERE exp < ?;"
+	for {
+		_, err := Slite.Exec(sql, time.Now().Unix())
+		if err != nil {
+			log.Fatal("Error al limpiar la tabla token: ", err)
+		}
+		fmt.Println("Tokens expirados han sido limpiados")
+		time.Sleep(time.Second * 15)
+
+	}
 }

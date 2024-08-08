@@ -87,11 +87,7 @@ func Gt() func(fl validator.FieldLevel) bool {
 		field := fl.Field().String()
 		param, _ := strconv.ParseFloat(fl.Param(), 64)
 		num, _ := strconv.ParseFloat(field, 64)
-
-		if num < param {
-			return false
-		}
-		return true
+		return num > param
 	}
 }
 
@@ -99,7 +95,6 @@ func Integer() func(fl validator.FieldLevel) bool {
 	return func(fl validator.FieldLevel) bool {
 		field := fl.Field().String()
 		_, err := strconv.Atoi(field)
-
 		return err == nil
 	}
 }

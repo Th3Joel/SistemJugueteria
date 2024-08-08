@@ -1,10 +1,12 @@
 package types
 
 type Response struct {
-	Status bool        `json:"status"`
-	Msj    string      `json:"msj,omitempty"`
-	Find   interface{} `json:"find,omitempty"`
-	All    *All        `json:"all,omitempty"`
+	Status bool              `json:"status"`
+	Type   string            `json:"type,omitempty"`
+	Errors map[string]string `json:"errors,omitempty"`
+	Msj    string            `json:"msj,omitempty"`
+	Find   interface{}       `json:"find,omitempty"`
+	All    *All              `json:"all,omitempty"`
 }
 
 type All struct {

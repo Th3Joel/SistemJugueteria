@@ -59,7 +59,16 @@ const theme = createTheme({
           }
         },
       },
+      MuiFilledInput:{
+        styleOverrides:{
+          root: {
+            "& .MuiInputBase-input": {
+              textAlign: "center",
+            },
+          },
+      }
     }
+  }
   });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
