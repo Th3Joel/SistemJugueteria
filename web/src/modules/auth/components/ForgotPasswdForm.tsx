@@ -11,7 +11,6 @@ interface IForm {
 }
 
 export const ForgotPasswdForm = () => {
-  window.document.title = "Cambio de contraseña";
 
   const {post,loading,errors,inputChange,data} = useForm<IForm>({ Email: "" });
 

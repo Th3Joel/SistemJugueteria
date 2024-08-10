@@ -2,13 +2,18 @@ import { SidebarState } from "@/modules/core/globalStates/sidebar-state"
 import { logoutFetch } from "@/modules/auth/utils/authFetch";
 import { Tooltip } from "@mui/material";
 import { FaBarsStaggered, FaQuestion, FaRightFromBracket } from "react-icons/fa6";
-import { driverAllData } from "../utils/driver";
+import { mainDriver } from "../utils/driver";
+import { TitleState } from "../globalStates/title-state";
 
 export const Header = () => {
   const { estado, inc } = SidebarState();
+  const { title, path } = TitleState();
   const handleDriver = () => {
-    driverAllData.drive();
+
+    mainDriver(path).drive();
+
   };
+
   return (
     <div className={`border px-3 h-[50px]
      bg-white flex items-center justify-between`}>
@@ -21,7 +26,7 @@ export const Header = () => {
             />
           </div>
         </Tooltip>
-        <p className="ml-2 text-xl font-semibold text-gray-500">Inicio</p>
+        <p className="ml-2 text-xl font-semibold text-gray-500">{title}</p>
       </div>
       <div className="flex items-center gap-4">
         <Tooltip title="Información de pagina" arrow>

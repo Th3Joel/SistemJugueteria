@@ -21,7 +21,6 @@ interface IArticleBox {
 }
 
 export const PriceCategory = () => {
-    window.document.title = "Precio de articulos"
     const hook = useTable<IPriceCategory>()
     return (
        <Card>

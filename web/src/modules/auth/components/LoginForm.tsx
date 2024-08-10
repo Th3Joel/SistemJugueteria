@@ -16,7 +16,6 @@ export const LoginForm = () => {
     e.preventDefault();
     loginFetch(new FormData(e.target as HTMLFormElement), setErrors);
   };
-  window.document.title = "Iniciar sesión";
   return (
     <div className="animate__fadeIn w-[350px] border-[1px] border-t-blue-600 border-t-4 bg-white border-gray-200 rounded-lg">
       <h1 className="text-2xl font-bold text-center mt-2 mb-2">Coleccióname</h1>

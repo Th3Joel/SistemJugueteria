@@ -4,7 +4,6 @@ import { SectionCounters } from "@/modules/home/components/SectionCounters";
 
 export const Dashboard = () => {
 
-  window.document.title = "Dashboard";
 
   return (
     <Card>

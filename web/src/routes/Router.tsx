@@ -2,16 +2,16 @@ import LoaderSplash from "@/modules/core/components/LoaderSplash";
 import {AuthState} from "@/modules/core/globalStates/auth-state";
 import {Layout} from "@/pages/Layout";
 import {Login} from "@/pages/auth/Login";
-import {AddClientes} from "@/pages/clientes/AddClientes";
-import {Clientes} from "@/pages/clientes/Clientes";
-import {EditClientes} from "@/pages/clientes/EditClientes";
+import {AddCostumer} from "@/pages/costumer/AddCostumer";
+import {Clientes} from "@/pages/costumer/Costumer";
+import {EditCostumer} from "@/pages/costumer/EditCostumer";
 import {Dashboard} from "@/pages/home/Dashboard";
 import {Setting} from "@/pages/settings/Setting";
 import {Company} from "@/pages/settings/tabs/Company";
 import {Profile} from "@/pages/settings/tabs/Profile";
 import {Users} from "@/pages/settings/tabs/users/Users";
 import {useEffect} from "react";
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, useLocation} from "react-router-dom";
 import {Maintenance} from "@/pages/settings/tabs/maintenance.tsx";
 import {AddUsers} from "@/pages/settings/tabs/users/AddUsers.tsx";
 import {EditUsers} from "@/pages/settings/tabs/users/EditUsers.tsx";
@@ -34,13 +34,19 @@ import { CashRegister } from "@/pages/cashRegister/CashRegister";
 import { AuthLayout } from "@/pages/auth/AuthLayout";
 import { ForgotPasswd } from "@/pages/auth/ForgotPasswd";
 import { ResetPasswd } from "@/pages/auth/ResetPasswd";
+import { routesTitles, TitleState } from "@/modules/core/globalStates/title-state";
 
 export const Router = () => {
     const auth = AuthState();
-
+    const {setTitle,setPath} = TitleState();
     useEffect(() => {
         auth.verify();
     }, []);
+    const {pathname} = useLocation();
+    useEffect(() => {
+       setTitle(routesTitles[pathname] || "Undefinido");
+       setPath(pathname);
+    },[pathname])
 
     return (
         <>
@@ -51,8 +57,8 @@ export const Router = () => {
                     <Route path="/" element={<Layout/>}>
                         <Route index element={<Dashboard/>}/>
                         <Route path="/clientes" element={<Clientes/>}/>
-                        <Route path="/clientes/edit/:id" element={<EditClientes/>}/>
-                        <Route path="/clientes/add" element={<AddClientes/>}/>
+                        <Route path="/clientes/edit/:id" element={<EditCostumer/>}/>
+                        <Route path="/clientes/add" element={<AddCostumer/>}/>
 
                         <Route path="/settings" element={<Setting/>}>
                             <Route index element={<Users/>}/>

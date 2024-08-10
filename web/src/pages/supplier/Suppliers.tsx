@@ -1,20 +1,19 @@
-import {Card} from "@/modules/core/components/Card.tsx";
+import { Card } from "@/modules/core/components/Card.tsx";
 import Table from "@/modules/core/components/Table.tsx";
-import {Link} from "react-router-dom";
-import {IconButton} from "@mui/material";
-import {FaPencil, FaTrash} from "react-icons/fa6";
-import {useTable} from "@/modules/core/hooks/useTable.ts";
+import { Link } from "react-router-dom";
+import { IconButton } from "@mui/material";
+import { FaPencil, FaTrash } from "react-icons/fa6";
+import { useTable } from "@/modules/core/hooks/useTable.ts";
 
 interface ISupplier {
-    id:string
-    Name:string
-    Email:string
-    Phone:string
-    Address:string
+    id: string
+    Name: string
+    Email: string
+    Phone: string
+    Address: string
 }
 
 export const Suppliers = () => {
-    window.document.title = "Proveedores"
     const hook = useTable<ISupplier>()
     return (
         <Card>
@@ -28,7 +27,7 @@ export const Suppliers = () => {
                     "Dirección",
                     "Acciones",
                 ]}
-                body={(urlEdit,eliminar) =>
+                body={(urlEdit, eliminar) =>
                     hook.all?.data.map((d, i) => (
                         <tr key={i}>
                             <td>{d.Name}</td>
@@ -40,7 +39,7 @@ export const Suppliers = () => {
                                 <div className="flex gap-1 justify-center">
                                     <Link to={urlEdit + d.id}>
                                         <IconButton color="success" className="btnEdit">
-                                            <FaPencil/>
+                                            <FaPencil />
                                         </IconButton>
                                     </Link>
 
@@ -52,7 +51,7 @@ export const Suppliers = () => {
                                         className="btnDelete"
                                     >
 
-                                        <FaTrash/>
+                                        <FaTrash />
                                     </IconButton>
                                 </div>
                             </td>

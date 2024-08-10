@@ -7,7 +7,6 @@ interface Params {
 }
 export const EditUsers = () => {
     const {id} = useParams<Params>();
-    window.document.title = "Editar Usuario";
   return (
       <div className="flex justify-center">
         <UsersForm isEdit id={id}/>

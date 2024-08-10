@@ -18,7 +18,7 @@ type CostumerC struct {
 	//Data
 	ID    string `json:"id"`
 	Name  string `json:"Name"`
-	Phone string `json:"Phone,omitempty"`
+	Phone string `json:"Phone"`
 	//Settings
 	Model models.Costumers `gorm:"-" json:"-"`
 	Array []CostumerC      `gorm:"-" json:"-"`

@@ -11,7 +11,6 @@ interface IForm{
   Confirm: string;
 }
 export const ResetPasswdForm = () => {
-  window.document.title = "Restablecer contraseña";
   const [params] = useSearchParams();
   const code = params.get("code");
   const {errors,data,loading,post,inputChange} = useForm<IForm>({

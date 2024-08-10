@@ -12,7 +12,6 @@ interface ICategory {
 }
 
 export const Category = () => {
-    window.document.title = "Categorías"
     const hook = useTable<ICategory>()
     return (
         <Card>

@@ -12,7 +12,6 @@ interface IUser {
   Picture: string;
 }
 export const Users = () => {
-  window.document.title = "Usuarios";
   const hook = useTable<IUser>();
   return (
     <div className="animate__fadeIn">
