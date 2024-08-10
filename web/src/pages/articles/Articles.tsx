@@ -6,6 +6,7 @@ import { IconButton } from "@mui/material"
 import { FaPencil, FaTrash } from "react-icons/fa6"
 import { Link } from "react-router-dom"
 
+
 interface IArticle {
   id:string
   Code:string
@@ -46,7 +47,7 @@ export const Articles = () => {
                             <td>
                                 <div className="flex gap-1 justify-center">
                                     <Link to={urlEdit+d.id}>
-                                        <IconButton color="success">
+                                        <IconButton color="success" className="btnEdit">
                                             <FaPencil />
                                         </IconButton>
                                     </Link>
@@ -55,6 +56,7 @@ export const Articles = () => {
                                         onClick={() =>
                                             eliminar(d.id, `Eliminar a: ${d.Description}`)
                                         }
+                                        className="btnDelete"
                                     >
                                         <FaTrash />
                                     </IconButton>

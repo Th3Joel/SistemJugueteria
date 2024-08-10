@@ -48,6 +48,15 @@ export const ArticleBoxForm: React.FC<IProps> = ({ isEdit, id }) => {
     <div className="w-[350px] p-3 shadow-lg rounded-lg">
       <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
         <InputText
+          label="Código"
+          name="Code"
+          icon={<FaBarcode />}
+          value={data?.Code}
+          onChange={inputChange}
+          error={!!errors?.Code}
+          helperText={errors?.Code}
+        />
+        <InputText
           label="Descripción"
           name="Description"
           multiline
@@ -58,16 +67,8 @@ export const ArticleBoxForm: React.FC<IProps> = ({ isEdit, id }) => {
           error={!!errors?.Description}
           helperText={errors?.Description}
         />
-        <InputText
-          label="Código"
-          name="Code"
-          icon={<FaBarcode />}
-          value={data?.Code}
-          onChange={inputChange}
-          error={!!errors?.Code}
-          helperText={errors?.Code}
-        />
-        <InputText
+
+        {isEdit && <InputText
           label="Cantidad de artículos"
           name="ToysQuantity"
           icon={<FaDatabase />}
@@ -75,7 +76,8 @@ export const ArticleBoxForm: React.FC<IProps> = ({ isEdit, id }) => {
           onChange={inputChange}
           error={!!errors?.ToysQuantity}
           helperText={errors?.ToysQuantity}
-        />
+          readonly
+        />}
 
         <InputText
           label="Precio de compra"

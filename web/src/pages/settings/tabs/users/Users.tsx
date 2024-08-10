@@ -30,13 +30,14 @@ export const Users = () => {
               <td>
                 <div className="flex gap-1 justify-center">
                   <Link to={urlEdit + d.id}>
-                    <IconButton color="success">
+                    <IconButton color="success" className="btnEdit">
                       <FaPen />
                     </IconButton>
                   </Link>
                   <IconButton
                     color="error"
                     onClick={() => eliminar(d.id, `Eliminar a: ${d.Name} `)}
+                    className="btnDelete"
                   >
                     <FaTrash />
                   </IconButton>

@@ -105,13 +105,16 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body }) => {
     <>
       <div className="h-12 flex items-center">
         <Link to={`/${ruta}/add`}>
+        <div className="btnAdd">
+
           <Button variant="contained">Agregar</Button>
+        </div>
         </Link>
       </div>
       <hr />
       <div className="p-2">
         <div className="flex justify-between mb-2 items-center flex-col sm:flex-row gap-2">
-          <div>
+          <div className="perPage">
             <select
               onChange={initSetPageSize}
               className="mr-2 p-[3px] text-center rounded-md outline-none"
@@ -124,7 +127,7 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body }) => {
             por página
           </div>
 
-          <div>
+          <div className="txtSearch">
             <TextField
               onChange={buscador}
               type="search"
@@ -166,17 +169,17 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body }) => {
           </table>
         </div>
         <div className="flex flex-col gap-1 sm:flex-row justify-between mt-2 items-center">
-          <div>
+          <div className="infoCounters">
             Mostrando {ac} a {ac2} de {all?.count} elementos
           </div>
-          <div className="flex items-center justify-end">
-            <Button variant="outlined" disabled={loading} onClick={pagAnt}>
+          <div className="flex items-center justify-end paginationTable">
+            <Button className="paginationBtnBack" variant="outlined" disabled={loading} onClick={pagAnt}>
               <FaChevronLeft />
             </Button>
-            <span className="p-2">
-              page {page} de {all?.pages}
+            <span className="p-2 paginationInfo">
+              página {page} de {all?.pages}
             </span>
-            <Button variant="outlined" className="w-[50px]" disabled={loading} onClick={pagSig}>
+            <Button variant="outlined" className="w-[50px] paginationBtnNext" disabled={loading} onClick={pagSig}>
               <FaChevronRight />
             </Button>
           </div>

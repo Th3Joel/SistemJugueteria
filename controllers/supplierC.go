@@ -4,18 +4,19 @@ import (
 	"Jugueteria/config"
 	"Jugueteria/models"
 	"Jugueteria/types"
-	"github.com/gofiber/fiber/v2"
-	"github.com/google/uuid"
 	"math"
 	"strings"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 type SupplierC struct {
 	ID      string `json:"id"`
 	Name    string `json:"Name"`
-	Address string `json:"Address,omitempty"`
-	Phone   string `json:"Phone,omitempty"`
-	Email   string `json:"Email,omitempty"`
+	Address string `json:"Address"`
+	Phone   string `json:"Phone"`
+	Email   string `json:"Email"`
 
 	Model models.Suppliers `gorm:"-" json:"-"`
 	Array []SupplierC      `gorm:"-" json:"-"`

@@ -133,7 +133,7 @@ export const Sidebar = () => {
           >
             <Link to="/price-categories" className="flex">
               <FaTags className="text-2xl"/>
-              <p className="pl-2">Categorías de precios</p>
+              <p className="pl-2 text-red-400">Categorías de precios</p>
             </Link>
           </div>
 
@@ -146,7 +146,7 @@ export const Sidebar = () => {
           >
             <Link to="/articles" className="flex">
               <FaTruck className="text-2xl"/>
-              <p className="pl-2">Artículos únicos</p>
+              <p className="pl-2">Artículos</p>
             </Link>
           </div>
 

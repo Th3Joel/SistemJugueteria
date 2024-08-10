@@ -4,17 +4,18 @@ import (
 	"Jugueteria/config"
 	"Jugueteria/models"
 	"Jugueteria/types"
-	"github.com/gofiber/fiber/v2"
 	"strings"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 type CompanyC struct {
 	//Data
 	Name    string `json:"Name"`
-	Email   string `json:"Email,omitempty"`
-	Ruc     string `json:"Ruc,omitempty"`
-	Phone   string `json:"Phone,omitempty"`
-	Address string `json:"Address,omitempty"`
+	Email   string `json:"Email"`
+	Ruc     string `json:"Ruc"`
+	Phone   string `json:"Phone"`
+	Address string `json:"Address"`
 	//Settings
 	Model models.Company `gorm:"-" json:"-"`
 }

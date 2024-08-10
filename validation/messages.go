@@ -56,9 +56,9 @@ var MsjArticleBoxVal = map[string]string{
 	"Description.required": "Descripción requerida.",
 	"Description.isRepeat": "Descripción ya existe",
 
-	"ToysQuantity.required": "Cantidad requerida.",
-	"ToysQuantity.integer":  "Solo se aceptan números enteros",
-	"ToysQuantity.gtC":      "Cantidad debe ser mayor a 0",
+	//"ToysQuantity.required": "Cantidad requerida.",
+	//"ToysQuantity.integer":  "Solo se aceptan números enteros",
+	//"ToysQuantity.gtC":      "Cantidad debe ser mayor a 0",
 
 	"PurchasePrice.required": "Precio requerido.",
 	"PurchasePrice.numeric":  "Precio debe ser numérico",

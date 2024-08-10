@@ -31,7 +31,7 @@ const hook = useTable<ICliente>()
               <td>
                 <div className="flex gap-1 justify-center">
                   <Link to={urlEdit+d.id}>
-                    <IconButton color="success">
+                    <IconButton color="success" className="btnEdit">
                       <FaPen />
                     </IconButton>
                   </Link>
@@ -40,6 +40,7 @@ const hook = useTable<ICliente>()
                     onClick={() =>
                       eliminar(d.id, `Eliminar a: ${d.Name}`)
                     }
+                    className="btnDelete"
                   >
                     <FaTrash />
                   </IconButton>

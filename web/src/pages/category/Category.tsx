@@ -32,7 +32,7 @@ export const Category = () => {
                         <td>
                             <div className="flex gap-1 justify-center">
                                 <Link to={urlEdit+d.id}>
-                                    <IconButton color="success">
+                                    <IconButton color="success" className="btnEdit">
                                         <FaPencil />
                                     </IconButton>
                                 </Link>
@@ -42,6 +42,7 @@ export const Category = () => {
                                     onClick={() =>
                                         eliminar(d.id, `Eliminar a: ${d.Name}`)
                                     }
+                                    className="btnDelete"
                                 >
                                     <FaTrash />
                                 </IconButton>

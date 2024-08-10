@@ -16,11 +16,11 @@ interface IFormData {
 
 export const CompanyForm = () => {
     const {post, errors, loading, data, get, inputChange} = useForm<IFormData>({
-        Name: '',
-        Email: '',
-        Phone: '',
-        Ruc: '',
-        Address: ''
+        Name: "",
+        Email: "",
+        Phone: "",
+        Ruc: "",
+        Address: ""
     });
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -56,7 +56,7 @@ export const CompanyForm = () => {
                         onChange={inputChange}
                         error={!!errors?.Name}
                         helperText={errors?.Name}
-                        value={data?.Name}
+                        value={data.Name}
                         icon={<FaBuilding/>}
                     />
 
@@ -66,7 +66,7 @@ export const CompanyForm = () => {
                         onChange={inputChange}
                         error={!!errors?.Email}
                         helperText={errors?.Email}
-                        value={data?.Email}
+                        value={data.Email}
                         icon={<FaEnvelope/>}
                     />
 
@@ -76,7 +76,7 @@ export const CompanyForm = () => {
                         onChange={inputChange}
                        error={!!errors?.Ruc}
                         helperText={errors?.Ruc}
-                        value={data?.Ruc}
+                        value={data.Ruc}
                         icon={<FaBuildingUser/>}
                     />
 
@@ -86,7 +86,7 @@ export const CompanyForm = () => {
                         onChange={inputChange}
                         error={!!errors?.Phone}
                         helperText={errors?.Phone}
-                        value={data?.Phone}
+                        value={data.Phone}
                         icon={<FaPhone/>}
                     />
 
@@ -96,7 +96,7 @@ export const CompanyForm = () => {
                         onChange={inputChange}
                         error={!!errors?.Address}
                         helperText={errors?.Address}
-                        value={data?.Address}
+                        value={data.Address}
                         icon={<FaMapLocationDot/>}
                     />
 

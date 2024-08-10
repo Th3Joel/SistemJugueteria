@@ -43,6 +43,7 @@ func (article ArticleC) All(c *fiber.Ctx) error {
 	skip := (q.Page - 1) * q.PageSize
 	take := q.PageSize
 	db.Preload("Category").
+		Order("created_at DESC").
 		Offset(skip).
 		Limit(take)
 	if q.Search == "" {
@@ -107,12 +108,26 @@ func (article ArticleC) Save(c *fiber.Ctx) error {
 		Stock:        article.Stock,
 		SalePrice:    article.SalePrice,
 	})
+
 	if sql.RowsAffected == 0 {
 		return c.Status(200).JSON(types.Response{
 			Status: false,
 			Msj:    "Ha ocurrido un error",
 		})
 	}
+
+	type artStruct struct {
+		ToysQuantity int
+	}
+	art := artStruct{}
+	db1 := config.DB.Model(models.ArticlesBox{})
+
+	db1.Select("ToysQuantity").
+		Where("id = ?", article.ArticleBoxID).
+		First(&art).
+		Updates(artStruct{
+			ToysQuantity: art.ToysQuantity + article.Stock,
+		})
 
 	return c.Status(200).JSON(types.Response{
 		Status: true,

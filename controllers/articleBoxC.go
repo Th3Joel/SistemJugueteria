@@ -114,7 +114,6 @@ func (article ArticleBoxC) Save(c *fiber.Ctx) error {
 		ID:            article.ID,
 		Code:          article.Code,
 		Description:   article.Description,
-		ToysQuantity:  article.ToysQuantity,
 		PurchasePrice: article.PurchasePrice,
 	})
 	if sql.RowsAffected == 0 {
@@ -139,7 +138,7 @@ func (article ArticleBoxC) UpdateId(c *fiber.Ctx) error {
 
 	db.
 		Where("id = ?", id).
-		Select("code", "description", "toys_quantity", "purchase_price").
+		Select("code", "description", "purchase_price").
 		Updates(article)
 
 	return c.JSON(types.Response{
