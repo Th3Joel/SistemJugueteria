@@ -40,8 +40,9 @@ export const Layout = () => {
       <Sidebar />
 
 
-      <div className={`h-[100dvh] bg-slate-100 animate__fadeIn duration-300 
-        ${estado ? "pl-0" : "pl-[260px]"}`}>
+      <div className={`h-[100dvh] bg-slate-100 animate__fadeIn duration-300
+        ${estado ? "pl-0" : "fixed pl-[260px] w-[600px] overflow-x-hidden"}`}>
+        {/*${estado ? "pl-0" : "pl-[260px]"}`}>*/}
 
         <Header />
         <div className="overflow-auto p-3"

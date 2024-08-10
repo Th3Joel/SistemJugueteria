@@ -18,14 +18,15 @@ export const Header = () => {
     <div className={`border px-3 h-[50px]
      bg-white flex items-center justify-between`}>
       <div className="flex items-center">
-        <Tooltip title="Abrir / cerrar menu" arrow>
-          <div>
-            <FaBarsStaggered
-              className="cursor-pointer"
-              onClick={() => inc(!estado)}
-            />
-          </div>
-        </Tooltip>
+          <Tooltip title="Abrir / cerrar menu" arrow>
+            <div>
+              <FaBarsStaggered
+                className="cursor-pointer"
+                onClick={() => inc(!estado)}
+              />
+            </div>
+          </Tooltip>
+
         <p className="ml-2 text-xl font-semibold text-gray-500">{title}</p>
       </div>
       <div className="flex items-center gap-4">
