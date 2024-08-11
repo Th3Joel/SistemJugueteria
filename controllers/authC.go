@@ -108,7 +108,7 @@ func (a AuthC) ForgotPassword(f *fiber.Ctx) error {
 	tokenH.Save(genToken, a.ID, time.Minute*30, f.IP())
 
 	params := &resend.SendEmailRequest{
-		From: "Triceratox <triceratox@triceratox.lat>",
+		From: "Triceratox <triceratox@support.triceratox.lat>",
 		To:   []string{a.Email},
 		Html: fmt.Sprintf(`
 			<h1 style="text-align: center;">Hola,</h1>
@@ -130,7 +130,7 @@ func (a AuthC) ForgotPassword(f *fiber.Ctx) error {
 			 <h3>Si no realizó la solicitud, ignore este correo electrónico.</h3>
 			 <h2>Gracias.</h2>
 		`, a.Email, f.Hostname(), genToken, f.Hostname(), genToken, f.Hostname()),
-		Subject: "Hello from Golang",
+		Subject: "Restablecimiento de contraseña",
 		//Cc:      []string{"cc@example.com"},
 		//Bcc:     []string{"bcc@example.com"},
 		//ReplyTo: "replyto@example.com",
