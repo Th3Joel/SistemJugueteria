@@ -108,7 +108,7 @@ func (a AuthC) ForgotPassword(f *fiber.Ctx) error {
 	tokenH.Save(genToken, a.ID, time.Minute*30, f.IP())
 
 	params := &resend.SendEmailRequest{
-		From: "Triceratox <triceratox@support.triceratox.lat>",
+		From: "Triceratox <x@support.triceratox.lat>",
 		To:   []string{a.Email},
 		Html: fmt.Sprintf(`
 			<h1 style="text-align: center;">Hola,</h1>

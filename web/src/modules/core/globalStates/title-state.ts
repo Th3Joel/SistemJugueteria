@@ -35,6 +35,10 @@ export const routesTitles: Record<string, string> = {
   "/settings/profile": "Configuración | Perfil",
   "/settings/company": "Configuración | Empresa",
   "/settings/maintenance": "Configuración | Mantenimiento",
+  "/auth/": "Inicio de sesión",
+  "/auth/login": "Inicio de sesión",
+  "/auth/forgot-password": "Recuperación de contraseña",
+  "/auth/reset-password": "Restablecimiento de contraseña",
 };
 
 export const TitleState = create<TitleState>((set) => ({
