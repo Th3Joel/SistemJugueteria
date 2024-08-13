@@ -47,7 +47,7 @@ export const Router = () => {
        setTitle(routesTitles[pathname] || "Undefinido");
        setPath(pathname);
     },[pathname])
-
+ 
     return (
         <>
             {auth.loading ? (
