@@ -152,7 +152,7 @@ func (a AuthC) ForgotPassword(f *fiber.Ctx) error {
 	})
 }
 
-func (a AuthC) ResetPassword(f *fiber.Ctx) error {
+func (AuthC) ResetPassword(f *fiber.Ctx) error {
 	passwdH := helpers.PasswdH{}
 	tokenH := helpers.TokenH{}
 	type PasswordReset struct {
@@ -166,7 +166,8 @@ func (a AuthC) ResetPassword(f *fiber.Ctx) error {
 
 	data := tokenH.Get(da.Code)
 	tokenH.Remove(da.Code)
-	db.Where("id = ?", data.UserId).Update("password", passwdH.Hash(da.Password))
+	db.Where("id = ?", data.UserId).
+		Update("password", passwdH.Hash(da.Password))
 
 	return f.JSON(types.Response{
 		Status: true,

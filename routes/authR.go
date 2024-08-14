@@ -10,7 +10,7 @@ import (
 )
 
 func AuthR(f fiber.Router) {
-	authC := new(controllers.AuthC)
+	authC := controllers.AuthC{}
 	r := f.Group("/auth")
 
 	r.Post("/login", mdd.ValM(val.MsjAuthVal, controllers.AuthC{}, 0), authC.Login)
