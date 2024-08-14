@@ -5,7 +5,7 @@ interface Params {
     [key: string]: string;
     id: string;
 }
-export const EditPriceCategory = () => {
+const EditPriceCategory = () => {
     const {id} = useParams<Params>();
     return <Card>
         <div className="grid place-items-center m-5">
@@ -13,3 +13,4 @@ export const EditPriceCategory = () => {
         </div>
     </Card>
 }
+export default EditPriceCategory;

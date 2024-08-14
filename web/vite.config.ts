@@ -7,12 +7,38 @@ import path from "path"
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  resolve:{
-    alias:{
-      '@':path.resolve(__dirname,"src")
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, "./src")
     }//[{find:'@',replacement:path.resolve(__dirname,"src")}]
   },
-  build:{
-    minify:true
+  build: {
+    minify: true,
+    //chunkSizeWarningLimit:1000
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          index: [
+            'react',
+            'react-dom',
+            'sonner',
+            'driver.js',
+            'sweetalert2',
+            'path',
+          ],
+          index2:[
+            'chart.js',
+            'zustand',
+            'react-icons',
+            'react-router-dom',
+          ],
+          index1: [
+            '@mui/material',
+            '@emotion/react',
+            '@emotion/styled',
+          ], // Agrupa librerías en un chunk separado
+        },
+      },
+    },
   }
 })

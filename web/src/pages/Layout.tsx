@@ -1,12 +1,12 @@
 import { Header } from "@/modules/core/components/Header";
 import { Sidebar } from "@/modules/core/components/Sidebar";
-import { AuthState } from "@/modules/core/globalStates/auth-state";
+import {AuthState}  from "@/modules/core/globalStates/auth-state";
 import { SidebarState } from "@/modules/core/globalStates/sidebar-state";
 import { useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
 
-export const Layout = () => {
+ const Layout = () => {
   const { estado, inc } = SidebarState();
   const auth = AuthState();
 
@@ -53,3 +53,5 @@ export const Layout = () => {
     </>
   );
 };
+
+export default Layout;

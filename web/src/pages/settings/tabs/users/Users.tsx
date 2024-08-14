@@ -11,7 +11,7 @@ interface IUser {
   Role: string;
   Picture: string;
 }
-export const Users = () => {
+const Users = () => {
   const hook = useTable<IUser>();
   return (
     <div className="animate__fadeIn">
@@ -49,3 +49,4 @@ export const Users = () => {
     </div>
   );
 };
+export default Users;

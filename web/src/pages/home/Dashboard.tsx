@@ -2,7 +2,7 @@ import { Card } from "@/modules/core/components/Card";
 import { LinesChart } from "@/modules/home/components/LinesChart";
 import { SectionCounters } from "@/modules/home/components/SectionCounters";
 
-export const Dashboard = () => {
+const Dashboard = () => {
 
 
   return (
@@ -14,3 +14,4 @@ export const Dashboard = () => {
     </Card>
   );
 };
+export default Dashboard;

@@ -1,5 +1,5 @@
 import {BrowserRouter} from "react-router-dom";
-import {Router} from "./routes/Router";
+import  Router  from "@/routes/Router";
 import {Toaster} from "sonner";
 
 function App() {

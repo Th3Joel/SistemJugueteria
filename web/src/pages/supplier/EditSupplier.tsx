@@ -6,7 +6,7 @@ interface IParams {
     [key: string]: string;
     id: string;
 }
-export const EditSupplier = () => {
+const EditSupplier = () => {
     const {id} = useParams<IParams>()
   return (
       <Card>
@@ -16,3 +16,4 @@ export const EditSupplier = () => {
       </Card>
   );
 };
+export default EditSupplier;

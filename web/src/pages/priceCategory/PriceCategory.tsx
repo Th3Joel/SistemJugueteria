@@ -20,7 +20,7 @@ interface IArticleBox {
     code: string;
 }
 
-export const PriceCategory = () => {
+const PriceCategory = () => {
     const hook = useTable<IPriceCategory>()
     return (
        <Card>
@@ -61,3 +61,4 @@ export const PriceCategory = () => {
        </Card>
     )
 }
+export default PriceCategory;

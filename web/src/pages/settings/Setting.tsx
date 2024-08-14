@@ -37,7 +37,7 @@ const a11yProps = (index: number, event: (id: number) => void) => {
   };
 };
 
-export const Setting = () => {
+const Setting = () => {
   const [value, setValue] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
@@ -88,3 +88,4 @@ export const Setting = () => {
     </div>
   );
 };
+export default Setting;

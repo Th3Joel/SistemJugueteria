@@ -1,7 +1,7 @@
 import { CostumerForm } from "@/modules/costumer/components/CostumerForm";
 import { Card } from "@/modules/core/components/Card";
 
-export const AddCostumer = () => {
+const AddCostumer = () => {
   return (
     <Card>
       <div className="flex justify-center m-5">
@@ -10,3 +10,4 @@ export const AddCostumer = () => {
     </Card>
   );
 };
+export default AddCostumer;

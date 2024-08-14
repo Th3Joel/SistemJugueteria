@@ -11,7 +11,7 @@ interface ICategory {
     Description:string
 }
 
-export const Category = () => {
+ const Category = () => {
     const hook = useTable<ICategory>()
     return (
         <Card>
@@ -54,3 +54,4 @@ export const Category = () => {
         </Card>
     )
 }
+export default Category;

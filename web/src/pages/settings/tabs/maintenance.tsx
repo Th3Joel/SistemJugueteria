@@ -1,6 +1,6 @@
 import dbImage from "@/assets/db.png";
 import {Button} from "@mui/material";
-export const Maintenance = () =>{
+const Maintenance = () =>{
     return(
         <div className="flex justify-center m-3">
             <div className="w-[350px] flex flex-col gap-3 p-2 items-center shadow-md rounded-lg  animate__fadeIn">
@@ -11,3 +11,4 @@ export const Maintenance = () =>{
         </div>
     );
 }
+export default Maintenance;

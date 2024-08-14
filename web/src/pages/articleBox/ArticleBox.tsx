@@ -13,7 +13,7 @@ interface IArticleBox {
     PurchasePrice:string
 }
  
-export const ArticleBox = () => {
+const ArticleBox = () => {
     const hook = useTable<IArticleBox>()
     return (
         <Card>
@@ -59,3 +59,5 @@ export const ArticleBox = () => {
         </Card>
     )
 }
+
+export default ArticleBox;

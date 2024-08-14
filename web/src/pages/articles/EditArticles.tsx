@@ -7,7 +7,7 @@ interface IParams {
   id: string;
 }
 
-export const EditArticles = () => {
+const EditArticles = () => {
   const { id } = useParams<IParams>();
   return (
     <Card>
@@ -17,3 +17,4 @@ export const EditArticles = () => {
     </Card>
   );
 };
+export default EditArticles;

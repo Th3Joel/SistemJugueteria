@@ -10,7 +10,7 @@ interface ICliente {
   Name:string
   Phone:string
 }
-export const Clientes = () => {
+const Clientes = () => {
 const hook = useTable<ICliente>()
   return (
     <Card>
@@ -52,3 +52,4 @@ const hook = useTable<ICliente>()
     </Card>
   );
 };
+export default Clientes;

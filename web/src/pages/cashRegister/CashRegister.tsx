@@ -1,7 +1,9 @@
 import { Card } from "@/modules/core/components/Card"
 
-export const CashRegister = () => {
+const CashRegister = () => {
   return (
     <Card>CashRegister</Card>
   )
 }
+
+export default CashRegister;

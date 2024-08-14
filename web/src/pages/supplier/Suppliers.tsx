@@ -13,7 +13,7 @@ interface ISupplier {
     Address: string
 }
 
-export const Suppliers = () => {
+const Suppliers = () => {
     const hook = useTable<ISupplier>()
     return (
         <Card>
@@ -62,3 +62,4 @@ export const Suppliers = () => {
         </Card>
     )
 };
+export default Suppliers;

@@ -21,7 +21,7 @@ interface IArticle {
   }
 }
 
-export const Articles = () => {
+const Articles = () => {
   const hook = useTable<IArticle>()
   return (
     <Card>
@@ -69,3 +69,5 @@ export const Articles = () => {
         </Card>
   )
 }
+
+export default Articles;

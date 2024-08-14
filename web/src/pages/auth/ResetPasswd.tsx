@@ -1,7 +1,7 @@
 import { ResetPasswdForm } from "@/modules/auth/components/ResetPasswdForm";
 
-
-export const ResetPasswd = () => {
+const ResetPasswd = () => {
     
   return <ResetPasswdForm />
 }
+export default ResetPasswd;

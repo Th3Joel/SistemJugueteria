@@ -6,7 +6,7 @@ interface IParams {
     [key: string]: string;
     id: string;
 }
-export const EditCategory = () => {
+const EditCategory = () => {
     const {id} = useParams<IParams>()
     return <Card>
         <div className="flex justify-center m-5">
@@ -14,3 +14,4 @@ export const EditCategory = () => {
         </div>
     </Card>
 }
+export default EditCategory;

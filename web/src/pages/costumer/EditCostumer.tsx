@@ -6,7 +6,7 @@ interface Params{
     [key:string]:string
     id:string
 }
-export const EditCostumer:React.FC = () => {
+const EditCostumer:React.FC = () => {
     const {id} = useParams<Params>();
   return (
     <Card>
@@ -16,3 +16,4 @@ export const EditCostumer:React.FC = () => {
     </Card>
   )
 }
+export default EditCostumer;

@@ -1,9 +1,8 @@
-import { AuthState } from "@/modules/core/globalStates/auth-state";
+import  {AuthState}  from "@/modules/core/globalStates/auth-state";
 import { Navigate, Outlet } from "react-router-dom"
 
 
-
-export const AuthLayout:React.FC = () => {
+const AuthLayout:React.FC = () => {
   const auth = AuthState();
 
   if (auth.estado) {
@@ -17,3 +16,5 @@ export const AuthLayout:React.FC = () => {
     </div>
   )
 }
+
+export default AuthLayout;

@@ -5,7 +5,7 @@ interface Params {
     [key: string]: string;
   id: string;
 }
-export const EditUsers = () => {
+const EditUsers = () => {
     const {id} = useParams<Params>();
   return (
       <div className="flex justify-center">
@@ -13,3 +13,4 @@ export const EditUsers = () => {
       </div>
   )
 }
+export default EditUsers;

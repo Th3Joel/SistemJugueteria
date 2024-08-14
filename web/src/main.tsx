@@ -1,9 +1,9 @@
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
 import "./index.css";
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import "driver.js/dist/driver.css";
+import  App  from "./App";
 
 const theme = createTheme({
     components: {

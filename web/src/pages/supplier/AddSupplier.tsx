@@ -1,7 +1,7 @@
 import {Card} from "@/modules/core/components/Card.tsx";
 import {SupplierForm} from "@/modules/supplier/components/supplierForm.tsx";
 
-export const AddSupplier = () => {
+const AddSupplier = () => {
   return (
       <Card>
           <div className="grid place-items-center m-5">
@@ -10,3 +10,4 @@ export const AddSupplier = () => {
       </Card>
   );
 };
+export default AddSupplier;
