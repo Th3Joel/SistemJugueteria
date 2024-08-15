@@ -22,9 +22,6 @@ import  AddArticleBox  from "@/pages/articleBox/AddArticleBox.tsx";
 import  Category from "@/pages/category/Category.tsx";
 import  EditCategory  from "@/pages/category/EditCategory.tsx";
 import  AddCategory  from "@/pages/category/AddCategory.tsx";
-import  PriceCategory  from "@/pages/priceCategory/PriceCategory.tsx";
-import  AddPriceCategory  from "@/pages/priceCategory/AddPriceCategory.tsx";
-import  EditPriceCategory  from "@/pages/priceCategory/EditPriceCategory.tsx";
 import  Suppliers  from "@/pages/supplier/Suppliers.tsx";
 import  AddSupplier  from "@/pages/supplier/AddSupplier.tsx";
 import  EditSupplier  from "@/pages/supplier/EditSupplier.tsx";
@@ -81,9 +78,7 @@ const Router = () => {
                         <Route path="/categories/edit/:id" element={<EditCategory />} />
                         <Route path="/categories/add" element={<AddCategory />} />
 
-                        <Route path="/price-categories" element={<PriceCategory />} />
-                        <Route path="/price-categories/edit/:id" element={<EditPriceCategory />} />
-                        <Route path="/price-categories/add" element={<AddPriceCategory />} />
+ 
 
 
                         <Route path="/suppliers" element={<Suppliers />} />

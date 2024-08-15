@@ -10,7 +10,6 @@ import {
   FaUserGroup,
   FaGear,
   FaTag,
-  FaTags,
   FaTruck,
   FaCashRegister,
   FaBoxesStacked
@@ -125,17 +124,6 @@ export const Sidebar = () => {
             </Link>
           </div>
 
-          <div
-              className={`border duration-300 border-[#0071BC] ${
-                 pathname.startsWith("/price-categories") &&
-                  "bg-[#E261B1] border-[#E261B1]"
-              } rounded-lg px-3 py-2 my-3`}
-          >
-            <Link to="/price-categories" className="flex">
-              <FaTags className="text-2xl"/>
-              <p className="pl-2 text-red-400">Categorías de precios</p>
-            </Link>
-          </div>
 
           <div
               className={`border duration-300 border-[#0071BC] ${

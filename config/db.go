@@ -29,9 +29,8 @@ func ConnectDB() {
 	}
 
 	log.Println("Conectado a la base de datos")
-
-	if len(os.Args) > 1 {
-		if os.Args[1] == "migrate" {
+	for _, v := range os.Args {
+		if v == "migrate" {
 
 			_ = db.AutoMigrate(models.Company{})
 			_ = db.AutoMigrate(models.Users{})
@@ -39,14 +38,13 @@ func ConnectDB() {
 			_ = db.AutoMigrate(models.Suppliers{})
 			_ = db.AutoMigrate(models.Category{})
 			_ = db.AutoMigrate(models.Articles{})
-			_ = db.AutoMigrate(models.PriceCategories{})
 			_ = db.AutoMigrate(models.ArticlesBox{})
 			_ = db.AutoMigrate(models.Purchases{})
 			_ = db.AutoMigrate(models.DetailPurchase{})
 			_ = db.AutoMigrate(models.Sales{})
 			_ = db.AutoMigrate(models.DetailSale{})
 		}
-		if os.Args[1] == "seed" {
+		if v == "seed" {
 			Seed(db)
 		}
 	}
@@ -78,14 +76,14 @@ func ConnectDB() {
 }
 
 func CleanSqliteToken() {
+
 	sql := "DELETE FROM token WHERE exp < ?;"
 	for {
+		time.Sleep(time.Second * 10)
 		_, err := Slite.Exec(sql, time.Now().Unix())
 		if err != nil {
 			log.Fatal("Error al limpiar la tabla token: ", err)
 		}
 		fmt.Println("Tokens expirados han sido limpiados")
-		time.Sleep(time.Second * 15)
-
 	}
 }

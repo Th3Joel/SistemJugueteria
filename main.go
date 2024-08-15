@@ -5,20 +5,55 @@ import (
 	mdd "Jugueteria/middleware"
 	"Jugueteria/routes"
 	"Jugueteria/web"
+	"fmt"
+	"log"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 )
 
-var port = os.Getenv("PORT")
+func prueba() {
+
+	// Nombre del archivo de bloqueo
+	lockFile := "./p.lock"
+
+	// Intenta crear el archivo de bloqueo
+	file, err := os.OpenFile(lockFile, os.O_CREATE|os.O_EXCL|os.O_RDWR, 0666)
+	if err != nil {
+		if os.IsExist(err) {
+			log.Println("El proceso ya está en ejecución.")
+			return
+		}
+		log.Fatalf("Error al crear el archivo de bloqueo: %v", err)
+	}
+	defer file.Close()
+	go config.CleanSqliteToken()
+
+	// Crear un canal para recibir señales
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+
+	// Goroutine para manejar señales
+	go func() {
+		sig := <-sigs
+		fmt.Println("Señal recibida:", sig)
+		os.Remove(lockFile)
+		os.Exit(0)
+	}()
+
+}
 
 func main() {
+	prueba()
+
 	config.ConnectDB()
-	go config.CleanSqliteToken()
+
 	app := fiber.New(fiber.Config{
-		Prefork: false,
+		Prefork: true,
 		AppName: "Jugueteria",
 	})
 
@@ -49,8 +84,6 @@ func main() {
 	routes.ArticleBoxR(api)
 	//CategoryR
 	routes.CategoryR(api)
-	//PriceCategoryR
-	routes.PriceCategoryR(api)
 	//HomeR
 	routes.HomeR(api)
 	//ArticleR
@@ -63,7 +96,7 @@ func main() {
 		NotFoundFile: "index.html",
 	}))
 
-	err := app.Listen(":" + port)
+	err := app.Listen(":" + os.Getenv("PORT"))
 	if err != nil {
 		println("Error al iniciar el servidor", err.Error())
 	}
