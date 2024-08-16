@@ -29,6 +29,8 @@ var MsjProveedorVal = map[string]string{
 	"Name.isRepeat": "Nombre ya existe",
 	"Email.email":   "Correo inválido.",
 	"Phone.numeric": "Debe se numérico.",
+	"Phone.min":     "Logitud debe de ser de 8 dígitos",
+	"Phone.max":     "Logitud debe de ser de 8 dígitos",
 	"Address.lte":   "Caracteres máximo 50",
 }
 
@@ -38,6 +40,8 @@ var MsjCostumerVal = map[string]string{
 	"Name.required": "Nombre requerido.",
 	"Name.isRepeat": "Nombre ya existe",
 	"Phone.numeric": "Debe se numérico.",
+	"Phone.min":     "Logitud debe de ser de 8 dígitos",
+	"Phone.max":     "Logitud debe de ser de 8 dígitos",
 }
 
 // Company
@@ -45,6 +49,8 @@ var MsjCompanyVal = map[string]string{
 	"Name.required": "Nombre requerido.",
 	"Email.email":   "Correo inválido.",
 	"Phone.numeric": "Debe se numérico.",
+	"Phone.min":     "Logitud debe de ser de 8 dígitos",
+	"Phone.max":     "Logitud debe de ser de 8 dígitos",
 	"Address.lte":   "Caracteres máximo 50",
 }
 

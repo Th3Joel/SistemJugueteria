@@ -92,7 +92,7 @@ export const UsersForm: React.FC<IProps> = ({ isEdit, id, isProfile }) => {
                         helperText={errors?.Email}
                         value={data?.Email}
                     />
-                    {!isProfile &&  
+                    {!isProfile &&
                         <InputText
                             label="Tipo de usuario"
                             name="Role"
@@ -103,8 +103,8 @@ export const UsersForm: React.FC<IProps> = ({ isEdit, id, isProfile }) => {
                             value={data.Role}
                             options={[
                                 { key: "admin", value: "Administrador" },
-                                { key: "vendedor", value: "Vendedor" },
-                                { key: "bodega", value: "Bodega" }]}
+                                { key: "vendedor", value: "Vendedor" }
+                            ]}
                         />}
 
                     {isEdit && <h4 className="text-gray-500 ml-2 -my-2">Actualizar contraseña (opcional)</h4>}

@@ -23,15 +23,15 @@ type UserPost struct {
 // CostumerPost Costumers
 type CostumerPost struct {
 	Name  string `validate:"required,isRepeat"`
-	Phone string `validate:"omitempty,numeric"`
+	Phone string `validate:"omitempty,numeric,min=8,max=8"`
 }
 
 // CompanyPost
 type CompanyPost struct {
 	Name    string `validate:"required"`
 	Ruc     string
-	Phone   string `validate:"omitempty,numeric"`
-	Address string `validate:"omitempty,lte=50"`
+	Phone   string `validate:"omitempty,numeric,min=8,max=8"`
+	Address string `validate:"omitempty,max=50"`
 	Email   string `validate:"omitempty,email"`
 }
 
@@ -39,7 +39,7 @@ type CompanyPost struct {
 type SupplierPost struct {
 	Name    string `validate:"required,isRepeat"`
 	Address string `validate:"omitempty,lte=50"`
-	Phone   string `validate:"omitempty,numeric"`
+	Phone   string `validate:"omitempty,numeric,min=8,max=8"`
 	Email   string `validate:"omitempty,email"`
 }
 

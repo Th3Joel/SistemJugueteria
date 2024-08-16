@@ -79,10 +79,10 @@ func CleanSqliteToken() {
 
 	sql := "DELETE FROM token WHERE exp < ?;"
 	for {
-		time.Sleep(time.Second * 10)
+		time.Sleep(time.Minute * 30)
 		_, err := Slite.Exec(sql, time.Now().Unix())
 		if err != nil {
-			log.Fatal("Error al limpiar la tabla token: ", err)
+			log.Println("Error al limpiar la tabla token: ", err)
 		}
 		fmt.Println("Tokens expirados han sido limpiados")
 	}
