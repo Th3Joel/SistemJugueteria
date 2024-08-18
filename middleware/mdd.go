@@ -67,6 +67,7 @@ func ValM[T any, R any](valMsj map[string]string, data T, model R) func(*fiber.C
 		_ = validate.RegisterValidation("integer", val.Integer())
 		_ = validate.RegisterValidation("exists", val.Exists(model, c))
 		_ = validate.RegisterValidation("valToken", val.ValToken())
+		_ = validate.RegisterValidation("toysQuantityCheck", val.ToysQuantityCheck())
 		is, errorMsj := helpers.ParseMsj(data, validate, valMsj)
 		if is {
 			return c.JSON(types.Response{

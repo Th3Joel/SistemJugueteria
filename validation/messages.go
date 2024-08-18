@@ -62,9 +62,9 @@ var MsjArticleBoxVal = map[string]string{
 	"Description.required": "Descripción requerida.",
 	"Description.isRepeat": "Descripción ya existe",
 
-	//"ToysQuantity.required": "Cantidad requerida.",
-	//"ToysQuantity.integer":  "Solo se aceptan números enteros",
-	//"ToysQuantity.gtC":      "Cantidad debe ser mayor a 0",
+	"ToysQuantity.required": "Cantidad requerida.",
+	"ToysQuantity.integer":  "Solo se aceptan números enteros",
+	"ToysQuantity.gtC":      "Cantidad debe ser mayor a 0",
 
 	"PurchasePrice.required": "Precio requerido.",
 	"PurchasePrice.numeric":  "Precio debe ser numérico",
@@ -104,9 +104,10 @@ var MsjArticleVal = map[string]string{
 	"Description.required": "Descripción requerida.",
 	"Description.isRepeat": "Descripción ya existe",
 
-	"Stock.required": "Cantidad requerida.",
-	"Stock.integer":  "Solo se aceptan números enteros",
-	"Stock.gtC":      "Cantidad debe ser mayor a 0",
+	"Stock.required":          "Cantidad requerida.",
+	"Stock.integer":           "Solo se aceptan números enteros",
+	"Stock.gtC":               "Cantidad debe ser mayor a 0",
+	"Stock.toysQuantityCheck": "No mensaje",
 
 	"SalePrice.required": "Precio requerido.",
 	"SalePrice.numeric":  "Precio debe ser numérico",

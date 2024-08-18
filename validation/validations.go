@@ -45,9 +45,9 @@ type SupplierPost struct {
 
 // ArticleBoxPost
 type ArticleBoxPost struct {
-	Code        string `validate:"required,isRepeat"`
-	Description string `validate:"required,isRepeat"`
-	//ToysQuantity  string `validate:"required,integer,gtC=1"`
+	Code          string `validate:"required,isRepeat"`
+	Description   string `validate:"required,isRepeat"`
+	ToysQuantity  string `validate:"required,integer,gtC=1"`
 	PurchasePrice string `validate:"required,numeric,gtC=1"`
 }
 
@@ -57,7 +57,7 @@ type ArticlePost struct {
 	CategoryID   string `validate:"required"`
 	Code         string `validate:"required,isRepeat"`
 	Description  string `validate:"required,isRepeat"`
-	Stock        string `validate:"required,integer,gtC=1"`
+	Stock        string `validate:"required,integer,gtC=1,toysQuantityCheck"`
 	SalePrice    string `validate:"required,numeric,gtC=1"`
 }
 

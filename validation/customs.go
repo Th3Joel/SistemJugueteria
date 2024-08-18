@@ -3,6 +3,8 @@ package val
 import (
 	"Jugueteria/config"
 	"Jugueteria/helpers"
+	"Jugueteria/models"
+	"fmt"
 	"reflect"
 	"strconv"
 	"strings"
@@ -97,4 +99,47 @@ func Integer() func(fl validator.FieldLevel) bool {
 		_, err := strconv.Atoi(field)
 		return err == nil
 	}
+}
+
+func ToysQuantityCheck() func(validator.FieldLevel) bool {
+	return func(fl validator.FieldLevel) bool {
+		otherField := reflect.ValueOf(fl.Parent().Interface())
+		ArticleBoxID := otherField.FieldByName("ArticleBoxID").String()
+		if ArticleBoxID == "" {
+			MsjArticleVal["Stock.toysQuantityCheck"] = "Debe seleccionar una caja de artículos"
+			return false
+		}
+		field, _ := strconv.Atoi(fl.Field().String())
+		type ArticleBox struct {
+			ToysQuantity int64
+		}
+		var toys ArticleBox
+		sumStockArticles := sumStockArticles(ArticleBoxID)
+		_ = config.DB.
+			Model(models.ArticlesBox{}).
+			Select("toys_quantity").
+			Where("id = ?", ArticleBoxID).
+			First(&toys)
+		resto := toys.ToysQuantity - sumStockArticles
+		if int64(field) > resto {
+			MsjArticleVal["Stock.toysQuantityCheck"] =
+				fmt.Sprintf("La caja de artículos solo tiene %d espacios disponibles", resto)
+			return false
+		}
+
+		return true
+	}
+}
+
+func sumStockArticles(id string) int64 {
+	var sum int64
+	_ = config.DB.Table("articles_boxes").
+		Select("SUM(articles.stock)").
+		Joins("JOIN articles ON articles.article_box_id = articles_boxes.id").
+		Where("articles_boxes.id = ?", id).
+		Scan(&sum).Error
+	// config.DB.Raw(`
+	// 	SELECT total_stock FROM total_stock_view WHERE article_box_id = ?
+	// `, id).Scan(&sum)
+	return sum
 }

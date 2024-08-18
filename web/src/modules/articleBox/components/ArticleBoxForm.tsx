@@ -17,7 +17,7 @@ interface IFormData {
   Description: string;
   ToysQuantity: string;
   PurchasePrice: string;
-}
+} 
 
 export const ArticleBoxForm: React.FC<IProps> = ({ isEdit, id }) => {
   const { post, errors, loading, data, get, inputChange } = useForm<IFormData>({
@@ -68,7 +68,7 @@ export const ArticleBoxForm: React.FC<IProps> = ({ isEdit, id }) => {
           helperText={errors?.Description}
         />
 
-        {isEdit && <InputText
+        <InputText
           label="Cantidad de artículos"
           name="ToysQuantity"
           icon={<FaDatabase />}
@@ -76,8 +76,7 @@ export const ArticleBoxForm: React.FC<IProps> = ({ isEdit, id }) => {
           onChange={inputChange}
           error={!!errors?.ToysQuantity}
           helperText={errors?.ToysQuantity}
-          readonly
-        />}
+        />
 
         <InputText
           label="Precio de compra"

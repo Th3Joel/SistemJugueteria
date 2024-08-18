@@ -33,6 +33,12 @@ import AuthLayout from "@/pages/auth/AuthLayout";
 import ForgotPasswd from "@/pages/auth/ForgotPasswd";
 import ResetPasswd from "@/pages/auth/ResetPasswd";
 import { routesTitles, TitleState } from "@/modules/core/globalStates/title-state";
+import AddPurchase from "@/pages/purchase/AddPurchase";
+import EditPurchase from "@/pages/purchase/EditPurchase";
+import Purchase from "@/pages/purchase/Purchase";
+import AddSale from "@/pages/sale/AddSale";
+import EditSale from "@/pages/sale/EditSale";
+import Sale from "@/pages/sale/Sale";
 
 
 const Router = () => {
@@ -90,6 +96,14 @@ const Router = () => {
                         <Route path="/articles/add" element={<AddArticles />} />
 
                         <Route path="/cash-register" element={<CashRegister />} />
+
+                        <Route path="/purchases" element={<Purchase />} />
+                        <Route path="/purchase/add" element={<AddPurchase />} />
+                        <Route path="/purchase/edit/:id" element={<EditPurchase />} />
+
+                        <Route path="/sales" element={<Sale />} />
+                        <Route path="/sale/add" element={<AddSale />} />
+                        <Route path="/sale/edit/:id" element={<EditSale />} />
 
                     </Route>
                     <Route path="/auth" element={<AuthLayout />}>

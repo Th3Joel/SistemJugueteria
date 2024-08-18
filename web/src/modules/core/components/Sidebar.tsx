@@ -12,7 +12,9 @@ import {
   FaTag,
   FaTruck,
   FaCashRegister,
-  FaBoxesStacked
+  FaBoxesStacked,
+  FaCartArrowDown,
+  FaHandHoldingDollar
 } from "react-icons/fa6";
 
 export const Sidebar = () => {
@@ -129,6 +131,28 @@ export const Sidebar = () => {
             <Link to="/articles" className="flex">
               <FaTruck className="text-2xl" />
               <p className="pl-2">Artículos</p>
+            </Link>
+          </div>
+
+          <div
+            className={`border duration-300 border-[#0071BC] ${pathname.startsWith("/purchases") &&
+              "bg-[#E261B1] border-[#E261B1]"
+              } rounded-lg px-3 py-2 my-3`}
+          >
+            <Link to="/purchases" className="flex">
+              <FaCartArrowDown className="text-2xl" />
+              <p className="pl-2">Compras</p>
+            </Link>
+          </div>
+          
+          <div
+            className={`border duration-300 border-[#0071BC] ${pathname.startsWith("/sales") &&
+              "bg-[#E261B1] border-[#E261B1]"
+              } rounded-lg px-3 py-2 my-3`}
+          >
+            <Link to="/sales" className="flex">
+              <FaHandHoldingDollar className="text-2xl" />
+              <p className="pl-2">Ventas</p>
             </Link>
           </div>
 

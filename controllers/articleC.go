@@ -116,19 +116,6 @@ func (article ArticleC) Save(c *fiber.Ctx) error {
 		})
 	}
 
-	type artStruct struct {
-		ToysQuantity int
-	}
-	art := artStruct{}
-	db1 := config.DB.Model(models.ArticlesBox{})
-
-	db1.Select("ToysQuantity").
-		Where("id = ?", article.ArticleBoxID).
-		First(&art).
-		Updates(artStruct{
-			ToysQuantity: art.ToysQuantity + article.Stock,
-		})
-
 	return c.Status(200).JSON(types.Response{
 		Status: true,
 		Msj:    "Articulo creado",
