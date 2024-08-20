@@ -55,7 +55,7 @@ func (category CategoryC) All(c *fiber.Ctx) error {
 	if q.Search == "" {
 		db.Find(&category.Array)
 	} else {
-		db.Where("name LIKE ?", "%"+q.Search+"%").
+		db.Where("LOWER(name) LIKE LOWER(?)", "%"+q.Search+"%").
 			Find(&category.Array)
 	}
 	db.Count(&count)

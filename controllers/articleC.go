@@ -49,7 +49,7 @@ func (article ArticleC) All(c *fiber.Ctx) error {
 	if q.Search == "" {
 		db.Find(&article.Array)
 	} else {
-		db.Where("code LIKE ?", "%"+q.Search+"%").
+		db.Where("LOWER(code) LIKE LOWER(?)", "%"+q.Search+"%").
 			Find(&article.Array)
 	}
 	db.Count(&count)

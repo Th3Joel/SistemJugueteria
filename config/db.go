@@ -55,7 +55,7 @@ func ConnectDB() {
 	if err != nil {
 		log.Fatal("No se pudo conectar a la base de datos sqlite3. \n")
 	}
-	d.SetMaxOpenConns(1)
+	//d.SetMaxOpenConns(1)
 
 	createTableSQL := `
 	CREATE TABLE IF NOT EXISTS token (

@@ -38,7 +38,7 @@ func (supplier SupplierC) All(c *fiber.Ctx) error {
 	if q.Search == "" {
 		db.Find(&supplier.Array)
 	} else {
-		db.Where("name LIKE ?", "%"+q.Search+"%").
+		db.Where("LOWER(name) LIKE LOWER(?)", "%"+q.Search+"%").
 			Find(&supplier.Array)
 	}
 	db.Count(&count)

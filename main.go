@@ -12,45 +12,18 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 )
 
-// func preventItFromRunningManyTimes() {
-
-// 	// Nombre del archivo de bloqueo
-// 	lockFile := "./p.lock"
-
-// 	// Intenta crear el archivo de bloqueo
-// 	file, err := os.OpenFile(lockFile, os.O_CREATE|os.O_EXCL|os.O_RDWR, 0666)
-// 	if err != nil {
-// 		if os.IsExist(err) {
-// 			//log.Println("El proceso ya está en ejecución.")
-// 			return
-// 		}
-// 		log.Fatalf("Error al crear el archivo de bloqueo: %v", err)
-// 	}
-// 	defer file.Close()
-
-// 	go config.CleanSqliteToken()
-
-// 	// Crear un canal para recibir señales
-// 	sigs := make(chan os.Signal, 1)
-// 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGSTOP)
-
-// 	// Goroutine para manejar señales
-// 	go func() {
-// 		sig := <-sigs
-// 		fmt.Println("Señal recibida:", sig)
-// 		os.Remove(lockFile)
-// 		os.Exit(0)
-// 	}()
-
-// }
-
 func main() {
-	go config.CleanSqliteToken()
+	if !fiber.IsChild() {
+		go config.CleanSqliteToken()
+	}
 
 	config.ConnectDB()
 
 	app := fiber.New(fiber.Config{
-		AppName: "Jugueteria",
+		Prefork:                   true,
+		AppName:                   "Jugueteria",
+		DisableDefaultContentType: true,
+		//DisableStartupMessage:     true,
 	})
 
 	// defer func(app *fiber.App) {

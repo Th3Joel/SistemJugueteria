@@ -123,10 +123,9 @@ func ToysQuantityCheck() func(validator.FieldLevel) bool {
 		resto := toys.ToysQuantity - sumStockArticles
 		if int64(field) > resto {
 			MsjArticleVal["Stock.toysQuantityCheck"] =
-				fmt.Sprintf("La caja de artículos solo tiene %d espacios disponibles", resto)
+				fmt.Sprintf("La caja de artículos tiene %d espacios disponibles", resto)
 			return false
 		}
-
 		return true
 	}
 }

@@ -29,9 +29,12 @@ interface ISelect2 {
   id: string,
   name: string,
 }
+
 export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
   const [select, setSelect] = useState<IOptions[]>([{ key: "", value: "" }]);
   const [select2, setSelect2] = useState<IOptions[]>([{ key: "", value: "" }]);
+  const [cost, setCost] = useState<string>("");
+
   const { post, errors, loading, data, get, inputChange } = useForm<IFormData>({
     CategoryID: "",
     ArticleBoxID: "",
@@ -52,7 +55,7 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
     });
   };
 
-  const fetchDataSelect = async() => {
+  const fetchData = async () => {
     let res = await useFetch<ISelect[]>("/articles-box/select", "GET");
     if (res) {
       setSelect(res.map((data) => ({
@@ -61,7 +64,7 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
       })));
     }
 
-     let res2 = await useFetch<ISelect2[]>("/categories/select", "GET");
+    let res2 = await useFetch<ISelect2[]>("/categories/select", "GET");
     if (res2) {
       setSelect2(res2.map((data) => ({
         key: data.id,
@@ -71,9 +74,18 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
 
   }
 
+  const fetchCost = (id: string) => {
+    useFetch<{ status: boolean, find: number }>("/articles-box/cost/" + id, "GET").then((res) => {
+      if (res.status) {
+        setCost("" + res.find.toFixed(2));
+      }
+    });
+
+  }
+
   useEffect(() => {
-    (async() => {
-      await fetchDataSelect();
+    (async () => {
+      await fetchData();
       if (isEdit) {
         get("/articles/" + id);
       }
@@ -91,6 +103,7 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
         type="select"
         icon={<FaBoxOpen />}
         options={select}
+        valueChange={fetchCost}
       />}
 
       {<InputText
@@ -139,9 +152,17 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
         error={!!errors?.Stock}
         helperText={errors?.Stock}
       />
+      <InputText
+        label="Costo"
+        name="Cost"
+        placeholder="Costo"
+        icon={<p>C$</p>}
+        value={cost}
+        readonly
+      />
 
       <InputText
-        label="Precio de venta"
+        label="Precio"
         name="SalePrice"
         placeholder="Precio"
         icon={<p>C$</p>}
@@ -157,7 +178,7 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
             Atrás
           </Button>
         </Link>
-        <Button variant="contained" type="submit">
+        <Button variant="contained" type="submit" disabled={loading || select[0].key == "" || select2[0].key == ""}>
           {loading || select[0].key == "" || select2[0].key == "" ? <LoaderBtn /> : "Guardar"}
         </Button>
       </div>

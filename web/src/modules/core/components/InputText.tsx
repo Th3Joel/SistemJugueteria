@@ -25,6 +25,7 @@ interface IProps {
     options?: IOptions[];
     value?: string;
     readonly?: boolean;
+    valueChange?: (value: string) => void;
 }
 
 
@@ -44,6 +45,7 @@ export const InputText: React.FC<InputProps> = ({
     rows,
     multiline,
     readonly,
+    valueChange,
 }) => {
     const [showPassword, setShowPassword] = useState(false);
 
@@ -75,7 +77,9 @@ export const InputText: React.FC<InputProps> = ({
             setSelected(value!);
     }, [value])
 
-
+    useEffect(() => {
+        valueChange && valueChange(selected);
+    }, [selected])
     const InputSelect = () => {
         return (
             <FormControl fullWidth variant="filled" size="small" error={error}>

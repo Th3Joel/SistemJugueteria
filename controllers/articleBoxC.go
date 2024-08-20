@@ -35,7 +35,7 @@ func (article ArticleBoxC) All(c *fiber.Ctx) error {
 	if q.Search == "" {
 		db.Find(&article.Array)
 	} else {
-		db.Where("code LIKE ?", "%"+q.Search+"%").
+		db.Where("LOWER(code) LIKE LOWER(?)", "%"+q.Search+"%").
 			Find(&article.Array)
 	}
 	db.Count(&count)
@@ -54,6 +54,29 @@ func (article ArticleBoxC) All(c *fiber.Ctx) error {
 			Page:     q.Page,
 			PageSize: q.PageSize,
 		},
+	})
+}
+
+func (article ArticleBoxC) GetCost(f *fiber.Ctx) error {
+	db := config.DB.Model(article.Model)
+	id := f.Params("id")
+
+	sql := db.
+		Select("toys_quantity, purchase_price").
+		Where("id = ?", id).
+		First(&article)
+	cost := article.PurchasePrice / float64(article.ToysQuantity)
+
+	if sql.RowsAffected == 0 {
+		return f.Status(200).JSON(types.Response{
+			Status: false,
+			Msj:    "Articulo no encontrado",
+		})
+	}
+
+	return f.Status(200).JSON(types.Response{
+		Status: true,
+		Find:   cost,
 	})
 }
 
