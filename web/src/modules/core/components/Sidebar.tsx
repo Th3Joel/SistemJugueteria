@@ -12,7 +12,6 @@ import {
   FaTag,
   FaTruck,
   FaCashRegister,
-  FaBoxesStacked,
   FaCartArrowDown,
   FaHandHoldingDollar,
   FaPeopleCarryBox
