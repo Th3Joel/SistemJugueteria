@@ -29,7 +29,7 @@ type CostumerPost struct {
 // CompanyPost
 type CompanyPost struct {
 	Name    string `validate:"required"`
-	Ruc     string
+	Ruc     string `validate:"omitempty,min=14,max=14"`
 	Phone   string `validate:"omitempty,numeric,min=8,max=8"`
 	Address string `validate:"omitempty,max=50"`
 	Email   string `validate:"omitempty,email"`
@@ -47,8 +47,8 @@ type SupplierPost struct {
 type ArticleBoxPost struct {
 	Code          string `validate:"required,isRepeat"`
 	Description   string `validate:"required,isRepeat"`
-	ToysQuantity  string `validate:"required,integer,gtC=1"`
-	PurchasePrice string `validate:"required,numeric,gtC=1"`
+	ToysQuantity  string `validate:"required,integer,gtC=0"`
+	PurchasePrice string `validate:"required,numeric,gtC=0"`
 }
 
 // Article
@@ -57,8 +57,9 @@ type ArticlePost struct {
 	CategoryID   string `validate:"required"`
 	Code         string `validate:"required,isRepeat"`
 	Description  string `validate:"required,isRepeat"`
-	Stock        string `validate:"required,integer,gtC=1,toysQuantityCheck"`
-	SalePrice    string `validate:"required,numeric,gtC=1"`
+	MinimunStock string `validate:"required,integer,gtC=2"`
+	Stock        string `validate:"required,integer,gtC=0"`
+	SalePrice    string `validate:"omitempty,numeric,gtC=0"`
 }
 
 // CategoryPost
@@ -73,8 +74,8 @@ type PriceCategoryPost struct {
 	Code         string `validate:"required,isRepeat"`
 	Name         string `validate:"required,isRepeat"`
 	Description  string `validate:"required"`
-	Stock        string `validate:"required,integer,gtC=1"`
-	SalePrice    string `validate:"required,numeric,gtC=1"`
+	Stock        string `validate:"required,integer,gtC=0"`
+	SalePrice    string `validate:"required,numeric,gtC=0"`
 }
 
 type PasswordReset struct {

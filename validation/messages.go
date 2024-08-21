@@ -29,8 +29,8 @@ var MsjProveedorVal = map[string]string{
 	"Name.isRepeat": "Nombre ya existe",
 	"Email.email":   "Correo inválido.",
 	"Phone.numeric": "Debe se numérico.",
-	"Phone.min":     "Logitud debe de ser de 8 dígitos",
-	"Phone.max":     "Logitud debe de ser de 8 dígitos",
+	"Phone.min":     "Longitud debe de ser de 8 dígitos",
+	"Phone.max":     "Longitud debe de ser de 8 dígitos",
 	"Address.lte":   "Caracteres máximo 50",
 }
 
@@ -40,18 +40,23 @@ var MsjCostumerVal = map[string]string{
 	"Name.required": "Nombre requerido.",
 	"Name.isRepeat": "Nombre ya existe",
 	"Phone.numeric": "Debe se numérico.",
-	"Phone.min":     "Logitud debe de ser de 8 dígitos",
-	"Phone.max":     "Logitud debe de ser de 8 dígitos",
+	"Phone.min":     "Longitud debe de ser de 8 dígitos",
+	"Phone.max":     "Longitud debe de ser de 8 dígitos",
 }
 
 // Company
 var MsjCompanyVal = map[string]string{
 	"Name.required": "Nombre requerido.",
 	"Email.email":   "Correo inválido.",
+
+	"Ruc.min": "Longitud debe de ser de 14 dígitos",
+	"Ruc.max": "Longitud debe de ser de 14 dígitos",
+
 	"Phone.numeric": "Debe se numérico.",
-	"Phone.min":     "Logitud debe de ser de 8 dígitos",
-	"Phone.max":     "Logitud debe de ser de 8 dígitos",
-	"Address.lte":   "Caracteres máximo 50",
+	"Phone.min":     "Longitud debe de ser de 8 dígitos",
+	"Phone.max":     "Longitud debe de ser de 8 dígitos",
+
+	"Address.lte": "Caracteres máximo 50",
 }
 
 // ArticleBox
@@ -104,21 +109,27 @@ var MsjArticleVal = map[string]string{
 	"Description.required": "Descripción requerida.",
 	"Description.isRepeat": "Descripción ya existe",
 
-	"Stock.required":          "Cantidad requerida.",
-	"Stock.integer":           "Solo se aceptan números enteros",
-	"Stock.gtC":               "Cantidad debe ser mayor a 0",
-	"Stock.toysQuantityCheck": "No mensaje",
+	"MinimunStock.required": "Cantidad mínima requerida.",
+	"MinimunStock.integer":  "Solo se aceptan números enteros",
+	"MinimunStock.gtC":      "Cantidad mínima debe ser mayor a 2",
+
+	"Stock.required": "Cantidad requerida.",
+	"Stock.integer":  "Solo se aceptan números enteros",
+	"Stock.gtC":      "Cantidad debe ser mayor a 0",
+	//"Stock.toysQuantityCheck": "No mensaje",
 
 	"SalePrice.required": "Precio requerido.",
-	"SalePrice.numeric":  "Precio debe ser numérico",
+	"SalePrice.numeric":  "Solo se aceptan números",
 	"SalePrice.gtC":      "Precio debe ser mayor 0",
 }
 
 var MsjPasswordResetVal = map[string]string{
-	"Code.required":         "Código requerido.",
-	"Code.valToken":         "Código inválido",
-	"Password.required":     "La contraseña es requerida.",
-	"Password.gte":          "La contraseña debe ser mayor o igual a 4.",
+	"Code.required": "Código requerido.",
+	"Code.valToken": "Código inválido",
+
+	"Password.required": "La contraseña es requerida.",
+	"Password.gte":      "La contraseña debe ser mayor o igual a 4.",
+
 	"Confirm.required":      "Confirmación requerida.",
 	"Confirm.confirmPasswd": "Las contraseñas no coinciden",
 	"Confirm.omitCustom":    "Confirmación requerida",

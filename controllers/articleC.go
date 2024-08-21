@@ -12,12 +12,13 @@ import (
 )
 
 type ArticleC struct {
-	ID            string  `json:"id"`
-	CategoryID    string  `json:"CategoryID"`
-	ArticleBoxID  string  `json:"ArticleBoxID"`
+	ID         string `json:"id"`
+	CategoryID string `json:"CategoryID"`
+	//ArticleBoxID  string  `json:"ArticleBoxID"`
 	Code          string  `json:"Code"`
 	Description   string  `json:"Description"`
 	State         int     `json:"State"`
+	MinimunStock  int     `json:"MinimunStock"`
 	Stock         int     `json:"Stock"`
 	SalePrice     float64 `json:"SalePrice"`
 	PurchasePrice float64 `json:"PurchasePrice"`
@@ -101,7 +102,7 @@ func (article ArticleC) Save(c *fiber.Ctx) error {
 
 	sql := db.Create(&models.Articles{
 		ID:           uuid.NewString(),
-		ArticleBoxID: article.ArticleBoxID,
+		MinimunStock: article.MinimunStock,
 		CategoryID:   article.CategoryID,
 		Code:         article.Code,
 		Description:  article.Description,
@@ -131,7 +132,7 @@ func (article ArticleC) UpdateId(c *fiber.Ctx) error {
 
 	db.
 		Where("id = ?", id).
-		Select("code", "description", "stock", "sale_price").
+		Select("code", "description", "stock", "sale_price", "minimun_stock").
 		Updates(article)
 
 	return c.JSON(types.Response{

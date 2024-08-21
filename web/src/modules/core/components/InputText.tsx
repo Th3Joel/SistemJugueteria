@@ -26,6 +26,7 @@ interface IProps {
     value?: string;
     readonly?: boolean;
     valueChange?: (value: string) => void;
+    iconSize?: string;
 }
 
 
@@ -46,6 +47,7 @@ export const InputText: React.FC<InputProps> = ({
     multiline,
     readonly,
     valueChange,
+    iconSize
 }) => {
     const [showPassword, setShowPassword] = useState(false);
 
@@ -68,7 +70,7 @@ export const InputText: React.FC<InputProps> = ({
             transform: isFocused ? 'rotate(0deg)' : 'rotate(-90deg)',
             transition: 'all 0.3s ease-in-out',
             color: error ? 'red' : isFocused ? (error ? 'red' : '#1976d2') : 'gray',
-            fontSize: '18px',
+            fontSize: iconSize ? iconSize : '18px',
         }
     });
 
@@ -94,6 +96,7 @@ export const InputText: React.FC<InputProps> = ({
                     onChange={handleSelectChange}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
+                    
                 >
                     {options.map((data) => (
                         <MenuItem key={data.key} value={data.key}>

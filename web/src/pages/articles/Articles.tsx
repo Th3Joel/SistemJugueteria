@@ -18,7 +18,8 @@ interface IArticle {
     Profit: string
     Category: {
         Name: string
-    }
+    },
+    MinimunStock: string
 }
 
 const Articles = () => {
@@ -31,7 +32,7 @@ const Articles = () => {
                 colunms={[
                     "Código",
                     "Descripción",
-                    "Categoria",
+                    "Categoría",
                     "Stock",
                     "Precio venta",
                     "Acciones"
@@ -44,11 +45,9 @@ const Articles = () => {
                             <td>{d.Category.Name}</td>
                             <td className="text-lg font-extrabold">
                                 {
-                                    parseInt(d.Stock) <= 15 ?
+                                    parseInt(d.Stock) <= parseInt(d.MinimunStock) ?
                                         <p className="text-red-600">{d.Stock}</p> :
-                                        parseInt(d.Stock) > 15 && parseInt(d.Stock) <= 30 ?
-                                            <p className="text-orange-500">{d.Stock}</p> :
-                                            <p className="text-green-600">{d.Stock}</p>
+                                        <p className="text-green-600">{d.Stock}</p>
                                 }
                             </td>
                             <td>C$ {d.SalePrice}</td>

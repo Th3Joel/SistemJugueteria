@@ -8,6 +8,7 @@ type Articles struct {
 	ArticleBoxID  string `gorm:"size:255"`
 	Code          string `gorm:"size:255"`
 	Description   string
+	MinimunStock  int
 	Stock         int
 	SalePrice     float64
 	PurchasePrice float64
@@ -17,7 +18,7 @@ type Articles struct {
 	CreatedAt time.Time
 	UpdateAt  time.Time `gorm:"autoUpdateTime"`
 
-	Category Category    `gorm:"foreignKey:CategoryID"`
-	Article  ArticlesBox `gorm:"foreignKey:ArticleBoxID"`
+	Category Category `gorm:"foreignKey:CategoryID"`
+	//Article  ArticlesBox `gorm:"foreignKey:ArticleBoxID"`
 	//DetailSale []DetailSale `gorm:"foreignKey:ArticleID"`
 }

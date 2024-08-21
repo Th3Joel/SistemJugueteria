@@ -12,7 +12,8 @@ interface IProps {
   id?: string;
 }
 interface IFormData {
-  ArticleBoxID: string,
+  //ArticleBoxID: string,
+  MinimunStock:string,
   CategoryID: string,
   Code: string,
   Description: string,
@@ -33,11 +34,12 @@ interface ISelect2 {
 export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
   const [select, setSelect] = useState<IOptions[]>([{ key: "", value: "" }]);
   const [select2, setSelect2] = useState<IOptions[]>([{ key: "", value: "" }]);
-  const [cost, setCost] = useState<string>("");
+  //const [cost, setCost] = useState<string>("");
 
   const { post, errors, loading, data, get, inputChange } = useForm<IFormData>({
     CategoryID: "",
-    ArticleBoxID: "",
+    //ArticleBoxID: "",
+    MinimunStock:"",
     Code: "",
     Description: "",
     Stock: "",
@@ -74,14 +76,14 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
 
   }
 
-  const fetchCost = (id: string) => {
-    useFetch<{ status: boolean, find: number }>("/articles-box/cost/" + id, "GET").then((res) => {
-      if (res.status) {
-        setCost("" + res.find.toFixed(2));
-      }
-    });
+  // const fetchCost = (id: string) => {
+  //   useFetch<{ status: boolean, find: number }>("/articles-box/cost/" + id, "GET").then((res) => {
+  //     if (res.status) {
+  //       setCost("" + res.find.toFixed(2));
+  //     }
+  //   });
 
-  }
+  // }
 
   useEffect(() => {
     (async () => {
@@ -93,7 +95,7 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
   }, []);
   return (<div className="w-[350px] p-3 shadow-lg rounded-lg">
     <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
-      {<InputText
+      {/*<InputText
         label="Asignar a una caja de artículos"
         name="ArticleBoxId"
         value={data?.ArticleBoxID}
@@ -103,8 +105,8 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
         type="select"
         icon={<FaBoxOpen />}
         options={select}
-        valueChange={fetchCost}
-      />}
+        //valueChange={fetchCost}
+      />*/}
 
       {<InputText
         label="Categoría"
@@ -141,30 +143,32 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
         error={!!errors?.Code}
         helperText={errors?.Code}
       />
-
       <InputText
-        label="Cantidad"
+        label="Stock mínimo"
+        name="MinimunStock"
+        placeholder="Stock mínimo"
+        icon={<FaDatabase />}
+        value={data?.MinimunStock}
+        onChange={inputChange}
+        error={!!errors?.MinimunStock}
+        helperText={errors?.MinimunStock}
+      />
+      <InputText
+        label="Stock actual"
         name="Stock"
-        placeholder="Cantidad"
+        placeholder="Stock actual"
         icon={<FaDatabase />}
         value={data?.Stock}
         onChange={inputChange}
         error={!!errors?.Stock}
         helperText={errors?.Stock}
       />
-      <InputText
-        label="Costo"
-        name="Cost"
-        placeholder="Costo"
-        icon={<p>C$</p>}
-        value={cost}
-        readonly
-      />
+      
 
       <InputText
-        label="Precio"
+        label="Precio de venta"
         name="SalePrice"
-        placeholder="Precio"
+        placeholder="Precio de venta"
         icon={<p>C$</p>}
         value={data?.SalePrice}
         onChange={inputChange}

@@ -14,7 +14,8 @@ import {
   FaCashRegister,
   FaBoxesStacked,
   FaCartArrowDown,
-  FaHandHoldingDollar
+  FaHandHoldingDollar,
+  FaPeopleCarryBox
 } from "react-icons/fa6";
 
 export const Sidebar = () => {
@@ -73,7 +74,7 @@ export const Sidebar = () => {
               } rounded-lg px-3 py-2 my-3`}
           >
             <Link to="/suppliers" className="flex">
-              <FaBoxesStacked className="text-2xl" />
+              <FaPeopleCarryBox className="text-2xl" />
               <p className="pl-2">Proveedores</p>
             </Link>
           </div>
