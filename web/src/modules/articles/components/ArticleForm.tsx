@@ -1,5 +1,5 @@
 import { InputText, IOptions } from "@/modules/core/components/InputText.tsx";
-import { FaArrowDownWideShort, FaBarcode, FaBoxOpen, FaDatabase, FaTag } from "react-icons/fa6";
+import { FaArrowDownWideShort, FaBarcode, FaDatabase, FaTag } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import LoaderBtn from "@/modules/core/components/LoaderBtn.tsx";
