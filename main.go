@@ -20,7 +20,7 @@ func main() {
 	config.ConnectDB()
 
 	app := fiber.New(fiber.Config{
-		Prefork:                   true,
+		Prefork:                   false,
 		AppName:                   "Jugueteria",
 		DisableDefaultContentType: true,
 		//DisableStartupMessage:     true,

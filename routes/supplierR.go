@@ -13,6 +13,7 @@ func SupllierR(f fiber.Router) {
 	supplierC := controllers.SupplierC{}
 	r := f.Group("/suppliers", mdd.AuthM)
 	r.Get("", supplierC.All)
+	r.Get("/select", supplierC.AllSelect)
 	r.Get("/:id", supplierC.ShowId)
 	r.Post("", mdd.ValM(val.MsjProveedorVal, val.SupplierPost{}, models.Suppliers{}), supplierC.Save)
 	r.Put("/:id", mdd.ValM(val.MsjProveedorVal, val.SupplierPost{}, models.Suppliers{}), supplierC.UpdateId)

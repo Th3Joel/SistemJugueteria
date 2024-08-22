@@ -1,4 +1,4 @@
-import { InputText } from "@/modules/core/components/InputText"
+import { InputText } from "@/modules/core/components/Input"
 import LoaderBtn from "@/modules/core/components/LoaderBtn"
 import { useForm } from "@/modules/core/hooks/useForm"
 import { Button } from "@mui/material"

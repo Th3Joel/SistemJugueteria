@@ -1,6 +1,6 @@
 import logoImg from '@/assets/logo.jpg'
 import {Button} from "@mui/material";
-import {InputText} from "@/modules/core/components/InputText.tsx";
+import {InputText} from "@/modules/core/components/Input";
 import {useForm} from "@/modules/core/hooks/useForm.ts";
 import {useEffect} from "react";
 import LoaderBtn from "@/modules/core/components/LoaderBtn.tsx";

@@ -3,7 +3,7 @@ import { Link as LinkR } from "react-router-dom";
 import { IErrors, loginFetch } from "../utils/authFetch";
 import { FormEvent, useState } from "react";
 import LoaderBtn from "@/modules/core/components/LoaderBtn";
-import { InputText } from "@/modules/core/components/InputText";
+import { InputText } from "@/modules/core/components/Input";
 import { FaEnvelope, FaKey } from "react-icons/fa6";
 
 

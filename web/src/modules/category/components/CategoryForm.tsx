@@ -1,4 +1,4 @@
-import {InputText} from "@/modules/core/components/InputText.tsx";
+import {InputText} from "@/modules/core/components/Input";
 import {FaArrowDownWideShort, FaICursor} from "react-icons/fa6";
 import {Link, useNavigate} from "react-router-dom";
 import {Button} from "@mui/material";

@@ -53,7 +53,7 @@ type ArticleBoxPost struct {
 
 // Article
 type ArticlePost struct {
-	ArticleBoxID string `validate:"required"`
+	//ArticleBoxID string `validate:"required"`
 	CategoryID   string `validate:"required"`
 	Code         string `validate:"required,isRepeat"`
 	Description  string `validate:"required,isRepeat"`

@@ -1,7 +1,7 @@
 import { Header } from "@/modules/core/components/Header";
 import { Sidebar } from "@/modules/core/components/Sidebar";
-import {AuthState}  from "@/modules/core/globalStates/auth-state";
-import { SidebarState } from "@/modules/core/globalStates/sidebar-state";
+import {AuthState}  from "@/modules/core/zustand/auth-state";
+import { SidebarState } from "@/modules/core/zustand/sidebar-state";
 import { useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 

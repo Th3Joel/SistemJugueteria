@@ -1,4 +1,4 @@
-import { InputText, IOptions } from "@/modules/core/components/InputText.tsx";
+import { InputText, IOptions } from "@/modules/core/components/Input";
 import { FaArrowDownWideShort, FaBarcode, FaDatabase, FaTag } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
@@ -20,20 +20,16 @@ interface IFormData {
   Stock: string,
   SalePrice: string,
 }
-interface ISelect {
-  id: string,
-  code: string,
-  description: string,
-}
 
-interface ISelect2 {
+
+interface ISelectCategory {
   id: string,
   name: string,
 }
 
 export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
   const [select, setSelect] = useState<IOptions[]>([{ key: "", value: "" }]);
-  const [select2, setSelect2] = useState<IOptions[]>([{ key: "", value: "" }]);
+  //const [select2, setSelect2] = useState<IOptions[]>([{ key: "", value: "" }]);
   //const [cost, setCost] = useState<string>("");
 
   const { post, errors, loading, data, get, inputChange } = useForm<IFormData>({
@@ -58,17 +54,11 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
   };
 
   const fetchData = async () => {
-    let res = await useFetch<ISelect[]>("/articles-box/select", "GET");
-    if (res) {
-      setSelect(res.map((data) => ({
-        key: data.id,
-        value: data.code + " - " + data.description,
-      })));
-    }
+    
 
-    let res2 = await useFetch<ISelect2[]>("/categories/select", "GET");
+    let res2 = await useFetch<ISelectCategory[]>("/categories/select", "GET");
     if (res2) {
-      setSelect2(res2.map((data) => ({
+      setSelect(res2.map((data) => ({
         key: data.id,
         value: data.name,
       })));
@@ -117,7 +107,7 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
         helperText={errors?.CategoryID}
         type="select"
         icon={<FaTag />}
-        options={select2}
+        options={select}
       />}
 
 
@@ -174,6 +164,7 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
         onChange={inputChange}
         error={!!errors?.SalePrice}
         helperText={errors?.SalePrice}
+        iconSize="13px"
       />
 
       <div className="flex justify-between">
@@ -182,8 +173,8 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
             Atrás
           </Button>
         </Link>
-        <Button variant="contained" type="submit" disabled={loading || select[0].key == "" || select2[0].key == ""}>
-          {loading || select[0].key == "" || select2[0].key == "" ? <LoaderBtn /> : "Guardar"}
+        <Button variant="contained" type="submit" disabled={loading || select[0].key == "" }>
+          {loading || select[0].key == ""  ? <LoaderBtn /> : "Guardar"}
         </Button>
       </div>
     </form>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import LoaderSmall from "@/modules/core/components/LoaderSmall";
 import alertBox from "@/modules/core/utils/alertBox";
-import { AuthState } from "../globalStates/auth-state";
+import { AuthState } from "../zustand/auth-state";
 import { Link } from "react-router-dom";
 
 import { Button, TextField } from "@mui/material";
@@ -13,17 +13,18 @@ interface IProps {
   colunms: string[];
   hook: IUseTable<any>;
   body(
-      ruta:string,
+    ruta: string,
     eliminar: (id: string, texto: string) => void,
     img: (name: string) => string
 
   ): React.ReactNode;
+  v2?: boolean;
 }
 
-const Table: React.FC<IProps> = ({ ruta, colunms, hook, body }) => {
+const Table: React.FC<IProps> = ({ ruta, colunms, hook, body, v2 }) => {
   const { user } = AuthState();
 
-  const { get, all, loading,remove } = hook;
+  const { get, all, loading, remove } = hook;
 
   const [pageSize, setPageSize] = useState(10); //Registros por pagina
   const [page, setPage] = useState(1); //Numero de pagina
@@ -103,15 +104,20 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body }) => {
 
   return (
     <>
-      <div className="h-12 flex items-center">
-        <Link to={`/${ruta}/add`}>
-        <div className="btnAdd">
+      {
+        !v2 && <>
+          <div className="h-12 flex items-center">
+            <Link to={`/${ruta}/add`}>
+              <div className="btnAdd">
 
-          <Button variant="contained">Agregar</Button>
-        </div>
-        </Link>
-      </div>
-      <hr />
+                <Button variant="contained">Agregar</Button>
+              </div>
+            </Link>
+          </div>
+          <hr />
+        </>
+      }
+
       <div className="p-2">
         <div className="flex justify-between mb-2 items-center flex-col sm:flex-row gap-2">
           <div className="perPage">
@@ -142,9 +148,13 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body }) => {
           <table>
             <thead>
               <tr>
-                {colunms.map((x, i) => (
-                  <th key={i}>{x}</th>
-                ))}
+                {colunms.map((x, i) => 
+                  {
+                    return (x == "" ?
+                      <th key={i} className="border-none">{x}</th> :
+                      <th key={i} className="text-nowrap">{x}</th>)
+                  }
+                )}
               </tr>
             </thead>
             <tbody>
@@ -157,7 +167,7 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body }) => {
                   </td>
                 </tr>
               ) : all?.data.length ? (
-                body(`/${ruta}/edit/`,eliminar, img)
+                body(`/${ruta}/edit/`, eliminar, img)
               ) : (
                 <tr>
                   <td colSpan={colunms.length} className="text-center">

@@ -60,6 +60,28 @@ func (supplier SupplierC) All(c *fiber.Ctx) error {
 	})
 }
 
+func (supplier SupplierC) AllSelect(f *fiber.Ctx) error {
+	db := config.DB.Model(supplier.Model)
+
+	db.Find(&supplier.Array)
+
+	type Perz struct {
+		ID   string `json:"id"`
+		Name string `json:"name"`
+	}
+
+	var custom []Perz
+	for _, v := range supplier.Array {
+		custom = append(custom, Perz{
+			ID:   v.ID,
+			Name: v.Name,
+		})
+	}
+
+	return f.JSON(custom)
+
+}
+
 func (supplier SupplierC) ShowId(c *fiber.Ctx) error {
 	db := config.DB.Model(supplier.Model)
 	id := c.Params("id")

@@ -1,8 +1,8 @@
-import { SidebarState } from "@/modules/core/globalStates/sidebar-state";
+import { SidebarState } from "@/modules/core/zustand/sidebar-state";
 import logoImg from "@/assets/logo.jpg";
 import userImg from "@/assets/user.png";
 import { Link, useLocation } from "react-router-dom";
-import { AuthState } from "../globalStates/auth-state";
+import { AuthState } from "../zustand/auth-state";
 
 import {
   FaBoxOpen,

@@ -1,4 +1,4 @@
-import { InputText } from "@/modules/core/components/InputText.tsx";
+import { InputText } from "@/modules/core/components/Input";
 
 import { FaDatabase, FaArrowDownWideShort, FaBarcode } from "react-icons/fa6";
 import { Button } from "@mui/material";

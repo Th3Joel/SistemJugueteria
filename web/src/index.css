@@ -102,7 +102,7 @@ td {
 }
 
 ::-webkit-scrollbar:vertical {
-  width: 8px;
+  width: 7px;
 }
 
 ::-webkit-scrollbar-button:increment,
@@ -111,7 +111,7 @@ td {
 }
 
 ::-webkit-scrollbar:horizontal {
-  height: 10px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-thumb {

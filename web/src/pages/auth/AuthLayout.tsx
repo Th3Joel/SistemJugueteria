@@ -1,4 +1,4 @@
-import  {AuthState}  from "@/modules/core/globalStates/auth-state";
+import  {AuthState}  from "@/modules/core/zustand/auth-state";
 import { Navigate, Outlet } from "react-router-dom"
 
 

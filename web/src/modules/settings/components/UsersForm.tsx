@@ -1,11 +1,11 @@
 import userImg from "@/assets/user.png";
-import { InputText } from "@/modules/core/components/InputText.tsx";
+import { InputText } from "@/modules/core/components/Input";
 import { Button } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "@/modules/core/hooks/useForm.ts";
 import React, { useEffect } from "react";
 import LoaderBtn from "@/modules/core/components/LoaderBtn.tsx";
-import { AuthState } from "@/modules/core/globalStates/auth-state.ts";
+import { AuthState } from "@/modules/core/zustand/auth-state";
 import { FaEnvelope, FaICursor, FaKey, FaUnlockKeyhole, FaUserLock } from "react-icons/fa6";
 
 interface IProps {

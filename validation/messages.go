@@ -101,10 +101,10 @@ var MsjPriceCategoryVal = map[string]string{
 
 // ArticleBox
 var MsjArticleVal = map[string]string{
-	"ArticleBoxID.required": "Caja de artículos requerido.",
-	"CategoryID.required":   "Categoría requerida.",
-	"Code.required":         "Código requerido.",
-	"Code.isRepeat":         "Código ya existe",
+	//"ArticleBoxID.required": "Caja de artículos requerido.",
+	"CategoryID.required": "Categoría requerida.",
+	"Code.required":       "Código requerido.",
+	"Code.isRepeat":       "Código ya existe",
 
 	"Description.required": "Descripción requerida.",
 	"Description.isRepeat": "Descripción ya existe",
