@@ -183,7 +183,7 @@ const Purchase = () => {
             <p className="text-gray-500 text-center">
               Articulos registrados
             </p>
-            <TableV2 title="Artículos registrados" />
+            <TableV2/>
 
           </div>
         </div>

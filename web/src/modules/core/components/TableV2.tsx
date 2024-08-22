@@ -1,14 +1,11 @@
 import { IconButton } from "@mui/material"
 import React from "react"
-import { FaCirclePlus, FaMagnifyingGlass } from "react-icons/fa6"
-import { InputText } from "./Input"
+import { FaCirclePlus } from "react-icons/fa6"
 import Table from "./Table"
 import { useTable } from "../hooks/useTable"
 import { PurchaseState } from "@/modules/purchase/zustand/purchase-state"
 
-interface IProps {
-    title: string
-}
+
 interface IArticle {
     id: string
     Code: string
@@ -24,7 +21,7 @@ interface IArticle {
     MinimunStock: string
 }
 
-export const TableV2: React.FC<IProps> = ({ title }) => {
+export const TableV2: React.FC = () => {
     const hook = useTable<IArticle>()
     const { pushDetail,exists } = PurchaseState();
     return (
