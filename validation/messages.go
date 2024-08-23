@@ -115,7 +115,7 @@ var MsjArticleVal = map[string]string{
 
 	"Stock.required": "Cantidad requerida.",
 	"Stock.integer":  "Solo se aceptan números enteros",
-	"Stock.gtC":      "Cantidad debe ser mayor a 0",
+	"Stock.gtC":      "Cantidad debe ser mayor o igual a 0",
 	//"Stock.toysQuantityCheck": "No mensaje",
 
 	"SalePrice.required": "Precio requerido.",

@@ -2,7 +2,7 @@
 export const useFetch = async <T>(
   url: string,
   method: string,
-  body?: object | FormData,
+  body?: string | FormData,
   isFormData?: boolean,
 ): Promise<T> => {
 const uri = "http://localhost:5000/api"
@@ -13,7 +13,7 @@ const uri = "http://localhost:5000/api"
 
   const req = await fetch(uri + url, {
     method,
-    body: isFormData ? (body as FormData) : JSON.stringify(body),
+    body: isFormData ? (body as FormData) : body,
     credentials: "include",
     headers: {
       ...content_type

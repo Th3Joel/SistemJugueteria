@@ -60,12 +60,19 @@ func (article ArticleBoxC) All(c *fiber.Ctx) error {
 func (article ArticleBoxC) GetCost(f *fiber.Ctx) error {
 	db := config.DB.Model(article.Model)
 	id := f.Params("id")
-
+	type Perz struct {
+		ToysQuantity  int64   `json:"toys_quantity"`
+		PurchasePrice float64 `json:"purchase_price"`
+		Cost          float64 `json:"cost"`
+	}
+	var art Perz
 	sql := db.
 		Select("toys_quantity, purchase_price").
 		Where("id = ?", id).
 		First(&article)
-	cost := article.PurchasePrice / float64(article.ToysQuantity)
+	art.Cost = article.PurchasePrice / float64(article.ToysQuantity)
+	art.ToysQuantity = article.ToysQuantity
+	art.PurchasePrice = article.PurchasePrice
 
 	if sql.RowsAffected == 0 {
 		return f.Status(200).JSON(types.Response{
@@ -76,7 +83,7 @@ func (article ArticleBoxC) GetCost(f *fiber.Ctx) error {
 
 	return f.Status(200).JSON(types.Response{
 		Status: true,
-		Find:   cost,
+		Find:   art,
 	})
 }
 
