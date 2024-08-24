@@ -3,9 +3,9 @@ package models
 import "time"
 
 type Articles struct {
-	ID            string `gorm:"primaryKey"`
-	CategoryID    string `gorm:"size:255"`
-	ArticleBoxID  string `gorm:"size:255"`
+	ID         string `gorm:"primaryKey"`
+	CategoryID string `gorm:"size:255"`
+	//ArticleBoxID  string `gorm:"size:255"`
 	Code          string `gorm:"size:255"`
 	Description   string
 	MinimunStock  int

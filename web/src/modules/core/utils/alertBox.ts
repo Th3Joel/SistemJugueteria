@@ -8,6 +8,7 @@ const alertBox = (tipo:any,title:string,text:string,textbtn:string,callback:any)
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
     confirmButtonText: textbtn,
+    cancelButtonText: "Cancelar",
   }).then((result) => {
     if (result.isConfirmed) {
       callback();

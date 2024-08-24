@@ -46,7 +46,7 @@ export const TableV2: React.FC = () => {
                                         id: d.id,
                                         code: d.Code,
                                         description: d.Description,
-                                        price: d.SalePrice,
+                                        price: ""+d.SalePrice,
                                         quantity: "",
                                         subtotal: ""
                                     })

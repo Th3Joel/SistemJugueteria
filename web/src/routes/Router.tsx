@@ -34,7 +34,7 @@ import ForgotPasswd from "@/pages/auth/ForgotPasswd";
 import ResetPasswd from "@/pages/auth/ResetPasswd";
 import { routesTitles, TitleState } from "@/modules/core/zustand/title-state";
 import AddPurchase from "@/pages/purchase/AddPurchase";
-import EditPurchase from "@/pages/purchase/EditPurchase";
+import ViewPurchase from "@/pages/purchase/ViewPurchase";
 import Purchase from "@/pages/purchase/Purchase";
 import AddSale from "@/pages/sale/AddSale";
 import EditSale from "@/pages/sale/EditSale";
@@ -98,8 +98,8 @@ const Router = () => {
                         <Route path="/cash-register" element={<CashRegister />} />
 
                         <Route path="/purchases" element={<Purchase />} />
-                        <Route path="/purchase/add" element={<AddPurchase />} />
-                        <Route path="/purchase/edit/:id" element={<EditPurchase />} />
+                        <Route path="/purchases/add" element={<AddPurchase />} />
+                        <Route path="/purchases/edit/:id" element={<ViewPurchase />} />
 
                         <Route path="/sales" element={<Sale />} />
                         <Route path="/sale/add" element={<AddSale />} />

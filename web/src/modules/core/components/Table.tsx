@@ -79,7 +79,7 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body, v2 }) => {
 
   const eliminar = (id: string, texto: string) => {
     console.log(id);
-    alertBox("warning", "Está seguro?", texto, "Si, eliminar", async () => {
+    alertBox("warning", "Está seguro?", texto, "Si", async () => {
       await remove(`/${ruta}/${id}`);
       getDatos();
     });

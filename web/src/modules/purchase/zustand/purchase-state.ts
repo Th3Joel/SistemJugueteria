@@ -16,6 +16,7 @@ interface PurchaseState {
     detail: PurchaseDetail[];
     errors: TErrors
     detailErrors: TDetailErrors
+    setCode: (code: string) => void;
     validate: () => boolean;
     setQuantityBox: (quantityBox: number) => void;
     setCostBox: (costBox: number) => void;
@@ -51,6 +52,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
         detail: [],
         errors: {},
         detailErrors: [],
+        setCode: (code) => set({ code }),
 
         setQuantityBox: (quantityBox) => set({ quantityBox }),
 
@@ -100,8 +102,8 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
 
         changeInput: (value, field, id) => {
             const { detail, calculations } = get()
-            set({ ...get(), [field]: value })
             set({ detail: detail.map(d => d.id === id ? { ...d, [field]: value, } : d) })
+            set({ ...get(), [field]: value })
             calculations()
             //validate()
         }

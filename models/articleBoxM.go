@@ -11,7 +11,7 @@ type ArticlesBox struct {
 	CreatedAt     time.Time
 	UpdatedAt     time.Time `gorm:"autoUpdateTime"`
 
-	Articles []Articles `gorm:"foreignKey:ArticleBoxID"`
+	//Articles []Articles `gorm:"foreignKey:ArticleBoxID"`
 	//PriceCategory []PriceCategories `gorm:"foreignKey:ArticleBoxID"`
 	//Purchases     []DetailPurchase  `gorm:"foreignKey:ArticleBoxID"`
 }

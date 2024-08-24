@@ -9,6 +9,9 @@ import (
 
 func PurchaseR(app fiber.Router) {
 	purchase := controllers.PurchaseC{}
-	r := app.Group("/purchase", mdd.AuthM)
+	r := app.Group("/purchases", mdd.AuthM)
+	r.Get("/", purchase.All)
+	r.Get("/new-code", purchase.GetNewCode)
+	r.Get("/:id", purchase.ShowId)
 	r.Post("", purchase.Save)
 }
