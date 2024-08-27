@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y wget \
 
 WORKDIR /app
 COPY sis .
-COPY uploads .
+COPY uploads/ ./uploads/
 
 #RUN cd web && ~/.bun/bin/bun install && ~/.bun/bin/bun run build
 
