@@ -57,8 +57,8 @@ type ArticlePost struct {
 	CategoryID   string `validate:"required"`
 	Code         string `validate:"required,isRepeat"`
 	Description  string `validate:"required,isRepeat"`
-	MinimunStock string `validate:"required,integer,gtC=2"`
-	Stock        string `validate:"required,integer,gtC=-1"`
+	MinimunStock string `validate:"required,integer,gtC=0"`
+	Stock        string `validate:"omitempty,integer,gtC=-1"`
 	SalePrice    string `validate:"omitempty,numeric,gtC=0"`
 }
 
