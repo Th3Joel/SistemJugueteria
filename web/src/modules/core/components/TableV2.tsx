@@ -3,7 +3,7 @@ import React from "react"
 import { FaCirclePlus } from "react-icons/fa6"
 import Table from "./Table"
 import { useTable } from "../hooks/useTable"
-import { PurchaseState } from "@/modules/purchase/zustand/purchase-state"
+import { PurchaseState } from "@/modules/purchase/states/purchase-state"
 
 
 interface IArticle {

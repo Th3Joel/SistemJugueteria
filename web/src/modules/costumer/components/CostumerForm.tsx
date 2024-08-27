@@ -27,7 +27,7 @@ export const CostumerForm: React.FC<IProps> = ({ isEdit, id }) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    post(isEdit ? `/clientes/${id}` : "/clientes", e, isEdit).then((res) => {
+    post(isEdit ? `/clientes/${id}` : "/clientes", e.currentTarget, isEdit).then((res) => {
       if (res) {
         navigate("/clientes");
       }

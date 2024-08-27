@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import LoaderSmall from "@/modules/core/components/LoaderSmall";
 import alertBox from "@/modules/core/utils/alertBox";
-import { AuthState } from "../zustand/auth-state";
+import { AuthState } from "../states/auth-state";
 import { Link } from "react-router-dom";
 
 import { Button, TextField } from "@mui/material";

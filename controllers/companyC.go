@@ -16,6 +16,7 @@ type CompanyC struct {
 	Ruc     string `json:"Ruc"`
 	Phone   string `json:"Phone"`
 	Address string `json:"Address"`
+	Logo    string `json:"Logo"`
 	//Settings
 	Model models.Company `gorm:"-" json:"-"`
 }
@@ -24,6 +25,7 @@ func (company CompanyC) Show(f *fiber.Ctx) error {
 	db := config.DB.Model(company.Model)
 	db.Where("id = 1").
 		First(&company)
+	company.Logo = "/api/settings/company/logo"
 	return f.JSON(types.Response{
 		Status: true,
 		Find:   company,
@@ -31,12 +33,20 @@ func (company CompanyC) Show(f *fiber.Ctx) error {
 }
 
 func (company CompanyC) Update(f *fiber.Ctx) error {
+
 	db := config.DB.Model(company.Model)
 	_ = f.BodyParser(&company)
 	company.trim(&company)
+	file, _ := f.FormFile("file0")
+	if file != nil {
+		parts := strings.Split(file.Filename, ".")
+		path := "uploads/logo." + parts[1]
+		f.SaveFile(file, path)
+		company.Logo = path
+	}
 	db.
 		Where("id = 1").
-		Select("name", "email", "ruc", "phone", "address").
+		Select("name", "email", "ruc", "phone", "address", "logo").
 		Updates(company)
 
 	return f.JSON(types.Response{
@@ -45,7 +55,10 @@ func (company CompanyC) Update(f *fiber.Ctx) error {
 		Find:   company,
 	})
 }
-
+func (company CompanyC) File(f *fiber.Ctx) error {
+	config.DB.Model(company.Model).Where("id = 1").First(&company)
+	return f.SendFile(company.Logo)
+}
 func (CompanyC) trim(u *CompanyC) {
 	u.Name = strings.TrimSpace(u.Name)
 	u.Email = strings.TrimSpace(u.Email)

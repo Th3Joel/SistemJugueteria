@@ -31,7 +31,7 @@ export const ArticleBoxForm: React.FC<IProps> = ({ isEdit, id }) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    post(isEdit ? `/articles-box/${id}` : "/articles-box", e, isEdit).then((res) => {
+    post(isEdit ? `/articles-box/${id}` : "/articles-box", e.currentTarget, isEdit).then((res) => {
       if (res) {
         navigate("/articles-box");
       }

@@ -25,7 +25,7 @@ export const CategoryForm:React.FC<IProps> = ({isEdit,id}) => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        post(isEdit ? `/categories/${id}` : "/categories", e, isEdit).then((res) => {
+        post(isEdit ? `/categories/${id}` : "/categories", e.currentTarget, isEdit).then((res) => {
             if (res) {
                 navigate("/categories");
             }

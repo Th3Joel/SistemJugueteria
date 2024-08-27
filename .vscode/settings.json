@@ -1,0 +1,52 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Enabled",
+                "ssl": {
+                    "ca": "/home/joel/Descargas/isrgrootx1.pem"
+                }
+            },
+            "previewLimit": 50,
+            "server": "gateway01.us-east-1.prod.aws.tidbcloud.com",
+            "port": 4000,
+            "driver": "TiDB",
+            "name": "Nube",
+            "username": "VwgHAVyMup7XfY6.root",
+            "password": "D21sfVrtNmTuZPgy",
+            "database": "*"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Enabled",
+                "ssl": {
+                    "ca": "/home/joel/Descargas/isrgrootx1.pem"
+                }
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "TiDB",
+            "name": "Nube",
+            "connectString": "mysql://VwgHAVyMup7XfY6.root:D21sfVrtNmTuZPgy@gateway01.us-east-1.prod.aws.tidbcloud.com:4000?tls=true"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Enabled",
+                "ssl": {
+                    "ca": "/home/joel/Descargas/isrgrootx1.pem"
+                }
+            },
+            "previewLimit": 50,
+            "server": "gateway01.us-east-1.prod.aws.tidbcloud.com",
+            "port": 4000,
+            "driver": "TiDB",
+            "name": "Nube",
+            "username": "VwgHAVyMup7XfY6.root",
+            "password": "D21sfVrtNmTuZPgy",
+            "database": "jugueteria"
+        }
+    ]
+}

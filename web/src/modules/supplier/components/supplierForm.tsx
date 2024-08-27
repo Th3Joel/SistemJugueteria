@@ -29,7 +29,7 @@ export const SupplierForm:React.FC<IProps> = ({ isEdit, id }) => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        post(isEdit ? `/suppliers/${id}` : "/suppliers", e, isEdit).then((res) => {
+        post(isEdit ? `/suppliers/${id}` : "/suppliers", e.currentTarget, isEdit).then((res) => {
             if (res) {
                 navigate("/suppliers");
             }

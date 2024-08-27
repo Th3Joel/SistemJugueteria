@@ -1,8 +1,7 @@
-import { SidebarState } from "@/modules/core/zustand/sidebar-state";
-import logoImg from "@/assets/logo.jpg";
+import { SidebarState } from "@/modules/core/states/sidebar-state";
 import userImg from "@/assets/user.png";
 import { Link, useLocation } from "react-router-dom";
-import { AuthState } from "../zustand/auth-state";
+import { AuthState } from "../states/auth-state";
 
 import {
   FaBoxOpen,
@@ -18,11 +17,9 @@ import {
 } from "react-icons/fa6";
 
 export const Sidebar = () => {
-  const { user } = AuthState();
+  const { user,company } = AuthState();
   const { pathname } = useLocation();
   const { estado } = SidebarState();
-
-
 
   return (
     <div
@@ -31,13 +28,13 @@ export const Sidebar = () => {
     >
       <div className="px-1 h-16 flex items-center">
         <img
-          src={logoImg}
+          src={company.Logo}
           width={40}
           height={40}
           className="rounded-full"
           alt=""
         />
-        <p className="pl-2">Coleccióname</p>
+        <p className="pl-2">{company.Name}</p>
       </div>
       <hr className="border-gray-500" />
       <div className="px-1 h-16 flex items-center">
@@ -144,7 +141,7 @@ export const Sidebar = () => {
               <p className="pl-2">Compras</p>
             </Link>
           </div>
-          
+
           <div
             className={`border duration-300 border-[#0071BC] ${pathname.startsWith("/sales") &&
               "bg-[#E261B1] border-[#E261B1]"

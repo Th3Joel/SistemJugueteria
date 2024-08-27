@@ -26,17 +26,18 @@ export const useForm = <T>(object: IData<T>) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
-  
-  const post = async (url: string, f: React.FormEvent<HTMLFormElement> | string, isEdit?: boolean,isJson?:boolean): Promise<boolean> => {
+
+  const post = async (url: string, f: HTMLFormElement | string, isEdit?: boolean, isJson?: boolean): Promise<boolean> => {
     let form;
-    if(typeof f !== "string" && !isJson){
-      form = removeWhitespaceFromFormData(new FormData(f.target as HTMLFormElement));
+    if (typeof f !== "string" && !isJson) {
+      form = removeWhitespaceFromFormData(new FormData(f));
+
     }
-    if(typeof f === "string"){
+    if (typeof f === "string") {
       form = f;
     }
     setLoading(true);
-    const res = await useFetch<IResponseFetch<T>>(url, isEdit ? "PUT" : "POST", form,isJson ? false : true);
+    const res = await useFetch<IResponseFetch<T>>(url, isEdit ? "PUT" : "POST", form, isJson ? false : true);
     setLoading(false);
     if (res.status) {
       toast.success(res.msj);

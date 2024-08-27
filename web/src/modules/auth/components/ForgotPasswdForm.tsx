@@ -17,7 +17,7 @@ export const ForgotPasswdForm = () => {
   const navigate = useNavigate();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    post(`/auth/forgot-password`, e, false).then((res) => {
+    post(`/auth/forgot-password`, e.currentTarget, false).then((res) => {
         if (res) {
           navigate("/auth/login",{replace: true});
         } 

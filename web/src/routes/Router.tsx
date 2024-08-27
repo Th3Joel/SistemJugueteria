@@ -2,7 +2,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
 import LoaderSplash from "@/modules/core/components/LoaderSplash";
-import { AuthState } from "@/modules/core/zustand/auth-state";
+import { AuthState } from "@/modules/core/states/auth-state";
 import Layout from "@/pages/Layout";
 import Login from "@/pages/auth/Login";
 import AddCostumer from "@/pages/costumer/AddCostumer";
@@ -32,7 +32,7 @@ import CashRegister from "@/pages/cashRegister/CashRegister";
 import AuthLayout from "@/pages/auth/AuthLayout";
 import ForgotPasswd from "@/pages/auth/ForgotPasswd";
 import ResetPasswd from "@/pages/auth/ResetPasswd";
-import { routesTitles, TitleState } from "@/modules/core/zustand/title-state";
+import { routesTitles, TitleState } from "@/modules/core/states/title-state";
 import AddPurchase from "@/pages/purchase/AddPurchase";
 import ViewPurchase from "@/pages/purchase/ViewPurchase";
 import Purchase from "@/pages/purchase/Purchase";

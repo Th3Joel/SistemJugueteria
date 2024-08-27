@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "@/modules/core/hooks/useForm.ts";
 import React, { useEffect } from "react";
 import LoaderBtn from "@/modules/core/components/LoaderBtn.tsx";
-import { AuthState } from "@/modules/core/zustand/auth-state";
+import { AuthState } from "@/modules/core/states/auth-state";
 import { FaEnvelope, FaICursor, FaKey, FaUnlockKeyhole, FaUserLock } from "react-icons/fa6";
 
 interface IProps {
@@ -37,7 +37,7 @@ export const UsersForm: React.FC<IProps> = ({ isEdit, id, isProfile }) => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        post(isEdit ? `/settings/users${!isProfile ? '/' + id : ''}` : "/settings/users", e, isEdit).then((res) => {
+        post(isEdit ? `/settings/users${!isProfile ? '/' + id : ''}` : "/settings/users", e.currentTarget, isEdit).then((res) => {
             if (res && !isProfile) {
                 navigate("/settings/users");
             } else {
