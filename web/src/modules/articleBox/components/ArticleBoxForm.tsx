@@ -1,6 +1,6 @@
 import { InputText } from "@/modules/core/components/Input";
 
-import { FaDatabase, FaArrowDownWideShort, FaBarcode } from "react-icons/fa6";
+import { FaArrowDownWideShort, FaBarcode } from "react-icons/fa6";
 import { Button } from "@mui/material";
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -68,7 +68,7 @@ export const ArticleBoxForm: React.FC<IProps> = ({ isEdit, id }) => {
           helperText={errors?.Description}
         />
 
-        <InputText
+        {/* <InputText
           label="Cantidad de artículos"
           name="ToysQuantity"
           icon={<FaDatabase />}
@@ -86,7 +86,7 @@ export const ArticleBoxForm: React.FC<IProps> = ({ isEdit, id }) => {
           onChange={inputChange}
           error={!!errors?.PurchasePrice}
           helperText={errors?.PurchasePrice}
-        />
+        /> */}
         <div className="flex justify-between">
           <Link to="/articles-box">
             <Button variant="contained" type="button">

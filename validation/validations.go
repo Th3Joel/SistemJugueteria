@@ -47,8 +47,8 @@ type SupplierPost struct {
 type ArticleBoxPost struct {
 	Code          string `validate:"required,isRepeat"`
 	Description   string `validate:"required,isRepeat"`
-	ToysQuantity  string `validate:"required,integer,gtC=0"`
-	PurchasePrice string `validate:"required,numeric,gtC=0"`
+	ToysQuantity  string `validate:"omitempty,integer,gtC=-1"`
+	PurchasePrice string `validate:"omitempty,numeric,gtC=-1"`
 }
 
 // Article

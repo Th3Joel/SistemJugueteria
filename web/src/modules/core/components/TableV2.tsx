@@ -4,6 +4,7 @@ import { FaCirclePlus } from "react-icons/fa6"
 import Table from "./Table"
 import { useTable } from "../hooks/useTable"
 import { PurchaseState } from "@/modules/purchase/states/purchase-state"
+import { formatNumber } from "../utils/formatNumber"
 
 
 interface IArticle {
@@ -63,7 +64,7 @@ export const TableV2: React.FC = () => {
                                         <p className="text-green-600">{d.Stock}</p>
                                 }
                             </td>
-                            <td>C$ {d.SalePrice}</td>
+                            <td>C$ {formatNumber(d.SalePrice)}</td>
                         </tr>
                     ))
                 }

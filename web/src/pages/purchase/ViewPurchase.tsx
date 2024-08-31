@@ -1,5 +1,6 @@
 import { Card } from "@/modules/core/components/Card"
 import { useForm } from "@/modules/core/hooks/useForm";
+import { formatNumber } from "@/modules/core/utils/formatNumber";
 import { Button } from "@mui/material";
 import dayjs from "dayjs";
 import { useEffect } from "react";
@@ -81,7 +82,7 @@ const ViewPurchase = () => {
             <span className="flex items-center flex-col mt-3">
               Costo de caja de artículos:
               <p className="text-slate-600">
-                C$ {parseFloat(data.articleBox.purchasePrice).toFixed(2)}
+                C$ {formatNumber(data.articleBox.purchasePrice)}
               </p>
             </span>
             <Link to="/purchases" className="mt-3">
@@ -106,7 +107,7 @@ const ViewPurchase = () => {
 
                     <span className="w-[160px]">
                       <h1>Precio:</h1>
-                      <h3>C$ {d.price}</h3>
+                      <h3>C$ {formatNumber(d.price)}</h3>
                     </span>
                     <span className="w-[160px]">
                       <h1>Cantidad:</h1>
@@ -115,7 +116,7 @@ const ViewPurchase = () => {
 
                     <span className="w-[160px]">
                       <h1>Subtotal:</h1>
-                      <h3>C$ {d.subtotal}</h3>
+                      <h3>C$ {formatNumber(d.subtotal)}</h3>
                     </span>
                   </section>
                 </span>
@@ -123,7 +124,7 @@ const ViewPurchase = () => {
             </section>
 
             <span>
-              Total: C$ {data.total}
+              Total: C$ {formatNumber(data.total)}
             </span>
           </div>
         </div>

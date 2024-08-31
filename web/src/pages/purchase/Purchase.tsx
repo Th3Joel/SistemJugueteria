@@ -1,6 +1,7 @@
 import { Card } from "@/modules/core/components/Card"
 import Table from "@/modules/core/components/Table"
 import { useTable } from "@/modules/core/hooks/useTable"
+import { formatNumber } from "@/modules/core/utils/formatNumber"
 import { IconButton } from "@mui/material"
 import dayjs from "dayjs"
 import { FaEye } from "react-icons/fa6"
@@ -32,7 +33,7 @@ const Purchase = () => {
                 <td>{d.code.padStart(4,"0")}</td>
                 <td>{d.supplier.name}</td>
                 <td>{d.articleBox.description}</td>
-                <td>C$ {d.total}</td>
+                <td>C$ {formatNumber(d.total)}</td>
                 <td>{dayjs(d.date).format("DD/MM/YYYY")}</td>
                 <td>
                     <div className="flex gap-1 justify-center">

@@ -1,6 +1,7 @@
 import { Card } from "@/modules/core/components/Card"
 import Table from "@/modules/core/components/Table"
 import { useTable } from "@/modules/core/hooks/useTable"
+import { formatNumber } from "@/modules/core/utils/formatNumber"
 import { IconButton } from "@mui/material"
 
 import { FaPencil, FaTrash } from "react-icons/fa6"
@@ -50,7 +51,7 @@ const Articles = () => {
                                         <p className="text-green-600">{d.Stock}</p>
                                 }
                             </td>
-                            <td>C$ {d.SalePrice}</td>
+                            <td>C$ {formatNumber(d.SalePrice)}</td>
                             <td>
                                 <div className="flex gap-1 justify-center">
                                     <Link to={urlEdit + d.id}>

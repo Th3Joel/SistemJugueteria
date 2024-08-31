@@ -18,6 +18,8 @@ type PurchaseC struct {
 	UserID         string           `json:"-"`
 	SupplierID     string           `json:"supplierID"`
 	ArticleBoxID   string           `json:"articleBoxID"`
+	CostBox        string           `gorm:"-"`
+	QuantityBox    string           `gorm:"-"`
 	Code           string           `json:"code"`
 	Total          string           `json:"total"`
 	CreatedAt      string           `json:"date"`
@@ -119,6 +121,17 @@ func (purchase PurchaseC) Save(f *fiber.Ctx) error {
 			Msj:    "Ha ocurrido un error",
 		})
 	}
+
+	costBox, _ := strconv.ParseFloat(purchase.CostBox, 64)
+	quantityBox, _ := strconv.Atoi(purchase.QuantityBox)
+	config.DB.
+		Where("id = ?", purchase.ArticleBoxID).
+		Select("purchase_price", "toys_quantity").
+		Updates(models.ArticlesBox{
+			PurchasePrice: costBox,
+			ToysQuantity:  int64(quantityBox),
+		})
+
 	for _, value := range purchase.DetailPurchase {
 		//fmt.Println(key, value)
 		quan, _ := strconv.Atoi(value.Quantity)

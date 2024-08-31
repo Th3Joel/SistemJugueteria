@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import {IconButton} from "@mui/material";
 import {useTable} from "@/modules/core/hooks/useTable.ts";
 import {FaPencil, FaTrash} from "react-icons/fa6";
+import { formatNumber } from "@/modules/core/utils/formatNumber";
 
 interface IArticleBox {
     id:string
@@ -33,7 +34,7 @@ const ArticleBox = () => {
                             <td>{d.Code}</td>
                             <td>{d.Description}</td>
                             <td>{d.ToysQuantity}</td>
-                            <td>C$ {d.PurchasePrice}</td>
+                            <td>C$ {formatNumber(d.PurchasePrice)}</td>
                             <td>
                                 <div className="flex gap-1 justify-center">
                                     <Link to={urlEdit+d.id}>
