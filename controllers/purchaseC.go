@@ -54,15 +54,6 @@ type Articles struct {
 	Description string `json:"description"`
 }
 
-func (purchase PurchaseC) GetNewCode(c *fiber.Ctx) error {
-	var maxCode int
-	config.DB.Model(models.Purchases{}).Select("MAX(code)").Scan(&maxCode)
-	return c.JSON(types.Response{
-		Status: true,
-		Find:   maxCode + 1,
-	})
-}
-
 func (purchase PurchaseC) All(f *fiber.Ctx) error {
 	var count int64
 	db := config.DB.Model(purchase.Model)

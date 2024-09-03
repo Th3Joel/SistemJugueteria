@@ -76,6 +76,25 @@ func (costumer CostumerC) All(f *fiber.Ctx) error {
 	})
 }
 
+func (costumer CostumerC) AllSelect(f *fiber.Ctx) error {
+	db := config.DB.Model(costumer.Model)
+	db.Find(&costumer.Array)
+
+	type P struct {
+		ID   string `json:"id"`
+		Name string `json:"name"`
+	}
+
+	custom := []P{}
+	for _, v := range costumer.Array {
+		custom = append(custom, P{
+			ID:   v.ID,
+			Name: v.Name,
+		})
+	}
+	return f.JSON(custom)
+}
+
 func (costumer CostumerC) ShowId(f *fiber.Ctx) error {
 	db := config.DB.Model(costumer.Model)
 	id := f.Params("id")

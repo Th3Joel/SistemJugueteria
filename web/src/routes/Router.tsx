@@ -102,8 +102,8 @@ const Router = () => {
                         <Route path="/purchases/edit/:id" element={<ViewPurchase />} />
 
                         <Route path="/sales" element={<Sale />} />
-                        <Route path="/sale/add" element={<AddSale />} />
-                        <Route path="/sale/edit/:id" element={<EditSale />} />
+                        <Route path="/sales/add" element={<AddSale />} />
+                        <Route path="/sales/edit/:id" element={<EditSale />} />
 
                     </Route>
                     <Route path="/auth" element={<AuthLayout />}>

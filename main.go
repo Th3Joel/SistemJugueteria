@@ -59,6 +59,8 @@ func main() {
 	routes.ArticleR(api)
 	//PurchaseR
 	routes.PurchaseR(api)
+	//SaleR
+	routes.SaleR(api)
 
 	//servir archivos staticos dentro del binario
 	app.Get("/*", filesystem.New(filesystem.Config{

@@ -6,18 +6,26 @@ export type TErrors = { [key: string]: string };
 export type TDetailErrors = { [key: string]: string }[];
 
 interface PurchaseState {
+  isSale: boolean;
   code: string;
+
+  discount: string;
+  neto: string;
+  costumerID: string;
+  //Data of purchase
   supplierID: string;
   articleBoxID: string;
-  date: string;
   quantityBox: string;
   costBox: string;
+  //---------------
+  date: string;
   costArticle: number;
   total: string;
   detail: PurchaseDetail[];
   errors: TErrors;
   quantityArticleDetail: number;
   detailErrors: TDetailErrors;
+  setIsSale: (isSale: boolean) => void;
   setCode: (code: string) => void;
   validate: () => boolean;
   setCostArticle: (costArticle: number) => void;
@@ -36,14 +44,19 @@ interface PurchaseDetail {
   price: string;
   subtotal: string;
   quantity: string;
+  stock: string;
 }
 
 export const PurchaseState = create<PurchaseState>((set, get) => {
   const dateNow = dayjs(Date.now()).format("YYYY-MM-DD");
   return {
+    isSale: false,
     code: "",
+    costumerID: "",
     supplierID: "",
     articleBoxID: "",
+    discount: "",
+    neto: "",
     date: dateNow,
     quantityBox: "",
     costBox: "",
@@ -53,6 +66,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
     quantityArticleDetail: 0,
     errors: {},
     detailErrors: [],
+    setIsSale: (isSale) => set({ isSale }),
     setCode: (code) => set({ code }),
     setCostArticle: (costArticle) => set({ costArticle }),
     pushDetail: (detail) => {
@@ -69,37 +83,56 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
      * Calcula el total y subtotal de cada elemento
      */
     calculations: () => {
-      //Calcula el coste de cada articulo en la caja
-      const costArticle = parseFloat(get().costBox) / parseInt(get().quantityBox);
-      set({costArticle});
+      const { isSale, discount } = get();
+      if (!isSale) {
+        //Calcula el coste de cada articulo en la caja
+        const costArticle = parseFloat(get().costBox) / parseInt(get().quantityBox);
+        set({ costArticle });
 
+        //calcula el total de articulos que hay en el detalle de compra
+        const quantityArticleDetail = get().detail.reduce(
+          (a, b) => a + parseInt(b.quantity),
+          0,
+        );
+        set({ quantityArticleDetail });
+      }
       //Saca el subtotal de cada elemento
       const detail = get().detail.map((d) => {
-        const calSubtotal = get().costArticle * parseInt(d.quantity);
+
+        const calSubtotal = isSale ?
+          parseFloat(d.price) * parseInt(d.quantity)
+          : get().costArticle * parseInt(d.quantity);
+
         const subtotal =
           calSubtotal.toString() == "NaN" ||
             calSubtotal == 0 ||
             calSubtotal < 0
             ? ""
-            : calSubtotal.toFixed(2);
+            : "" + calSubtotal;
         return { ...d, subtotal };
       })
-      set({detail});
+      set({ detail });
 
       //Calcula el total
-      const calTotal = get().detail.reduce(
+      const calNeto = get().detail.reduce(
         (a, b) => a + (parseFloat(b.subtotal) || 0),
         0,
       );
-      const total = calTotal == 0 ? "" : calTotal.toFixed(2);
-      set({total});
 
-      //calcula el total de articulos que hay en el detalle de compra
-      const quantityArticleDetail = get().detail.reduce(
-        (a, b) => a + parseInt(b.quantity),
-        0,
-      );
-      set({quantityArticleDetail});
+      const disc = parseFloat(discount)
+      const neto = calNeto == 0 ? "" : "" + calNeto;
+      const total = parseFloat(neto) - (
+        disc + "" === "NaN" ||
+          disc <= 0 ||
+          disc > parseFloat(neto) ?
+          0 : disc);
+
+      if (isSale) {
+        set({ neto });
+        set({ total: "" + total });
+      } else {
+        set({ total: neto });
+      }
     },
     //delete a detail
     deleteDetail: (id) => {
@@ -131,31 +164,17 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
         date,
         costBox,
         quantityBox,
-        quantityArticleDetail
+        quantityArticleDetail,
+        isSale,
+        costumerID,
+        discount,
+        neto
       } = get();
       const validationsErrors = errors;
       const validationsDetailErrors = detailErrors;
       const reqMsj = "Campo requerido";
 
-      if (quantityArticleDetail > parseInt(quantityBox)) {
-        validationsErrors["quantityArticleDetail"] = "Exede el total de articulos de la caja";
-        valState = false;
-      }
-    
-
-      if (detail.length === 0) {
-        validationsErrors["empty"] = "No hay elementos";
-        valState = false;
-      }
-
-      if (supplierID == "") {
-        validationsErrors["supplierID"] = reqMsj;
-        valState = false;
-      }
-      if (articleBoxID == "") {
-        validationsErrors["articleBoxID"] = reqMsj;
-        valState = false;
-      }
+      //Validaciones generales
       if (code == "") {
         validationsErrors["code"] = reqMsj;
         valState = false;
@@ -167,31 +186,74 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
         validationsErrors["date"] = "La fecha no puede ser mayor a hoy";
         valState = false;
       }
-
-      if (quantityBox == "") {
-        validationsErrors["quantityBox"] = reqMsj;
-        valState = false;
-      } else if (!noLetters(quantityBox)) {
-        validationsErrors["quantityBox"] = "Solo números";
-        valState = false;
-      } else if (parseInt(quantityBox) < 1) {
-        validationsErrors["quantityBox"] = "Debe ser mayor a 1";
-        valState = false;
-      } else if (!isInt(quantityBox)) {
-        validationsErrors["quantityBox"] = "No decimales";
+      if (detail.length === 0) {
+        validationsErrors["empty"] = "No hay elementos";
         valState = false;
       }
 
-      if (costBox == "") {
-        validationsErrors["costBox"] = reqMsj;
-        valState = false;
-      } else if (!noLetters(costBox)) {
-        validationsErrors["costBox"] = "Solo números";
-        valState = false;
-      }
+      //------------------------
 
+      if (isSale) {
+        if (costumerID == "") {
+          validationsErrors["costumerID"] = reqMsj;
+          valState = false;
+        }
+        if (parseInt(discount) <= 0) {
+          validationsErrors["discount"] = "Debe ser mayor o igual a 0";
+          valState = false;
+        } else if (!noLetters(discount)) {
+          validationsErrors["discount"] = "Solo números";
+          valState = false;
+        }
+
+        if (discount > neto) {
+          validationsErrors["discount"] = "Debe ser menor o igual a neto";
+          valState = false;
+        }
+      } else {
+        //Validations of purchase
+        if (quantityArticleDetail > parseInt(quantityBox)) {
+          validationsErrors["quantityArticleDetail"] = "Exede el total de articulos de la caja";
+          valState = false;
+        }
+
+        if (supplierID == "") {
+          validationsErrors["supplierID"] = reqMsj;
+          valState = false;
+        }
+
+        if (articleBoxID == "") {
+          validationsErrors["articleBoxID"] = reqMsj;
+          valState = false;
+        }
+
+        if (quantityBox == "") {
+          validationsErrors["quantityBox"] = reqMsj;
+          valState = false;
+        } else if (!noLetters(quantityBox)) {
+          validationsErrors["quantityBox"] = "Solo números";
+          valState = false;
+        } else if (parseInt(quantityBox) < 1) {
+          validationsErrors["quantityBox"] = "Debe ser mayor a 1";
+          valState = false;
+        } else if (!isInt(quantityBox)) {
+          validationsErrors["quantityBox"] = "No decimales";
+          valState = false;
+        }
+
+        if (costBox == "") {
+          validationsErrors["costBox"] = reqMsj;
+          valState = false;
+        } else if (!noLetters(costBox)) {
+          validationsErrors["costBox"] = "Solo números";
+          valState = false;
+        }
+        //-----------------------------------------
+
+      }
 
       detail.map((d) => {
+        const quantity = parseInt(d.quantity);
         if (d.quantity == "") {
           validationsDetailErrors.push({
             id: d.id,
@@ -199,21 +261,30 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
             msj: reqMsj,
           });
           valState = false;
-        } else if (!noLetters(d.quantity)) {
+        } else if (!noLetters(""+quantity)) {
           validationsDetailErrors.push({
             id: d.id,
             field: "quantity",
             msj: "Solo números",
           });
           valState = false;
-        } else if (parseInt(d.quantity) < 1) {
+        } else if (quantity < 1) {
           validationsDetailErrors.push({
             id: d.id,
             field: "quantity",
             msj: "Debe ser mayor a 1",
           });
           valState = false;
-        } else if (!isInt(d.quantity)) {
+        }else if(quantity > parseInt(d.stock)){
+          validationsDetailErrors.push({
+            id: d.id,
+            field: "quantity",
+            msj: "Stock disponible "+d.stock,
+          });
+          valState = false;
+        }
+        
+        else if (!isInt(""+quantity)) {
           validationsDetailErrors.push({
             id: d.id,
             field: "quantity",
@@ -236,11 +307,11 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
             msj: "Solo números",
           });
           valState = false;
-        } else if (parseInt(d.price) < get().costArticle) {
+        } else if (parseInt(d.price) < get().costArticle && !isSale) {
           validationsDetailErrors.push({
             id: d.id,
             field: "price",
-            msj: "Debe ser mayor a  C$ " + formatNumber(""+get().costArticle),
+            msj: "Debe ser mayor a  C$ " + formatNumber("" + get().costArticle),
           });
           valState = false;
         }
@@ -274,24 +345,42 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
         detail,
         quantityBox,
         costBox,
+        discount,
+        neto,
+        costumerID,
+        isSale
       } = get();
-      return JSON.stringify({
-        code,
-        supplierID,
-        articleBoxID,
-        quantityBox,
-        costBox,
-        date,
-        total,
-        detail,
-      });
+      let js;
+      if (isSale) {
+        js = {
+          code,
+          date,
+          total,
+          detail,
+          discount,
+          neto,
+          costumerID,
+        };
+      } else {
+        js = {
+          code,
+          supplierID,
+          articleBoxID,
+          quantityBox,
+          costBox,
+          date,
+          total,
+          detail,
+        }
+      }
+      return JSON.stringify(js);
     },
   };
 });
 
 const noLetters = (d: string) => {
   // La expresión regular verifica si la cadena tiene solo números y opcionalmente un punto decimal y signo menos
-  return /^-?\d+(\.\d+)?$/.test(d);
+  return d == "" ? true : /^-?\d+(\.\d+)?$/.test(d);
 };
 
 const isInt = (d: string) => {
