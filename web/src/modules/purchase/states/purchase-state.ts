@@ -206,7 +206,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
           valState = false;
         }
 
-        if (discount > neto) {
+        if (parseFloat(discount) > parseFloat(neto)) {
           validationsErrors["discount"] = "Debe ser menor o igual a neto";
           valState = false;
         }
@@ -275,7 +275,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
             msj: "Debe ser mayor a 1",
           });
           valState = false;
-        }else if(quantity > parseInt(d.stock)){
+        }else if(quantity > parseInt(d.stock) && get().isSale){
           validationsDetailErrors.push({
             id: d.id,
             field: "quantity",

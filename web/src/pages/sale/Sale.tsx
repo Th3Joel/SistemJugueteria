@@ -15,8 +15,8 @@ interface IPurchase {
   state: number
   discount: string
   neto: string
-  costumer:{
-    name:string
+  costumer: {
+    name: string
   }
 }
 const Sale = () => {
@@ -26,7 +26,7 @@ const Sale = () => {
       <Table
         hook={hook}
         ruta="sales"
-        colunms={["N° Factura","Cliente", "Total", "Fecha", "Acciones"]}
+        colunms={["N° Factura", "Cliente", "Total", "Fecha", "Acciones"]}
         body={(urlEdit) =>
           hook.all?.data.map((d, i) => (
             <tr key={i}>
