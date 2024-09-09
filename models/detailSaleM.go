@@ -12,6 +12,7 @@ type DetailSale struct {
 	Amount          int
 	Subtotal        float64
 	Profit          float64
+	Discount        float64
 	CreatedAt       time.Time
 	UpdatedAt       time.Time `gorm:"autoUpdateTime"`
 

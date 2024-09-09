@@ -23,7 +23,7 @@ export const Sidebar = () => {
 
   return (
     <div
-      className={`fixed top-0 z-20 px-3 w-[260px] animate__fadeInLeft text-white bg-slate-700 h-[100dvh] duration-300 ${estado ? "-ml-[260px]" : "ml-0"
+      className={`fixed top-0 z-10 px-3 w-[260px] animate__fadeInLeft text-white bg-slate-700 h-[100dvh] duration-300 ${estado ? "-ml-[260px]" : "ml-0"
         }`}
     >
       <div className="px-1 h-16 flex items-center">

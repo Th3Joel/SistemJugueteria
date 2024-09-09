@@ -1,5 +1,5 @@
-import Swal from "sweetalert2";
-const alertBox = (tipo:any,title:string,text:string,textbtn:string,callback:any) => {
+import Swal, { SweetAlertIcon } from "sweetalert2";
+const alertBox = (tipo:SweetAlertIcon,title:string,text:string,textbtn:string,callback:()=>void) => {
   Swal.fire({
     title,
     text,

@@ -21,8 +21,8 @@ var (
 )
 
 func ConnectDB() {
-	//dsn := "VwgHAVyMup7XfY6.root:D21sfVrtNmTuZPgy@tcp(gateway01.us-east-1.prod.aws.tidbcloud.com:4000)/jugueteria?parseTime=true&tls=true"
-	dsn := "joel:jo12el34@tcp(127.0.0.1:3306)/jugueteria?charset=utf8mb4&parseTime=true&loc=Local"
+	dsn := "VwgHAVyMup7XfY6.root:D21sfVrtNmTuZPgy@tcp(gateway01.us-east-1.prod.aws.tidbcloud.com:4000)/jugueteria?parseTime=true&tls=true"
+	//dsn := "joel:jo12el34@tcp(127.0.0.1:3306)/jugueteria?charset=utf8mb4&parseTime=true&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{TranslateError: true, SkipDefaultTransaction: true})
 	if err != nil {
 		log.Fatal("No se pudo conectar a la base de datos. \n")
@@ -43,6 +43,9 @@ func ConnectDB() {
 			_ = db.AutoMigrate(models.DetailPurchase{})
 			_ = db.AutoMigrate(models.Sales{})
 			_ = db.AutoMigrate(models.DetailSale{})
+			_ = db.AutoMigrate(models.CashRegister{})
+			_ = db.AutoMigrate(models.Denomination{})
+			_ = db.AutoMigrate(models.Expenses{})
 		}
 		if v == "seed" {
 			Seed(db)

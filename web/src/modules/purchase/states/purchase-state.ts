@@ -9,7 +9,7 @@ interface PurchaseState {
   isSale: boolean;
   code: string;
 
-  discount: string;
+  discountTotal: string;
   neto: string;
   costumerID: string;
   //Data of purchase
@@ -43,6 +43,7 @@ interface PurchaseDetail {
   description: string;
   price: string;
   subtotal: string;
+  discount: string;
   quantity: string;
   stock: string;
 }
@@ -55,7 +56,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
     costumerID: "",
     supplierID: "",
     articleBoxID: "",
-    discount: "",
+    discountTotal: "",
     neto: "",
     date: dateNow,
     quantityBox: "",
@@ -83,7 +84,14 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
      * Calcula el total y subtotal de cada elemento
      */
     calculations: () => {
-      const { isSale, discount } = get();
+      function valNumberToString(d: number, showParam?: string) {
+        const dStr = d.toString()
+
+        return dStr == "NaN" || dStr == "" || dStr == "0" ? showParam ? showParam : "" : dStr
+      }
+
+
+      const { isSale } = get();
       if (!isSale) {
         //Calcula el coste de cada articulo en la caja
         const costArticle = parseFloat(get().costBox) / parseInt(get().quantityBox);
@@ -109,6 +117,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
             calSubtotal < 0
             ? ""
             : "" + calSubtotal;
+
         return { ...d, subtotal };
       })
       set({ detail });
@@ -119,17 +128,19 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
         0,
       );
 
-      const disc = parseFloat(discount)
-      const neto = calNeto == 0 ? "" : "" + calNeto;
-      const total = parseFloat(neto) - (
-        disc + "" === "NaN" ||
-          disc <= 0 ||
-          disc > parseFloat(neto) ?
-          0 : disc);
+      const neto = valNumberToString(calNeto)//calNeto == 0 ? "" : "" + calNeto;
+      const discountTotal = detail.reduce((a, b) => a + (parseFloat(b.discount) || 0), 0)
+
+      const total = parseFloat(neto) - discountTotal
+      //Si el total es NaN, significa que no hay descuento
+      //const totalDisplay = "" + total == "NaN" ? neto : "" + total
 
       if (isSale) {
-        set({ neto });
-        set({ total: "" + total });
+        set({
+          neto,
+          total: valNumberToString(total, neto),
+          discountTotal: valNumberToString(discountTotal)
+        });
       } else {
         set({ total: neto });
       }
@@ -167,8 +178,6 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
         quantityArticleDetail,
         isSale,
         costumerID,
-        discount,
-        neto
       } = get();
       const validationsErrors = errors;
       const validationsDetailErrors = detailErrors;
@@ -190,24 +199,11 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
         validationsErrors["empty"] = "No hay elementos";
         valState = false;
       }
-
       //------------------------
 
       if (isSale) {
         if (costumerID == "") {
           validationsErrors["costumerID"] = reqMsj;
-          valState = false;
-        }
-        if (parseInt(discount) <= 0) {
-          validationsErrors["discount"] = "Debe ser mayor o igual a 0";
-          valState = false;
-        } else if (!noLetters(discount)) {
-          validationsErrors["discount"] = "Solo números";
-          valState = false;
-        }
-
-        if (parseFloat(discount) > parseFloat(neto)) {
-          validationsErrors["discount"] = "Debe ser menor o igual a neto";
           valState = false;
         }
       } else {
@@ -253,7 +249,30 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
       }
 
       detail.map((d) => {
-        const quantity = parseInt(d.quantity);
+        const f = {
+          subtotal: parseFloat(d.subtotal),
+          discount: parseFloat(d.discount),
+          quantity: parseInt(d.quantity),
+          stock: parseInt(d.stock),
+          price: parseFloat(d.price),
+        }
+        console.log("Validadicon "+noLetters(d.discount))
+        if (!noLetters(d.discount)) {
+          validationsDetailErrors.push({
+            id: d.id,
+            field: "discount",
+            msj: "Solo números",
+          });
+          valState = false;
+        } else if (f.discount >= f.subtotal) {
+          validationsDetailErrors.push({
+            id: d.id,
+            field: "discount",
+            msj: "No puede ser mayor a subtotal",
+          });
+          valState = false;
+        }
+
         if (d.quantity == "") {
           validationsDetailErrors.push({
             id: d.id,
@@ -261,30 +280,30 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
             msj: reqMsj,
           });
           valState = false;
-        } else if (!noLetters(""+quantity)) {
+        } else if (!noLetters(d.quantity)) {
           validationsDetailErrors.push({
             id: d.id,
             field: "quantity",
             msj: "Solo números",
           });
           valState = false;
-        } else if (quantity < 1) {
+        } else if (f.quantity < 1) {
           validationsDetailErrors.push({
             id: d.id,
             field: "quantity",
             msj: "Debe ser mayor a 1",
           });
           valState = false;
-        }else if(quantity > parseInt(d.stock) && get().isSale){
+        } else if (f.quantity > f.stock && get().isSale) {
           validationsDetailErrors.push({
             id: d.id,
             field: "quantity",
-            msj: "Stock disponible "+d.stock,
+            msj: "Stock disponible " + f.stock,
           });
           valState = false;
         }
-        
-        else if (!isInt(""+quantity)) {
+
+        else if (!isInt("" + f.quantity)) {
           validationsDetailErrors.push({
             id: d.id,
             field: "quantity",
@@ -307,7 +326,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
             msj: "Solo números",
           });
           valState = false;
-        } else if (parseInt(d.price) < get().costArticle && !isSale) {
+        } else if (f.price < get().costArticle && !isSale) {
           validationsDetailErrors.push({
             id: d.id,
             field: "price",
@@ -315,8 +334,8 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
           });
           valState = false;
         }
+
       });
-      //console.log(validationsErrors,validationsDetailErrors)
       set({ errors: validationsErrors, detailErrors: validationsDetailErrors });
       return valState;
     },
@@ -345,7 +364,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
         detail,
         quantityBox,
         costBox,
-        discount,
+        discountTotal,
         neto,
         costumerID,
         isSale
@@ -357,7 +376,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
           date,
           total,
           detail,
-          discount,
+          discountTotal,
           neto,
           costumerID,
         };
@@ -380,9 +399,10 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
 
 const noLetters = (d: string) => {
   // La expresión regular verifica si la cadena tiene solo números y opcionalmente un punto decimal y signo menos
-  return d == "" ? true : /^-?\d+(\.\d+)?$/.test(d);
+  return d == "" || d == undefined ? true : /^-?\d+(\.\d+)?$/.test(d);
 };
 
 const isInt = (d: string) => {
   return /^\d+$/.test(d);
 };
+

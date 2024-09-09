@@ -9,7 +9,7 @@ import {
     Select,
     SelectChangeEvent,
     TextField,
-    TextFieldProps
+    TextFieldProps,
 } from "@mui/material";
 import React, { ReactElement, useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
@@ -84,19 +84,6 @@ export const InputText: React.FC<InputProps> = ({
         valueChange && valueChange(selected);
     }, [selected])
 
-    // const InputDate = () => {
-    //     return (
-    //         <LocalizationProvider dateAdapter={AdapterDayjs}>
-    //             <DemoContainer components={["DatePicker"]} sx={{ marginTop: "-7px" }}>
-    //                 <DatePicker
-    //                     defaultValue={dayjs(Date.now())}
-    //                     label="Fecha"
-
-    //                     slotProps={{ textField: { size: "small" } }} />
-    //             </DemoContainer>
-    //         </LocalizationProvider>
-    //     )
-    // }
 
     const InputSelect = () => {
         return (
@@ -178,13 +165,14 @@ export const InputText: React.FC<InputProps> = ({
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>)
     }
+    const render = type === 'select' ? InputSelect() : type === 'password' ? InputPassword() : InputTextField()
     return (
-        <span className="flex">
+        <span className="flex group relative">
             <div
                 className="mr-1 px-1 text-red-500 rounded-md bg-[#f0f0f0] flex items-center justify-center  border-gray-500 ">
                 {cloneIcon}
             </div>
-            {type === 'select' ? InputSelect() : type === 'password' ? InputPassword() : InputTextField()}
+            {render}
         </span>
     );
 };

@@ -51,6 +51,7 @@ export const TableV2: React.FC = () => {
                                         quantity: "",
                                         subtotal: "",
                                         stock: ""+d.Stock,
+                                        discount:""
                                     })
                                 }}>
                                     <FaCirclePlus className="text-[20px]" />

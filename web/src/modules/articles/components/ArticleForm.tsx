@@ -56,7 +56,7 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
   const fetchData = async () => {
     
 
-    let res2 = await useFetch<ISelectCategory[]>("/categories/select", "GET");
+    const res2 = await useFetch<ISelectCategory[]>("/categories/select", "GET");
     if (res2) {
       setSelect(res2.map((data) => ({
         key: data.id,

@@ -14,6 +14,22 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+func CashM(f *fiber.Ctx) error {
+	cash := models.CashRegister{}
+
+	userId := f.Locals("userId").(string)
+
+	config.DB.Where("user_id = ? AND state = 1", userId).First(&cash)
+	if cash.ID == "" {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "Debes de abrir una caja",
+		})
+	}
+	f.Locals("cashRegisterId", cash.ID)
+	return f.Next()
+}
+
 func AuthM(c *fiber.Ctx) error {
 	tokenH := helpers.TokenH{}
 	// Obtiene el token de la cabecera de autorización

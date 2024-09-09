@@ -39,6 +39,8 @@ import Purchase from "@/pages/purchase/Purchase";
 import AddSale from "@/pages/sale/AddSale";
 import EditSale from "@/pages/sale/EditSale";
 import Sale from "@/pages/sale/Sale";
+import YouBox from "@/pages/cashRegister/tabs/YouBox";
+import History from "@/pages/cashRegister/tabs/History";
 
 
 const Router = () => {
@@ -104,6 +106,12 @@ const Router = () => {
                         <Route path="/sales" element={<Sale />} />
                         <Route path="/sales/add" element={<AddSale />} />
                         <Route path="/sales/edit/:id" element={<EditSale />} />
+
+                        <Route path="/cash-register" element={<CashRegister />}>
+                            <Route index element={<YouBox />} />
+                            <Route path="you-box" element={<YouBox />} />
+                            <Route path="history" element={<History />} />
+                        </Route>
 
                     </Route>
                     <Route path="/auth" element={<AuthLayout />}>

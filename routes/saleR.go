@@ -12,5 +12,5 @@ func SaleR(app fiber.Router) {
 	r := app.Group("/sales", mdd.AuthM)
 	r.Get("/", sale.All)
 	r.Get("/newCode", sale.GetNewCode)
-	r.Post("", sale.Save)
+	r.Post("", mdd.CashM, sale.Save)
 }
