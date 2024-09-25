@@ -1,6 +1,6 @@
 import { InputText, IOptions } from "@/modules/core/components/Input";
 import { FaArrowDownWideShort, FaBarcode, FaDatabase, FaTag } from "react-icons/fa6";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import LoaderBtn from "@/modules/core/components/LoaderBtn.tsx";
 import { useForm } from "@/modules/core/hooks/useForm.ts";
@@ -83,7 +83,7 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
       }
     })()
   }, []);
-  return (<div className="w-[350px] p-3 shadow-lg rounded-lg">
+  return (<div className="w-[350px] p-5 shadow-lg rounded-lg">
     <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
       {/*<InputText
         label="Asignar a una caja de artículos"
@@ -166,17 +166,9 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
         helperText={errors?.SalePrice}
         iconSize="13px"
       />
-
-      <div className="flex justify-between">
-        <Link to="/articles">
-          <Button variant="contained" type="button">
-            Atrás
-          </Button>
-        </Link>
         <Button variant="contained" type="submit" disabled={loading || select[0].key == "" }>
-          {loading || select[0].key == ""  ? <LoaderBtn /> : "Guardar"}
+          {loading || select[0].key == ""  ? <LoaderBtn /> : isEdit ? "Actualizar" : "Guardar"}
         </Button>
-      </div>
     </form>
   </div>)
 }

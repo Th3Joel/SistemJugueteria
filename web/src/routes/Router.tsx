@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { useEffect } from "react";
 
 import LoaderSplash from "@/modules/core/components/LoaderSplash";
@@ -32,88 +32,129 @@ import CashRegister from "@/pages/cashRegister/CashRegister";
 import AuthLayout from "@/pages/auth/AuthLayout";
 import ForgotPasswd from "@/pages/auth/ForgotPasswd";
 import ResetPasswd from "@/pages/auth/ResetPasswd";
-import { routesTitles, TitleState } from "@/modules/core/states/title-state";
 import AddPurchase from "@/pages/purchase/AddPurchase";
 import ViewPurchase from "@/pages/purchase/ViewPurchase";
 import Purchase from "@/pages/purchase/Purchase";
 import AddSale from "@/pages/sale/AddSale";
-import EditSale from "@/pages/sale/EditSale";
 import Sale from "@/pages/sale/Sale";
 import YouBox from "@/pages/cashRegister/tabs/YouBox";
 import History from "@/pages/cashRegister/tabs/History";
-
+import ViewCash from "@/modules/cashRegister/ViewCash";
+import ViewSale from "@/pages/sale/ViewSale";
+import Reports from "@/pages/reports/Reports";
+import InventoryReport from "@/pages/reports/InventoryReport";
+import LayoutReport from "@/pages/reports/LayoutReport";
+import SpecificSale from "@/pages/reports/SpecificSale";
+import SpecificPurchase from "@/pages/reports/SpecificPurchase";
+import SuppliersReport from "@/pages/reports/SuppliersReport";
+import CostumersReport from "@/pages/reports/CostumersReport";
+import PurchasesReport from "@/pages/reports/PurchasesReport";
+import SalesReport from "@/pages/reports/SalesReport";
 
 const Router = () => {
     const auth = AuthState();
-    const { setTitle, setPath } = TitleState();
     useEffect(() => {
         auth.verify();
     }, []);
-    const { pathname } = useLocation();
-    useEffect(() => {
-        setTitle(routesTitles[pathname] || "Undefinido");
-        setPath(pathname);
-    }, [pathname])
 
     return (
         <>
-            
+
             {auth.loading ? (
                 <LoaderSplash />
             ) : (
                 <Routes>
                     <Route path="/" element={<Layout />}>
+
                         <Route index element={<Dashboard />} />
-                        <Route path="/clientes" element={<Clientes />} />
-                        <Route path="/clientes/edit/:id" element={<EditCostumer />} />
-                        <Route path="/clientes/add" element={<AddCostumer />} />
+                        {
+                            auth.user.Role == "admin" &&
+                            <>
+
+                                <Route path="/clientes" element={<Clientes />} />
+                                <Route path="/clientes/edit/:id" element={<EditCostumer />} />
+                                <Route path="/clientes/add" element={<AddCostumer />} />
+
+                                <Route path="/suppliers" element={<Suppliers />} />
+                                <Route path="/suppliers/add" element={<AddSupplier />} />
+                                <Route path="/suppliers/edit/:id" element={<EditSupplier />} />
+
+                                <Route path="/articles-box" element={<ArticleBox />} />
+                                <Route path="/articles-box/edit/:id" element={<EditArticleBox />} />
+                                <Route path="/articles-box/add" element={<AddArticleBox />} />
+
+                                <Route path="/purchases" element={<Purchase />} />
+                                <Route path="/purchases/add" element={<AddPurchase />} />
+                                <Route path="/purchases/edit/:id" element={<ViewPurchase />} />
+
+                                <Route path="/articles" element={<Articles />} />
+                                <Route path="/articles/edit/:id" element={<EditArticles />} />
+                                <Route path="/articles/add" element={<AddArticles />} />
+
+                                <Route path="/categories" element={<Category />} />
+                                <Route path="/categories/edit/:id" element={<EditCategory />} />
+                                <Route path="/categories/add" element={<AddCategory />} />
+
+                                <Route path="/reports" element={<Reports />} />
+
+                            </>
+                        }
 
                         <Route path="/settings" element={<Setting />}>
-                            <Route index element={<Users />} />
-                            <Route path="users" element={<Users />} />
-                            <Route path="users/add" element={<AddUsers />} />
-                            <Route path="users/edit/:id" element={<EditUsers />} />
-                            <Route path="profile" element={<Profile />} />
-                            <Route path="company" element={<Company />} />
-                            <Route path="maintenance" element={<Maintenance />} />
+                            {
+                                auth.user.Role == "admin" &&
+                                <>
+                                    <Route index element={<Users />} />
+                                    <Route path="users" element={<Users />} />
+                                    <Route path="users/add" element={<AddUsers />} />
+                                    <Route path="users/edit/:id" element={<EditUsers />} />
+                                    <Route path="company" element={<Company />} />
+                                    <Route path="maintenance" element={<Maintenance />} />
+
+                                </>
+                            }
+                            {
+                                auth.user.Role == "vendedor" &&
+                                <>
+                                    <Route index element={<Profile />} />
+                                    <Route path="profile" element={<Profile />} />
+                                </>
+                            }
                         </Route>
 
-                        <Route path="/articles-box" element={<ArticleBox />} />
-                        <Route path="/articles-box/edit/:id" element={<EditArticleBox />} />
-                        <Route path="/articles-box/add" element={<AddArticleBox />} />
-
-                        <Route path="/categories" element={<Category />} />
-                        <Route path="/categories/edit/:id" element={<EditCategory />} />
-                        <Route path="/categories/add" element={<AddCategory />} />
 
 
 
-
-                        <Route path="/suppliers" element={<Suppliers />} />
-                        <Route path="/suppliers/add" element={<AddSupplier />} />
-                        <Route path="/suppliers/edit/:id" element={<EditSupplier />} />
-
-                        <Route path="/articles" element={<Articles />} />
-                        <Route path="/articles/edit/:id" element={<EditArticles />} />
-                        <Route path="/articles/add" element={<AddArticles />} />
 
                         <Route path="/cash-register" element={<CashRegister />} />
 
-                        <Route path="/purchases" element={<Purchase />} />
-                        <Route path="/purchases/add" element={<AddPurchase />} />
-                        <Route path="/purchases/edit/:id" element={<ViewPurchase />} />
 
                         <Route path="/sales" element={<Sale />} />
                         <Route path="/sales/add" element={<AddSale />} />
-                        <Route path="/sales/edit/:id" element={<EditSale />} />
+                        <Route path="/sales/edit/:id" element={<ViewSale />} />
 
                         <Route path="/cash-register" element={<CashRegister />}>
                             <Route index element={<YouBox />} />
                             <Route path="you-box" element={<YouBox />} />
                             <Route path="history" element={<History />} />
+                            <Route path="show/:id" element={<ViewCash />} />
                         </Route>
 
+
                     </Route>
+                    {
+                        auth.user.Role == "admin" &&
+                        <Route path="/report" element={<LayoutReport />}>
+                            <Route path="inventory/:id?" element={<InventoryReport />} />
+                            <Route path="specific-sale/:id" element={<SpecificSale />} />
+                            <Route path="specific-purchase/:id" element={<SpecificPurchase />} />
+                            <Route path="suppliers" element={<SuppliersReport />} />
+                            <Route path="costumers" element={<CostumersReport />} />
+                            <Route path="purchases/:filter?" element={<PurchasesReport />} />
+                            <Route path="sales/:filter?" element={<SalesReport />} />
+                        </Route>
+                    }
+
                     <Route path="/auth" element={<AuthLayout />}>
                         <Route index element={<Login />} />
                         <Route path="login" element={<Login />} />

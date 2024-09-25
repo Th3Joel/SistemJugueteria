@@ -11,10 +11,10 @@ export interface ModalProps {
 
 export const useModal = () => {
     const [modalShow, setModalShow] = useState<boolean>(false)
-    const Modal: React.FC<ModalProps> = ({ title, children,onSubmit,loadBtn }) => {
+    const Modal: React.FC<ModalProps> = ({ title, children, onSubmit, loadBtn }) => {
         return (
             <div className={`fixed w-full h-[100dvh] top-0 left-0
-                             bg-slate-500/20 z-[99] backdrop-blur-sm 
+                             bg-slate-500/20 z-20 backdrop-blur-sm 
                             grid place-items-center ${!modalShow && "hidden"}`}>
                 <form className="w-auto bg-white rounded-xl p-4" onSubmit={onSubmit}>
                     <header className="font-bold text-xl">

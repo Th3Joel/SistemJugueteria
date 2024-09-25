@@ -11,7 +11,7 @@ import (
 
 func CategoryR(f fiber.Router) {
 	categoryR := controllers.CategoryC{}
-	r := f.Group("/categories", mdd.AuthM)
+	r := f.Group("/categories", mdd.AuthM, mdd.RoleM([]string{}))
 
 	r.Get("", categoryR.All)
 	r.Get("/select", categoryR.AllSelect)

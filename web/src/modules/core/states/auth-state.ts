@@ -13,6 +13,7 @@ type ICompany = {
   Phone: string;
   Ruc: string;
   Address: string;
+  PriceDollar: string;
 }
 interface IAuth {
   estado: boolean;
@@ -36,6 +37,7 @@ export const AuthState = create<IAuth>((set) => ({
     Phone: "",
     Ruc: "",
     Address: "",
+    PriceDollar: ""
   },
   estado: false,
   loading: true,

@@ -9,7 +9,7 @@ import (
 
 func HomeR(f fiber.Router) {
 	homeC := controllers.HomeC{}
-	r := f.Group("/home", mdd.AuthM)
+	r := f.Group("/home", mdd.AuthM, mdd.RoleM([]string{}))
 
 	r.Get("/counters", homeC.CountersBox)
 }

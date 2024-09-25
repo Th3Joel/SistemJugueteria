@@ -8,21 +8,22 @@ import {
 import { BoxCounterInfo } from "./BoxCounterInfo";
 import { useForm } from "@/modules/core/hooks/useForm";
 import { useEffect } from "react";
+import { formatNumber } from "@/modules/core/utils/formatNumber";
 
 interface ICounters {
   costumersCount: number;
   suppliersCount: number;
   usersCount: number;
-  purchasesCount: number;
-  salesCount: number;
+  totalPurchases: number;
+  totalSales: number;
 }
 export const SectionCounters = () => {
   const { get, loading, data } = useForm<ICounters>({
     costumersCount: 0,
     suppliersCount: 0,
     usersCount: 0,
-    purchasesCount: 0,
-    salesCount: 0,
+    totalPurchases: 0,
+    totalSales: 0,
   });
 
   useEffect(() => {
@@ -31,7 +32,7 @@ export const SectionCounters = () => {
   return (
     <div className="flex gap-3 flex-wrap justify-center mb-5">
       <BoxCounterInfo
-        counter={"C$ "+data.purchasesCount}
+        counter={"C$ "+formatNumber(data.totalPurchases+"")}
         title="Total compras"
         color="#17A2B8"
         link="/"
@@ -40,7 +41,7 @@ export const SectionCounters = () => {
       />
 
       <BoxCounterInfo
-        counter={"C$ "+data.salesCount}
+        counter={"C$ "+formatNumber(data.totalSales+"")}
         title="Total ventas"
         color="#22A745"
         link="/"

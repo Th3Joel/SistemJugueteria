@@ -3,7 +3,7 @@ import { InputText } from "@/modules/core/components/Input";
 import { FaArrowDownWideShort, FaBarcode } from "react-icons/fa6";
 import { Button } from "@mui/material";
 import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "@/modules/core/hooks/useForm.ts";
 import LoaderBtn from "@/modules/core/components/LoaderBtn.tsx";
 
@@ -45,7 +45,7 @@ export const ArticleBoxForm: React.FC<IProps> = ({ isEdit, id }) => {
 
   }, []);
   return (
-    <div className="w-[350px] p-3 shadow-lg rounded-lg">
+    <div className="w-[350px] p-5 shadow-lg rounded-lg">
       <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
         <InputText
           label="Código"
@@ -87,16 +87,10 @@ export const ArticleBoxForm: React.FC<IProps> = ({ isEdit, id }) => {
           error={!!errors?.PurchasePrice}
           helperText={errors?.PurchasePrice}
         /> */}
-        <div className="flex justify-between">
-          <Link to="/articles-box">
-            <Button variant="contained" type="button">
-              Atrás
-            </Button>
-          </Link>
+       
           <Button variant="contained" type="submit">
-            {loading ? <LoaderBtn /> : "Guardar"}
+            {loading ? <LoaderBtn /> : isEdit ? "Actualizar" : "Guardar"}
           </Button>
-        </div>
       </form>
     </div>
   );

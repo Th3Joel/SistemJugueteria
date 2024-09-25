@@ -1,4 +1,5 @@
 import { Card } from "@/modules/core/components/Card";
+import { TitleState } from "@/modules/core/states/title-state";
 import {  Tab, Tabs } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -41,6 +42,7 @@ const CashRegister = () => {
   const [value, setValue] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
+  const {setTitle} = TitleState()
 
   const nv = (i: number) => {
     i == 0 && navigate("/cash-register/you-box");
@@ -49,6 +51,7 @@ const CashRegister = () => {
 
 
   useEffect(() => {
+    setTitle("Arqueo de caja");
     switch (location.pathname) {
       case "/cash-register":
         setValue(0);

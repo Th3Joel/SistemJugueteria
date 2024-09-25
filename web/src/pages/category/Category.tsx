@@ -4,6 +4,8 @@ import Table from "@/modules/core/components/Table.tsx";
 import {IconButton} from "@mui/material";
 import {FaPencil, FaTrash} from "react-icons/fa6";
 import {Link} from "react-router-dom";
+import { TitleState } from "@/modules/core/states/title-state";
+import { useEffect } from "react";
 
 interface ICategory {
     id:string
@@ -13,6 +15,10 @@ interface ICategory {
 
  const Category = () => {
     const hook = useTable<ICategory>()
+    const { setTitle } = TitleState();
+    useEffect(() => {
+        setTitle("Categorías");
+    }, [])
     return (
         <Card>
             <Table

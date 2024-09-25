@@ -12,10 +12,10 @@ interface IAddExpenses {
 
 export const AddExpenses: React.FC<IAddExpenses> = ({ getData, RenderModal, setModalShow }) => {
 
-    const { post, loading } = useForm<Omit<ExpensesData, "id" | "cashRegisterID">>({
-        numInvoice: "",
-        detail: "",
-        amount: "",
+    const { post, loading, data, errors,inputChange } = useForm<Omit<ExpensesData, "id" | "cashRegisterID">>({
+        NumInvoice: "",
+        Detail: "",
+        Amount: "",
     });
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -34,21 +34,33 @@ export const AddExpenses: React.FC<IAddExpenses> = ({ getData, RenderModal, setM
                 </small>
                 <InputText
                     label="N° Factura"
-                    name="numInvoice"
+                    name="NumInvoice"
                     icon={<FaFileInvoice />}
+                    error={!!errors?.NumInvoice}
+                    helperText={errors?.NumInvoice}
+                    value={data.NumInvoice}
+                    onChange={inputChange}
                 />
                 <InputText
                     label="Detalle *"
-                    name="detail"
+                    name="Detail"
                     icon={<FaArrowDownWideShort />}
                     multiline
                     rows={2}
+                    error={!!errors?.Detail}
+                    helperText={errors?.Detail}
+                    value={data.Detail}
+                    onChange={inputChange}
                 />
                 <InputText
                     label="Monto *"
-                    name="amount"
+                    name="Amount"
                     icon={<p>C$</p>}
                     iconSize="15px"
+                    error={!!errors?.Amount}
+                    helperText={errors?.Amount}
+                    value={data.Amount}
+                    onChange={inputChange}
                 />
             </div>
         </RenderModal>

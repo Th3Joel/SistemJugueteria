@@ -1,19 +1,24 @@
 import { ReqOpenCash } from "@/modules/cashRegister/ReqOpenCash";
 import CashRegisterState from "@/modules/cashRegister/states/cashRegisterState";
 import { Card } from "@/modules/core/components/Card";
+import { Drawer } from "@/modules/core/components/Drawer";
 import { InputText, IOptions } from "@/modules/core/components/Input";
 import LoaderBtn from "@/modules/core/components/LoaderBtn";
 import LoaderSmall from "@/modules/core/components/LoaderSmall";
 import { TableV2 } from "@/modules/core/components/TableV2";
 import { useFetch } from "@/modules/core/hooks/useFetch";
 import { useForm } from "@/modules/core/hooks/useForm";
+import { AuthState } from "@/modules/core/states/auth-state";
+import { TitleState } from "@/modules/core/states/title-state";
 import { formatNumber } from "@/modules/core/utils/formatNumber";
 import {
   PurchaseState,
   TDetailErrors,
 } from "@/modules/purchase/states/purchase-state";
-import { Button, IconButton } from "@mui/material";
+import { Button, IconButton, Tooltip } from "@mui/material";
+import dayjs from "dayjs";
 import { useState, useEffect } from "react";
+import { FaPlusCircle } from "react-icons/fa";
 import {
   FaFileInvoice,
   FaCalendarDays,
@@ -29,7 +34,11 @@ interface ISelectCostumer {
 }
 
 const AddSale = () => {
-  const { verify, loading: loadCash, state } = CashRegisterState();
+  const [showDrawer, setShowDrawer] = useState<boolean>(false);
+  const { setTitle } = TitleState();
+  const { company } = AuthState()
+  const { verify, state } = CashRegisterState();
+  const [loadCash, setLoadCash] = useState(true);
   const [select2, setSelect2] = useState<IOptions[]>([{ key: "", value: "" }]);
   const { post, loading } = useForm<string>("");
   const navigate = useNavigate();
@@ -39,8 +48,11 @@ const AddSale = () => {
     costumerID,
     detail,
     total,
+    valResto,
     errors,
     detailErrors,
+    exchange,
+    setCostDollar,
     deleteDetail,
     changeInput,
     validate,
@@ -94,7 +106,11 @@ const AddSale = () => {
     }
   };
   useEffect(() => {
-    verify();
+    setTitle("Agregar venta");
+    setCostDollar(company.PriceDollar)
+    verify().then(() => {
+      setLoadCash(false)
+    });
     fetchData();
     setIsSale(true)
     //Cuando se desmonta el componente
@@ -103,7 +119,7 @@ const AddSale = () => {
     };
   }, []);
   return (
-    <Card>
+    <Card btnBack btnBackLink="/sales">
       {
         loadCash ?
           <div className="p-8 flex justify-center">
@@ -111,10 +127,19 @@ const AddSale = () => {
           </div>
           : !state ? <ReqOpenCash /> :
 
-            <div className="flex flex-grow">
-              <div className="w-[60%] m-3">
-                <div className="flex flex-col items-center border rounded-md p-1 pb-2">
-                  <header className="text-gray-500 my-1">
+            <div className="flex justify-center py-5">
+              <Drawer open={showDrawer} setOpen={setShowDrawer}>
+                <p className="text-gray-700 text-xl mt-4 text-center font-bold">Artículos registrados</p>
+                <div className="flex justify-center">
+                  <div className="w-[800px]">
+                    <TableV2 />
+                  </div>
+                </div>
+
+              </Drawer>
+              <div className="w-[800px]">
+                <div className="flex flex-col items-center border rounded-md p-2 mx-3 shadow-lg">
+                  <header className="text-gray-700 mb-2">
                     ---- Datos de venta ----
                   </header>
                   <section className="flex flex-row justify-center flex-wrap gap-4">
@@ -134,14 +159,8 @@ const AddSale = () => {
                     <span className="w-[200px]">
                       <InputText
                         label="Fecha"
-                        type="date"
-                        value={date}
-                        error={!!errors.date}
-                        helperText={errors.date}
+                        value={dayjs(date).format("DD/MM/YYYY")}
                         icon={<FaCalendarDays />}
-                        onChange={(e) => {
-                          changeInput(e.target.value, "date");
-                        }}
                       />
                     </span>
 
@@ -170,28 +189,36 @@ const AddSale = () => {
                       disabled={loading}
                       onClick={handleSubmit}
                     >
-                      {loading ? <LoaderBtn /> : "Guardar compra"}
+                      {loading ? <LoaderBtn /> : "Guardar venta"}
                     </Button>
                   </div>
                 </div>
 
-                <div className="border rounded-md px-3 pb-2 mt-3">
-                  <header className="flex flex-col items-center text-gray-500">
-                    ---- Detalle de venta ----
-                  </header>
+                <div className="border rounded-md px-3 mt-5 mx-3 shadow-lg">
+                  <div className="flex justify-between items-center">
 
+                    <header className="text-gray-700 text-lg">
+                      Detalle de venta
+                    </header>
+                    <Tooltip title="Agregar artículos">
+                      <IconButton sx={{ marginY: "2px" }} color="primary" onClick={() => setShowDrawer(true)}>
+                        <FaPlusCircle size={30} />
+                      </IconButton>
+                    </Tooltip>
+                  </div>
                   <hr />
-                  <section className="mb-2">
+                  <section className="mb-2 overflow-y-auto max-h-[360px]">
                     {detail.length === 0 ? (
                       <h3
-                        className={`text-gray-600 text-center mt-3 ${errors.empty && "text-red-500"}`}
+                        className={`text-gray-600 text-center mt-1 ${errors.empty && "text-red-500"}`}
                       >
-                        --- No hay elementos ---
+                        No hay elementos
                       </h3>
                     ) : (
                       detail.map((d, i) => (
-                        <span key={i} className="flex flex-col items-center mb-2">
-                          <header className="my-2 text-gray-600 flex items-center">
+                        <span key={i} className={`flex flex-col items-center
+                        ${i < (detail.length - 1) && 'border-b-[1px]'}`}>
+                          <header className="text-gray-600 flex items-center">
                             ({d.code}) {d.description}
                             <IconButton
                               color="error"
@@ -201,68 +228,59 @@ const AddSale = () => {
                               <FaTrash className="text-[18px]" />
                             </IconButton>
                           </header>
-                          <section className="flex gap-3 flex-wrap justify-center">
-                            <span className="w-[160px]">
-                              <InputText
-                                label="Precio venta"
-                                value={d.price}
-                                icon={<p>C$</p>}
-                                iconSize="13px"
-                                readonly
-                              />
-                            </span>
+                          <section className="flex gap-3 flex-wrap md:flex-nowrap mb-3 justify-center">
+                            <InputText
+                              label="Precio venta"
+                              value={d.price}
+                              icon={<p>C$</p>}
+                              iconSize="13px"
+                              readonly
+                            />
+                            <InputText
+                              label="Cantidad"
+                              value={d.quantity}
+                              icon={<FaDatabase />}
+                              onChange={(e) => {
+                                changeInput(e.target.value, "quantity", d.id);
+                              }}
+                              error={handleErrors(
+                                detailErrors,
+                                "quantity",
+                                d.id,
+                              ).some()}
+                              helperText={handleErrors(
+                                detailErrors,
+                                "quantity",
+                                d.id,
+                              ).find()}
+                            />
 
-                            <span className="w-[120px]">
-                              <InputText
-                                label="Cantidad"
-                                value={d.quantity}
-                                icon={<FaDatabase />}
-                                onChange={(e) => {
-                                  changeInput(e.target.value, "quantity", d.id);
-                                }}
-                                error={handleErrors(
-                                  detailErrors,
-                                  "quantity",
-                                  d.id,
-                                ).some()}
-                                helperText={handleErrors(
-                                  detailErrors,
-                                  "quantity",
-                                  d.id,
-                                ).find()}
-                              />
-                            </span>
-
-                            <span className="w-[160px]">
-                              <InputText
-                                label="Subtotal"
-                                value={formatNumber(d.subtotal)}
-                                icon={<p>C$</p>}
-                                iconSize="13px"
-                                readonly
-                              />
-                            </span>
-                            <span className="w-[120px]">
-                              <InputText
-                                label="Descuento"
-                                value={d.discount}
-                                icon={<p>C$</p>}
-                                iconSize="13px"
-                                onChange={(e) => {
-                                  changeInput(e.target.value, "discount", d.id);
-                                }}
-                                error={handleErrors(
-                                  detailErrors,
-                                  "discount",
-                                  d.id,
-                                ).some()}
-                                helperText={handleErrors(
-                                  detailErrors,
-                                  "discount",
-                                  d.id,
-                                ).find()}
-                              />
-                            </span>
+                            <InputText
+                              label="Subtotal"
+                              value={formatNumber(d.subtotal)}
+                              icon={<p>C$</p>}
+                              iconSize="13px"
+                              readonly
+                            />
+                            <InputText
+                              label="Descuento"
+                              value={d.discount}
+                              icon={<p>C$</p>}
+                              iconSize="13px"
+                              onChange={(e) => {
+                                changeInput(e.target.value, "discount", d.id);
+                              }}
+                              error={handleErrors(
+                                detailErrors,
+                                "discount",
+                                d.id,
+                              ).some()}
+                              helperText={handleErrors(
+                                detailErrors,
+                                "discount",
+                                d.id,
+                              ).find()}
+                            />
                           </section>
                         </span>
                       ))
@@ -270,9 +288,12 @@ const AddSale = () => {
                   </section>
                   {detail.length !== 0 && (
                     <>
-                      <hr />
-                      <section className="flex justify-center mt-4 gap-3 flex-wrap">
-                        <span className="w-[200px]">
+                      <hr className="-mt-2" />
+                      <div>
+                        <header className="text-gray-700 my-1 text-center">
+                          ---- Totales ----
+                        </header>
+                        <section className="flex flex-row justify-center flex-wrap md:flex-nowrap gap-4">
                           <InputText
                             label="Total descuento"
                             icon={<p>C$</p>}
@@ -280,8 +301,7 @@ const AddSale = () => {
                             iconSize="13px"
                             readonly
                           />
-                        </span>
-                        <span className="w-[200px]">
+
                           <InputText
                             label="Neto"
                             value={formatNumber(neto)}
@@ -289,27 +309,54 @@ const AddSale = () => {
                             iconSize="13px"
                             readonly
                           />
-                        </span>
 
-                        <span className="w-[200px]">
                           <InputText
-                            label="Total"
+                            label="Total" mx-4
                             value={formatNumber(total)}
                             icon={<p>C$</p>}
                             iconSize="13px"
                             readonly
                           />
-                        </span>
-                      </section>
+                        </section>
+                      </div>
+
+                      <div className="gap-3 mb-1 mt-1">
+                        <header className="text-gray-700 mb-[5px] text-center">
+                          ---- Pago del cliente ----
+                        </header>
+                        {
+                          valResto != "0" && valResto != "NaN" &&
+                          <h1 className="text-red-500 text-center text-sm font-bold -mt-[5px] mb-[5px]">
+                            Faltan C$ {formatNumber(valResto)} de pago
+                          </h1>
+                        }
+
+                        <section className="flex flex-row justify-center md:flex-nowrap flex-wrap gap-4">
+                          <InputText
+                            label="Efectivo en dólares"
+                            icon={<p>$</p>}
+                            onChange={(e) => {
+                              changeInput(e.target.value, "cashDollar");
+                            }}
+                          />
+                          <InputText
+                            label="Efectivo en córdobas"
+                            icon={<p>C$</p>}
+                            onChange={(e) => {
+                              changeInput(e.target.value, "cashCordoba");
+                            }}
+                          />
+                          <InputText
+                            label="Cambio"
+                            value={formatNumber(exchange == "0" ? "" : exchange)}
+                            icon={<p>C$</p>}
+                            readonly
+                          />
+                        </section>
+                        <h1 className="text-gray-600 text-center">Cambio dolar: {formatNumber(company.PriceDollar)}</h1>
+                      </div>
                     </>
                   )}
-                </div>
-              </div>
-
-              <div className="w-[50%] m-3 ">
-                <div className="border rounded-md p-2">
-                  <p className="text-gray-500 text-center">Artículos</p>
-                  <TableV2 />
                 </div>
               </div>
             </div>

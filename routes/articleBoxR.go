@@ -11,7 +11,8 @@ import (
 
 func ArticleBoxR(f fiber.Router) {
 	articleBoxC := controllers.ArticleBoxC{}
-	r := f.Group("/articles-box", mdd.AuthM)
+	r := f.Group("/articles-box", mdd.AuthM, mdd.RoleM([]string{}))
+	r.Get("/profit/:id", articleBoxC.GetProfit)
 	r.Get("", articleBoxC.All)
 	r.Get("/select", articleBoxC.AllSelect)
 	r.Get("/cost/:id", articleBoxC.GetCost)

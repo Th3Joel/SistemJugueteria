@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import { FaPencil, FaTrash } from "react-icons/fa6";
 import { useTable } from "@/modules/core/hooks/useTable.ts";
+import { TitleState } from "@/modules/core/states/title-state";
+import { useEffect } from "react";
 
-interface ISupplier {
+export interface ISupplier {
     id: string
     Name: string
     Email: string
@@ -15,6 +17,10 @@ interface ISupplier {
 
 const Suppliers = () => {
     const hook = useTable<ISupplier>()
+    const { setTitle } = TitleState();
+    useEffect(() => {
+        setTitle("Proveedores");
+    }, [])
     return (
         <Card>
             <Table

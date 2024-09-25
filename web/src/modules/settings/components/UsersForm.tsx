@@ -130,16 +130,24 @@ export const UsersForm: React.FC<IProps> = ({ isEdit, id, isProfile }) => {
                         icon={<FaKey />}
                         value={data.Confirm}
                     />
-                    <div className="flex justify-between">
-                        <Link to="/settings/users">
-                            <Button variant="contained" type="button">
-                                Atrás
+                    {
+                        isProfile ?
+                            <Button type="submit" disabled={loading} variant="contained">
+                                {loading ? <LoaderBtn /> : "Actualizar"}
                             </Button>
-                        </Link>
-                        <Button type="submit" disabled={loading} variant="contained">
-                            {loading ? <LoaderBtn /> : "Actualizar"}
-                        </Button>
-                    </div>
+                            :
+                            <div className="flex justify-between">
+                                <Link to="/settings/users">
+                                    <Button variant="contained" type="button">
+                                        Atrás
+                                    </Button>
+                                </Link>
+                                <Button type="submit" disabled={loading} variant="contained">
+                                    {loading ? <LoaderBtn /> : isEdit ? "Actualizar" : "Guardar"}
+                                </Button>
+                            </div>
+                    }
+
                 </section>
             </form>
         </div>

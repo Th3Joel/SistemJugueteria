@@ -28,11 +28,12 @@ type CostumerPost struct {
 
 // CompanyPost
 type CompanyPost struct {
-	Name    string `validate:"required"`
-	Ruc     string `validate:"omitempty,min=14,max=14"`
-	Phone   string `validate:"omitempty,numeric,min=8,max=8"`
-	Address string `validate:"omitempty,max=50"`
-	Email   string `validate:"omitempty,email"`
+	Name        string `validate:"required"`
+	Ruc         string `validate:"omitempty,min=14,max=14"`
+	Phone       string `validate:"omitempty,numeric,min=8,max=8"`
+	Address     string `validate:"omitempty,max=50"`
+	Email       string `validate:"omitempty,email"`
+	PriceDollar string `validate:"omitempty,numeric,gtC=35"`
 }
 
 // SupplierPost
@@ -57,7 +58,7 @@ type ArticlePost struct {
 	CategoryID   string `validate:"required"`
 	Code         string `validate:"required,isRepeat"`
 	Description  string `validate:"required,isRepeat"`
-	MinimunStock string `validate:"required,integer,gtC=0"`
+	MinimunStock string `validate:"omitempty,integer,gtC=4"`
 	Stock        string `validate:"omitempty,integer,gtC=-1"`
 	SalePrice    string `validate:"omitempty,numeric,gtC=0"`
 }
@@ -86,4 +87,32 @@ type PasswordReset struct {
 
 type ForgotPassword struct {
 	Email string `validate:"required,email,exists"`
+}
+
+// ReqOpenCash
+
+type ReqOpenCash struct {
+	InitialBalance string `validate:"required,numeric,gtC=0"`
+}
+
+// Expenses
+type Expenses struct {
+	NumInvoice string `validate:"omitempty,numeric,gtC=0"`
+	Detail     string `validate:"required,max=80"`
+	Amount     string `validate:"required,numeric,gtC=0"`
+}
+
+// Denomination
+type Denomination struct {
+	One          string `validate:"omitempty,integer,gtC=0"`
+	Five         string `validate:"omitempty,integer,gtC=0"`
+	Ten          string `validate:"omitempty,integer,gtC=0"`
+	Twenty       string `validate:"omitempty,integer,gtC=0"`
+	Fyfty        string `validate:"omitempty,integer,gtC=0"`
+	OneHundred   string `validate:"omitempty,integer,gtC=0"`
+	TwoHundred   string `validate:"omitempty,integer,gtC=0"`
+	FiveHundred  string `validate:"omitempty,integer,gtC=0"`
+	OneThousand  string `validate:"omitempty,integer,gtC=0"`
+	TotalDollar  string `validate:"omitempty,integer,gtC=0"`
+	TotalCordoba string `validate:"required,numeric,gtC=0"`
 }

@@ -73,6 +73,20 @@ func (auth AuthC) Login(f *fiber.Ctx) error {
 }
 
 func (AuthC) Logout(f *fiber.Ctx) error {
+	//Verificar si hay caja abierta
+	// ca := struct {
+	// 	ID string
+	// }{}
+	// sql := config.DB.Model(models.CashRegister{}).
+	// 	Where("user_id = ? AND state = 1", f.Locals("userId").(string)).
+	// 	First(&ca)
+	// if sql.RowsAffected > 0 {
+	// 	return f.JSON(types.Response{
+	// 		Status: false,
+	// 		Msj:    "Debes de cerrar caja para cerrar sesión",
+	// 	})
+	// }
+	//---------------------------------------------
 	//tok := f.Get("key")
 	tokenH := helpers.TokenH{}
 	tok := f.Cookies("_key")

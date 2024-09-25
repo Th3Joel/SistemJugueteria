@@ -11,12 +11,13 @@ import (
 
 type CompanyC struct {
 	//Data
-	Name    string `json:"Name"`
-	Email   string `json:"Email"`
-	Ruc     string `json:"Ruc"`
-	Phone   string `json:"Phone"`
-	Address string `json:"Address"`
-	Logo    string `json:"Logo"`
+	Name        string  `json:"Name"`
+	Email       string  `json:"Email"`
+	Ruc         string  `json:"Ruc"`
+	Phone       string  `json:"Phone"`
+	Address     string  `json:"Address"`
+	Logo        string  `json:"Logo"`
+	PriceDollar float64 `json:"PriceDollar"`
 	//Settings
 	Model models.Company `gorm:"-" json:"-"`
 }
@@ -46,7 +47,7 @@ func (company CompanyC) Update(f *fiber.Ctx) error {
 	}
 	db.
 		Where("id = 1").
-		Select("name", "email", "ruc", "phone", "address", "logo").
+		Select("name", "email", "ruc", "phone", "address", "logo", "price_dollar").
 		Updates(company)
 
 	return f.JSON(types.Response{

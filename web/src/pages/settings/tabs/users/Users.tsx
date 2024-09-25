@@ -1,6 +1,8 @@
 import Table from "@/modules/core/components/Table";
 import { useTable } from "@/modules/core/hooks/useTable";
+import { TitleState } from "@/modules/core/states/title-state";
 import { IconButton } from "@mui/material";
+import { useEffect } from "react";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
@@ -13,6 +15,10 @@ interface IUser {
 }
 const Users = () => {
   const hook = useTable<IUser>();
+  const { setTitle } = TitleState();
+    useEffect(() => {
+        setTitle("Configuración | Usuarios");
+    }, [])
   return (
     <div className="animate__fadeIn">
       <Table

@@ -4,6 +4,7 @@ import (
 	"Jugueteria/config"
 	"Jugueteria/models"
 	"Jugueteria/types"
+	"fmt"
 	"math"
 	"strings"
 
@@ -201,4 +202,56 @@ func (article ArticleBoxC) Delete(c *fiber.Ctx) error {
 func (ArticleBoxC) trim(u *ArticleBoxC) {
 	u.Code = strings.TrimSpace(u.Code)
 	u.Description = strings.TrimSpace(u.Description)
+}
+
+func (article ArticleBoxC) GetProfit(f *fiber.Ctx) error {
+	id := f.Params("id")
+	//Calcula el precio de compra general de la caja
+	purchasePriceArticle := 0.0
+	config.DB.Model(article.Model).Select(`
+		(purchase_price / toys_quantity) AS purchase_price_article
+	`).
+		Where("id = ?", id).
+		First(&purchasePriceArticle)
+
+		//Trae todos los articulos de la caja
+	idArticlesFromArticleBox := []string{}
+	config.DB.Model(models.Articles{}).
+		Select("articles.id").
+		Joins("inner join detail_purchases on detail_purchases.article_id = articles.id").
+		Joins("inner join purchases on purchases.id = detail_purchases.purchase_id").
+		Joins("inner join articles_boxes on articles_boxes.id = purchases.article_box_id").
+		Where("articles_boxes.id = ?", "c3cedc6a-a36f-47a3-9b6b-e1223d4b5f1a").
+		Group("articles.id, articles.description").
+		Find(&idArticlesFromArticleBox)
+
+	//Formatea el array de ids para usarlo en la consulta
+	idsFormated := ""
+	for i := 0; i < len(idArticlesFromArticleBox); i++ {
+		idsFormated += fmt.Sprintf("'%s'", idArticlesFromArticleBox[i])
+		if i < len(idArticlesFromArticleBox)-1 {
+			idsFormated += ","
+		}
+	}
+	//Calcula la ganancia de cada articulo
+	//fmt.Println(idsFormated)
+	profitArticles := []struct {
+		Description   string  `json:"description"`
+		Ganancia      float64 `json:"ganancia"`
+		TotalQuantity float64 `json:"total_quantity"`
+	}{}
+	config.DB.Model(models.Articles{}).
+		Select("articles.description, "+
+			"SUM((articles.sale_price - ?) * detail_sales.quantity) AS Ganancia, "+
+			"SUM(detail_sales.quantity) AS total_quantity",
+			purchasePriceArticle).
+		Joins("INNER JOIN detail_sales ON detail_sales.article_id = articles.id").
+		Where("articles.id IN (" + idsFormated + ")").
+		Group("articles.description").
+		Find(&profitArticles)
+
+	return f.JSON(types.Response{
+		Status: true,
+		Find:   profitArticles,
+	})
 }

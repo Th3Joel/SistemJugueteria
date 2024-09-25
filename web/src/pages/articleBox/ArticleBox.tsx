@@ -5,6 +5,8 @@ import {IconButton} from "@mui/material";
 import {useTable} from "@/modules/core/hooks/useTable.ts";
 import {FaPencil, FaTrash} from "react-icons/fa6";
 import { formatNumber } from "@/modules/core/utils/formatNumber";
+import { TitleState } from "@/modules/core/states/title-state";
+import { useEffect } from "react";
 
 interface IArticleBox {
     id:string
@@ -13,9 +15,12 @@ interface IArticleBox {
     ToysQuantity:string
     PurchasePrice:string
 }
- 
 const ArticleBox = () => {
     const hook = useTable<IArticleBox>()
+    const { setTitle } = TitleState();
+    useEffect(() => {
+        setTitle("Cajas de artículos");
+    }, [])
     return (
         <Card>
             <Table

@@ -17,6 +17,14 @@ interface PurchaseState {
   articleBoxID: string;
   quantityBox: string;
   costBox: string;
+  valResto: string;
+  //---------------
+
+  //Data of payment record
+  costDollar: string;
+  cashDollar: string;
+  cashCordoba: string;
+  exchange: string;
   //---------------
   date: string;
   costArticle: number;
@@ -25,6 +33,7 @@ interface PurchaseState {
   errors: TErrors;
   quantityArticleDetail: number;
   detailErrors: TDetailErrors;
+  setCostDollar: (costDollar: string) => void;
   setIsSale: (isSale: boolean) => void;
   setCode: (code: string) => void;
   validate: () => boolean;
@@ -52,6 +61,13 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
   const dateNow = dayjs(Date.now()).format("YYYY-MM-DD");
   return {
     isSale: false,
+    //Registro de pago
+    costDollar: "",
+    cashDollar: "",
+    cashCordoba: "",
+    valResto: "",
+    exchange: "",
+    //----------------
     code: "",
     costumerID: "",
     supplierID: "",
@@ -67,6 +83,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
     quantityArticleDetail: 0,
     errors: {},
     detailErrors: [],
+    setCostDollar: (costDollar) => set({ costDollar }),
     setIsSale: (isSale) => set({ isSale }),
     setCode: (code) => set({ code }),
     setCostArticle: (costArticle) => set({ costArticle }),
@@ -74,7 +91,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
       //Saca el subtotal de cada elemento
       //set({ detail: detail.map((d) => ({ ...d, subtotal: d.price * d.quantity })) })
       const newDetail = get().detail;
-      newDetail.push(detail);
+      newDetail.unshift(detail);
       set({ detail: newDetail });
       //Calcula el total
       get().calculations();
@@ -91,7 +108,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
       }
 
 
-      const { isSale } = get();
+      const { isSale, cashCordoba, cashDollar, costDollar } = get();
       if (!isSale) {
         //Calcula el coste de cada articulo en la caja
         const costArticle = parseFloat(get().costBox) / parseInt(get().quantityBox);
@@ -111,12 +128,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
           parseFloat(d.price) * parseInt(d.quantity)
           : get().costArticle * parseInt(d.quantity);
 
-        const subtotal =
-          calSubtotal.toString() == "NaN" ||
-            calSubtotal == 0 ||
-            calSubtotal < 0
-            ? ""
-            : "" + calSubtotal;
+        const subtotal = valNumberToString(calSubtotal);
 
         return { ...d, subtotal };
       })
@@ -136,7 +148,15 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
       //const totalDisplay = "" + total == "NaN" ? neto : "" + total
 
       if (isSale) {
+        const cashCordobaParse = parseFloat(cashCordoba) || 0;
+        const cashDollarParse = parseFloat(cashDollar) || 0;
+        const costDollarParse = parseFloat(costDollar) || 0;
+        let cash = cashCordobaParse + (cashDollarParse * costDollarParse)
+        const valResto = cash > total ? 0 : total - cash
+        cash = cash < total ? 0 : (cash - total)
         set({
+          valResto: valResto + "",
+          exchange: cash.toFixed(2),
           neto,
           total: valNumberToString(total, neto),
           discountTotal: valNumberToString(discountTotal)
@@ -144,6 +164,9 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
       } else {
         set({ total: neto });
       }
+
+
+
     },
     //delete a detail
     deleteDetail: (id) => {
@@ -178,12 +201,23 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
         quantityArticleDetail,
         isSale,
         costumerID,
+        cashCordoba,
+        cashDollar,
+        costDollar,
+        total
       } = get();
       const validationsErrors = errors;
       const validationsDetailErrors = detailErrors;
       const reqMsj = "Campo requerido";
-
+ 
       //Validaciones generales
+      const cashCordobaParse = parseFloat(cashCordoba) || 0;
+      const cashDollarParse = parseFloat(cashDollar) || 0;
+      const costDollarParse = parseFloat(costDollar) || 0;
+      const cash = cashCordobaParse + (cashDollarParse * costDollarParse)
+      if (cash < parseFloat(total) && get().isSale) {
+        valState = false;
+      }
       if (code == "") {
         validationsErrors["code"] = reqMsj;
         valState = false;
@@ -206,10 +240,11 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
           validationsErrors["costumerID"] = reqMsj;
           valState = false;
         }
+
       } else {
         //Validations of purchase
         if (quantityArticleDetail > parseInt(quantityBox)) {
-          validationsErrors["quantityArticleDetail"] = "Exede el total de articulos de la caja";
+          validationsErrors["quantityArticleDetail"] = "Excede la cantidad de articulos de la caja." ;
           valState = false;
         }
 
@@ -256,8 +291,8 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
           stock: parseInt(d.stock),
           price: parseFloat(d.price),
         }
-        console.log("Validadicon "+noLetters(d.discount))
-        if (!noLetters(d.discount)) {
+        //console.log("Validadicon " + noLetters(d.discount))
+        if (!noLetters(d.discount) && get().isSale) {
           validationsDetailErrors.push({
             id: d.id,
             field: "discount",
@@ -337,10 +372,14 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
 
       });
       set({ errors: validationsErrors, detailErrors: validationsDetailErrors });
+      console.log(valState)
       return valState;
     },
     clear() {
       set({
+        exchange: "",
+        cashDollar: "",
+        cashCordoba: "",
         detail: [],
         errors: {},
         detailErrors: [],
@@ -367,7 +406,10 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
         discountTotal,
         neto,
         costumerID,
-        isSale
+        isSale,
+        cashCordoba,
+        cashDollar,
+        exchange
       } = get();
       let js;
       if (isSale) {
@@ -379,6 +421,9 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
           discountTotal,
           neto,
           costumerID,
+          cashCordoba,
+          cashDollar,
+          exchange
         };
       } else {
         js = {
@@ -397,12 +442,12 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
   };
 });
 
-const noLetters = (d: string) => {
+export const noLetters = (d: string) => {
   // La expresión regular verifica si la cadena tiene solo números y opcionalmente un punto decimal y signo menos
   return d == "" || d == undefined ? true : /^-?\d+(\.\d+)?$/.test(d);
 };
 
-const isInt = (d: string) => {
+export const isInt = (d: string) => {
   return /^\d+$/.test(d);
 };
 

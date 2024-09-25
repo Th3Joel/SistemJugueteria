@@ -9,6 +9,7 @@ type Purchases struct {
 	UserID       string `gorm:"size:255"`
 	SupplierID   string `gorm:"size:255"`
 	ArticleBoxID string `gorm:"size:255"`
+	State        int    `gorm:"default:0"`
 	Code         int
 	Total        float64
 	CreatedAt    time.Time

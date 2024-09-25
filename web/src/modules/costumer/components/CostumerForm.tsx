@@ -2,7 +2,7 @@ import LoaderBtn from "@/modules/core/components/LoaderBtn";
 import { useForm } from "@/modules/core/hooks/useForm";
 import { Button } from "@mui/material";
 import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {InputText} from "@/modules/core/components/Input";
 import {FaPhone, FaICursor} from "react-icons/fa6";
 
@@ -41,7 +41,7 @@ export const CostumerForm: React.FC<IProps> = ({ isEdit, id }) => {
 
   }, []);
   return (
-    <div className="w-[340px] shadow-lg rounded-lg p-3">
+    <div className="w-[340px] shadow-lg rounded-lg p-5">
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
 
         <InputText
@@ -63,18 +63,9 @@ export const CostumerForm: React.FC<IProps> = ({ isEdit, id }) => {
             helperText={errors?.Phone}
             icon={<FaPhone />}
         />
-
-
-        <div className="flex justify-between">
-          <Link to="/clientes">
-            <Button variant="contained" type="button">
-              Atrás
-            </Button>
-          </Link>
           <Button type="submit" disabled={loading} variant="contained">
-            {loading ? <LoaderBtn /> : "Guardar"}
+            {loading ? <LoaderBtn /> : isEdit ? "Actualizar" : "Guardar"}
           </Button>
-        </div>
       </form>
     </div>
   );

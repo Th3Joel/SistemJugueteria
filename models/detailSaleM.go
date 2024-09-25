@@ -9,7 +9,7 @@ type DetailSale struct {
 	SaleID          string `gorm:"size:255"`
 	ArticleID       string `gorm:"size:255"`
 	PriceCategoryID string `gorm:"size:255"`
-	Amount          int
+	Quantity        int
 	Subtotal        float64
 	Profit          float64
 	Discount        float64

@@ -48,5 +48,7 @@
             "password": "D21sfVrtNmTuZPgy",
             "database": "jugueteria"
         }
-    ]
+    ],
+    "editor.fontFamily": "'Cascadia Code','Droid Sans Mono', 'monospace', monospace",
+    "editor.fontLigatures": "'ss01', 'ss02', 'ss03', 'ss19', 'ss20'"
 }

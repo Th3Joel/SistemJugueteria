@@ -1,0 +1,47 @@
+@media print {
+  @page {
+    size: A4;
+  }
+
+  .print-container {
+    /* Estilos específicos para impresión */
+    margin: 140px 20px 20px 20px;
+    page-break-before: always;
+    /* Opcional: Inserta un salto de página antes del contenido */
+  }
+
+  .no-print {
+    display: none;
+  }
+
+
+  /* Estilos para el encabezado y pie de página */
+  .header,
+  .footer {
+    width: 100%;
+    /* Alineación centrada del texto */
+    padding: 25px;
+    /* Espaciado superior e inferior */
+    position: fixed;
+    /* Fijo en la parte superior e inferior */
+    left: 0;
+    right: 0;
+  }
+
+  .header {
+    top: 0;
+    /* Altura del encabezado */
+  }
+
+  .footer {
+    bottom: 0;
+    height: 50px;
+    /* Altura del pie de página */
+  }
+
+  .header,
+  .footer {
+    display: block;
+    /* Asegura que se muestre en cada página */
+  }
+}

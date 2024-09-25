@@ -1,12 +1,12 @@
 import { Header } from "@/modules/core/components/Header";
 import { Sidebar } from "@/modules/core/components/Sidebar";
-import {AuthState}  from "@/modules/core/states/auth-state";
+import { AuthState } from "@/modules/core/states/auth-state";
 import { SidebarState } from "@/modules/core/states/sidebar-state";
 import { useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
 
- const Layout = () => {
+const Layout = () => {
   const { estado, inc } = SidebarState();
   const auth = AuthState();
 
@@ -36,18 +36,13 @@ import { Navigate, Outlet } from "react-router-dom";
 
   return (
     <>
-
       <Sidebar />
-
-
       <div className={`h-[100dvh] bg-slate-100 animate__fadeIn duration-300
         ${estado ? "pl-0" : "pl-[260px]"}`}>
-
         <Header />
         <div className="overflow-auto p-3"
           style={{ height: "calc(100dvh - 50px)" }}>
           <Outlet />
-
         </div>
       </div>
     </>

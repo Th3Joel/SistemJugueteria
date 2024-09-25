@@ -14,20 +14,22 @@ import (
 )
 
 type PurchaseC struct {
-	ID             string           `json:"id"`
-	UserID         string           `json:"-"`
-	SupplierID     string           `json:"supplierID"`
-	ArticleBoxID   string           `json:"articleBoxID"`
-	CostBox        string           `gorm:"-"`
-	QuantityBox    string           `gorm:"-"`
-	Code           string           `json:"code"`
-	Total          string           `json:"total"`
-	CreatedAt      string           `json:"date"`
-	Supplier       Supplier         `json:"supplier"`
-	ArticleBox     ArticlesBox      `json:"articleBox"`
-	DetailPurchase []DetailPurchase `json:"detail" gorm:"foreignkey:PurchaseID"`
-	Model          models.Purchases `json:"-" gorm:"-"`
-	Array          []PurchaseC      `json:"-" gorm:"-"`
+	ID              string           `json:"id"`
+	UserID          string           `json:"-"`
+	SupplierID      string           `json:"supplierID"`
+	ArticleBoxID    string           `json:"articleBoxID"`
+	CostBox         string           `gorm:"-"`
+	QuantityBox     string           `gorm:"-"`
+	TotalToysDetail string           `json:"totalToysDetail" gorm:"-"`
+	State           int              `json:"state"`
+	Code            string           `json:"code"`
+	Total           string           `json:"total"`
+	CreatedAt       string           `json:"date"`
+	Supplier        Supplier         `json:"supplier"`
+	ArticleBox      ArticlesBox      `json:"articleBox"`
+	DetailPurchase  []DetailPurchase `json:"detail" gorm:"foreignkey:PurchaseID"`
+	Model           models.Purchases `json:"-" gorm:"-"`
+	Array           []PurchaseC      `json:"-" gorm:"-"`
 }
 type Supplier struct {
 	ID   string `json:"-"`
@@ -37,6 +39,7 @@ type ArticlesBox struct {
 	ID            string  `json:"-"`
 	Description   string  `json:"description"`
 	PurchasePrice float64 `json:"purchasePrice"`
+	ToysQuantity  int64   `json:"toysQuantity"`
 }
 type DetailPurchase struct {
 	ID         string `json:"-"`
@@ -52,6 +55,7 @@ type Articles struct {
 	ID          string `json:"-"`
 	Code        string `json:"code"`
 	Description string `json:"description"`
+	SalePrice   string `json:"price"`
 }
 
 func (purchase PurchaseC) All(f *fiber.Ctx) error {
@@ -94,6 +98,7 @@ func (purchase PurchaseC) All(f *fiber.Ctx) error {
 
 func (purchase PurchaseC) Save(f *fiber.Ctx) error {
 	_ = f.BodyParser(&purchase)
+
 	code, _ := strconv.Atoi(purchase.Code)
 	total, _ := strconv.ParseFloat(purchase.Total, 64)
 	newId := uuid.NewString()
@@ -112,9 +117,10 @@ func (purchase PurchaseC) Save(f *fiber.Ctx) error {
 			Msj:    "Ha ocurrido un error",
 		})
 	}
-
 	costBox, _ := strconv.ParseFloat(purchase.CostBox, 64)
 	quantityBox, _ := strconv.Atoi(purchase.QuantityBox)
+	purchasePriceArticle := costBox / float64(quantityBox)
+
 	config.DB.
 		Where("id = ?", purchase.ArticleBoxID).
 		Select("purchase_price", "toys_quantity").
@@ -122,7 +128,6 @@ func (purchase PurchaseC) Save(f *fiber.Ctx) error {
 			PurchasePrice: costBox,
 			ToysQuantity:  int64(quantityBox),
 		})
-
 	for _, value := range purchase.DetailPurchase {
 		//fmt.Println(key, value)
 		quan, _ := strconv.Atoi(value.Quantity)
@@ -138,29 +143,146 @@ func (purchase PurchaseC) Save(f *fiber.Ctx) error {
 			CreatedAt:  time.Now(),
 		})
 
-		type Perz struct {
-			Stock     int
-			SalePrice float64
-		}
-		var perz Perz
-		config.DB.Model(models.Articles{}).
-			Select("stock, sale_price").
+		perz := struct {
+			Stock         int
+			SalePrice     float64
+			PurchasePrice float64
+		}{}
+		config.DB.
+			Model(models.Articles{}).
+			Select("stock, sale_price", "purchase_price").
 			Where("id = ?", value.ArticleID).
 			First(&perz)
 
 		perz.Stock += quan
 		perz.SalePrice = price
-		info := config.DB.Model(models.Articles{}).
+		perz.PurchasePrice = purchasePriceArticle
+
+		config.DB.
+			Model(models.Articles{}).
 			Where("id = ?", value.ArticleID).
-			Select("stock", "sale_price").
+			Select("stock", "sale_price", "purchase_price").
 			Updates(perz)
-		fmt.Println(info.RowsAffected)
 
 	}
 	return f.JSON(types.Response{
 		Status: true,
 		Msj:    "Compra guardada",
 	})
+}
+func (purchase PurchaseC) Update(f *fiber.Ctx) error {
+	id := f.Params("id")
+	anteData := PurchaseC{}
+	_ = f.BodyParser(&purchase)
+
+	sql := config.DB.
+		Model(models.Purchases{}).
+		Preload("ArticleBox").
+		Preload("DetailPurchase.Article").
+		Where("id = ?", id).
+		First(&anteData)
+
+	findIndex := func(array []DetailPurchase, query string) int {
+		for i, v := range array {
+			if v.Article.Description == query {
+				return i
+			}
+		}
+		return -1
+	}
+
+	totalToysDetail, _ := strconv.Atoi(purchase.TotalToysDetail)
+	if int64(totalToysDetail) >= anteData.ArticleBox.ToysQuantity {
+		fmt.Println("Compra completada")
+		sql.Update("state", 1)
+	}
+	sql.Update("total", purchase.Total)
+	purchasePriceArticle := anteData.ArticleBox.PurchasePrice / float64(anteData.ArticleBox.ToysQuantity)
+	for _, value := range purchase.DetailPurchase {
+		f := findIndex(anteData.DetailPurchase, value.Article.Description)
+		if f == -1 {
+			quan, _ := strconv.Atoi(value.Quantity)
+			subtotal, _ := strconv.ParseFloat(value.Subtotal, 64)
+			price, _ := strconv.ParseFloat(value.Price, 64)
+			config.DB.Create(&models.DetailPurchase{
+				ID:         uuid.NewString(),
+				PurchaseID: anteData.ID,
+				ArticleID:  value.ArticleID,
+				Price:      price,
+				Quantity:   quan,
+				Subtotal:   subtotal,
+				CreatedAt:  time.Now(),
+			})
+
+			perz := struct {
+				Stock         int
+				SalePrice     float64
+				PurchasePrice float64
+			}{}
+
+			config.DB.
+				Model(models.Articles{}).
+				Select("stock, sale_price", "purchase_price").
+				Where("id = ?", value.ArticleID).
+				First(&perz)
+
+			perz.Stock += quan
+			perz.SalePrice = price
+			perz.PurchasePrice = purchasePriceArticle
+
+			config.DB.
+				Model(models.Articles{}).
+				Where("id = ?", value.ArticleID).
+				Select("stock", "sale_price", "purchase_price").
+				Updates(perz)
+
+		} else {
+			idDetail := anteData.DetailPurchase[f].ID
+			quatityDetail, _ := strconv.Atoi(anteData.DetailPurchase[f].Quantity)
+			valueQuantity, _ := strconv.Atoi(value.Quantity)
+			quantity := quatityDetail + valueQuantity
+
+			subtotalDetail, _ := strconv.ParseFloat(anteData.DetailPurchase[f].Subtotal, 64)
+			subtotalValue, _ := strconv.ParseFloat(value.Subtotal, 64)
+			subtotal := subtotalDetail + subtotalValue
+
+			config.DB.
+				Model(models.DetailPurchase{}).
+				Where("id = ?", idDetail).
+				Update("quantity", quantity).
+				Update("subtotal", subtotal)
+
+			fmt.Printf("Subtotal: %f", subtotal)
+			fmt.Printf("quantity %d", quantity)
+
+			articleId := anteData.DetailPurchase[f].ArticleID
+			perz := struct {
+				Stock     int
+				SalePrice float64
+			}{}
+
+			config.DB.
+				Model(models.Articles{}).
+				Select("stock, sale_price", "purchase_price").
+				Where("id = ?", articleId).
+				First(&perz)
+			price, _ := strconv.ParseFloat(anteData.DetailPurchase[f].Price, 64)
+			perz.Stock = quantity
+			perz.SalePrice = price
+
+			config.DB.
+				Model(models.Articles{}).
+				Where("id = ?", articleId).
+				Select("stock", "sale_price").
+				Updates(perz)
+
+		}
+	}
+	return f.JSON(types.Response{
+		Status: true,
+		Msj:    "Compra actualizada",
+	})
+
 }
 
 func (purchase PurchaseC) ShowId(f *fiber.Ctx) error {

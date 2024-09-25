@@ -13,17 +13,18 @@ import {
   FaCashRegister,
   FaCartArrowDown,
   FaHandHoldingDollar,
-  FaPeopleCarryBox
+  FaPeopleCarryBox,
+  FaNewspaper
 } from "react-icons/fa6";
 
 export const Sidebar = () => {
-  const { user,company } = AuthState();
+  const { user, company } = AuthState();
   const { pathname } = useLocation();
   const { estado } = SidebarState();
 
   return (
     <div
-      className={`fixed top-0 z-10 px-3 w-[260px] animate__fadeInLeft text-white bg-slate-700 h-[100dvh] duration-300 ${estado ? "-ml-[260px]" : "ml-0"
+      className={`fixed z-10 top-0 px-3 w-[260px] animate__fadeInLeft text-white bg-slate-700 h-[100dvh] duration-300 ${estado ? "-ml-[260px]" : "ml-0"
         }`}
     >
       <div className="px-1 h-16 flex items-center">
@@ -65,15 +66,21 @@ export const Sidebar = () => {
             </Link>
           </div>
 
-          <div
-            className={`border duration-300 border-[#0071BC] ${pathname.startsWith("/suppliers") && "bg-[#E261B1] border-[#E261B1]"
-              } rounded-lg px-3 py-2 my-3`}
-          >
-            <Link to="/suppliers" className="flex">
-              <FaPeopleCarryBox className="text-2xl" />
-              <p className="pl-2">Proveedores</p>
-            </Link>
-          </div>
+          {
+            user.Role == "admin" &&
+            <>
+              <div
+                className={`border duration-300 border-[#0071BC] ${pathname.startsWith("/suppliers") && "bg-[#E261B1] border-[#E261B1]"
+                  } rounded-lg px-3 py-2 my-3`}
+              >
+                <Link to="/suppliers" className="flex">
+                  <FaPeopleCarryBox className="text-2xl" />
+                  <p className="pl-2">Proveedores</p>
+                </Link>
+              </div>
+            </>
+          }
+
 
           <div
             className={`border duration-300 border-[#0071BC] ${pathname.startsWith("/cash-register") &&
@@ -86,61 +93,67 @@ export const Sidebar = () => {
             </Link>
           </div>
 
-          <div
-            className={`border duration-300 border-[#0071BC] ${pathname.startsWith("/clientes") && "bg-[#E261B1] border-[#E261B1]"
-              } rounded-lg px-3 py-2 my-3`}
-          >
-            <Link to="/clientes" className="flex">
-              <FaUserGroup className="text-2xl" />
-              <p className="pl-2">Clientes</p>
-            </Link>
-          </div>
+          {
+            user.Role == "admin" &&
+            <>
+              <div
+                className={`border duration-300 border-[#0071BC] ${pathname.startsWith("/clientes") && "bg-[#E261B1] border-[#E261B1]"
+                  } rounded-lg px-3 py-2 my-3`}
+              >
+                <Link to="/clientes" className="flex">
+                  <FaUserGroup className="text-2xl" />
+                  <p className="pl-2">Clientes</p>
+                </Link>
+              </div>
 
-          <div
-            className={`border duration-300 border-[#0071BC] ${pathname.startsWith("/articles-box") &&
-              "bg-[#E261B1] border-[#E261B1]"
-              } rounded-lg px-3 py-2 my-3`}
-          >
-            <Link to="/articles-box" className="flex">
-              <FaBoxOpen className="text-2xl" />
-              <p className="pl-2">Cajas de artículos</p>
-            </Link>
-          </div>
+              <div
+                className={`border duration-300 border-[#0071BC] ${pathname.startsWith("/articles-box") &&
+                  "bg-[#E261B1] border-[#E261B1]"
+                  } rounded-lg px-3 py-2 my-3`}
+              >
+                <Link to="/articles-box" className="flex">
+                  <FaBoxOpen className="text-2xl" />
+                  <p className="pl-2">Cajas de artículos</p>
+                </Link>
+              </div>
 
-          <div
-            className={`border duration-300 border-[#0071BC] ${pathname.startsWith("/categories") &&
-              "bg-[#E261B1] border-[#E261B1]"
-              } rounded-lg px-3 py-2 my-3`}
-          >
-            <Link to="/categories" className="flex">
-              <FaTag className="text-2xl" />
-              <p className="pl-2">Categorías</p>
-            </Link>
-          </div>
+              <div
+                className={`border duration-300 border-[#0071BC] ${pathname.startsWith("/categories") &&
+                  "bg-[#E261B1] border-[#E261B1]"
+                  } rounded-lg px-3 py-2 my-3`}
+              >
+                <Link to="/categories" className="flex">
+                  <FaTag className="text-2xl" />
+                  <p className="pl-2">Categorías</p>
+                </Link>
+              </div>
 
 
-          <div
-            className={`border duration-300 border-[#0071BC] ${!pathname.includes("/articles-box") &&
-              pathname.startsWith("/articles") &&
-              "bg-[#E261B1] border-[#E261B1]"
-              } rounded-lg px-3 py-2 my-3`}
-          >
-            <Link to="/articles" className="flex">
-              <FaTruck className="text-2xl" />
-              <p className="pl-2">Artículos</p>
-            </Link>
-          </div>
+              <div
+                className={`border duration-300 border-[#0071BC] ${!pathname.includes("/articles-box") &&
+                  pathname.startsWith("/articles") &&
+                  "bg-[#E261B1] border-[#E261B1]"
+                  } rounded-lg px-3 py-2 my-3`}
+              >
+                <Link to="/articles" className="flex">
+                  <FaTruck className="text-2xl" />
+                  <p className="pl-2">Artículos</p>
+                </Link>
+              </div>
 
-          <div
-            className={`border duration-300 border-[#0071BC] ${pathname.startsWith("/purchases") &&
-              "bg-[#E261B1] border-[#E261B1]"
-              } rounded-lg px-3 py-2 my-3`}
-          >
-            <Link to="/purchases" className="flex">
-              <FaCartArrowDown className="text-2xl" />
-              <p className="pl-2">Compras</p>
-            </Link>
-          </div>
+              <div
+                className={`border duration-300 border-[#0071BC] ${pathname.startsWith("/purchases") &&
+                  "bg-[#E261B1] border-[#E261B1]"
+                  } rounded-lg px-3 py-2 my-3`}
+              >
+                <Link to="/purchases" className="flex">
+                  <FaCartArrowDown className="text-2xl" />
+                  <p className="pl-2">Compras</p>
+                </Link>
+              </div>
+
+            </>
+          }
 
           <div
             className={`border duration-300 border-[#0071BC] ${pathname.startsWith("/sales") &&
@@ -152,6 +165,23 @@ export const Sidebar = () => {
               <p className="pl-2">Ventas</p>
             </Link>
           </div>
+
+          {
+            user.Role == "admin" &&
+            <>
+              <div
+                className={`border duration-300 border-[#0071BC] ${pathname.startsWith("/reports") &&
+                  "bg-[#E261B1] border-[#E261B1]"
+                  } rounded-lg px-3 py-2 my-3`}
+              >
+                <Link to="/reports" className="flex">
+                  <FaNewspaper className="text-2xl" />
+                  <p className="pl-2">Reportes</p>
+                </Link>
+              </div>
+            </>
+          }
+
 
           <div
             className={`border duration-300 border-[#0071BC] ${pathname.startsWith("/settings") &&

@@ -4,21 +4,25 @@ import { Raya } from "../core/components/Raya"
 import cashImage from "@/assets/cash.png";
 import { useForm } from "../core/hooks/useForm";
 import LoaderBtn from "../core/components/LoaderBtn";
+import CashRegisterState from "./states/cashRegisterState";
 
 interface IReqOpenCash {
-    initialBalance: string
+    InitialBalance: string
 }
 export const ReqOpenCash = () => {
-    const { post, loading, inputChange, data } = useForm<IReqOpenCash>({
-        initialBalance: "",
+    const { post, loading, inputChange, data,errors } = useForm<IReqOpenCash>({
+        InitialBalance: "",
     });
+    const {verify} = CashRegisterState();
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         post("/cash-register/open", e.currentTarget).then((res) => {
-            console.log(res)
+           if(res){
+                verify()
+           }
         })
     }
-
+ 
     return (
         <div className="flex justify-center my-5">
             <form className="flex shadow-lg rounded-xl p-3" onSubmit={handleSubmit}>
@@ -32,8 +36,10 @@ export const ReqOpenCash = () => {
                     <span className="w-[200px]">
                         <InputText
                             label="Monto inicial"
-                            name="initialBalance"
-                            value={data.initialBalance}
+                            name="InitialBalance"
+                            value={data?.InitialBalance}
+                            error={!!errors?.InitialBalance}
+                            helperText={errors?.InitialBalance}
                             onChange={inputChange}
                             icon={<p>C$</p>}
                         />

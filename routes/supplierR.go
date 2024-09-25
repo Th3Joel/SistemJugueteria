@@ -11,7 +11,7 @@ import (
 
 func SupllierR(f fiber.Router) {
 	supplierC := controllers.SupplierC{}
-	r := f.Group("/suppliers", mdd.AuthM)
+	r := f.Group("/suppliers", mdd.AuthM, mdd.RoleM([]string{}))
 	r.Get("", supplierC.All)
 	r.Get("/select", supplierC.AllSelect)
 	r.Get("/:id", supplierC.ShowId)

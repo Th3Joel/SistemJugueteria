@@ -11,7 +11,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 interface IProps {
   ruta: string;
   colunms: string[];
-  hook: IUseTable<any>;
+  hook: IUseTable<unknown>;
   body(
     ruta: string,
     eliminar: (id: string, texto: string) => void,
@@ -19,9 +19,10 @@ interface IProps {
 
   ): React.ReactNode;
   v2?: boolean;
+  v3?: boolean;
 }
 
-const Table: React.FC<IProps> = ({ ruta, colunms, hook, body, v2 }) => {
+const Table: React.FC<IProps> = ({ ruta, colunms, hook, body, v2, v3 }) => {
   const { user } = AuthState();
 
   const { get, all, loading, remove } = hook;
@@ -64,7 +65,7 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body, v2 }) => {
     setAc(1);
     setPage(1);
   };
-  let setTime: any;
+  let setTime: NodeJS.Timeout;
 
   const buscador = (e: { target: { value: string } }) => {
     const val = e.target.value;
@@ -105,7 +106,7 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body, v2 }) => {
   return (
     <>
       {
-        !v2 && <>
+        !v2 && !v3 && <>
           <div className="h-12 flex items-center">
             <Link to={`/${ruta}/add`}>
               <div className="btnAdd">
@@ -145,38 +146,53 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body, v2 }) => {
           </div>
         </div>
         <div className=" overflow-x-auto">
-          <table>
-            <thead>
-              <tr>
-                {colunms.map((x, i) => 
-                  {
-                    return (x == "" ?
-                      <th key={i} className="border-none">{x}</th> :
-                      <th key={i} className="text-nowrap">{x}</th>)
-                  }
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan={colunms.length}>
-                    <div className="p-6 flex justify-center">
-                      <LoaderSmall />
-                    </div>
-                  </td>
-                </tr>
-              ) : all?.data.length ? (
-                body(`/${ruta}/edit/`, eliminar, img)
-              ) : (
-                <tr>
-                  <td colSpan={colunms.length} className="text-center">
+
+          {
+            v3 ?
+              all?.data.length ?
+                (
+                  <div className="flex flex-col gap-5 mb-5 mx-5">
+                    {body(`/${ruta}/edit/`, eliminar, img)}
+                  </div>
+                ) : (
+                  <h1 className="text-center">
                     No hay elementos
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                  </h1>
+                )
+              :
+              <table>
+                <thead>
+                  <tr>
+                    {colunms.map((x, i) => {
+                      return (x == "" ?
+                        <th key={i} className="border-none">{x}</th> :
+                        <th key={i} className="text-nowrap">{x}</th>)
+                    }
+                    )}
+                  </tr>
+                </thead>
+                <tbody>
+                  {loading ? (
+                    <tr>
+                      <td colSpan={colunms.length}>
+                        <div className="p-6 flex justify-center">
+                          <LoaderSmall />
+                        </div>
+                      </td>
+                    </tr>
+                  ) : all?.data.length ? (
+                    body(`/${ruta}/edit/`, eliminar, img)
+                  ) : (
+                    <tr>
+                      <td colSpan={colunms.length} className="text-center">
+                        No hay elementos
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+          }
+
         </div>
         <div className="flex flex-col gap-1 sm:flex-row justify-between mt-2 items-center">
           <div className="infoCounters">

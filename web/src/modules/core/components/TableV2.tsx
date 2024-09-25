@@ -5,6 +5,7 @@ import Table from "./Table"
 import { useTable } from "../hooks/useTable"
 import { PurchaseState } from "@/modules/purchase/states/purchase-state"
 import { formatNumber } from "../utils/formatNumber"
+import { PurchaseEditState } from "@/modules/purchase/states/purchase-edit-state"
 
 
 interface IArticle {
@@ -22,9 +23,10 @@ interface IArticle {
     MinimunStock: string
 }
 
-export const TableV2: React.FC = () => {
+export const TableV2: React.FC<{ isViewPurchase?: boolean }> = ({ isViewPurchase }) => {
     const hook = useTable<IArticle>()
-    const { pushDetail,exists } = PurchaseState();
+    const { pushDetail, exists } = PurchaseState();
+    const { setDetail, exists: existsEditPurchase } = PurchaseEditState();
     return (
         <div>
             <Table
@@ -42,17 +44,30 @@ export const TableV2: React.FC = () => {
                     hook.all?.data.map((d, i) => (
                         <tr key={i}>
                             <td>
-                                <IconButton color="success" sx={{ marginX: "-8px" }} disabled={exists(d.id)} onClick={() => {
-                                    pushDetail({
-                                        id: d.id,
-                                        code: d.Code,
-                                        description: d.Description,
-                                        price: ""+d.SalePrice,
-                                        quantity: "",
-                                        subtotal: "",
-                                        stock: ""+d.Stock,
-                                        discount:""
-                                    })
+                                <IconButton color="success" sx={{ marginX: "-8px" }} disabled={isViewPurchase ? existsEditPurchase(d.id) : exists(d.id)} onClick={() => {
+
+                                    isViewPurchase ?
+                                        setDetail({
+                                            id: d.id,
+                                            article: {
+                                                code: d.Code,
+                                                description: d.Description,
+                                            },
+                                            price: parseInt(d.SalePrice),
+                                            quantity: 1,
+                                            subtotal: parseInt(d.PurchasePrice)
+                                        })
+                                        :
+                                        pushDetail({
+                                            id: d.id,
+                                            code: d.Code,
+                                            description: d.Description,
+                                            price: "" + d.SalePrice,
+                                            quantity: "",
+                                            subtotal: "",
+                                            stock: "" + d.Stock,
+                                            discount: ""
+                                        })
                                 }}>
                                     <FaCirclePlus className="text-[20px]" />
                                 </IconButton>

@@ -1,16 +1,19 @@
 import { Card } from "@/modules/core/components/Card";
+import { Drawer } from "@/modules/core/components/Drawer";
 import { InputText, IOptions } from "@/modules/core/components/Input";
 import LoaderBtn from "@/modules/core/components/LoaderBtn";
 import { TableV2 } from "@/modules/core/components/TableV2";
 import { useFetch } from "@/modules/core/hooks/useFetch";
 import { useForm } from "@/modules/core/hooks/useForm";
+import { TitleState } from "@/modules/core/states/title-state";
 import { formatNumber } from "@/modules/core/utils/formatNumber";
 import {
   PurchaseState,
   TDetailErrors,
 } from "@/modules/purchase/states/purchase-state";
-import { Button, IconButton } from "@mui/material";
+import { Button, IconButton, Tooltip } from "@mui/material";
 import { useState, useEffect } from "react";
+import { FaPlusCircle } from "react-icons/fa";
 import {
   FaFileInvoice,
   FaCalendarDays,
@@ -36,9 +39,11 @@ interface IArticleBox {
   purchase_price: number;
 }
 const AddPurchase = () => {
+  const [showDrawer, setShowDrawer] = useState(false);
   const [select, setSelect] = useState<IOptions[]>([{ key: "", value: "" }]);
   const [select2, setSelect2] = useState<IOptions[]>([{ key: "", value: "" }]);
   const { post, loading } = useForm<string>("");
+  const { setTitle } = TitleState();
   const navigate = useNavigate();
   const {
     date,
@@ -117,16 +122,25 @@ const AddPurchase = () => {
     }
   };
   useEffect(() => {
+    setTitle("Agregar compra");
     fetchData();
     return () => {
       clear();
     };
   }, []);
   return (
-    <Card>
-      <div className="flex flex-grow">
-        <div className="w-[60%] m-3">
-          <div className="flex flex-col items-center border rounded-md p-1 pb-2">
+    <Card btnBack btnBackLink="/purchases">
+      <Drawer open={showDrawer} setOpen={setShowDrawer}>
+        <p className="text-gray-700 text-xl mt-4 text-center font-bold">Articulos registrados</p>
+        <div className="flex justify-center">
+          <div className="w-[800px]">
+            <TableV2 />
+          </div>
+        </div>
+      </Drawer>
+      <div className="flex justify-center py-5">
+        <div className="w-[800px]">
+          <div className="flex flex-col items-center border rounded-md p-3 shadow-lg">
             <header className="text-gray-500 my-1">
               ----Datos de compra----
             </header>
@@ -187,7 +201,7 @@ const AddPurchase = () => {
               </Button>
             </div>
           </div>
-          <div className="flex flex-col items-center border rounded-md p-1 pb-2 mt-3">
+          <div className="flex flex-col items-center border rounded-md p-3 mt-3 shadow-lg">
             <header className="text-gray-500 my-1">
               ----Caja de artículos----
             </header>
@@ -237,27 +251,27 @@ const AddPurchase = () => {
 
             </section>
           </div>
-          <div className="border rounded-md px-3 pb-2 mt-3">
-            <header className="flex flex-col items-center text-gray-500">
-              ----Detalle de compra----
-            </header>
-            <h1 className="text-lg text-center text-gray-600">
-              Precio de compra: C$ {formatNumber("" + costArticle)}
-            </h1>
-            {!!errors.articleBoxID && (
-              <h1 className="text-sm text-center text-red-500">
-                Elige una caja de artículos
-              </h1>
-            )}
-            {
-              !!errors.quantityArticleDetail && (
-                <h1 className="text-sm text-center text-red-500">
-                  {errors.quantityArticleDetail}
-                </h1>
-              )
-            }
+          <div className="border rounded-md px-3 pb-2 mt-3 shadow-lg">
+            <div className="flex justify-between items-center">
+              <header className="text-gray-700 text-lg flex items-center gap-2">
+                Detalle de compra
+                {
+                  !!errors.quantityArticleDetail && (
+                    <h1 className="text-sm text-center text-red-500">
+                      ({errors.quantityArticleDetail})
+                    </h1>
+                  )
+                }
+              </header>
+
+              <Tooltip title="Agregar artículos">
+                <IconButton sx={{ marginY: "2px" }} color="primary" onClick={() => setShowDrawer(true)}>
+                  <FaPlusCircle size={30} />
+                </IconButton>
+              </Tooltip>
+            </div>
             <hr />
-            <section className="mb-2">
+            <section className="mb-2 overflow-y-auto max-h-[380px]">
               {detail.length === 0 ? (
                 <h3
                   className={`text-gray-600 text-center mt-3 ${errors.empty && "text-red-500"}`}
@@ -266,8 +280,9 @@ const AddPurchase = () => {
                 </h3>
               ) : (
                 detail.map((d, i) => (
-                  <span key={i} className="flex flex-col items-center mb-2">
-                    <header className="my-2 text-gray-600 flex items-center">
+                  <span key={i} className={`flex flex-col items-center 
+                  ${i < (detail.length - 1) && 'border-b-[1px]'}`}>
+                    <header className=" text-gray-600 flex items-center">
                       ({d.code}) {d.description}
                       <IconButton
                         color="error"
@@ -277,58 +292,56 @@ const AddPurchase = () => {
                         <FaTrash className="text-[18px]" />
                       </IconButton>
                     </header>
-                    <section className="flex gap-3 flex-wrap justify-center">
-                      <span className="w-[160px]">
-                        <InputText
-                          label="Precio venta"
-                          value={"" + d.price}
-                          icon={<p>C$</p>}
-                          iconSize="13px"
-                          error={handleErrors(
-                            detailErrors,
-                            "price",
-                            d.id,
-                          ).some()}
-                          helperText={handleErrors(
-                            detailErrors,
-                            "price",
-                            d.id,
-                          ).find()}
-                          onChange={(e) => {
-                            changeInput(e.target.value, "price", d.id);
-                          }}
-                        />
-                      </span>
-                      <span className="w-[160px]">
-                        <InputText
-                          label="Cantidad"
-                          value={"" + d.quantity}
-                          icon={<FaDatabase />}
-                          onChange={(e) => {
-                            changeInput(e.target.value, "quantity", d.id);
-                          }}
-                          error={handleErrors(
-                            detailErrors,
-                            "quantity",
-                            d.id,
-                          ).some()}
-                          helperText={handleErrors(
-                            detailErrors,
-                            "quantity",
-                            d.id,
-                          ).find()}
-                        />
-                      </span>
-
-                      <span className="w-[160px]">
-                        <InputText
-                          label="Subtotal"
-                          value={formatNumber(d.subtotal)}
-                          icon={<p>C$</p>}
-                          iconSize="13px"
-                          readonly
-                        />
-                      </span>
+                    <section className="flex gap-3 flex-wrap md:flex-nowrap justify-center mb-3">
+                      <InputText
+                        label="Precio compra"
+                        value={formatNumber(costArticle + "")}
+                        icon={<p>C$</p>}
+                      />
+                      <InputText
+                        label="Precio venta"
+                        value={"" + d.price}
+                        icon={<p>C$</p>}
+                        iconSize="13px"
+                        error={handleErrors(
+                          detailErrors,
+                          "price",
+                          d.id,
+                        ).some()}
+                        helperText={handleErrors(
+                          detailErrors,
+                          "price",
+                          d.id,
+                        ).find()}
+                        onChange={(e) => {
+                          changeInput(e.target.value, "price", d.id);
+                        }}
+                      />
+                      <InputText
+                        label="Cantidad"
+                        value={"" + d.quantity}
+                        icon={<FaDatabase />}
+                        onChange={(e) => {
+                          changeInput(e.target.value, "quantity", d.id);
+                        }}
+                        error={handleErrors(
+                          detailErrors,
+                          "quantity",
+                          d.id,
+                        ).some()}
+                        helperText={handleErrors(
+                          detailErrors,
+                          "quantity",
+                          d.id,
+                        ).find()}
+                      />
+                      <InputText
+                        label="Subtotal"
+                        value={formatNumber(d.subtotal)}
+                        icon={<p>C$</p>}
+                        iconSize="13px"
+                        readonly
+                      />
                     </section>
                   </span>
                 ))
@@ -336,7 +349,7 @@ const AddPurchase = () => {
             </section>
             {detail.length !== 0 && (
               <>
-                <hr />
+                <hr className="-mt-2" />
                 <section className="flex justify-center mt-2">
                   <span className="w-[200px]">
                     <InputText
@@ -353,12 +366,6 @@ const AddPurchase = () => {
           </div>
         </div>
 
-        <div className="w-[50%] m-3 ">
-          <div className="border rounded-md p-2">
-            <p className="text-gray-500 text-center">Articulos registrados</p>
-            <TableV2 />
-          </div>
-        </div>
       </div>
     </Card>
   );

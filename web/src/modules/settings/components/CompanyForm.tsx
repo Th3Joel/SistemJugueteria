@@ -13,6 +13,7 @@ interface IFormData {
     Phone: string;
     Ruc: string;
     Address: string;
+    PriceDollar: string;
 }
 
 export const CompanyForm = () => {
@@ -22,7 +23,8 @@ export const CompanyForm = () => {
         Email: company.Email ?? "",
         Phone: company.Phone ?? "",
         Ruc: company.Ruc ?? "",
-        Address: company.Address ?? ""
+        Address: company.Address ?? "",
+        PriceDollar: company.PriceDollar ?? ""
     });
     // const {RenderImage,RenderInputFile} = ImageInput();
     const [logo, setLogo] = useState<string>('');
@@ -44,7 +46,6 @@ export const CompanyForm = () => {
     };
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(e.currentTarget)
         post("/settings/company", e.currentTarget, true).then((e) => {
             if (e) {
                 verify();
@@ -131,6 +132,16 @@ export const CompanyForm = () => {
                         helperText={errors?.Address}
                         value={data.Address}
                         icon={<FaMapLocationDot />}
+                    />
+
+                    <InputText
+                        label="Precio del dolar"
+                        name="PriceDollar"
+                        onChange={inputChange}
+                        error={!!errors?.PriceDollar}
+                        helperText={errors?.PriceDollar}
+                        value={data.PriceDollar}
+                        icon={<p>C$</p>}
                     />
 
                     <Button variant="contained" color="primary" type="submit" size="small" fullWidth>{loading ? <LoaderBtn /> : "Actualizar"}</Button>

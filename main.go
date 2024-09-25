@@ -36,7 +36,7 @@ func main() {
 		AllowOrigins:     "http://localhost:5173,http://192.168.1.3:5173",
 		AllowCredentials: true,
 		AllowMethods:     "GET,POST,PUT,DELETE",
-	}))
+		}))
 	//Sistema api
 	api := app.Group("/api", mdd.Csrf)
 	//AuthR
@@ -65,6 +65,8 @@ func main() {
 	routes.CashRegisterR(api)
 	//ExpensesR
 	routes.ExpensesR(api)
+	//ReportsR
+	routes.ReportsR(api)
 
 	//servir archivos staticos dentro del binario
 	app.Get("/*", filesystem.New(filesystem.Config{
@@ -72,8 +74,13 @@ func main() {
 		Index:        "index.html",
 		NotFoundFile: "index.html",
 	}))
-
-	err := app.Listen(":" + os.Getenv("PORT"))
+	port := ""
+	if os.Getenv("PORT") == "" {
+		port = ":5000"
+	} else {
+		port = ":" + os.Getenv("PORT")
+	}
+	err := app.Listen(port)
 	if err != nil {
 		println("Error al iniciar el servidor", err.Error())
 	}

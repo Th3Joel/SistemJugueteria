@@ -1,17 +1,23 @@
 import { Card } from "@/modules/core/components/Card";
 import Table from "@/modules/core/components/Table";
 import { useTable } from "@/modules/core/hooks/useTable";
-import {  IconButton } from "@mui/material";
+import { TitleState } from "@/modules/core/states/title-state";
+import { IconButton } from "@mui/material";
+import { useEffect } from "react";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-interface ICliente {
-  id:string
-  Name:string
-  Phone:string
+export interface ICliente {
+  id: string
+  Name: string
+  Phone: string
 }
 const Clientes = () => {
-const hook = useTable<ICliente>()
+  const hook = useTable<ICliente>()
+  const { setTitle } = TitleState();
+  useEffect(() => {
+    setTitle("Clientes");
+  }, [])
   return (
     <Card>
       <Table
@@ -22,20 +28,20 @@ const hook = useTable<ICliente>()
           "Celular",
           "Acciones",
         ]}
-        body={(urlEdit,eliminar) =>
+        body={(urlEdit, eliminar) =>
           hook.all?.data.map((d, i) => (
             <tr key={i}>
               <td>{d.Name}</td>
               <td>{d.Phone}</td>
               <td>
                 <div className="flex gap-1 justify-center">
-                  <Link to={urlEdit+d.id}>
+                  <Link to={urlEdit + d.id}>
                     <IconButton color="success" className="btnEdit">
                       <FaPen />
                     </IconButton>
                   </Link>
                   <IconButton
-                  color="error"
+                    color="error"
                     onClick={() =>
                       eliminar(d.id, `Eliminar a: ${d.Name}`)
                     }

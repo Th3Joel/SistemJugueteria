@@ -13,16 +13,18 @@ import (
 type ExpensesC struct {
 	ID             string `json:"id"`
 	CashRegisterID string `json:"cashRegisterID"`
-	NumInvoice     string `json:"numInvoice"`
-	Detail         string `json:"detail"`
-	Amount         string `json:"amount"`
+	NumInvoice     string `json:"NumInvoice"`
+	Detail         string `json:"Detail"`
+	Amount         string `json:"Amount"`
 
 	Array []ExpensesC     `json:"-" gorm:"-"`
 	Model models.Expenses `json:"-" gorm:"-"`
 }
 
 func (c ExpensesC) All(f *fiber.Ctx) error {
-	config.DB.Model(c.Model).Find(&c.Array)
+	config.DB.Model(c.Model).
+		Where("cash_register_id = ?", f.Locals("cashRegisterId").(string)).
+		Find(&c.Array)
 	return f.JSON(types.Response{
 		Status: true,
 		Find:   c.Array,

@@ -49,5 +49,5 @@ export const logoutFetch = async () => {
         return;
     }
     //useStorage().remove();
-    console.log(res.msj)
+    toast.error(res.msj)
 }

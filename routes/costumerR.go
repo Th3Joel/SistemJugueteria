@@ -11,7 +11,7 @@ import (
 
 func CostumerR(f fiber.Router) {
 	costumerC := controllers.CostumerC{}
-	r := f.Group("/clientes", mdd.AuthM)
+	r := f.Group("/clientes", mdd.AuthM, mdd.RoleM([]string{}))
 	r.Get("", costumerC.All)
 	r.Get("/select", costumerC.AllSelect)
 	r.Get("/:id", costumerC.ShowId)

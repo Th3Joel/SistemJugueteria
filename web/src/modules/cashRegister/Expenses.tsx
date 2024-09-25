@@ -9,28 +9,29 @@ import { AddExpenses } from "./AddExpenses"
 
 interface ExpensesProps {
     isView?: boolean
+    expenses?: ExpensesData[]
 }
 
 
 export interface ExpensesData {
     id: string
     cashRegisterID: string
-    numInvoice: string
-    detail: string
-    amount: string
+    NumInvoice: string
+    Detail: string
+    Amount: string
 }
 
-export const Expenses: React.FC<ExpensesProps> = ({ isView }) => {
+export const Expenses: React.FC<ExpensesProps> = ({ isView, expenses }) => {
     const [data, setData] = useState<ExpensesData[]>([])
     const { RenderModal, setModalShow } = useModal()
- 
+
     const getData = async () => {
         const res = await useFetch<{ status: boolean, find: ExpensesData[] }>("/expenses", "GET")
         if (res.status) {
             setData(res.find)
         }
     }
-    
+
     const deleteItem = async (id: string, detail: string) => {
         alertBox(
             "warning",
@@ -48,8 +49,15 @@ export const Expenses: React.FC<ExpensesProps> = ({ isView }) => {
     }
 
     useEffect(() => {
-        getData()
+        if (!isView) {
+            getData()
+        }
     }, [])
+    useEffect(() => {
+        if (expenses) {
+            setData(expenses)
+        }
+    }, [expenses])
     return (
         <div>
             <AddExpenses getData={getData} RenderModal={RenderModal} setModalShow={setModalShow} />
@@ -67,26 +75,26 @@ export const Expenses: React.FC<ExpensesProps> = ({ isView }) => {
                 }
 
             </div>
-            <table className="mt-3">
-                <thead>
-                    <tr>
-                        <th>N° Factura</th>
-                        <th>Detalle</th>
-                        <th>Monto</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.length !== 0 ? <>
+            {data.length !== 0 ?
+                <table className="mt-3">
+                    <thead>
+                        <tr>
+                            <th>N° Factura</th>
+                            <th>Detalle</th>
+                            <th>Monto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         {
                             data.map((item, index) => {
                                 return (
                                     <tr key={index}>
-                                        <td>{item.numInvoice || "---"}</td>
-                                        <td>{item.detail}</td>
-                                        <td>C$ {formatNumber(item.amount)}</td>
+                                        <td>{item.NumInvoice || "---"}</td>
+                                        <td>{item.Detail}</td>
+                                        <td>C$ {formatNumber(item.Amount)}</td>
                                         {
                                             !isView && <td className="w-[40px]">
-                                                <IconButton color="error" onClick={() => deleteItem(item.id, item.detail)}>
+                                                <IconButton color="error" onClick={() => deleteItem(item.id, item.Detail)}>
                                                     <FaTrash className="text-lg" />
                                                 </IconButton>
                                             </td>
@@ -100,19 +108,17 @@ export const Expenses: React.FC<ExpensesProps> = ({ isView }) => {
                                 Total
                             </td>
                             <td>
-                                C$ {formatNumber(data.reduce((total, item) => total + parseFloat(item.amount), 0) + "")}
+                                C$ {formatNumber(data.reduce((total, item) => total + parseFloat(item.Amount), 0) + "")}
                             </td>
                         </tr>
-                    </>
-                        :
-                        <tr>
-                            <td colSpan={3}>
-                                No hay elementos
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+
+                    </tbody>
+                </table>
+                :
+                <h1 className="text-center text-gray-600 font-bold mt-2">
+                    ---- No hay datos ----
+                </h1>
+            }
         </div>
     )
 }

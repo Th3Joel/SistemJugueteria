@@ -2,16 +2,12 @@ import { SidebarState } from "@/modules/core/states/sidebar-state"
 import { logoutFetch } from "@/modules/auth/utils/authFetch";
 import { Tooltip } from "@mui/material";
 import { FaBarsStaggered, FaQuestion, FaRightFromBracket } from "react-icons/fa6";
-import { mainDriver } from "../utils/driver";
 import { TitleState } from "../states/title-state";
 
 export const Header = () => {
   const { estado, inc } = SidebarState();
-  const { title, path } = TitleState();
+  const { title } = TitleState();
   const handleDriver = () => {
-
-    mainDriver(path).drive();
-
   };
 
   return (

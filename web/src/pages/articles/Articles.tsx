@@ -1,8 +1,10 @@
 import { Card } from "@/modules/core/components/Card"
 import Table from "@/modules/core/components/Table"
 import { useTable } from "@/modules/core/hooks/useTable"
+import { TitleState } from "@/modules/core/states/title-state"
 import { formatNumber } from "@/modules/core/utils/formatNumber"
 import { IconButton } from "@mui/material"
+import { useEffect } from "react"
 
 import { FaPencil, FaTrash } from "react-icons/fa6"
 import { Link } from "react-router-dom"
@@ -25,6 +27,10 @@ interface IArticle {
 
 const Articles = () => {
     const hook = useTable<IArticle>()
+    const { setTitle } = TitleState();
+    useEffect(() => {
+        setTitle("Artículos");
+    }, [])
     return (
         <Card>
             <Table

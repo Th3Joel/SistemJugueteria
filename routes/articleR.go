@@ -12,7 +12,7 @@ import (
 func ArticleR(f fiber.Router) {
 	articleC := controllers.ArticleC{}
 
-	r := f.Group("/articles", mdd.AuthM)
+	r := f.Group("/articles", mdd.AuthM, mdd.RoleM([]string{}))
 	r.Get("/", articleC.All)
 	r.Get("/:id", articleC.ShowId)
 	r.Post("/", mdd.ValM(val.MsjArticleVal, val.ArticlePost{}, models.Articles{}), articleC.Save)

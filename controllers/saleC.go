@@ -4,6 +4,7 @@ import (
 	"Jugueteria/config"
 	"Jugueteria/models"
 	"Jugueteria/types"
+	"fmt"
 	"math"
 	"strconv"
 	"time"
@@ -21,6 +22,9 @@ type SaleC struct {
 	DiscountTotal string `json:"discountTotal"`
 	Neto          string `json:"neto"`
 	Total         string `json:"total"`
+	CashCordoba   string `json:"cashCordoba"`
+	CashDollar    string `json:"cashDollar"`
+	Exchange      string `json:"exchange"`
 	CreatedAt     string `json:"date"`
 
 	Costumer Costumer `json:"costumer"`
@@ -39,8 +43,7 @@ type Costumer struct {
 type DetailSale struct {
 	ID        string `json:"-"`
 	SaleID    string `json:"-"`
-	ArticleID string `json:"id"`
-	Price     string `json:"price"`
+	ArticleID string `json:"articleId"`
 	Discount  string `json:"discount"`
 	Quantity  string `json:"quantity"`
 	Subtotal  string `json:"subtotal"`
@@ -99,14 +102,21 @@ func (sale SaleC) Save(f *fiber.Ctx) error {
 	neto, _ := strconv.ParseFloat(sale.Neto, 64)
 	discountTotal, _ := strconv.ParseFloat(sale.DiscountTotal, 64)
 	newIdSale := uuid.NewString()
+	cashCordoba, _ := strconv.ParseFloat(sale.CashCordoba, 64)
+	cashDollar, _ := strconv.ParseFloat(sale.CashDollar, 64)
+	exchange, _ := strconv.ParseFloat(sale.Exchange, 64)
 	info := config.DB.Create(&models.Sales{
-		ID:            newIdSale,
-		CostumerID:    sale.CostumerID,
-		Code:          code,
-		State:         0,
-		DiscountTotal: discountTotal,
-		Neto:          neto,
-		Total:         total,
+		ID:             newIdSale,
+		CashRegisterID: f.Locals("cashRegisterId").(string),
+		CostumerID:     sale.CostumerID,
+		Code:           code,
+		State:          0,
+		DiscountTotal:  discountTotal,
+		Neto:           neto,
+		Total:          total,
+		CashCordoba:    cashCordoba,
+		CashDollar:     cashDollar,
+		Exchange:       exchange,
 	})
 	if info.RowsAffected == 0 {
 		return f.JSON(types.Response{
@@ -123,7 +133,7 @@ func (sale SaleC) Save(f *fiber.Ctx) error {
 			ID:        uuid.NewString(),
 			SaleID:    newIdSale,
 			ArticleID: value.ArticleID,
-			Amount:    quan,
+			Quantity:  quan,
 			Discount:  discount,
 			Subtotal:  subtotal,
 			CreatedAt: time.Now(),
@@ -146,5 +156,75 @@ func (sale SaleC) Save(f *fiber.Ctx) error {
 	return f.JSON(types.Response{
 		Status: true,
 		Msj:    "Venta guardada",
+	})
+}
+
+func (sale SaleC) ShowId(f *fiber.Ctx) error {
+	id := f.Params("id")
+	config.DB.Model(models.Sales{}).
+		Preload("Costumer").
+		Preload("DetailSale").
+		Preload("DetailSale.Article").
+		Where("id = ?", id).First(&sale)
+	return f.JSON(types.Response{
+		Status: true,
+		Find:   sale,
+	})
+}
+
+func (sale SaleC) Cancel(f *fiber.Ctx) error {
+	id := f.Params("id")
+	sql := config.DB.Model(models.Sales{}).
+		Preload("Costumer").
+		Preload("DetailSale").
+		Where("id = ?", id).
+		First(&sale).
+		Update("state", 0)
+	if sql.RowsAffected == 0 {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "No se pudo cancelar la venta",
+		})
+	}
+	fecha, err := time.Parse(time.RFC3339, sale.CreatedAt)
+	if err != nil {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "Ocurrio un error en la fecha",
+		})
+	}
+	fechaLimite := fecha.Add(48 * time.Hour)
+
+	if fechaLimite.After(time.Now()) {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "Caducó el limite de anulación",
+		})
+	}
+
+	if sale.State == "0" {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "La venta ya fue cancelada",
+		})
+	}
+
+	for _, value := range sale.DetailSale {
+		art := struct {
+			Stock int
+		}{}
+		sql2 := config.DB.
+			Model(models.Articles{}).
+			Where("id = ?", value.ArticleID).
+			First(&art)
+		qua, _ := strconv.Atoi(value.Quantity)
+		stockA := art.Stock + qua
+
+		fmt.Println(stockA)
+		sql2.Update("stock", stockA)
+	}
+	return f.JSON(types.Response{
+		Status: true,
+		Msj:    "Venta cancelada",
 	})
 }

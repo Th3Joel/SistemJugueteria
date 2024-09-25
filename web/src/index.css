@@ -4,15 +4,31 @@
 
 table {
   width: 100%;
+  border-spacing: 0;
 }
 
-th,
-td {
-  border: 1px solid rgba(71, 68, 68, 0.322);
-  border-collapse: collapse;
+table thead th {
+  background: #505c6d;
+  color: white;
+}
+
+table th,
+table td{
+  border-right: 1px solid #9ca3af;
   padding: 2px 7px 2px 7px;
   text-align: center;
+  vertical-align: middle;
 }
+
+table th:last-child,
+table td:last-child {
+  border-right: none;
+}
+
+table td {
+  border-bottom: 1px solid #9ca3af;
+}
+
 
 /* Animations */
 :root {
@@ -65,6 +81,7 @@ td {
   animation-fill-mode: both;
   animation-duration: 700ms;
 }
+
 .animate__fadeIn {
   animation-name: fadeIn;
   animation-fill-mode: both;
@@ -84,6 +101,7 @@ td {
     transform: translate3d(0, 0, 0);
   }
 }
+
 @keyframes fadeIn {
   from {
     opacity: 0;

@@ -57,6 +57,9 @@ var MsjCompanyVal = map[string]string{
 	"Phone.max":     "Longitud debe de ser de 8 dígitos",
 
 	"Address.lte": "Caracteres máximo 50",
+
+	"PriceDollar.numeric": "Debe ser numérico",
+	"PriceDollar.gtC":     "Debe ser mayor a 35 córdobas",
 }
 
 // ArticleBox
@@ -109,9 +112,8 @@ var MsjArticleVal = map[string]string{
 	"Description.required": "Descripción requerida.",
 	"Description.isRepeat": "Descripción ya existe",
 
-	"MinimunStock.required": "Cantidad mínima requerida.",
-	"MinimunStock.integer":  "Solo se aceptan números enteros",
-	"MinimunStock.gtC":      "Cantidad debe ser mayor o igual a 1",
+	"MinimunStock.integer": "Solo se aceptan números enteros",
+	"MinimunStock.gtC":     "Cantidad debe ser mayor a 5",
 
 	//"Stock.required": "Cantidad requerida.",
 	"Stock.integer": "Solo se aceptan números enteros",
@@ -139,4 +141,50 @@ var MsjForgotPasswordVal = map[string]string{
 	"Email.required": "Email requerido.",
 	"Email.email":    "Email no válido.",
 	"Email.exists":   "Email no encontrado.",
+}
+
+var MsjReqOpenCashVal = map[string]string{
+	"InitialBalance.required": "Saldo inicial requerido.",
+	"InitialBalance.numeric":  "Solo se aceptan números",
+	"InitialBalance.gtC":      "Saldo debe ser mayor a 0",
+}
+
+var MsjExpensesVal = map[string]string{
+	"NumInvoice.numeric": "Solo se aceptan números",
+	"NumInvoice.gtC":     "N° Factura debe ser mayor a 0",
+
+	"Detail.required": "Detalle requerido.",
+	"Detail.max":      "El detalle no puede superar los 80 caracteres",
+
+	"Amount.required": "Monto requerido.",
+	"Amount.numeric":  "Solo se aceptan números",
+	"Amount.gtC":      "Monto debe ser mayor a 0",
+}
+
+var MsjDenominationVal = map[string]string{
+
+	"One.integer":         "Solo números enteros",
+	"One.gtC":             "Billetes de 1 debe ser mayor a 0",
+	"Five.integer":        "Solo números enteros",
+	"Five.gtC":            "Billetes de 5 debe ser mayor a 0",
+	"Ten.integer":         "Solo números enteros",
+	"Ten.gtC":             "Billetes de 10 debe ser mayor a 0",
+	"Twenty.integer":      "Solo números enteros",
+	"Twenty.gtC":          "Billetes de 20 debe ser mayor a 0",
+	"Fyfty.integer":       "Solo números enteros",
+	"Fyfty.gtC":           "Billetes de 50 debe ser mayor a 0",
+	"OneHundred.integer":  "Solo números enteros",
+	"OneHundred.gtC":      "Billetes de 100 debe ser mayor a 0",
+	"TwoHundred.integer":  "Solo números enteros",
+	"TwoHundred.gtC":      "Billetes de 200 debe ser mayor a 0",
+	"FiveHundred.integer": "Solo números enteros",
+	"FiveHundred.gtC":     "Billetes de 500 debe ser mayor a 0",
+	"OneThousand.integer": "Solo números enteros",
+	"OneThousand.gtC":     "Billetes de 1000 debe ser mayor a 0",
+
+	"TotalDollar.numeric":   "Solo se aceptan números",
+	"TotalDollar.gtC":       "Total debe ser mayor a 0",
+	"TotalCordoba.required": "Campo requerido.",
+	"TotalCordoba.numeric":  "Solo se aceptan números",
+	"TotalCordoba.gtC":      "Total debe ser mayor a 0",
 }

@@ -150,7 +150,7 @@ export const InputText: React.FC<InputProps> = ({
                     onChange={onChange}
                     placeholder={isRequired ? "(requerido)" : ""}
                     endAdornment={
-                        <InputAdornment sx={{ marginLeft: "20px" }} position="end">
+                        <InputAdornment position="end">
                             <IconButton
                                 onClick={handleClickShowPassword}
                                 edge="end"

@@ -1,9 +1,9 @@
-import {InputText} from "@/modules/core/components/Input";
-import {FaArrowDownWideShort, FaICursor} from "react-icons/fa6";
-import {Link, useNavigate} from "react-router-dom";
-import {Button} from "@mui/material";
-import {useForm} from "@/modules/core/hooks/useForm.ts";
-import {useEffect} from "react";
+import { InputText } from "@/modules/core/components/Input";
+import { FaArrowDownWideShort, FaICursor } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
+import { useForm } from "@/modules/core/hooks/useForm.ts";
+import { useEffect } from "react";
 import LoaderBtn from "@/modules/core/components/LoaderBtn.tsx";
 
 interface IProps {
@@ -15,8 +15,8 @@ interface IFormData {
     Description: string;
 }
 
-export const CategoryForm:React.FC<IProps> = ({isEdit,id}) => {
-    const {post,errors,loading,data,get,inputChange} = useForm<IFormData>({
+export const CategoryForm: React.FC<IProps> = ({ isEdit, id }) => {
+    const { post, errors, loading, data, get, inputChange } = useForm<IFormData>({
         Name: "",
         Description: "",
     });
@@ -39,7 +39,7 @@ export const CategoryForm:React.FC<IProps> = ({isEdit,id}) => {
 
     }, []);
     return (
-        <div className="w-[350px] p-3 shadow-lg rounded-lg">
+        <div className="w-[350px] p-5 shadow-lg rounded-lg">
             <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
                 <InputText
                     label="Nombre"
@@ -57,25 +57,17 @@ export const CategoryForm:React.FC<IProps> = ({isEdit,id}) => {
                     multiline
                     rows={2}
                     placeholder="Descripción"
-                    icon={<FaArrowDownWideShort/>}
+                    icon={<FaArrowDownWideShort />}
                     value={data?.Description}
                     onChange={inputChange}
                     error={!!errors?.Description}
                     helperText={errors?.Description}
                 />
-                <div className="flex justify-between">
-                   <Link to="/categories">
-                       <Button variant="contained" type="button">
-                           Atrás
-                       </Button>
-                    </Link>
+                <Button variant="contained" type="submit" disabled={loading}>
+                    {loading ? <LoaderBtn /> : isEdit ? "Actualizar" : "Guardar"}
+                </Button>
 
-                    <Button variant="contained" type="submit" disabled={loading}>
-                        {loading ? <LoaderBtn /> : "Guardar"}
-                    </Button>
-                </div>
-
-                </form>
+            </form>
 
         </div>
     )

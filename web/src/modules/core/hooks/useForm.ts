@@ -52,14 +52,15 @@ export const useForm = <T>(object: IData<T>) => {
 
   const get = async (url: string) => {
     setLoading(true);
-    let res = await useFetch<IResponseFetch<T>>(url, "GET");
+    const res = await useFetch<IResponseFetch<T>>(url, "GET");
     setLoading(false);
     if (res.status) {
       setData(res.find);
-      return;
+      return true
     }
     toast.error(res.msj);
     CheckAuth<T>(res);
+    return false;
   };
 
 
