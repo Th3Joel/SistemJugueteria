@@ -32,7 +32,7 @@ export const Sidebar = () => {
       <div className="px-1 h-16 flex items-center">
         <img
           src={`${company.Logo}`}
-          width={40}
+          width={40} 
           height={40}
           className="rounded-full"
           alt=""
