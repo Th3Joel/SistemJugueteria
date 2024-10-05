@@ -38,6 +38,6 @@ export const Card: React.FC<Props> = ({ children, notAnimate, btnBack, btnBackLi
         </Tooltip>
       }
       {children}
-    </div >
+    </div>
   )
 }

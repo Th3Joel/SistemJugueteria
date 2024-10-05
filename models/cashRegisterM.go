@@ -12,8 +12,8 @@ type CashRegister struct {
 	ClosedAt         *time.Time
 	CreatedAt        time.Time
 
-	Users        Users        `gorm:"foreignKey:UserID"`
-	Sales        []Sales      `gorm:"foreignKey:CashRegisterID"`
-	Expenses     Expenses     `gorm:"foreignKey:CashRegisterID"`
+	Users Users   `gorm:"foreignKey:UserID"`
+	Sales []Sales `gorm:"foreignKey:CashRegisterID"`
+	//Expenses     Expenses     `gorm:"foreignKey:CashRegisterID"`
 	Denomination Denomination `gorm:"foreignKey:CashRegisterID"`
 }

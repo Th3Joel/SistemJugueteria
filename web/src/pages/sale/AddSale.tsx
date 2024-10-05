@@ -105,19 +105,21 @@ const AddSale = () => {
       });
     }
   };
+  
   useEffect(() => {
     setTitle("Agregar venta");
     setCostDollar(company.PriceDollar)
     verify().then(() => {
       setLoadCash(false)
     });
-    fetchData();
     setIsSale(true)
+    fetchData();
     //Cuando se desmonta el componente
     return () => {
       clear();
     };
   }, []);
+
   return (
     <Card btnBack btnBackLink="/sales">
       {

@@ -11,11 +11,12 @@ import (
 
 func CostumerR(f fiber.Router) {
 	costumerC := controllers.CostumerC{}
-	r := f.Group("/clientes", mdd.AuthM, mdd.RoleM([]string{}))
-	r.Get("", costumerC.All)
+	r := f.Group("/clientes", mdd.AuthM)
 	r.Get("/select", costumerC.AllSelect)
-	r.Get("/:id", costumerC.ShowId)
-	r.Post("", mdd.ValM(val.MsjCostumerVal, val.CostumerPost{}, models.Costumers{}), costumerC.Save)
-	r.Put("/:id", mdd.ValM(val.MsjCostumerVal, val.CostumerPost{}, models.Costumers{}), costumerC.UpdateId)
-	r.Delete("/:id", costumerC.Delete)
+	admin := r.Group("", mdd.RoleM([]string{}))
+	admin.Get("", costumerC.All)
+	admin.Get("/:id", costumerC.ShowId)
+	admin.Post("", mdd.ValM(val.MsjCostumerVal, val.CostumerPost{}, models.Costumers{}), costumerC.Save)
+	admin.Put("/:id", mdd.ValM(val.MsjCostumerVal, val.CostumerPost{}, models.Costumers{}), costumerC.UpdateId)
+	admin.Delete("/:id", costumerC.Delete)
 }

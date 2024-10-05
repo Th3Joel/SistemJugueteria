@@ -417,7 +417,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
           code,
           date,
           total,
-          detail,
+          detail:detail.map(d=>({...d,articleId:d.id})),
           discountTotal,
           neto,
           costumerID,

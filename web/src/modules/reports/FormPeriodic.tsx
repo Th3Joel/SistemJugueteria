@@ -2,16 +2,39 @@ import { Button, Chip } from "@mui/material"
 import { FaCalendarDays } from "react-icons/fa6"
 import { InputText } from "../core/components/Input"
 import dayjs from "dayjs"
+import { useState } from "react"
+
+interface IFormPeriodic {
+    startDate: string
+    endDate: string
+}
 
 export const FormPeriodic: React.FC<{ isSale?: boolean }> = ({ isSale }) => {
+    const [errors, setErrors] = useState<Record<string,string>>({})
+    const [data, setData] = useState<IFormPeriodic>({ startDate: dayjs(Date.now()).format("YYYY-MM-DD"), endDate: dayjs(Date.now() + (24 * 60 * 60 * 24 * 30)).format("YYYY-MM-DD") })
     const uri = "/report/" + (isSale ? "sales" : "purchases");
     const submit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const form = new FormData(e.currentTarget)
-        const startDate = form.get("startDate") as string
-        const endDate = form.get("endDate") as string
+        const startDate = data.startDate
+        const endDate = data.endDate
+
+        const start = new Date(startDate)
+        const end = new Date(endDate)
+
+        if (start > end) {
+            setErrors({ startDate: "La fecha de inicio debe ser menor a la de fin" })
+            return
+        }
+        setErrors({})
         window.open(`${uri}?startDate=${startDate}&endDate=${endDate}`, "_blank")
     }
+
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const name = e.target.name
+        const value = e.target.value
+        setData((d) => ({ ...d, [name]: value }))
+    }
+
     return (
         <div>
             <h1 className="text-center mb-1">Seleccione el periodo</h1>
@@ -35,16 +58,24 @@ export const FormPeriodic: React.FC<{ isSale?: boolean }> = ({ isSale }) => {
                     label="Fecha inicial"
                     type="date"
                     name="startDate"
-                    value={dayjs(Date.now()).format("YYYY-MM-DD")}
+                    value={data.startDate}
+                    onChange={onChange}
                     icon={<FaCalendarDays />}
+                    error={!!errors.startDate}
                 />
                 <InputText
                     label="Fecha final"
                     type="date"
                     name="endDate"
-                    value={dayjs(Date.now() + (24 * 60 * 60 * 24 * 30)).format("YYYY-MM-DD")}
+                    value={data.endDate}
+                    onChange={onChange}
                     icon={<FaCalendarDays />}
                 />
+                <small>
+                    {
+                        errors.startDate && <span className="text-red-500">{errors.startDate}</span>
+                    }
+                </small>
                 <div className="mb-2">
                     <Button type="submit" variant="contained" color="primary" className="w-full">
                         Generar personalizado

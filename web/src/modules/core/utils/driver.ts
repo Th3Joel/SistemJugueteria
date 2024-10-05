@@ -1,8 +1,22 @@
-import { driver } from "driver.js"
+import { driver, DriveStep } from "driver.js"
+import { toast } from "sonner";
+import { create } from "zustand";
 
+export const stepsDashboard: DriveStep[] = [
+    {
+        element:".counters",
+        popover: {
+            description: "Muestra información general del sistema"
+        }
+    },{
+        element:".graphSales",
+        popover: {
+            description: "Muestra información de ventas en un gráfico"
+        }
+    }
+]
 
-
-export const stepsTable = [
+export const stepsTable: DriveStep[] = [
     {
         element: ".btnAdd",
         popover: {
@@ -21,7 +35,36 @@ export const stepsTable = [
             description: "Busca elementos en la tabla"
         }
     },
-
+    //Información de compras
+    {
+        element: ".txtIncompletePurchase",
+        popover: {
+            description: `Si la compra está incompleta quiere decir que
+            la cantidad de artículos que ingresaste en el detalle no fué igual a 
+            la cantidad de articulos de la caja, por ende la podrás editar y comprar mas artículos, 
+             se mostrara el botón para editarla`
+        }
+    },
+    {
+        element: ".txtCompletedPurchase",
+        popover: {
+            description: "Si está completa quiere decir que la cantidad de artículos en el detalle es igual a la cantidad de articulos de la caja que indicaste en la compra"
+        }
+    },
+    //--------------------------------------------------------------------------------------
+    
+    {
+        element: ".btnView",
+        popover: {
+            description: "Al hacer click lo redireccionará a la página para visualizar el elemento"
+        }
+    },
+    {
+        element: ".btnNull",
+        popover: {
+            description: "Esto anulará la venta y devuelve los productos al inventario, tiene el límite de 2 días"
+        }
+    },
     {
         element: ".btnEdit",
         popover: {
@@ -63,22 +106,37 @@ export const stepsTable = [
     }
 ];
 
-export const mainDriver = (path: string) => {
-    const pathTrim = path.split("/")
-    const pathLength = pathTrim.length;
-    console.log(pathTrim);
 
+interface IStateDriver {
+    steps: DriveStep[]
+    setSteps: (steps: DriveStep[]) => void
+    run: () => void
+}
 
-    return driver({
-        showProgress: true,
-        nextBtnText: "Siguiente",
-        prevBtnText: "Anterior",
-        doneBtnText: "Listo",
-        steps:
-            (pathTrim[1] && pathLength <= 2) ||
-                ((pathTrim[1] + "/" + pathTrim[2]) == "settings/users" &&
-                    pathLength <= 3)
-                ? stepsTable : undefined
-    })
+export const StateDriver = create<IStateDriver>((set, get) => ({
+    steps: [],
+    setSteps: (steps: DriveStep[]) => set({ steps }),
+    run: () => {
+        let { steps } = get();
+        
+        steps = steps.filter(s => stepIfExist(s.element as string));
+        if (steps.length === 0) {
+            toast.error("Si no hay información, se explica solo")
+            return;
+        }
+        driver({
+            showProgress: true,
+            nextBtnText: "Siguiente",
+            prevBtnText: "Anterior",
+            doneBtnText: "Listo",
+            steps
+        }).drive();
+    }
+}))
 
-};
+const stepIfExist = (element: string) => {
+    if (document.querySelector(element)) {
+        return true;
+    }
+    return false;
+}

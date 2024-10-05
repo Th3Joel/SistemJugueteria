@@ -3,12 +3,13 @@ import { logoutFetch } from "@/modules/auth/utils/authFetch";
 import { Tooltip } from "@mui/material";
 import { FaBarsStaggered, FaQuestion, FaRightFromBracket } from "react-icons/fa6";
 import { TitleState } from "../states/title-state";
+import { StateDriver } from "../utils/driver";
 
 export const Header = () => {
   const { estado, inc } = SidebarState();
   const { title } = TitleState();
-  const handleDriver = () => {
-  };
+  const {run} = StateDriver();
+ 
 
   return (
     <div className={`border px-3 h-[50px]
@@ -29,7 +30,7 @@ export const Header = () => {
         <Tooltip title="Información de pagina" arrow>
           <div>
 
-            <FaQuestion className="cursor-pointer" onClick={handleDriver} />
+            <FaQuestion className="cursor-pointer" onClick={() => run()} />
           </div>
         </Tooltip>
         <Tooltip title="Cerrar sesión" arrow>

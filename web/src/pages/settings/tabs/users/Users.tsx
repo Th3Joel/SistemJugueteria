@@ -28,7 +28,7 @@ const Users = () => {
         body={(urlEdit, eliminar) =>
           hook.all?.data.map((d, i) => (
             <tr key={i}>
-              <td>{d.Picture}</td>
+              <td>{d.Picture}</td> 
               <td>{d.Name}</td>
               <td>{d.Email}</td>
               <td>{d.Role === "admin" ? "Administrador" : d.Role === "vendedor" ? "Vendedor" : "Bodega"}</td>

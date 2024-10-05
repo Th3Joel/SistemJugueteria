@@ -19,7 +19,7 @@ then
 
     sed -i '8s/.*/const uri = "http:\/\/localhost:5000\/api"/' $pathFile
 
-    go build -o sis
+    go build -ldflags="-s -w" -o sis
 fi
 
 

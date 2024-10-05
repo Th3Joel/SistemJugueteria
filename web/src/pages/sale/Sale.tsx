@@ -2,8 +2,10 @@ import { Card } from "@/modules/core/components/Card"
 import Table from "@/modules/core/components/Table"
 import { useFetch } from "@/modules/core/hooks/useFetch"
 import { useTable } from "@/modules/core/hooks/useTable"
+import { AuthState } from "@/modules/core/states/auth-state"
 import { TitleState } from "@/modules/core/states/title-state"
 import alertBox from "@/modules/core/utils/alertBox"
+import { StateDriver, stepsTable } from "@/modules/core/utils/driver"
 import { formatNumber } from "@/modules/core/utils/formatNumber"
 import { IResponseFetch } from "@/types"
 import { IconButton, Tooltip } from "@mui/material"
@@ -27,14 +29,16 @@ interface IPurchase {
 }
 const Sale = () => {
   const hook = useTable<IPurchase>();
+  const { user } = AuthState();
   const { setTitle } = TitleState();
+  const { setSteps } = StateDriver();
   const anular = async (id: string, numFac: string) => {
     alertBox("warning", "Anular venta: " + numFac.padStart(4, "0"), "¿Estás seguro?", "Aceptar", async () => {
       const res = await useFetch<IResponseFetch<unknown>>("/sales/" + id, "DELETE");
       if (res.status) {
         toast.success(res.msj)
-        hook.get("/sales?page=1&pageSize=10")
-      }else{
+        hook.get(`/${user.Role == "admin" ? "sales" : "sales/my"}?page=1&pageSize=10`)
+      } else {
         toast.error(res.msj)
       }
     })
@@ -49,14 +53,15 @@ const Sale = () => {
   }
   useEffect(() => {
     setTitle("Ventas");
+    setSteps(stepsTable);
   }, [])
   return (
     <Card>
       <Table
         hook={hook}
-        ruta="sales"
+        ruta={user.Role == "admin" ? "sales" : "sales/my"}
         colunms={["N° Factura", "Cliente", "Total", "Fecha", "Acciones"]}
-        body={(urlEdit) =>
+        body={() =>
           hook.all?.data.map((d, i) => (
             <tr key={i} className={`${d.state == 0 && "bg-red-200"}`}>
               <td>{d.code.padStart(4, "0")}</td>
@@ -65,8 +70,8 @@ const Sale = () => {
               <td>{dayjs(d.date).format("DD/MM/YYYY")}</td>
               <td>
                 <div className="flex gap-1 justify-center items-center">
-                  <Link to={urlEdit + d.id}>
-                    <IconButton color="success" className="btnEdit">
+                  <Link to={"/sales/edit/" + d.id}>
+                    <IconButton color="success" className="btnView">
                       <FaEye />
                     </IconButton>
                   </Link>
@@ -76,7 +81,7 @@ const Sale = () => {
                     </small>}
                   {d.state == 1 && ((limitDate(d.date) > new Date(Date.now()))) && (
                     <Tooltip title="Anular venta">
-                      <IconButton color="error" className="btnEdit" onClick={() => anular(d.id, d.code)}>
+                      <IconButton color="error" className="btnNull" onClick={() => anular(d.id, d.code)}>
                         <FaBan />
                       </IconButton>
                     </Tooltip>

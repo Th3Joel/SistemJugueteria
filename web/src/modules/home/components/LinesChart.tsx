@@ -1,28 +1,25 @@
 import { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 
-export const LinesChart = () => {
+interface ILineChart {
+  labels: string[];
+  data: number[];
+}
+export const LinesChart: React.FC<ILineChart> = ({ labels, data }) => {
   const canvaRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const data = [
-      { year: 2010, count: 10 },
-      { year: 2011, count: 20 },
-      { year: 2012, count: 15 },
-      { year: 2013, count: 40 },
-      { year: 2014, count: 22 },
-      { year: 2015, count: 30 },
-      { year: 2016, count: 28 },
-    ];
+
 
     const myChart = new Chart(canvaRef.current!, {
-      type: "line",
+      type: "bar",
       data: {
-        labels: data.map((row) => row.year),
+        labels,
         datasets: [
           {
             label: "Total ventas",
-            data: data.map((row) => row.count),
+            data,
+            backgroundColor: "#505c6d",
           },
         ],
       },
@@ -47,8 +44,34 @@ export const LinesChart = () => {
           },
           title: {
             display: true,
-            text: "Ventas por periodo",
+            text: "Ventas por mes",
           },
+          tooltip: {
+            callbacks: {
+              title: function (context) {
+                const date = context[0].label;
+                const partes = date.split('-'); // Dividir la fecha en año y mes
+                const ano = parseInt(partes[0]); // Año en número
+                const mes = parseInt(partes[1]); // Mes en número
+
+                // Crear un objeto de fecha para obtener el nombre del mes
+                const fechaObj = new Date(ano, mes -
+                  1
+                ); // Restamos 1 al mes ya que los meses en JavaScript se cuentan desde 0 (enero) hasta 11 (diciembre)
+
+                // Obtener el nombre del mes
+                const nombreDelMes = fechaObj.toLocaleString('es-ES', {
+                  month: 'long'
+                });
+
+                const resultado = ano + ' ' + nombreDelMes;
+                return resultado; // Formato personalizado del título del tooltip
+              },
+              label: function (context) {
+                return ' C$ ' + context.parsed.y.toFixed(2); // Agrega "C$" al valor del tooltip
+              }
+            }
+          }
         },
         animations: {
           tension: {
@@ -65,10 +88,6 @@ export const LinesChart = () => {
     return () => {
       myChart.destroy();
     };
-  }, []);
-  return (
-    <div className="border rounded-lg border-[#28A745] p-2 overflow-x-hidden">
-      <canvas ref={canvaRef} width="100%" height="400px"></canvas>
-    </div>
-  );
+  }, [data]);
+  return <canvas ref={canvaRef} width="100%" height="400px" />;
 };

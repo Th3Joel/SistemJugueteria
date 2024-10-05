@@ -2,6 +2,7 @@ import { Card } from "@/modules/core/components/Card"
 import Table from "@/modules/core/components/Table"
 import { useTable } from "@/modules/core/hooks/useTable"
 import { TitleState } from "@/modules/core/states/title-state"
+import { StateDriver, stepsTable } from "@/modules/core/utils/driver"
 import { formatNumber } from "@/modules/core/utils/formatNumber"
 import { IconButton } from "@mui/material"
 import dayjs from "dayjs"
@@ -25,8 +26,10 @@ interface IPurchase {
 const Purchase = () => {
   const hook = useTable<IPurchase>();
   const { setTitle } = TitleState();
+  const {setSteps} = StateDriver();
   useEffect(() => {
-    setTitle("Compras");
+    setTitle("Compras"); 
+    setSteps(stepsTable);
   }, [])
   return (
     <Card>
@@ -43,19 +46,19 @@ const Purchase = () => {
               <td>C$ {formatNumber(d.total)}</td>
               <td>{dayjs(d.date).format("DD/MM/YYYY")}</td>
               <td className="font-bold">{d.state == 0 ?
-                <h1 className="text-red-700">
+                <h1 className="text-red-700 txtIncompletePurchase">
                   Incompleta
                 </h1>
                 :
-                <h1 className="text-green-700">
+                <h1 className="text-green-700 txtCompletedPurchase">
                   Completada
                 </h1>
               }</td>
               <td>
                 <div className="flex gap-1 justify-center">
                   <Link to={urlEdit + d.id}>
-                    <IconButton color="success" className="btnEdit">
-                      {d.state == 0 ? <FaPen /> : <FaEye />}
+                    <IconButton color="success">
+                      {d.state == 0 ? <FaPen className="btnEdit" /> : <FaEye className="btnView" />}
                     </IconButton>
                   </Link>
                 </div>

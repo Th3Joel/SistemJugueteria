@@ -10,7 +10,8 @@ import (
 func SaleR(app fiber.Router) {
 	sale := controllers.SaleC{}
 	r := app.Group("/sales", mdd.AuthM)
-	r.Get("/", sale.All)
+	r.Get("/", mdd.RoleM([]string{}), func(c *fiber.Ctx) error { return sale.All(c, false) })
+	r.Get("/my", func(c *fiber.Ctx) error { return sale.All(c, true) })
 	r.Get("/newCode", sale.GetNewCode)
 	r.Get("/:id", sale.ShowId)
 	r.Post("", mdd.CashM, sale.Save)

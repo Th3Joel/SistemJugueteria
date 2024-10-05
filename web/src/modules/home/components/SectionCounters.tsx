@@ -33,7 +33,7 @@ export const SectionCounters = () => {
     <div className="flex gap-3 flex-wrap justify-center mb-5">
       <BoxCounterInfo
         counter={"C$ "+formatNumber(data.totalPurchases+"")}
-        title="Total compras"
+        title="Compras hoy"
         color="#17A2B8"
         link="/"
         isLoading={loading}
@@ -42,7 +42,7 @@ export const SectionCounters = () => {
 
       <BoxCounterInfo
         counter={"C$ "+formatNumber(data.totalSales+"")}
-        title="Total ventas"
+        title="Ventas hoy"
         color="#22A745"
         link="/"
         isLoading={loading}

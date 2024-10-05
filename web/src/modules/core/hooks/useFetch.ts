@@ -19,7 +19,7 @@ const uri = "http://localhost:5000/api"
       ...content_type
     },
   });
-
+  
   const res: T = await req.json();
 
 

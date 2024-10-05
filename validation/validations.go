@@ -116,3 +116,9 @@ type Denomination struct {
 	TotalDollar  string `validate:"omitempty,integer,gtC=0"`
 	TotalCordoba string `validate:"required,numeric,gtC=0"`
 }
+
+// Refund
+type Refund struct {
+	Amount      string `validate:"required,numeric,gtC=0"`
+	Observation string `validate:"omitempty,max=80"`
+}

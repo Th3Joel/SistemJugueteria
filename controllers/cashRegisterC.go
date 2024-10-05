@@ -27,7 +27,6 @@ type CashRegisterC struct {
 	ClosedAt  string `json:"closedAt"`
 	CreatedAt string `json:"createdAt"`
 
-	Expenses     []Expenses          `json:"expenses,omitempty" gorm:"foreignKey:CashRegisterID"`
 	Denomination Denomination        `json:"denomination,omitempty" gorm:"foreignKey:CashRegisterID"`
 	Users        Users               `json:"user" gorm:"foreignKey:UserID"`
 	Model        models.CashRegister `json:"-" gorm:"-"`
@@ -40,14 +39,6 @@ type CashRegisterC struct {
 type Users struct {
 	ID   string `json:"-"`
 	Name string `json:"name"`
-}
-
-type Expenses struct {
-	ID             string `json:"-"`
-	CashRegisterID string `json:"-"`
-	NumInvoice     string `json:"NumInvoice"`
-	Detail         string `json:"Detail"`
-	Amount         string `json:"Amount"`
 }
 
 type Denomination struct {
@@ -189,7 +180,6 @@ func (c CashRegisterC) ShowId(f *fiber.Ctx, my bool) error {
 	sql := config.DB.
 		Model(c.Model).
 		Preload("Users").
-		Preload("Expenses").
 		Preload("Denomination")
 	if my {
 		sql.Where("id = ? AND user_id = ?", id, idUser)

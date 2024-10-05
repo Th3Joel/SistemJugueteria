@@ -51,8 +51,9 @@ type DetailSale struct {
 	Article Articles `json:"article"`
 }
 
-func (sale SaleC) All(f *fiber.Ctx) error {
+func (sale SaleC) All(f *fiber.Ctx, my bool) error {
 	db := config.DB.Model(sale.Model)
+	userId := f.Locals("userId").(string)
 	var count int64
 	var q types.ParamsTable
 	_ = f.QueryParser(&q)
@@ -63,6 +64,9 @@ func (sale SaleC) All(f *fiber.Ctx) error {
 		Order("created_at DESC").
 		Offset(skip).
 		Limit(take)
+	if my {
+		db.Where("user_id = ?", userId)
+	}
 	if q.Search == "" {
 		db.Find(&sale.Array)
 	} else {
@@ -108,6 +112,7 @@ func (sale SaleC) Save(f *fiber.Ctx) error {
 	info := config.DB.Create(&models.Sales{
 		ID:             newIdSale,
 		CashRegisterID: f.Locals("cashRegisterId").(string),
+		UserID:         f.Locals("userId").(string),
 		CostumerID:     sale.CostumerID,
 		Code:           code,
 		State:          0,
@@ -138,7 +143,7 @@ func (sale SaleC) Save(f *fiber.Ctx) error {
 			Subtotal:  subtotal,
 			CreatedAt: time.Now(),
 		})
-
+		fmt.Println(value)
 		perz := struct{ Stock int }{}
 		config.DB.
 			Model(models.Articles{}).
@@ -178,14 +183,8 @@ func (sale SaleC) Cancel(f *fiber.Ctx) error {
 		Preload("Costumer").
 		Preload("DetailSale").
 		Where("id = ?", id).
-		First(&sale).
-		Update("state", 0)
-	if sql.RowsAffected == 0 {
-		return f.JSON(types.Response{
-			Status: false,
-			Msj:    "No se pudo cancelar la venta",
-		})
-	}
+		First(&sale)
+
 	fecha, err := time.Parse(time.RFC3339, sale.CreatedAt)
 	if err != nil {
 		return f.JSON(types.Response{
@@ -195,10 +194,18 @@ func (sale SaleC) Cancel(f *fiber.Ctx) error {
 	}
 	fechaLimite := fecha.Add(48 * time.Hour)
 
-	if fechaLimite.After(time.Now()) {
+	if fechaLimite.Before(time.Now()) {
 		return f.JSON(types.Response{
 			Status: false,
 			Msj:    "Caducó el limite de anulación",
+		})
+	}
+
+	sql.Update("state", 0)
+	if sql.RowsAffected == 0 {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "No se pudo cancelar la venta",
 		})
 	}
 

@@ -1,8 +1,11 @@
 import { FaArrowDownWideShort, FaFileInvoice } from "react-icons/fa6"
-import { InputText } from "../core/components/Input"
-import { ModalProps } from "../core/components/Modal"
-import { ExpensesData } from "./Expenses"
-import { useForm } from "../core/hooks/useForm"
+import { InputText } from "../../core/components/Input"
+import { ModalProps } from "../../core/components/Modal"
+import { useForm } from "../../core/hooks/useForm"
+import { IExpenses } from "./Expenses"
+import { useState } from "react"
+import { pettyCashState } from "../states/DataState"
+import { formatNumber } from "@/modules/core/utils/formatNumber"
 
 interface IAddExpenses {
     getData: () => void
@@ -11,20 +14,32 @@ interface IAddExpenses {
 }
 
 export const AddExpenses: React.FC<IAddExpenses> = ({ getData, RenderModal, setModalShow }) => {
-
-    const { post, loading, data, errors,inputChange } = useForm<Omit<ExpensesData, "id" | "cashRegisterID">>({
+    const [err, setErr] = useState<Record<string, string>>({})
+    const { balance } = pettyCashState()
+    const { post, loading, data, errors, inputChange } = useForm<Omit<IExpenses, "id" | "Date">>({
         NumInvoice: "",
         Detail: "",
         Amount: "",
     });
+
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const pas = parseFloat(data.Amount)
+        if (pas > balance || pas < 10) {
+            setErr({
+                "pass": "Debe ser menor a C$" + formatNumber(balance + "")
+            })
+            return
+        }
+
         post("/expenses", e.currentTarget).then((res) => {
             if (res) {
                 getData()
                 setModalShow(false)
             }
+
         });
+        setErr({})
     }
     return (
         <RenderModal title="Nuevo egreso" onSubmit={onSubmit} loadBtn={loading}>
@@ -62,6 +77,9 @@ export const AddExpenses: React.FC<IAddExpenses> = ({ getData, RenderModal, setM
                     value={data.Amount}
                     onChange={inputChange}
                 />
+                {
+                    err?.pass && <small className="-my-3 text-center text-red-600">{err.pass}</small>
+                }
             </div>
         </RenderModal>
 

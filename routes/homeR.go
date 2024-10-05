@@ -12,4 +12,5 @@ func HomeR(f fiber.Router) {
 	r := f.Group("/home", mdd.AuthM, mdd.RoleM([]string{}))
 
 	r.Get("/counters", homeC.CountersBox)
+	r.Get("/total-sales", homeC.GetTotalSales)
 }

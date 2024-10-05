@@ -1,6 +1,5 @@
 import cashImage from "@/assets/cash.png";
 import { Raya } from "../core/components/Raya";
-import { Expenses, ExpensesData } from "./Expenses";
 import { IconButton } from "@mui/material";
 import { FaPrint } from "react-icons/fa6";
 import { useParams } from "react-router-dom";
@@ -15,7 +14,7 @@ interface IParams {
     id: string
 }
 interface IViewCash {
-    expenses: ExpensesData[]
+    //expenses: ExpensesData[]
     denomination: IDenomination
     initialBalance: string
     cashCordobaTotal: string
@@ -34,7 +33,7 @@ const ViewCash = () => {
     const { id } = useParams<IParams>()
     const {user} = AuthState();
     const { get, data } = useForm<IViewCash>({
-        expenses: [],
+        //expenses: [],
         denomination: {
             One: "",
             Five: "",
@@ -128,9 +127,9 @@ const ViewCash = () => {
                     </div>
                 </div>
 
-                <div className="rounded-xl shadow-xl px-4 py-3 w-[700px] border">
+                {/* <div className="rounded-xl shadow-xl px-4 py-3 w-[700px] border">
                     <Expenses expenses={data.expenses} isView />
-                </div>
+                </div> */}
                 <div className="rounded-xl shadow-xl px-4 py-3 w-[700px] border">
                     <h1 className="font-bold text-xl text-gray-600 text-center mb-2">
                         Denominación de dinero

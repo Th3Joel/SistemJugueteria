@@ -2,6 +2,7 @@ import { Card } from "@/modules/core/components/Card";
 import Table from "@/modules/core/components/Table";
 import { useTable } from "@/modules/core/hooks/useTable";
 import { TitleState } from "@/modules/core/states/title-state";
+import { StateDriver, stepsTable } from "@/modules/core/utils/driver";
 import { IconButton } from "@mui/material";
 import { useEffect } from "react";
 import { FaPen, FaTrash } from "react-icons/fa6";
@@ -15,8 +16,10 @@ export interface ICliente {
 const Clientes = () => {
   const hook = useTable<ICliente>()
   const { setTitle } = TitleState();
+  const {setSteps} = StateDriver(); 
   useEffect(() => {
     setTitle("Clientes");
+    setSteps(stepsTable);
   }, [])
   return (
     <Card>

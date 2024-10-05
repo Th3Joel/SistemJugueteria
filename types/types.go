@@ -22,3 +22,5 @@ type ParamsTable struct {
 	PageSize int    `query:"pageSize"`
 	Search   string `query:"search"`
 }
+
+type Json = map[string]interface{}

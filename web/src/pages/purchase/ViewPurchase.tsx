@@ -166,7 +166,7 @@ const ViewPurchase = () => {
                 <header className="text-gray-700 mb-2">
                   ---- Datos de compra ----
                 </header>
-                <h1 className="absolute top-1 right-2 font-bold">
+                <div className="absolute top-1 right-2 font-bold">
                   {data.state == 0 ?
                     <h1 className="text-red-700">
                       Incompleta
@@ -176,7 +176,7 @@ const ViewPurchase = () => {
                       Completada
                     </h1>
                   }
-                </h1>
+                </div>
 
                 <section className="flex flex-row justify-center flex-wrap gap-4">
                   <span className="w-[200px]">

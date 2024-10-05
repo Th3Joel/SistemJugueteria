@@ -2,22 +2,30 @@ package main
 
 import (
 	"Jugueteria/config"
+	"Jugueteria/helpers"
 	mdd "Jugueteria/middleware"
 	"Jugueteria/routes"
 	"Jugueteria/web"
+	"fmt"
 	"os"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
 func main() {
 	if !fiber.IsChild() {
+		filesH := helpers.FilesH{}
+		if !filesH.CreateFolder("backups") {
+			fmt.Println("Error al crear la carpeta backups")
+		}
+		if !filesH.CreateFolder("uploads") {
+			fmt.Println("Error al crear la carpeta backups")
+		}
 		go config.CleanSqliteToken()
 	}
-
-	config.ConnectDB()
 
 	app := fiber.New(fiber.Config{
 		Prefork:                   false,
@@ -26,17 +34,45 @@ func main() {
 		//DisableStartupMessage:     true,
 	})
 
-	// defer func(app *fiber.App) {
-	// 	_ = app.Shutdown()
-	// }(app)
+	defer func(app *fiber.App) {
+		_ = app.Shutdown()
+	}(app)
+	config.ConnectDB()
 
-	//app.Use(logger.New())
+	app.Use(func(f *fiber.Ctx) error {
+		//Secure options fo headers
+		f.Set("X-Powered-By", "Triceratox software")
+		f.Set("X-Frame-Options", "DENY")
+		f.Set("Content-Security-Policy", "default-src 'self'; connect-src *; font-src *; script-src-elem * 'unsafe-inline'; img-src * data:; style-src * 'unsafe-inline';")
+		f.Set("X-XSS-Protection", "1; mode=block")
+		f.Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
+		f.Set("Referrer-Policy", "strict-origin")
+		f.Set("X-Content-Type-Options", "nosniff")
+		f.Set("Permissions-Policy", "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()")
+
+		return f.Next()
+	})
+
+	app.Use(logger.New(logger.Config{
+		Format:     "[${time}] ${ip}  ${status} - ${latency} ${method} ${path}\n",
+		TimeFormat: "02-Jan-2006 03:04:05 PM",
+		TimeZone:   "America/Managua",
+	}))
 
 	app.Use(cors.New(cors.Config{
-		AllowOrigins:     "http://localhost:5173,http://192.168.1.3:5173",
+		AllowOrigins:     "http://localhost:5173",
 		AllowCredentials: true,
 		AllowMethods:     "GET,POST,PUT,DELETE",
-		}))
+	}))
+
+	//Frontend
+	//servir archivos staticos dentro del binario
+	app.Get("/sis/*", filesystem.New(filesystem.Config{
+		Root:         web.Dist(),
+		Index:        "index.html",
+		NotFoundFile: "sis/index.html",
+	}))
+
 	//Sistema api
 	api := app.Group("/api", mdd.Csrf)
 	//AuthR
@@ -67,13 +103,13 @@ func main() {
 	routes.ExpensesR(api)
 	//ReportsR
 	routes.ReportsR(api)
+	//RefundR
+	routes.RefundR(api)
+	//PettyCashR
+	routes.PettyCashR(api)
+	//BackupR
+	routes.BackupR(api)
 
-	//servir archivos staticos dentro del binario
-	app.Get("/*", filesystem.New(filesystem.Config{
-		Root:         web.Dist(),
-		Index:        "index.html",
-		NotFoundFile: "index.html",
-	}))
 	port := ""
 	if os.Getenv("PORT") == "" {
 		port = ":5000"
@@ -82,6 +118,6 @@ func main() {
 	}
 	err := app.Listen(port)
 	if err != nil {
-		println("Error al iniciar el servidor", err.Error())
+		println("Error al iniciar el servidor: ", err.Error())
 	}
 }

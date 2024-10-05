@@ -105,7 +105,8 @@ export const UsersForm: React.FC<IProps> = ({ isEdit, id, isProfile }) => {
                                 { key: "admin", value: "Administrador" },
                                 { key: "vendedor", value: "Vendedor" }
                             ]}
-                        />}
+                        />
+                    }
 
                     {isEdit && <h4 className="text-gray-500 ml-2 -my-2">Actualizar contraseña (opcional)</h4>}
                     <InputText
@@ -117,7 +118,7 @@ export const UsersForm: React.FC<IProps> = ({ isEdit, id, isProfile }) => {
                         onChange={inputChange}
                         error={!!errors?.Password}
                         helperText={errors?.Password}
-                        value={data.Password}
+                        value={data.Password || ''}
                     />
                     <InputText
                         label="Repetir contraseña"
@@ -128,7 +129,7 @@ export const UsersForm: React.FC<IProps> = ({ isEdit, id, isProfile }) => {
                         error={!!errors?.Confirm}
                         helperText={errors?.Confirm}
                         icon={<FaKey />}
-                        value={data.Confirm}
+                        value={data.Confirm || ''}
                     />
                     {
                         isProfile ?

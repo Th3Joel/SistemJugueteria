@@ -40,14 +40,13 @@ func AuthM(c *fiber.Ctx) error {
 	//modelToken := models.Token{}
 	//db := config.DB.Select("UserID").First(&modelToken, "token = ?", token)
 	data := tokenH.Get(token)
-	var modelUser models.Users
-	config.DB.Select("id", "Role").First(&modelUser, "id = ?", data.UserId)
+
 	// Verificacion
 	if token == "" ||
 		!tokenH.Compare(token, data.Key) ||
 		data.Key == "" ||
 		data.Exp < time.Now().Unix() ||
-		modelUser.ID == "" {
+		data.UserId == "" {
 		// Si el token no es válido, responde con un error de autorización
 		return c.JSON(types.Response{
 			Status: false,
@@ -55,6 +54,8 @@ func AuthM(c *fiber.Ctx) error {
 			Msj:    "No autorizado",
 		})
 	}
+	var modelUser models.Users
+	config.DB.Select("id", "Role").First(&modelUser, "id = ?", data.UserId)
 
 	//Almacenar lso datos en la req
 	//tokeData := t.PrivateClaims()

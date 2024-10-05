@@ -5,7 +5,7 @@ import { useFetch } from "../core/hooks/useFetch"
 import { formatNumber } from "../core/utils/formatNumber"
 import { useModal } from "../core/components/Modal"
 import alertBox from "../core/utils/alertBox"
-import { AddExpenses } from "./AddExpenses"
+import { AddExpenses } from "../pettyCash/components/AddExpenses"
 
 interface ExpensesProps {
     isView?: boolean

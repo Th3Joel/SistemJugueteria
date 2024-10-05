@@ -188,3 +188,10 @@ var MsjDenominationVal = map[string]string{
 	"TotalCordoba.numeric":  "Solo se aceptan números",
 	"TotalCordoba.gtC":      "Total debe ser mayor a 0",
 }
+
+var RefundsValidation = map[string]string{
+	"Amount.required": "Campo requerido.",
+	"Amount.numeric":  "Solo se aceptan números",
+	"Amount.gtC":      "Monto debe ser mayor a 0",
+	"Observation.max": "Máximo 80 caracteres",
+}

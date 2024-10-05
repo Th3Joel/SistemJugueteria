@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"Jugueteria/config"
+	"Jugueteria/helpers"
 	"Jugueteria/models"
 	"Jugueteria/types"
 	"strings"
@@ -34,16 +35,23 @@ func (company CompanyC) Show(f *fiber.Ctx) error {
 }
 
 func (company CompanyC) Update(f *fiber.Ctx) error {
-
+	filesH := helpers.FilesH{Path: "uploads"}
 	db := config.DB.Model(company.Model)
 	_ = f.BodyParser(&company)
 	company.trim(&company)
 	file, _ := f.FormFile("file0")
 	if file != nil {
 		parts := strings.Split(file.Filename, ".")
-		path := "uploads/logo." + parts[1]
-		f.SaveFile(file, path)
-		company.Logo = path
+		filename := "logo." + parts[1]
+		//f.SaveFile(file, path)
+		err := filesH.SaveFile(filename, file)
+		if !err {
+			return f.JSON(types.Response{
+				Status: false,
+				Msj:    "Error al guardar el archivo",
+			})
+		}
+		company.Logo = filename
 	}
 	db.
 		Where("id = 1").
@@ -58,7 +66,20 @@ func (company CompanyC) Update(f *fiber.Ctx) error {
 }
 func (company CompanyC) File(f *fiber.Ctx) error {
 	config.DB.Model(company.Model).Where("id = 1").First(&company)
-	return f.SendFile(company.Logo)
+	filesH := helpers.FilesH{Path: "uploads"}
+	logo, err := filesH.GetFile(company.Logo)
+	if !err {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "No hay logo",
+		})
+	}
+	parts := strings.Split(company.Logo, ".")
+	if parts[1] == "svg" {
+		parts[1] = "svg+xml"
+	}
+	f.Set("Content-type", "image/"+parts[1])
+	return f.Send(logo)
 }
 func (CompanyC) trim(u *CompanyC) {
 	u.Name = strings.TrimSpace(u.Name)

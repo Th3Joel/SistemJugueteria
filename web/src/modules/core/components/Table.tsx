@@ -110,7 +110,6 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body, v2, v3 }) => {
           <div className="h-12 flex items-center">
             <Link to={`/${ruta}/add`}>
               <div className="btnAdd">
-
                 <Button variant="contained">Agregar</Button>
               </div>
             </Link>
@@ -165,6 +164,7 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body, v2, v3 }) => {
                   <tr>
                     {colunms.map((x, i) => {
                       return (x == "" ?
+
                         <th key={i} className="border-none">{x}</th> :
                         <th key={i} className="text-nowrap">{x}</th>)
                     }

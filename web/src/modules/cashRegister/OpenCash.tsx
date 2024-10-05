@@ -1,6 +1,5 @@
 import cashImage from "@/assets/cash.png";
 import { Button } from "@mui/material";
-import { Expenses } from "./Expenses";
 import { useForm } from "../core/hooks/useForm";
 import { useEffect, useState } from "react";
 import { formatNumber } from "../core/utils/formatNumber";
@@ -97,11 +96,6 @@ export const OpenCash = () => {
                     </span>
 
                 </div>
-            </div>
-            <div className="rounded-xl shadow-xl px-4 py-4 w-[700px] border">
-
-
-                <Expenses />
             </div>
         </div>
     )

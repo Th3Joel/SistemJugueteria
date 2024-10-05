@@ -10,7 +10,7 @@ const Layout = () => {
   const { estado, inc } = SidebarState();
   const auth = AuthState();
 
-  if (!auth.estado) {
+  if (!auth.estado ) {
     return <Navigate to="/auth/login" replace />;
   }
 

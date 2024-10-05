@@ -61,7 +61,12 @@ const Setting = () => {
         setValue(0);
         break;
       case "/settings/profile":
-        user.Role == "vendedor" ? setValue(0) : setValue(1);
+        if (user.Role == "vendedor") {
+          setValue(0)
+        }
+        if (user.Role == "admin") {
+          setValue(1);
+        }
         break;
       case "/settings/company":
         setValue(2);
@@ -77,22 +82,25 @@ const Setting = () => {
   return (
     <div>
       <div className="px-5 mt-2">
-        <Tabs value={value} aria-label="basic tabs example" variant="scrollable" scrollButtons="auto">
-          {
-            user.Role == "admin" && <Tab label="Usuarios" {...a11yProps(0, nv)} />
-          }
 
-          <Tab label="Perfil" {...a11yProps(user.Role == "admin" ? 1 : 0, nv)} />
+        {
+          user.Role == "admin" &&
+          <Tabs value={value} aria-label="basic tabs example" variant="scrollable" scrollButtons="auto">
+            <Tab label="Usuarios" {...a11yProps(0, nv)} />
+            <Tab label="Perfil" {...a11yProps(1, nv)} />
+            <Tab label="Empresa" {...a11yProps(2, nv)} />
+            <Tab label="Mantenimiento" {...a11yProps(3, nv)} />
+          </Tabs>
+        }
 
-          {
-            user.Role == "admin" &&
-            <>
-              <Tab label="Empresa" {...a11yProps(2, nv)} />
-              <Tab label="Mantenimiento" {...a11yProps(3, nv)} />
-            </>
-          }
+        {
+          user.Role == "vendedor" &&
+          <Tabs value={value} aria-label="basic tabs example" variant="scrollable" scrollButtons="auto">
+            <Tab label="Perfil" {...a11yProps(0, nv)} />
+          </Tabs>
 
-        </Tabs>
+        }
+
       </div>
       <Card notAnimate>
         <CustomTabPanel value={value} index={value} />

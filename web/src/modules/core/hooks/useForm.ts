@@ -50,11 +50,14 @@ export const useForm = <T>(object: IData<T>) => {
     return false;
   };
 
-  const get = async (url: string) => {
+  const get = async (url: string, showToast?: boolean) => {
     setLoading(true);
     const res = await useFetch<IResponseFetch<T>>(url, "GET");
     setLoading(false);
     if (res.status) {
+      if (showToast) {
+        toast.success(res.msj);
+      }
       setData(res.find);
       return true
     }
@@ -63,15 +66,13 @@ export const useForm = <T>(object: IData<T>) => {
     return false;
   };
 
-
-
   return {
     post,
     get,
     loading,
     errors,
     data,
-    inputChange
+    inputChange,
   };
 
 };

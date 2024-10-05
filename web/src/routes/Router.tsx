@@ -50,6 +50,7 @@ import SuppliersReport from "@/pages/reports/SuppliersReport";
 import CostumersReport from "@/pages/reports/CostumersReport";
 import PurchasesReport from "@/pages/reports/PurchasesReport";
 import SalesReport from "@/pages/reports/SalesReport";
+import PettyCash from "@/pages/pettyCash/PettyCash";
 
 const Router = () => {
     const auth = AuthState();
@@ -65,12 +66,11 @@ const Router = () => {
             ) : (
                 <Routes>
                     <Route path="/" element={<Layout />}>
-
+                        
                         <Route index element={<Dashboard />} />
                         {
-                            auth.user.Role == "admin" &&
+                            (auth.user.Role == "admin" || auth.user.Role == "") &&
                             <>
-
                                 <Route path="/clientes" element={<Clientes />} />
                                 <Route path="/clientes/edit/:id" element={<EditCostumer />} />
                                 <Route path="/clientes/add" element={<AddCostumer />} />
@@ -95,26 +95,28 @@ const Router = () => {
                                 <Route path="/categories/edit/:id" element={<EditCategory />} />
                                 <Route path="/categories/add" element={<AddCategory />} />
 
+
                                 <Route path="/reports" element={<Reports />} />
 
                             </>
                         }
+                        <Route path="/petty-cash" element={<PettyCash />} />
 
                         <Route path="/settings" element={<Setting />}>
                             {
-                                auth.user.Role == "admin" &&
+                                (auth.user.Role == "admin" || auth.user.Role == "") &&
                                 <>
                                     <Route index element={<Users />} />
                                     <Route path="users" element={<Users />} />
                                     <Route path="users/add" element={<AddUsers />} />
                                     <Route path="users/edit/:id" element={<EditUsers />} />
+                                    <Route path="profile" element={<Profile />} />
                                     <Route path="company" element={<Company />} />
                                     <Route path="maintenance" element={<Maintenance />} />
-
                                 </>
-                            }
+                            } 
                             {
-                                auth.user.Role == "vendedor" &&
+                                (auth.user.Role == "vendedor" || auth.user.Role == "") &&
                                 <>
                                     <Route index element={<Profile />} />
                                     <Route path="profile" element={<Profile />} />
@@ -139,12 +141,10 @@ const Router = () => {
                             <Route path="history" element={<History />} />
                             <Route path="show/:id" element={<ViewCash />} />
                         </Route>
-
-
                     </Route>
                     {
-                        auth.user.Role == "admin" &&
-                        <Route path="/report" element={<LayoutReport />}>
+                        (auth.user.Role == "admin" || auth.user.Role == "") &&    
+                        <Route path="report" element={<LayoutReport />}>
                             <Route path="inventory/:id?" element={<InventoryReport />} />
                             <Route path="specific-sale/:id" element={<SpecificSale />} />
                             <Route path="specific-purchase/:id" element={<SpecificPurchase />} />

@@ -33,11 +33,11 @@ interface ISelectSupplier {
   id: string;
   name: string;
 }
-interface IArticleBox {
-  cost: number;
-  toys_quantity: number;
-  purchase_price: number;
-}
+// interface IArticleBox {
+//   cost: number;
+//   toys_quantity: number;
+//   purchase_price: number;
+// }
 const AddPurchase = () => {
   const [showDrawer, setShowDrawer] = useState(false);
   const [select, setSelect] = useState<IOptions[]>([{ key: "", value: "" }]);
@@ -88,16 +88,16 @@ const AddPurchase = () => {
     }
   };
 
-  const fetchCost = (id: string) => {
-    useFetch<{ status: boolean; find: IArticleBox }>(
-      "/articles-box/cost/" + id,
-      "GET",
-    ).then((res) => {
-      if (res.status) {
-        //setCostArticle(parseFloat(res.find.cost.toFixed(2)));
-      }
-    });
-  };
+  // const fetchCost = (id: string) => {
+  //   useFetch<{ status: boolean; find: IArticleBox }>(
+  //     "/articles-box/cost/" + id,
+  //     "GET",
+  //   ).then((res) => {
+  //     if (res.status) {
+  //       //setCostArticle(parseFloat(res.find.cost.toFixed(2)));
+  //     }
+  //   });
+  // };
 
   const handleErrors = (errors: TDetailErrors, field: string, id: string) => {
     function some() {
@@ -215,7 +215,7 @@ const AddPurchase = () => {
                   options={select}
                   valueChange={(e) => {
                     if (e != "") changeInput(e, "articleBoxID");
-                    fetchCost(e);
+                    //fetchCost(e);
                   }}
                   error={!!errors.articleBoxID}
                   helperText={errors.articleBoxID}

@@ -14,7 +14,8 @@ import {
   FaCartArrowDown,
   FaHandHoldingDollar,
   FaPeopleCarryBox,
-  FaNewspaper
+  FaNewspaper,
+  FaWallet
 } from "react-icons/fa6";
 
 export const Sidebar = () => {
@@ -24,12 +25,13 @@ export const Sidebar = () => {
 
   return (
     <div
-      className={`fixed z-10 top-0 px-3 w-[260px] animate__fadeInLeft text-white bg-slate-700 h-[100dvh] duration-300 ${estado ? "-ml-[260px]" : "ml-0"
+      className={`fixed z-10 top-0 px-3 pb-[135px] w-[260px] animate__fadeInLeft text-white bg-slate-700 h-[100dvh] duration-300 ${estado ? "-ml-[260px]" : "ml-0"
         }`}
     >
+
       <div className="px-1 h-16 flex items-center">
         <img
-          src={company.Logo}
+          src={`${company.Logo}`}
           width={40}
           height={40}
           className="rounded-full"
@@ -54,8 +56,8 @@ export const Sidebar = () => {
         </div>
       </div>
       <hr className="border-gray-500" />
-      <div className="overflow-y">
-        <div className="my-6">
+
+      <div className="overflow-y-auto h-full">
           <div
             className={`border duration-300 border-[#0071BC] ${pathname === "/" && "bg-[#E261B1] border-[#E261B1]"
               } rounded-lg px-3 py-2 my-3`}
@@ -93,9 +95,20 @@ export const Sidebar = () => {
             </Link>
           </div>
 
+          <div
+            className={`border duration-300 border-[#0071BC] ${pathname.startsWith("/petty-cash") &&
+              "bg-[#E261B1] border-[#E261B1]"
+              } rounded-lg px-3 py-2 my-3`}
+          >
+            <Link to="/petty-cash" className="flex">
+              <FaWallet className="text-2xl" />
+              <p className="pl-2">Caja chica</p>
+            </Link>
+          </div>
           {
             user.Role == "admin" &&
             <>
+
               <div
                 className={`border duration-300 border-[#0071BC] ${pathname.startsWith("/clientes") && "bg-[#E261B1] border-[#E261B1]"
                   } rounded-lg px-3 py-2 my-3`}
@@ -193,11 +206,7 @@ export const Sidebar = () => {
               <p className="pl-2">Configuración</p>
             </Link>
           </div>
-
-
         </div>
-
-      </div>
     </div>
   );
 };

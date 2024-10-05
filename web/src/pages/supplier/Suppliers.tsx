@@ -6,20 +6,23 @@ import { FaPencil, FaTrash } from "react-icons/fa6";
 import { useTable } from "@/modules/core/hooks/useTable.ts";
 import { TitleState } from "@/modules/core/states/title-state";
 import { useEffect } from "react";
+import { StateDriver, stepsTable } from "@/modules/core/utils/driver";
 
 export interface ISupplier {
     id: string
     Name: string
     Email: string
     Phone: string
-    Address: string
+    Address: string 
 }
 
 const Suppliers = () => {
     const hook = useTable<ISupplier>()
     const { setTitle } = TitleState();
+    const {setSteps} = StateDriver();
     useEffect(() => {
         setTitle("Proveedores");
+        setSteps(stepsTable);
     }, [])
     return (
         <Card>

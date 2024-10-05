@@ -23,11 +23,20 @@ func Seed(db *gorm.DB) {
 	db.Save(&user)
 
 	company := models.Company{
-		ID:   "1",
-		Name: "Jugueteria",
+		ID:          "1",
+		Name:        "Jugueteria",
+		PriceDollar: 36.80,
 	}
 
 	db.Save(&company)
+
+	pettyCash := models.PettyCash{
+		ID:             1,
+		InitialBalance: 1000,
+		Balance:        1000,
+		Limit:          500,
+	}
+	db.Save(&pettyCash)
 
 	if db.Error != nil {
 		fmt.Println("No se pudo ejecutar el seeder")

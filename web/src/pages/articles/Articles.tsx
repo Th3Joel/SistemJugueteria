@@ -2,6 +2,7 @@ import { Card } from "@/modules/core/components/Card"
 import Table from "@/modules/core/components/Table"
 import { useTable } from "@/modules/core/hooks/useTable"
 import { TitleState } from "@/modules/core/states/title-state"
+import { StateDriver, stepsTable } from "@/modules/core/utils/driver"
 import { formatNumber } from "@/modules/core/utils/formatNumber"
 import { IconButton } from "@mui/material"
 import { useEffect } from "react"
@@ -28,8 +29,12 @@ interface IArticle {
 const Articles = () => {
     const hook = useTable<IArticle>()
     const { setTitle } = TitleState();
+    const { setSteps } = StateDriver();
+
     useEffect(() => {
         setTitle("Artículos");
+        setSteps(stepsTable);
+
     }, [])
     return (
         <Card>

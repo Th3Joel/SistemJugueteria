@@ -6,6 +6,7 @@ import path from "path"
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base:'/sis',
   plugins: [react()],
   resolve: {
     alias: {
@@ -13,6 +14,7 @@ export default defineConfig({
     }//[{find:'@',replacement:path.resolve(__dirname,"src")}]
   },
   build: {
+    outDir: "dist/sis/",
     minify: true,
     //chunkSizeWarningLimit:1000
     rollupOptions: {
