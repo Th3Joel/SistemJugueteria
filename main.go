@@ -40,10 +40,10 @@ func main() {
 	config.ConnectDB()
 
 	app.Use(func(f *fiber.Ctx) error {
-		//Secure options fo headers
+		//Secure options to headers
 		f.Set("X-Powered-By", "Triceratox software")
 		f.Set("X-Frame-Options", "DENY")
-		f.Set("Content-Security-Policy", "default-src 'self'; connect-src *; font-src *; script-src-elem * 'unsafe-inline'; img-src * data:; style-src * 'unsafe-inline';")
+		//f.Set("Content-Security-Policy", "default-src 'self'; connect-src *; font-src *; script-src-elem * 'unsafe-inline'; img-src * data:; style-src * 'unsafe-inline';")
 		f.Set("X-XSS-Protection", "1; mode=block")
 		f.Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
 		f.Set("Referrer-Policy", "strict-origin")
@@ -64,6 +64,11 @@ func main() {
 		AllowCredentials: true,
 		AllowMethods:     "GET,POST,PUT,DELETE",
 	}))
+	app.Get("/", func(c *fiber.Ctx) error {
+		c.Set("Content-Type", "text/html")
+		return c.Send([]byte("<h1><a href='/sis'>Ir al sistema</a></h1>"))
+
+	})
 
 	//Frontend
 	//servir archivos staticos dentro del binario

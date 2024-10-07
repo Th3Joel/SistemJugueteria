@@ -174,7 +174,7 @@ CREATE TABLE `companies` (
 LOCK TABLES `companies` WRITE;
 /*!40000 ALTER TABLE `companies` DISABLE KEYS */;
 INSERT INTO `companies` VALUES
-('1','Jugueteria','','','','','uploads/logo.png',36.8,'2024-09-26 22:28:29.229','2024-09-26 22:28:29.228');
+('1','Jugueteria','','','','','logo.png',36.8,'2024-09-26 22:28:29.229','2024-09-26 22:28:29.228');
 /*!40000 ALTER TABLE `companies` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -562,4 +562,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2024-10-03 22:29:30
+-- Dump completed on 2024-10-06 11:30:00

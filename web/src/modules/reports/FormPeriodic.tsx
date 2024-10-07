@@ -12,7 +12,7 @@ interface IFormPeriodic {
 export const FormPeriodic: React.FC<{ isSale?: boolean }> = ({ isSale }) => {
     const [errors, setErrors] = useState<Record<string,string>>({})
     const [data, setData] = useState<IFormPeriodic>({ startDate: dayjs(Date.now()).format("YYYY-MM-DD"), endDate: dayjs(Date.now() + (24 * 60 * 60 * 24 * 30)).format("YYYY-MM-DD") })
-    const uri = "/report/" + (isSale ? "sales" : "purchases");
+    const uri = "/sis/report/" + (isSale ? "sales" : "purchases");
     const submit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const startDate = data.startDate

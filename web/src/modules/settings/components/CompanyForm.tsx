@@ -1,10 +1,11 @@
 import { Button } from "@mui/material";
 import { InputText } from "@/modules/core/components/Input";
 import { useForm } from "@/modules/core/hooks/useForm.ts";
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import LoaderBtn from "@/modules/core/components/LoaderBtn.tsx";
 import { FaBuilding, FaBuildingUser, FaEnvelope, FaMapLocationDot, FaPhone } from "react-icons/fa6";
 import { AuthState } from "@/modules/core/states/auth-state";
+import { useImg } from "@/modules/core/hooks/useImg";
 
 
 interface IFormData {
@@ -26,24 +27,8 @@ export const CompanyForm = () => {
         Address: company.Address ?? "",
         PriceDollar: company.PriceDollar ?? ""
     });
-    // const {RenderImage,RenderInputFile} = ImageInput();
-    const [logo, setLogo] = useState<string>('');
+    const { fileRef, img, handleFile, handleInputFile } = useImg();
 
-    const fileRef = useRef<HTMLInputElement | null>(null);
-
-    const handleFile = () => {
-        if (fileRef.current) {
-            const file = fileRef.current.files?.[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onloadend = () => {
-                    setLogo(reader.result as string);
-
-                };
-            }
-        }
-    };
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         post("/settings/company", e.currentTarget, true).then((e) => {
@@ -53,21 +38,14 @@ export const CompanyForm = () => {
         });
     };
 
-    const handleInputFile = () => {
-
-        if (fileRef.current) {
-            fileRef.current.click();
-        }
-    };
-
     useEffect(() => {
         get("/settings/company");
-    }, []);
+    }, []); 
     return (
         <div className="animate__fadeIn">
             <div
                 className="w-[350px] h-[250px] flex flex-col gap-1 my-3 shadow-lg rounded-lg justify-center items-center">
-                <img src={logo ? logo : company.Logo} width={150} alt="logo" />
+                <img src={img ? img : company.Logo} width={150} alt="logo" />
                 <h1 className="text-xl font-semibold">{data?.Name}</h1>
                 <h2 className="text-lg font-semibold text-gray-500">{data?.Email}</h2>
             </div>

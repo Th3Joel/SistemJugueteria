@@ -1,4 +1,3 @@
-import userImg from "@/assets/user.png";
 import { InputText } from "@/modules/core/components/Input";
 import { Button } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,6 +6,8 @@ import React, { useEffect } from "react";
 import LoaderBtn from "@/modules/core/components/LoaderBtn.tsx";
 import { AuthState } from "@/modules/core/states/auth-state";
 import { FaEnvelope, FaICursor, FaKey, FaUnlockKeyhole, FaUserLock } from "react-icons/fa6";
+import { useImg } from "@/modules/core/hooks/useImg";
+import userImg from "@/assets/user.png";
 
 interface IProps {
     isEdit?: boolean;
@@ -18,6 +19,7 @@ interface IFormData {
     Name: string;
     Email: string;
     Role: string;
+    Picture: string;
     Password: string;
     Confirm: string;
 }
@@ -29,11 +31,13 @@ export const UsersForm: React.FC<IProps> = ({ isEdit, id, isProfile }) => {
         Name: isProfile ? user.Name : '',
         Email: isProfile ? user.Email : '',
         Role: '',
+        Picture:"",
         Password: "",
         Confirm: ""
     });
 
     const navigate = useNavigate();
+    const { fileRef, img, handleFile, handleInputFile } = useImg();
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -59,16 +63,25 @@ export const UsersForm: React.FC<IProps> = ({ isEdit, id, isProfile }) => {
             <form className="p-3" onSubmit={handleSubmit}>
                 <div className="flex items-center gap-3">
                     <img
-                        src={userImg}
-                        alt=""
+                        src={
+                            img ? img 
+                            : 
+                            isProfile ? `/api/settings/users/picture/${user.Email}` 
+                            : 
+                            data.Picture ? `/api/settings/users/picture/${data.Email}` 
+                            : 
+                            userImg}
+                        alt="profile pic"
                         width={60}
                         height={60}
                         className="rounded-full"
-                    />
-                    <span
-                        className="mx-auto bg-gray-300 cursor-pointer text-center w-[300px] border px-3 py-2 rounded-md">
-                        Seleccionar imagen
-                    </span>
+                    /> 
+                    <div onClick={handleInputFile}
+                            className={'mx-auto bg-gray-300 cursor-pointer w-full text-center border px-3 py-2 rounded-lg'}>
+                            Seleccionar imagen
+                            <input type="file" accept='image/*' name="file0" onChange={handleFile} className="hidden" ref={fileRef} />
+
+                        </div>
                 </div>
                 <section className="mt-3 flex flex-col gap-3">
                     <InputText

@@ -15,6 +15,7 @@ func UserR(f fiber.Router) {
 
 	//Mostrar usuario logeado
 	r.Get("/user", userC.Show)
+	r.Get("/picture/:email", userC.GetPicture)
 
 	//Ruta protegidas solo el administrador
 	admin := r.Group("", mdd.RoleM([]string{}))

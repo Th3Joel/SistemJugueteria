@@ -1,7 +1,7 @@
 import { SidebarState } from "@/modules/core/states/sidebar-state";
-import userImg from "@/assets/user.png";
 import { Link, useLocation } from "react-router-dom";
 import { AuthState } from "../states/auth-state";
+import userImg from "@/assets/user.png";
 
 import {
   FaBoxOpen,
@@ -31,7 +31,7 @@ export const Sidebar = () => {
 
       <div className="px-1 h-16 flex items-center">
         <img
-          src={`${company.Logo}`}
+          src={company.Logo}
           width={40} 
           height={40}
           className="rounded-full"
@@ -42,7 +42,7 @@ export const Sidebar = () => {
       <hr className="border-gray-500" />
       <div className="px-1 h-16 flex items-center">
         <img
-          src={userImg}
+          src={user.Picture ? `/api/settings/users/picture/${user.Email}` : userImg}
           width={40}
           height={40}
           className="rounded-full"

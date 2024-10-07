@@ -5,10 +5,11 @@ import (
 	"Jugueteria/helpers"
 	"Jugueteria/models"
 	"Jugueteria/types"
-	"github.com/gofiber/fiber/v2"
-	"github.com/google/uuid"
 	"math"
 	"strings"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 type UserC struct {
@@ -16,7 +17,7 @@ type UserC struct {
 	ID       string `json:"id"`
 	Name     string `json:"Name"`
 	Role     string `json:"Role"`
-	Picture  string `json:"picture,omitempty"`
+	Picture  string `json:"Picture,omitempty"`
 	Password string `json:"Password,omitempty"`
 	Email    string `json:"Email,omitempty"`
 	//Settings
@@ -108,6 +109,21 @@ func (user UserC) Save(c *fiber.Ctx) error {
 	//Pasar el body a la estructura
 	_ = c.BodyParser(&user)
 
+	fileH := helpers.FilesH{Path: "uploads"}
+	file, _ := c.FormFile("file0")
+	if file != nil {
+		parts := strings.Split(file.Filename, ".")
+		filename := user.Email + "." + parts[1]
+		err := fileH.SaveFile(filename, file)
+		if !err {
+			return c.JSON(types.Response{
+				Status: false,
+				Msj:    "Error al guardar el archivo",
+			})
+		}
+		user.Picture = filename
+	}
+
 	user.trim(&user)
 
 	antePass := user.Password
@@ -150,6 +166,23 @@ func (user UserC) UpdateId(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	_ = c.BodyParser(&user)
+
+	//Guardar imagen
+	fileH := helpers.FilesH{Path: "uploads"}
+	file, _ := c.FormFile("file0")
+	if file != nil {
+		parts := strings.Split(file.Filename, ".")
+		filename := user.Email + "." + parts[1]
+		err := fileH.SaveFile(filename, file)
+		if !err {
+			return c.JSON(types.Response{
+				Status: false,
+				Msj:    "Error al guardar el archivo",
+			})
+		}
+		user.Picture = filename
+	}
+
 	user.trim(&user) //Eliminar los espacios en blanco
 	if user.Password != "" {
 		user.Password = passwdH.Hash(user.Password)
@@ -177,6 +210,23 @@ func (user UserC) Update(c *fiber.Ctx) error {
 	id := c.Locals("userId").(string)
 
 	_ = c.BodyParser(&user)
+
+	//Guardar imagen
+	fileH := helpers.FilesH{Path: "uploads"}
+	file, _ := c.FormFile("file0")
+	if file != nil {
+		parts := strings.Split(file.Filename, ".")
+		filename := user.Email + "." + parts[1]
+		err := fileH.SaveFile(filename, file)
+		if !err {
+			return c.JSON(types.Response{
+				Status: false,
+				Msj:    "Error al guardar el archivo",
+			})
+		}
+		user.Picture = filename
+	}
+
 	user.trim(&user) //Eliminar los espacios en blanco
 	if user.Password != "" {
 		user.Password = passwdH.Hash(user.Password)
@@ -211,6 +261,26 @@ func (user UserC) Delete(c *fiber.Ctx) error {
 		Status: true,
 		Msj:    "Usuario eliminado",
 	})
+}
+
+func (u UserC) GetPicture(f *fiber.Ctx) error {
+	email := f.Params("email")
+	config.DB.Model(u.Model).Select("picture", "email").Where("email = ?", email).First(&u)
+
+	filesH := helpers.FilesH{Path: "uploads"}
+	picture, err := filesH.GetFile(u.Picture)
+	if !err || u.Email == "" {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "Imagen no encontrado",
+		})
+	}
+	parts := strings.Split(u.Picture, ".")
+	if parts[2] == "svg" {
+		parts[2] = "svg+xml"
+	}
+	f.Set("Content-type", "image/"+parts[2])
+	return f.Send(picture)
 }
 
 func (UserC) trim(u *UserC) {

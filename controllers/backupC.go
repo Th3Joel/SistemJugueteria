@@ -40,7 +40,7 @@ func (BackupC) Generate(f *fiber.Ctx) error {
 	user := "joel"
 	password := "Jo12el34//"
 	database := "jugueteria"
-	outputFile := "backups/" + time.Now().Format("2006-01-02_15:04:05") + ".sql"
+	outputFile := "backups/" + time.Now().Format("2006_01_02 15_04_05") + ".sql"
 
 	cmd := exec.Command("mysqldump", "-u"+user, "-p"+password, database)
 
