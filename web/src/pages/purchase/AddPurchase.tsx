@@ -220,7 +220,7 @@ const AddPurchase = () => {
                   error={!!errors.articleBoxID}
                   helperText={errors.articleBoxID}
                 />
-              </span>
+              </span> 
 
               <span className="w-[200px]">
                 <InputText
@@ -247,7 +247,7 @@ const AddPurchase = () => {
                   helperText={errors?.quantityBox}
                 />
               </span>
-
+ 
 
             </section>
           </div>

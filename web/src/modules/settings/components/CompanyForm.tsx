@@ -6,7 +6,7 @@ import LoaderBtn from "@/modules/core/components/LoaderBtn.tsx";
 import { FaBuilding, FaBuildingUser, FaEnvelope, FaMapLocationDot, FaPhone } from "react-icons/fa6";
 import { AuthState } from "@/modules/core/states/auth-state";
 import { useImg } from "@/modules/core/hooks/useImg";
-
+import logoImg from "@/assets/logo.jpg";
 
 interface IFormData {
     Name: string;
@@ -45,7 +45,7 @@ export const CompanyForm = () => {
         <div className="animate__fadeIn">
             <div
                 className="w-[350px] h-[250px] flex flex-col gap-1 my-3 shadow-lg rounded-lg justify-center items-center">
-                <img src={img ? img : company.Logo} width={150} alt="logo" />
+                <img src={img ? img : company.Logo == "" ? logoImg : "/api/settings/company/logo"} width={150} alt="logo" />
                 <h1 className="text-xl font-semibold">{data?.Name}</h1>
                 <h2 className="text-lg font-semibold text-gray-500">{data?.Email}</h2>
             </div>

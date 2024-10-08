@@ -122,3 +122,11 @@ type Refund struct {
 	Amount      string `validate:"required,numeric,gtC=0"`
 	Observation string `validate:"omitempty,max=80"`
 }
+
+//OtherInventoryOuputs
+
+type OtherInventoryOuputs struct {
+	ArticleID string `validate:"required"`
+	Quantity  string `validate:"required,numeric,gtC=0"`
+	Reason    string `validate:"required,max=80"`
+}

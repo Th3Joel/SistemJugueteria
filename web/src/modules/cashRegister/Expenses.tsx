@@ -26,7 +26,7 @@ export const Expenses: React.FC<ExpensesProps> = ({ isView, expenses }) => {
     const { RenderModal, setModalShow } = useModal()
 
     const getData = async () => {
-        const res = await useFetch<{ status: boolean, find: ExpensesData[] }>("/expenses", "GET")
+        const res = await useFetch<{ status: boolean, find: ExpensesData[] }>("/expenses/all", "GET")
         if (res.status) {
             setData(res.find)
         }

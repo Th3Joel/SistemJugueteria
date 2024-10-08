@@ -1,0 +1,30 @@
+services:
+
+
+  app:
+    ##image: jugueteria
+    volumes:
+      - app_data:/app
+    # depends_on:
+    #   - db
+    ##command: ./sis
+    ports:
+      - "5000:5000"
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+  # db:
+  #   image: mysql:latest
+  #   environment:
+  #     #MYSQL_ROOT_PASSWORD: root_password
+  #     MYSQL_DATABASE: jugueteria
+  #     MYSQL_USER: joel
+  #     MYSQL_PASSWORD: Jo12el34//
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - db_data:/var/lib/mysql
+volumes:
+  app_data:
+  db_data:

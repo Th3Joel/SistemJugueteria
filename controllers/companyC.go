@@ -27,7 +27,6 @@ func (company CompanyC) Show(f *fiber.Ctx) error {
 	db := config.DB.Model(company.Model)
 	db.Where("id = 1").
 		First(&company)
-	company.Logo = "/api/settings/company/logo"
 	return f.JSON(types.Response{
 		Status: true,
 		Find:   company,

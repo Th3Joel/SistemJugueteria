@@ -18,6 +18,7 @@ interface PurchaseState {
   quantityBox: string;
   costBox: string;
   valResto: string;
+
   //---------------
 
   //Data of payment record
@@ -299,7 +300,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
             msj: "Solo números",
           });
           valState = false;
-        } else if (f.discount >= f.subtotal) {
+        } else if (f.discount >= f.subtotal && isSale) {
           validationsDetailErrors.push({
             id: d.id,
             field: "discount",
@@ -370,6 +371,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
           valState = false;
         }
 
+
       });
       set({ errors: validationsErrors, detailErrors: validationsDetailErrors });
       console.log(valState)
@@ -391,6 +393,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
         costBox: "",
         costArticle: 0,
         total: "",
+        isSale: false,
       });
     },
     json() {
@@ -409,7 +412,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
         isSale,
         cashCordoba,
         cashDollar,
-        exchange
+        exchange,
       } = get();
       let js;
       if (isSale) {

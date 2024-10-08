@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import { useModal } from "../core/components/Modal";
 import { CloseCashRegsiter } from "./CloseCashRegsiter";
 import { AuthState } from "../core/states/auth-state";
+import { Expenses } from "./Expenses";
 
 interface IOpenCash {
     initialBalance: string
@@ -43,7 +44,7 @@ export const OpenCash = () => {
         const initialBalance = parseFloat(data.initialBalance)
 
         const dollarToCordoba = cashDolllarTotal * priceDollar
-        const cashTotal =  cashCordobaTotal + dollarToCordoba + initialBalance
+        const cashTotal = cashCordobaTotal + dollarToCordoba + initialBalance
         setDataView({
             dollarToCordoba,
             cashTotal,
@@ -94,8 +95,10 @@ export const OpenCash = () => {
                         <h2 className="text-gray-600 font-semilight">C$ {
                             formatNumber(dataView.cashTotal + "")}</h2>
                     </span>
-
                 </div>
+            </div>
+            <div className="rounded-xl shadow-xl px-4 py-4 w-[700px] border">
+                <Expenses />
             </div>
         </div>
     )

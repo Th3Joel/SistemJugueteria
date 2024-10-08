@@ -66,7 +66,7 @@ export const UsersForm: React.FC<IProps> = ({ isEdit, id, isProfile }) => {
                         src={
                             img ? img 
                             : 
-                            isProfile ? `/api/settings/users/picture/${user.Email}` 
+                            isProfile ? user.Picture ? `/api/settings/users/picture/${user.Email}` : userImg
                             : 
                             data.Picture ? `/api/settings/users/picture/${data.Email}` 
                             : 

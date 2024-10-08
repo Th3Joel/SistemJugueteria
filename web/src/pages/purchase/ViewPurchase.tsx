@@ -139,7 +139,7 @@ const ViewPurchase = () => {
   }, [data])
 
   useEffect(() => {
-    setTitle("Vizualizar compra");
+    setTitle("Visualizar compra");
     get("/purchases/" + id)
     return () => {
       clear();

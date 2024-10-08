@@ -11,10 +11,11 @@ RUN apt-get update && apt-get install -y wget \
 
 WORKDIR /app
 COPY sis .
-COPY uploads/ ./uploads/
+#COPY uploads/ ./uploads/
 
 #RUN cd web && ~/.bun/bin/bun install && ~/.bun/bin/bun run build
 
 #RUN /usr/local/go/bin/go mod download \
  #   && CGO_ENABLED=1 /usr/local/go/bin/go build -ldflags "-s -w" -o sis .
+ EXPOSE 5000
 CMD ./sis

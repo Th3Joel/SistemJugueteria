@@ -51,6 +51,7 @@ func ConnectDB() {
 			_ = db.AutoMigrate(models.PettyCash{})
 			_ = db.AutoMigrate(models.Refund{})
 			_ = db.AutoMigrate(models.Expenses{})
+			_ = db.AutoMigrate(models.OtherInventoryOutput{})
 		}
 		if v == "seed" {
 			Seed(db)

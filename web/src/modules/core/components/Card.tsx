@@ -29,7 +29,7 @@ export const Card: React.FC<Props> = ({ children, notAnimate, btnBack, btnBackLi
     <div className={`${!notAnimate && 'animate__fadeInLeft'} bg-white rounded-lg px-2 border border-[#EA4D1C]`}>
       {
         btnBack &&
-        <Tooltip title="Volver">
+        <Tooltip title="Volver" sx={{ zIndex: 50 }}>
           <Link to={btnBackLink ?? ""} className="mt-3 absolute -top-2 left-1">
             <IconButton color="primary">
               <FaCircleArrowLeft size={30} />
@@ -37,7 +37,9 @@ export const Card: React.FC<Props> = ({ children, notAnimate, btnBack, btnBackLi
           </Link>
         </Tooltip>
       }
-      {children}
+      <div style={{zIndex:20}}>
+        {children}
+      </div>
     </div>
   )
 }

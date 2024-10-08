@@ -195,3 +195,12 @@ var RefundsValidation = map[string]string{
 	"Amount.gtC":      "Monto debe ser mayor a 0",
 	"Observation.max": "Máximo 80 caracteres",
 }
+
+var OtherInventoryOuputsValidation = map[string]string{
+	"ArticleID.required": "Campo requerido.",
+	"Quantity.required":  "Campo requerido.",
+	"Quantity.numeric":   "Solo se aceptan números",
+	"Quantity.gtC":       "Cantidad debe ser mayor a 0",
+	"Reason.max":         "Máximo 80 caracteres",
+	"Reason.required":    "Campo requerido.",
+}

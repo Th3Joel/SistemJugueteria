@@ -32,8 +32,16 @@ type CashRegisterC struct {
 	Model        models.CashRegister `json:"-" gorm:"-"`
 	Array        []CashRegisterC     `json:"-" gorm:"-"`
 	// Sales        []Sales      `json:"sale" gorm:"foreignKey:CashRegisterID"`
-	// Expenses     Expenses     `json:"expense" gorm:"foreignKey:CashRegisterID"`
+	Expenses Expenses `json:"expense" gorm:"foreignKey:CashRegisterID"`
 	// Denomination Denomination `json:"denomination" gorm:"foreignKey:CashRegisterID"`
+}
+
+type Expenses struct {
+	ID             string `json:"-"`
+	CashRegisterID string `json:"-"`
+	NumInvoice     string `json:"NumInvoice"`
+	Detail         string `json:"Detail"`
+	Amount         string `json:"Amount"`
 }
 
 type Users struct {
@@ -179,6 +187,7 @@ func (c CashRegisterC) ShowId(f *fiber.Ctx, my bool) error {
 
 	sql := config.DB.
 		Model(c.Model).
+		Preload("expenses").
 		Preload("Users").
 		Preload("Denomination")
 	if my {

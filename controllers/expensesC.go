@@ -23,6 +23,16 @@ type ExpensesC struct {
 	Model models.Expenses `json:"-" gorm:"-"`
 }
 
+func (c ExpensesC) AllCashRegister(f *fiber.Ctx) error {
+	config.DB.Model(c.Model).
+		Where("cash_register_id = ?", f.Locals("cashRegisterId").(string)).
+		Find(&c.Array)
+	return f.JSON(types.Response{
+		Status: true,
+		Find:   c.Array,
+	})
+}
+
 func (c ExpensesC) All(f *fiber.Ctx) error {
 	db := config.DB.Model(c.Model)
 	var count int64

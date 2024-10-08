@@ -114,6 +114,8 @@ func main() {
 	routes.PettyCashR(api)
 	//BackupR
 	routes.BackupR(api)
+	//BusinessR
+	routes.BusinessR(api)
 
 	port := ""
 	if os.Getenv("PORT") == "" {

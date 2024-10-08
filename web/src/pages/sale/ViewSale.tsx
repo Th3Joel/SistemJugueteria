@@ -54,7 +54,7 @@ const ViewSale = () => {
   });
   const { setTitle } = TitleState();
   useEffect(() => {
-    setTitle("Vizualizar venta");
+    setTitle("Visualizar venta");
     get("/sales/" + id)
   }, [])
   return (

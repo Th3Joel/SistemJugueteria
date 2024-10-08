@@ -102,11 +102,24 @@ func (purchase PurchaseC) Save(f *fiber.Ctx) error {
 	code, _ := strconv.Atoi(purchase.Code)
 	total, _ := strconv.ParseFloat(purchase.Total, 64)
 	newId := uuid.NewString()
+
+	costBox, _ := strconv.ParseFloat(purchase.CostBox, 64)
+	quantityBox, _ := strconv.Atoi(purchase.QuantityBox)
+	purchasePriceArticle := costBox / float64(quantityBox)
+
+	state := 0
+	totalToysDetail := len(purchase.DetailPurchase)
+
+	if int64(totalToysDetail) >= int64(quantityBox) {
+		state = 1
+	}
+
 	info := config.DB.Create(&models.Purchases{
 		ID:           newId,
 		UserID:       f.Locals("userId").(string),
 		SupplierID:   purchase.SupplierID,
 		ArticleBoxID: purchase.ArticleBoxID,
+		State:        state,
 		Code:         code,
 		Total:        total,
 		CreatedAt:    time.Now(),
@@ -117,9 +130,6 @@ func (purchase PurchaseC) Save(f *fiber.Ctx) error {
 			Msj:    "Ha ocurrido un error",
 		})
 	}
-	costBox, _ := strconv.ParseFloat(purchase.CostBox, 64)
-	quantityBox, _ := strconv.Atoi(purchase.QuantityBox)
-	purchasePriceArticle := costBox / float64(quantityBox)
 
 	config.DB.
 		Where("id = ?", purchase.ArticleBoxID).
