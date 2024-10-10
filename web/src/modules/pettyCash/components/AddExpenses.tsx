@@ -8,12 +8,13 @@ import { pettyCashState } from "../states/DataState"
 import { formatNumber } from "@/modules/core/utils/formatNumber"
 
 interface IAddExpenses {
+    isCash?: boolean
     getData: () => void
     RenderModal: React.FC<ModalProps>
     setModalShow: (show: boolean) => void
 }
 
-export const AddExpenses: React.FC<IAddExpenses> = ({ getData, RenderModal, setModalShow }) => {
+export const AddExpenses: React.FC<IAddExpenses> = ({ getData, RenderModal, setModalShow, isCash }) => {
     const [err, setErr] = useState<Record<string, string>>({})
     const { balance } = pettyCashState()
     const { post, loading, data, errors, inputChange } = useForm<Omit<IExpenses, "id" | "Date">>({
@@ -25,14 +26,14 @@ export const AddExpenses: React.FC<IAddExpenses> = ({ getData, RenderModal, setM
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const pas = parseFloat(data.Amount)
-        if (pas > balance || pas < 10) {
+        if (!isCash && (pas > balance || pas < 10)) {
             setErr({
                 "pass": "Debe ser menor a C$" + formatNumber(balance + "")
             })
             return
         }
 
-        post("/expenses", e.currentTarget).then((res) => {
+        post(isCash ? "/expenses/cash" : "/expenses", e.currentTarget).then((res) => {
             if (res) {
                 getData()
                 setModalShow(false)

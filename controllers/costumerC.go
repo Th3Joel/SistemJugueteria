@@ -44,7 +44,7 @@ func (costumer CostumerC) All(f *fiber.Ctx) error {
 			Where("LOWER(name) LIKE LOWER(?)", "%"+q.Search+"%").
 			Find(&costumer.Array)
 	}
-	db.Count(&count)
+	config.DB.Model(costumer.Model).Select("COUNT(id) AS count").Count(&count)
 	//Rellena la vista
 	//var data []CostumerC
 	//data = []CostumerC{}
@@ -60,7 +60,7 @@ func (costumer CostumerC) All(f *fiber.Ctx) error {
 
 	//por que data del type ALll solo acepta un slice de interface{}
 	//Esto ayuda a que el slice sea de tipo CostumerC
-	data := make([]interface{}, count)
+	data := make([]interface{}, len(costumer.Array))
 	for i, v := range costumer.Array {
 		data[i] = v
 	}

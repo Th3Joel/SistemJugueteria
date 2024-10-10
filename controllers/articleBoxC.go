@@ -36,12 +36,21 @@ func (article ArticleBoxC) All(c *fiber.Ctx) error {
 	if q.Search == "" {
 		db.Find(&article.Array)
 	} else {
-		db.Where("LOWER(code) LIKE LOWER(?)", "%"+q.Search+"%").
+		search := "%" + q.Search + "%"
+		db.Where(`
+		LOWER(code) LIKE LOWER(?)
+		OR
+		LOWER(description) LIKE LOWER(?)
+		OR
+		toys_quantity LIKE ?
+		OR
+		purchase_price LIKE ?
+		`, search, search, search, search).
 			Find(&article.Array)
 	}
-	db.Count(&count)
+	config.DB.Model(article.Model).Select("COUNT(id) AS count").Count(&count)
 
-	data := make([]interface{}, count)
+	data := make([]interface{}, len(article.Array))
 	for i, v := range article.Array {
 		data[i] = v
 	}

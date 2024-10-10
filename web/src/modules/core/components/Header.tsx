@@ -4,11 +4,13 @@ import { Tooltip } from "@mui/material";
 import { FaBarsStaggered, FaQuestion, FaRightFromBracket } from "react-icons/fa6";
 import { TitleState } from "../states/title-state";
 import { StateDriver } from "../utils/driver";
+import { AuthState } from "../states/auth-state";
 
 export const Header = () => {
   const { estado, inc } = SidebarState();
   const { title } = TitleState();
   const {run} = StateDriver();
+  const {user} = AuthState();
  
 
   return (
@@ -37,7 +39,7 @@ export const Header = () => {
           <div>
             <FaRightFromBracket
               className="cursor-pointer"
-              onClick={logoutFetch}
+              onClick={()=>logoutFetch(user.Role)}
             />
           </div>
         </Tooltip>

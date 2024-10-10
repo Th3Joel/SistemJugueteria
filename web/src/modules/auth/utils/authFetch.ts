@@ -1,6 +1,7 @@
-import {useFetch} from "@/modules/core/hooks/useFetch";
-import {Dispatch, SetStateAction} from "react";
-import {toast} from "sonner";
+import { useFetch } from "@/modules/core/hooks/useFetch";
+import alertBox from "@/modules/core/utils/alertBox";
+import { Dispatch, SetStateAction } from "react";
+import { toast } from "sonner";
 
 export interface IErrors {
     Email?: string;
@@ -27,7 +28,7 @@ export const loginFetch = async (form: FormData, setErrors: Dispatch<SetStateAct
         }
     });
 
-    setErrors({loading: true})
+    setErrors({ loading: true })
     const res = await useFetch<IUseFetch>("/auth/login", "POST", cleanedForm, true);
     console.log(res)
     if (res.status) {
@@ -36,12 +37,13 @@ export const loginFetch = async (form: FormData, setErrors: Dispatch<SetStateAct
         return;
     }
     //useStorage().remove();
-    setErrors({...res.errors});
-    setErrors(ante => ({...ante, loading: false}))
+    setErrors({ ...res.errors });
+    setErrors(ante => ({ ...ante, loading: false }))
     res.msj && toast.error(res.msj)
 };
 
-export const logoutFetch = async () => {
+
+const l = async () => {
     const res = await useFetch<IUseFetch>("/auth/logout", "GET");
     if (res.status) {
         //useStorage().remove();
@@ -50,4 +52,29 @@ export const logoutFetch = async () => {
     }
     //useStorage().remove();
     toast.error(res.msj)
+}
+export const logoutFetch = async (role: string) => {
+    if (role == "admin") {
+        alertBox(
+            "warning",
+            "¿Respaldo?",
+            "Desea realizar un copia de seguridad de la base de datos?",
+            "Aceptar",
+            async () => {
+                const res = await useFetch<IUseFetch>("/backup/gen", "GET");
+                if (res.status) {
+                    l()
+                    return
+                }
+                toast.error(res.msj)
+            },
+            () => {
+                l()
+            }
+        )
+    }else{
+        l()
+    }
+
+
 }

@@ -9,10 +9,22 @@ interface IFormPeriodic {
     endDate: string
 }
 
-export const FormPeriodic: React.FC<{ isSale?: boolean }> = ({ isSale }) => {
+interface IProps {
+    reportType: ReportType
+}
+
+type ReportType = "sale" | "purchase" | "cashRegister" | "othersInventoryOutputs"
+
+export const FormPeriodic: React.FC<IProps> = ({ reportType }) => {
     const [errors, setErrors] = useState<Record<string,string>>({})
     const [data, setData] = useState<IFormPeriodic>({ startDate: dayjs(Date.now()).format("YYYY-MM-DD"), endDate: dayjs(Date.now() + (24 * 60 * 60 * 24 * 30)).format("YYYY-MM-DD") })
-    const uri = "/sis/report/" + (isSale ? "sales" : "purchases");
+   // const uri = "/sis/report/" + (isSale ? "sales" : "purchases");
+    const urls = {
+        sale: "/sis/report/sales",
+        purchase: "/sis/report/purchases",
+        cashRegister: "/sis/report/cashRegister",
+        othersInventoryOutputs: "/sis/report/othersInventoryOutputs",
+    }
     const submit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const startDate = data.startDate
@@ -26,7 +38,7 @@ export const FormPeriodic: React.FC<{ isSale?: boolean }> = ({ isSale }) => {
             return
         }
         setErrors({})
-        window.open(`${uri}?startDate=${startDate}&endDate=${endDate}`, "_blank")
+        window.open(`${urls[reportType]}?startDate=${startDate}&endDate=${endDate}`, "_blank")
     }
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,16 +51,16 @@ export const FormPeriodic: React.FC<{ isSale?: boolean }> = ({ isSale }) => {
         <div>
             <h1 className="text-center mb-1">Seleccione el periodo</h1>
             <div className="flex gap-2 flex-wrap">
-                <a href={uri + "/day"} target="_blank">
+                <a href={urls[reportType] + "/day"} target="_blank">
                     <Chip label="Del día" clickable />
                 </a>
-                <a href={uri + "/week"} target="_blank">
+                <a href={urls[reportType] + "/week"} target="_blank">
                     <Chip label="De la semana" clickable />
                 </a>
-                <a href={uri + "/month"} target="_blank">
+                <a href={urls[reportType] + "/month"} target="_blank">
                     <Chip label="Del mes" clickable />
                 </a>
-                <a href={uri + "/year"} target="_blank">
+                <a href={urls[reportType] + "/year"} target="_blank">
                     <Chip label="Del año" clickable />
                 </a>
             </div>
@@ -78,7 +90,7 @@ export const FormPeriodic: React.FC<{ isSale?: boolean }> = ({ isSale }) => {
                 </small>
                 <div className="mb-2">
                     <Button type="submit" variant="contained" color="primary" className="w-full">
-                        Generar personalizado
+                        Generar
                     </Button>
                 </div>
             </form>

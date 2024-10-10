@@ -34,3 +34,19 @@ export interface IRes{
   status: boolean
   msj: string
 }
+
+export interface ICashRegister {
+  user: {
+      name: string
+  }
+  state:string
+  initialBalance: string
+
+
+  totalSales: string
+  totalDollars: string
+
+  closedAt: string
+  createdAt: string
+  expenses: Expenses[]
+}

@@ -10,6 +10,7 @@ import { useFetch } from "@/modules/core/hooks/useFetch";
 import { useForm } from "@/modules/core/hooks/useForm";
 import { AuthState } from "@/modules/core/states/auth-state";
 import { TitleState } from "@/modules/core/states/title-state";
+import { StateDriver, stepsAddSale } from "@/modules/core/utils/driver";
 import { formatNumber } from "@/modules/core/utils/formatNumber";
 import {
   PurchaseState,
@@ -34,6 +35,7 @@ interface ISelectCostumer {
 }
 
 const AddSale = () => {
+  const { setSteps } = StateDriver();
   const [showDrawer, setShowDrawer] = useState<boolean>(false);
   const { setTitle } = TitleState();
   const { company } = AuthState()
@@ -105,7 +107,7 @@ const AddSale = () => {
       });
     }
   };
-  
+
   useEffect(() => {
     setTitle("Agregar venta");
     setCostDollar(company.PriceDollar)
@@ -114,6 +116,7 @@ const AddSale = () => {
     });
     setIsSale(true)
     fetchData();
+    setSteps(stepsAddSale);
     //Cuando se desmonta el componente
     return () => {
       clear();
@@ -134,13 +137,13 @@ const AddSale = () => {
                 <p className="text-gray-700 text-xl mt-4 text-center font-bold">Artículos registrados</p>
                 <div className="flex justify-center">
                   <div className="w-[800px]">
-                    <TableV2 />
+                    <TableV2 isSale />
                   </div>
                 </div>
 
               </Drawer>
               <div className="w-[800px]">
-                <div className="flex flex-col items-center border rounded-md p-2 mx-3 shadow-lg">
+                <div className="flex flex-col items-center border rounded-md p-2 mx-3 shadow-lg dataSaleGen">
                   <header className="text-gray-700 mb-2">
                     ---- Datos de venta ----
                   </header>
@@ -202,11 +205,13 @@ const AddSale = () => {
                     <header className="text-gray-700 text-lg">
                       Detalle de venta
                     </header>
-                    <Tooltip title="Agregar artículos">
-                      <IconButton sx={{ marginY: "2px" }} color="primary" onClick={() => setShowDrawer(true)}>
-                        <FaPlusCircle size={30} />
-                      </IconButton>
-                    </Tooltip>
+                    <span className="btnAddArticle">
+                      <Tooltip title="Agregar artículos">
+                        <IconButton sx={{ marginY: "2px" }} color="primary" onClick={() => setShowDrawer(true)}>
+                          <FaPlusCircle size={30} />
+                        </IconButton>
+                      </Tooltip>
+                    </span>
                   </div>
                   <hr />
                   <section className="mb-2 overflow-y-auto max-h-[360px]">

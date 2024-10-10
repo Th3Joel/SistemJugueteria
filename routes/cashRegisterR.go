@@ -18,5 +18,6 @@ func CashRegisterR(f fiber.Router) {
 	r.Get("/show/my/:id", func(c *fiber.Ctx) error { return cashRegister.ShowId(c, true) })
 	r.Get("/verify", mdd.CashM, cashRegister.Verify)
 	r.Post("/open", mdd.ValM(val.MsjReqOpenCashVal, val.ReqOpenCash{}, 0), cashRegister.Save)
-	r.Post("/close", mdd.ValM(val.MsjDenominationVal, val.Denomination{}, 0), mdd.CashM, cashRegister.Close)
+	//r.Post("/close", mdd.ValM(val.MsjDenominationVal, val.Denomination{}, 0), mdd.CashM, cashRegister.Close)
+	r.Delete("/close", mdd.CashM, cashRegister.Close)
 }

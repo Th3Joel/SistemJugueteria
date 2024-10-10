@@ -13,6 +13,8 @@ const Reports = () => {
     const [coSpecificPurchase, setCoSpecificPurchase] = useState<boolean>(false)
     const [coSpecificPeriodSale, setCoSpecificPeriodSale] = useState<boolean>(false)
     const [coSpecificPeriodPurchase, setCoSpecificPeriodPurchase] = useState<boolean>(false)
+    const [coCashRegisterPeriod, setCoCashRegisterPeriod] = useState<boolean>(false)
+    const [coOtherInventoryOutputs, setCoOtherInventoryOutputs] = useState<boolean>(false)
     useEffect(() => {
         setTitle("Reportes")
     }, [])
@@ -123,7 +125,7 @@ const Reports = () => {
 
                         <Collapse in={coSpecificPeriodSale}>
                             <div className="border-b border-x rounded-md px-3 py-1 w-[300px]">
-                                <FormPeriodic isSale />
+                                <FormPeriodic reportType="sale" />
                             </div>
                         </Collapse>
                     </div>
@@ -143,7 +145,47 @@ const Reports = () => {
 
                         <Collapse in={coSpecificPeriodPurchase}>
                             <div className="border-b border-x rounded-md px-3 py-1 w-[300px]">
-                                <FormPeriodic />
+                                <FormPeriodic reportType="purchase" />
+                            </div>
+                        </Collapse>
+                    </div>
+
+                    <div className="w-[300px]">
+                        <div onClick={() => setCoCashRegisterPeriod((s) => !s)} className="gap-4 relative border rounded-lg  h-[50px] border-blue-500 grid
+                                                place-items-center cursor-pointer hover:border-blue-600
+                                                hover:bg-blue-200 duration-300 hover:shadow-lg">
+
+                            <h1 className="text-xl">
+                                Arqueos de caja
+                            </h1>
+                            <div className="absolute right-3">
+                                <FaCircleChevronLeft size={24} className={`text-gray-600 duration-300 ${coCashRegisterPeriod ? "-rotate-90" : "rotate-0"}`} />
+                            </div>
+                        </div>
+
+                        <Collapse in={coCashRegisterPeriod}>
+                            <div className="border-b border-x rounded-md px-3 py-1 w-full">
+                                <FormPeriodic reportType="cashRegister" />
+                            </div>
+                        </Collapse>
+                    </div>
+
+                    <div className="w-[300px]">
+                        <div onClick={() => setCoOtherInventoryOutputs((s) => !s)} className="gap-4 relative border rounded-lg  h-[50px] border-blue-500 grid
+                                                place-items-center cursor-pointer hover:border-blue-600
+                                                hover:bg-blue-200 duration-300 hover:shadow-lg">
+
+                            <h1 className="text-xl">
+                                Salidas de inventario
+                            </h1>
+                            <div className="absolute right-3">
+                                <FaCircleChevronLeft size={24} className={`text-gray-600 duration-300 ${coOtherInventoryOutputs ? "-rotate-90" : "rotate-0"}`} />
+                            </div>
+                        </div>
+
+                        <Collapse in={coOtherInventoryOutputs}>
+                            <div className="border-b border-x rounded-md px-3 py-1 w-full">
+                                <FormPeriodic reportType="othersInventoryOutputs" />
                             </div>
                         </Collapse>
                     </div>

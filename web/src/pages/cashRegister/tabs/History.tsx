@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import Table from "@/modules/core/components/Table";
 import { useTable } from "@/modules/core/hooks/useTable";
 import { AuthState } from "@/modules/core/states/auth-state";
+import { useEffect } from "react";
+import { StateDriver, stepsCashRegisterHistory } from "@/modules/core/utils/driver";
 
 
 interface DataItem {
@@ -23,18 +25,22 @@ interface DataItem {
 const History = () => {
   const navigate = useNavigate();
   const hook = useTable<DataItem>()
-  const {user} = AuthState();
+  const { user } = AuthState();
+  const { setSteps } = StateDriver();
+
 
   const toDetail = (id: string, state: string) => {
     if (state === "0") {
       navigate(`/cash-register/show/${id}`)
     }
   }
-
+  useEffect(() => {
+    setSteps(stepsCashRegisterHistory)
+  }, [])
   return (
 
     <div className="flex justify-center my-2">
-      <div className="border rounded-xl">
+      <div className="border rounded-xl cashRegisterHistory">
         <Table
           v3
           hook={hook}
@@ -53,7 +59,7 @@ const History = () => {
                       user.Role == "admin" ?
                         item.user.name :
                         user.Name
-        
+
                     }</h2>
                     {
                       item.state === "1" ? <h3 className="text-green-700 mt-3">
@@ -86,7 +92,7 @@ const History = () => {
                     {
                       item.state === "0" &&
                       <span>
-                        Total ventas: C$ {formatNumber(item.totalSales)}
+                        Total ventas: C$ {item.totalSales == "0" ? "0.00" : formatNumber(item.totalSales)}
                       </span>
                     }
 

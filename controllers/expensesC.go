@@ -49,17 +49,19 @@ func (c ExpensesC) All(f *fiber.Ctx) error {
 	} else {
 		query := "%" + q.Search + "%"
 		db.Where(
-			`num_invoice LIKE ? 
+			`LOWER(num_invoice) LIKE LOWER(?)
 			 OR 
 			 LOWER(detail) LIKE LOWER(?)
 			 OR 
-			 amount LIKE ?
+			 LOWER(amount) LIKE LOWER(?)
+			 OR
+			 LOWER(created_at) LIKE LOWER(?)
 			`,
-			query, query, query).
+			query, query, query, query).
 			Find(&c.Array)
 	}
-	db.Count(&count)
-	data := make([]interface{}, count)
+	config.DB.Model(c.Model).Select("COUNT(id) AS count").Count(&count)
+	data := make([]interface{}, len(c.Array))
 	for i, v := range c.Array {
 		data[i] = v
 	}
@@ -76,29 +78,40 @@ func (c ExpensesC) All(f *fiber.Ctx) error {
 
 }
 
-func (c ExpensesC) Save(f *fiber.Ctx) error {
+func (c ExpensesC) Save(f *fiber.Ctx, isCash bool) error {
 	_ = f.BodyParser(&c)
 	amount, _ := strconv.ParseFloat(c.Amount, 64)
-	db := config.DB.Create(&models.Expenses{
-		ID:          uuid.NewString(),
-		PettyCashID: 1,
-		NumInvoice:  c.NumInvoice,
-		Detail:      c.Detail,
-		Amount:      amount,
-	})
-	if db.RowsAffected == 0 {
-		return f.JSON(types.Response{
-			Status: false,
-			Msj:    "No se ha guardado el egreso",
-		})
+
+	create := models.Expenses{
+		ID:         uuid.NewString(),
+		NumInvoice: c.NumInvoice,
+		Detail:     c.Detail,
+		Amount:     amount,
 	}
-	petty := models.PettyCash{}
-	sql := config.DB.First(&petty, 1)
-	amo := petty.Balance - amount
-	if amo < 0 {
-		amo = 0
+
+	if isCash {
+		create.CashRegisterID = f.Locals("cashRegisterId").(string)
+	} else {
+		create.PettyCashID = 1
 	}
-	sql.Update("balance", amo)
+
+	if isCash {
+		config.DB.Omit("petty_cash_id").Create(&create)
+	} else {
+		config.DB.Omit("cash_register_id").Create(&create)
+	}
+
+	if !isCash {
+
+		petty := models.PettyCash{}
+		sql := config.DB.First(&petty, 1)
+		amo := petty.Balance - amount
+		if amo < 0 {
+			amo = 0
+		}
+		sql.Update("balance", amo)
+	}
+
 	return f.JSON(types.Response{
 		Status: true,
 		Msj:    "Detalle de egreso guardado",

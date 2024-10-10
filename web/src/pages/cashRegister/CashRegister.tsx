@@ -69,7 +69,7 @@ const CashRegister = () => {
 
   return (
     <div>
-      <div className="px-5 mt-2">
+      <div className="px-5">
         <Tabs value={value} aria-label="basic tabs example" variant="scrollable" scrollButtons="auto">
           <Tab label="Tu Caja" {...a11yProps(0, nv)} />
           <Tab label="Historial" {...a11yProps(1, nv)} />

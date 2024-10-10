@@ -1,8 +1,9 @@
 import { Outlet } from 'react-router-dom'
-import './index.css';
+import './indexH.css';
 import { Button, IconButton } from '@mui/material';
 import { FaPrint } from 'react-icons/fa6';
 import { AuthState } from '@/modules/core/states/auth-state';
+import logoImg from '@/assets/logo.jpg';
 const LayoutReport = () => {
     window.document.title = "Reporte";
 
@@ -39,10 +40,10 @@ const LayoutReport = () => {
                                                 company.Email && <h1>Correo: {company.Email}</h1>
                                             }
                                         </div>
-                                    </div>
+                                    </div> 
                                     <div className="h-[100px] w-[20%] bg-slate-500 rounded-md">
                                         <div className="flex justify-center items-center h-full">
-                                            <img src={company.Logo} alt="" width={80} />
+                                            <img src={company.Logo == "" ? logoImg : "/api/settings/company/logo"} alt="" width={80} />
                                         </div>
                                     </div>
                                 </div>

@@ -4,6 +4,7 @@ type Denomination struct {
 	ID                    string `gorm:"primaryKey"`
 	CashRegisterID        string `gorm:"size:255"`
 	ComesWithDenomination string `gorm:"size:5"`
+	ZeroPointFive         float64
 	One                   int64
 	Five                  int64
 	Ten                   int64
@@ -15,5 +16,4 @@ type Denomination struct {
 	OneThousand           int64
 	TotalDollar           float64
 	TotalCordoba          float64
-	Total                 float64
 }

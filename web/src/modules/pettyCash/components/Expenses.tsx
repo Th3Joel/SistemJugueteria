@@ -43,7 +43,7 @@ export const Expenses = () => {
     return (
         <div>
             <AddExpenses getData={getData} RenderModal={RenderModal} setModalShow={setModalShow} />
-            <div className="shadow-lg rounded-lg p-3">
+            <div className="shadow-lg rounded-lg p-3 pettyCashExpenses">
                 <div className="flex justify-between items-center mb-1">
                     <h1 className="text-xl font-bold mb-2 my-auto">
                         Egresos

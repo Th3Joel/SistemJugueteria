@@ -47,7 +47,7 @@ func (auth AuthC) Login(f *fiber.Ctx) error {
 
 	token, _ := tokenH.Gen()
 	//Guardar token
-	tokenH.Save(token, auth.ID, time.Hour*1, f.IP())
+	tokenH.Save(token, auth.ID, time.Hour*4, f.IP())
 
 	// tokenSave := models.Token{
 	// 	ID:     uuid.NewString(),

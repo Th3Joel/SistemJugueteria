@@ -49,7 +49,7 @@ export const CompanyForm = () => {
                 <h1 className="text-xl font-semibold">{data?.Name}</h1>
                 <h2 className="text-lg font-semibold text-gray-500">{data?.Email}</h2>
             </div>
-            <div className={'w-[350px] flex flex-col gap-2 shadow-lg rounded-md py-2'} >
+            <div className={'w-[350px] flex flex-col gap-2 shadow-lg rounded-md py-2 companyForm'} >
                 <h1 className={'text-center font-semibold text-lg text-gray-600'}>Actualizar datos de la empresa</h1>
                 <form className="mx-5 flex flex-col gap-3" onSubmit={handleSubmit} encType="multipart/form-data">
                     <span className={'flex items-center'}>
@@ -113,7 +113,7 @@ export const CompanyForm = () => {
                     />
 
                     <InputText
-                        label="Precio del dolar"
+                        label="Precio del dólar"
                         name="PriceDollar"
                         onChange={inputChange}
                         error={!!errors?.PriceDollar}

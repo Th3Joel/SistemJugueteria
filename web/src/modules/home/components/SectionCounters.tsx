@@ -32,19 +32,19 @@ export const SectionCounters = () => {
   return (
     <div className="flex gap-3 flex-wrap justify-center mb-5">
       <BoxCounterInfo
-        counter={"C$ "+formatNumber(data.totalPurchases+"")}
+        counter={"C$ "+ (data.totalPurchases == 0 ? "0.00": formatNumber(data.totalPurchases+""))}
         title="Compras hoy"
         color="#17A2B8"
-        link="/"
+        link="/purchases"
         isLoading={loading}
         icon={<FaCartShopping />}
       />
 
       <BoxCounterInfo
-        counter={"C$ "+formatNumber(data.totalSales+"")}
+        counter={"C$ "+ (data.totalSales == 0 ? "0.00": formatNumber(data.totalSales+""))}
         title="Ventas hoy"
         color="#22A745"
-        link="/"
+        link="/sales"
         isLoading={loading}
         icon={<FaMoneyBillTrendUp />}
       />

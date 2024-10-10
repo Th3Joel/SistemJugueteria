@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { IParams } from "@/types";
-
 interface IInventoryReport {
   code: string;
   description: string;
@@ -14,7 +13,7 @@ interface IInventoryReport {
   category: {
     name: string;
   };
-  min: number;
+  min_stock: number;
 }
 
 const InventoryReport = () => {
@@ -33,12 +32,11 @@ const InventoryReport = () => {
       ) : (
         <div className="w-[800px]">
           <div className="print-container">
-            <h1 className="text-center text-2xl mt-3">
+            <h1 className="text-center text-2xl my-4">
               {id == "running-out"
                 ? "Inventario próximo a agotarse"
                 : "Inventario"}
             </h1>
-            <div className="mt-5">
               <table>
                 <thead className="sticky top-0">
                   <tr>
@@ -66,7 +64,7 @@ const InventoryReport = () => {
                         <td
                           className={
                             "font-bold " +
-                            (item.stock < item.min
+                            (item.stock <= item.min_stock
                               ? "text-red-500"
                               : "text-green-600")
                           }
@@ -78,7 +76,6 @@ const InventoryReport = () => {
                   )}
                 </tbody>
               </table>
-            </div>
           </div>
         </div>
       )}

@@ -7,12 +7,18 @@ import { formatNumber } from "@/modules/core/utils/formatNumber";
 import dayjs from "dayjs";
 import "dayjs/locale/es"
 
+interface ISalesReport extends ISaleView {
+    user: {
+        name: string
+    }
+}
+
 const SalesReport = () => {
     const { filter } = useParams<{ filter: string }>();
     const query = new URLSearchParams(useLocation().search)
     const startDate = query.get("startDate")
     const endDate = query.get("endDate")
-    const { get, data, loading } = useForm<ISaleView[]>([]);
+    const { get, data, loading } = useForm<ISalesReport[]>([]);
     const getData = async () => {
         if (startDate && endDate) {
             get("/reports/sales?startDate=" + startDate + "&endDate=" + endDate)
@@ -39,14 +45,19 @@ const SalesReport = () => {
                         <div className="print-container">
                             <h1 className="text-center text-2xl mt-3">Reporte de ventas por periodo</h1>
                             <div className="mx-2">
+                                <div className="flex justify-between">
                                 <small className="font-bold">
                                     Filtrar por: {startDate && endDate ? "De " + startDate + " a " + endDate : msj[(filter ?? "")]}
                                 </small>
-                                <div className="overflow-y-auto max-h-[300px] w-full">
+                                <small className="font-bold text-red-500">
+                                    Marcadas en rojo (Ventas anuladas)
+                                </small>
+                                </div>
                                     <table>
                                         <thead className="sticky top-0">
                                             <tr>
                                                 <th>N° Factura</th>
+                                                <th>Cajero</th>
                                                 <th>Cliente</th>
                                                 <th>Neto</th>
                                                 <th>Total</th>
@@ -56,8 +67,9 @@ const SalesReport = () => {
                                         <tbody>
 
                                             {data.map((d, i) => (
-                                                <tr key={i}>
+                                                <tr key={i} className={d.state == 0 ? "bg-red-300" : ""}>
                                                     <td>{d.code.padStart(4, "0")}</td>
+                                                    <td>{d.user.name}</td>
                                                     <td>{d.costumer.name}</td>
                                                     <td>C$ {formatNumber(d.neto)}</td>
                                                     <td>C$ {formatNumber(d.total)}</td>
@@ -66,7 +78,6 @@ const SalesReport = () => {
                                             ))}
                                         </tbody>
                                     </table>
-                                </div>
                             </div>
                         </div>
                     </div>

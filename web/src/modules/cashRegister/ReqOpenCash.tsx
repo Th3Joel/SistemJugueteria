@@ -25,7 +25,7 @@ export const ReqOpenCash = () => {
  
     return (
         <div className="flex justify-center my-5">
-            <form className="flex shadow-lg rounded-xl p-3" onSubmit={handleSubmit}>
+            <form className="flex shadow-lg rounded-xl p-3 cashRegisterReqOpen" onSubmit={handleSubmit}>
                 <img src={cashImage} alt="cashImage" width={170} className="mr-9" />
                 <Raya />
 

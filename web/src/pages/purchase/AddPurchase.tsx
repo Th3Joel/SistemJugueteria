@@ -6,6 +6,7 @@ import { TableV2 } from "@/modules/core/components/TableV2";
 import { useFetch } from "@/modules/core/hooks/useFetch";
 import { useForm } from "@/modules/core/hooks/useForm";
 import { TitleState } from "@/modules/core/states/title-state";
+import { StateDriver, stepsAddPurchase } from "@/modules/core/utils/driver";
 import { formatNumber } from "@/modules/core/utils/formatNumber";
 import {
   PurchaseState,
@@ -39,6 +40,7 @@ interface ISelectSupplier {
 //   purchase_price: number;
 // }
 const AddPurchase = () => {
+  const { setSteps } = StateDriver();
   const [showDrawer, setShowDrawer] = useState(false);
   const [select, setSelect] = useState<IOptions[]>([{ key: "", value: "" }]);
   const [select2, setSelect2] = useState<IOptions[]>([{ key: "", value: "" }]);
@@ -124,6 +126,7 @@ const AddPurchase = () => {
   useEffect(() => {
     setTitle("Agregar compra");
     fetchData();
+    setSteps(stepsAddPurchase);
     return () => {
       clear();
     };
@@ -140,7 +143,7 @@ const AddPurchase = () => {
       </Drawer>
       <div className="flex justify-center py-5">
         <div className="w-[800px]">
-          <div className="flex flex-col items-center border rounded-md p-3 shadow-lg">
+          <div className="flex flex-col items-center border rounded-md p-3 shadow-lg dataPurchaseGen">
             <header className="text-gray-500 my-1">
               ----Datos de compra----
             </header>
@@ -201,7 +204,7 @@ const AddPurchase = () => {
               </Button>
             </div>
           </div>
-          <div className="flex flex-col items-center border rounded-md p-3 mt-3 shadow-lg">
+          <div className="flex flex-col items-center border rounded-md p-3 mt-3 shadow-lg boxDetails">
             <header className="text-gray-500 my-1">
               ----Caja de artículos----
             </header>
@@ -220,7 +223,7 @@ const AddPurchase = () => {
                   error={!!errors.articleBoxID}
                   helperText={errors.articleBoxID}
                 />
-              </span> 
+              </span>
 
               <span className="w-[200px]">
                 <InputText
@@ -247,7 +250,7 @@ const AddPurchase = () => {
                   helperText={errors?.quantityBox}
                 />
               </span>
- 
+
 
             </section>
           </div>
@@ -263,12 +266,13 @@ const AddPurchase = () => {
                   )
                 }
               </header>
-
-              <Tooltip title="Agregar artículos">
-                <IconButton sx={{ marginY: "2px" }} color="primary" onClick={() => setShowDrawer(true)}>
-                  <FaPlusCircle size={30} />
-                </IconButton>
-              </Tooltip>
+              <div className="btnAddArticle">
+                <Tooltip title="Agregar artículos">
+                  <IconButton sx={{ marginY: "2px" }} color="primary" onClick={() => setShowDrawer(true)}>
+                    <FaPlusCircle size={30} />
+                  </IconButton>
+                </Tooltip>
+              </div>
             </div>
             <hr />
             <section className="mb-2 overflow-y-auto max-h-[380px]">
@@ -337,7 +341,7 @@ const AddPurchase = () => {
                       />
                       <InputText
                         label="Subtotal"
-                        value={formatNumber(d.subtotal)}
+                        value={formatNumber(d.subtotal, 2)}
                         icon={<p>C$</p>}
                         iconSize="13px"
                         readonly

@@ -43,9 +43,6 @@ const Sale = () => {
       }
     })
   }
-
-
-
   function limitDate(date: string) {
     const fechaLimite = new Date(date);
     fechaLimite.setDate(fechaLimite.getDate() + 2);
@@ -59,11 +56,11 @@ const Sale = () => {
     <Card>
       <Table
         hook={hook}
-        ruta={user.Role == "admin" ? "sales" : "sales/my"}
+        ruta={"sales"}
         colunms={["N° Factura", "Cliente", "Total", "Fecha", "Acciones"]}
         body={() =>
           hook.all?.data.map((d, i) => (
-            <tr key={i} className={`${d.state == 0 && "bg-red-200"}`}>
+            <tr key={i} className={d.state == 0 ? "bg-red-200":""}>
               <td>{d.code.padStart(4, "0")}</td>
               <td>{d.costumer.name}</td>
               <td>C$ {formatNumber(d.total)}</td>

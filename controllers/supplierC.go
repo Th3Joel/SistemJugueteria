@@ -41,9 +41,9 @@ func (supplier SupplierC) All(c *fiber.Ctx) error {
 		db.Where("LOWER(name) LIKE LOWER(?)", "%"+q.Search+"%").
 			Find(&supplier.Array)
 	}
-	db.Count(&count)
+	config.DB.Model(supplier.Model).Select("COUNT(id) AS count").Count(&count)
 
-	data := make([]interface{}, count)
+	data := make([]interface{}, len(supplier.Array))
 	for i, v := range supplier.Array {
 		data[i] = v
 	}

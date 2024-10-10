@@ -87,8 +87,8 @@ const ViewPurchase = () => {
   const navigate = useNavigate();
   const [showDetails, setShowDetails] = useState(false)
   const [showDrawer, setShowDrawer] = useState(false);
-  const { detail, total, costArticle, errorsDetail, pass, errors, totalToysDetail, orgTotalToysDetail,
-    deleteDetail, changeInput, setOrgTotal, setArticleBox, setCostArticle, setOrgTotalToysDetail, parseJson, checkErrors, clear } = PurchaseEditState();
+  const { detail, total, costArticle, errorsDetail, pass, errors, totalToysDetail,
+    deleteDetail, changeInput, setOrgTotal, setArticleBox, setCostArticle, setOrgTotalToysDetail, parseJson, checkErrors, clear,sumTotalToysDetail } = PurchaseEditState();
 
   const { get, data, loading, post } = useForm<IPurchase>({
     code: "",
@@ -134,8 +134,9 @@ const ViewPurchase = () => {
     //setDetail(data.detail)
     setOrgTotal(data.total)
     setArticleBox(data.articleBox)
-    setCostArticle(data.articleBox.purchasePrice / data.articleBox.toysQuantity)
+    setCostArticle(Number((data.articleBox.purchasePrice / data.articleBox.toysQuantity).toFixed(2)))
     setOrgTotalToysDetail(data.detail.reduce((a, b) => a + parseInt(b.quantity + ""), 0))
+    sumTotalToysDetail()
   }, [data])
 
   useEffect(() => {
@@ -283,7 +284,8 @@ const ViewPurchase = () => {
                   {
                     data.state == 0 &&
                     <small className="text-[15px]">
-                      Cantidad de articulos: {(totalToysDetail || 0) > 0 ? totalToysDetail : orgTotalToysDetail}
+                      {/* Cantidad de articulos: {(totalToysDetail || 0) > 0 ? totalToysDetail : orgTotalToysDetail} */}
+                      Cantidad disponible para ingresar: {(data.articleBox.toysQuantity - totalToysDetail) < 0 ? 0 : (data.articleBox.toysQuantity - totalToysDetail)}
                     </small>
                   }
 

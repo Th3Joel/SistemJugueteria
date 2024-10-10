@@ -74,12 +74,36 @@ func (purchase PurchaseC) All(f *fiber.Ctx) error {
 	if q.Search == "" {
 		db.Find(&purchase.Array)
 	} else {
-		db.Where("LOWER(code) LIKE LOWER(?)", "%"+q.Search+"%").
+		search := "%" + q.Search + "%"
+		db.Where(`
+		LOWER(code) LIKE LOWER(?)
+		OR
+		DATE(created_at) LIKE ?
+		OR
+		total LIKE ?
+		OR
+		supplier_id IN (
+			SELECT id 
+			FROM suppliers 
+			WHERE  LOWER(name) LIKE LOWER(?)
+		)
+			OR
+			article_box_id IN (
+				SELECT id 
+				FROM articles_boxes 
+				WHERE  LOWER(description) LIKE LOWER(?)
+			)
+		OR
+		(case
+			 	WHEN 'completada' LIKE ? THEN '1'
+				WHEN 'incompleta' LIKE ? THEN '0'
+			 END) = state
+		`, search, search, search, search, search, search, search).
 			Find(&purchase.Array)
 	}
-	db.Count(&count)
+	config.DB.Model(purchase.Model).Select("COUNT(id) AS count").Count(&count)
 
-	data := make([]interface{}, count)
+	data := make([]interface{}, len(purchase.Array))
 	for i, v := range purchase.Array {
 		data[i] = v
 	}
@@ -108,7 +132,7 @@ func (purchase PurchaseC) Save(f *fiber.Ctx) error {
 	purchasePriceArticle := costBox / float64(quantityBox)
 
 	state := 0
-	totalToysDetail := len(purchase.DetailPurchase)
+	totalToysDetail, _ := strconv.Atoi(purchase.TotalToysDetail)
 
 	if int64(totalToysDetail) >= int64(quantityBox) {
 		state = 1
@@ -212,8 +236,8 @@ func (purchase PurchaseC) Update(f *fiber.Ctx) error {
 		f := findIndex(anteData.DetailPurchase, value.Article.Description)
 		if f == -1 {
 			quan, _ := strconv.Atoi(value.Quantity)
-			subtotal, _ := strconv.ParseFloat(value.Subtotal, 64)
-			price, _ := strconv.ParseFloat(value.Price, 64)
+			subtotal, _ := strconv.ParseFloat(value.Subtotal, 32)
+			price, _ := strconv.ParseFloat(value.Price, 32)
 			config.DB.Create(&models.DetailPurchase{
 				ID:         uuid.NewString(),
 				PurchaseID: anteData.ID,
@@ -252,8 +276,8 @@ func (purchase PurchaseC) Update(f *fiber.Ctx) error {
 			valueQuantity, _ := strconv.Atoi(value.Quantity)
 			quantity := quatityDetail + valueQuantity
 
-			subtotalDetail, _ := strconv.ParseFloat(anteData.DetailPurchase[f].Subtotal, 64)
-			subtotalValue, _ := strconv.ParseFloat(value.Subtotal, 64)
+			subtotalDetail, _ := strconv.ParseFloat(anteData.DetailPurchase[f].Subtotal, 32)
+			subtotalValue, _ := strconv.ParseFloat(value.Subtotal, 32)
 			subtotal := subtotalDetail + subtotalValue
 
 			config.DB.
@@ -276,8 +300,8 @@ func (purchase PurchaseC) Update(f *fiber.Ctx) error {
 				Select("stock, sale_price", "purchase_price").
 				Where("id = ?", articleId).
 				First(&perz)
-			price, _ := strconv.ParseFloat(anteData.DetailPurchase[f].Price, 64)
-			perz.Stock = quantity
+			price, _ := strconv.ParseFloat(anteData.DetailPurchase[f].Price, 32)
+			perz.Stock += valueQuantity
 			perz.SalePrice = price
 
 			config.DB.

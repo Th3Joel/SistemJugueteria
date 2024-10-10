@@ -1,37 +1,33 @@
 import cashImage from "@/assets/cash.png";
 import { Raya } from "../core/components/Raya";
-import { IconButton } from "@mui/material";
-import { FaPrint } from "react-icons/fa6";
 import { useParams } from "react-router-dom";
 import { useForm } from "../core/hooks/useForm";
 import { useEffect } from "react";
-import { IDenomination } from "./CloseCashRegsiter";
+import { IDenomination } from "./Denomination";
 import { formatNumber } from "../core/utils/formatNumber";
 import dayjs from "dayjs";
 import { AuthState } from "../core/states/auth-state";
+import { ICashRegister } from "@/types";
+import { Expenses } from "./Expenses";
 interface IParams {
     [key: string]: string
     id: string
 }
-interface IViewCash {
+interface IViewCash extends ICashRegister {
     //expenses: ExpensesData[]
     denomination: IDenomination
-    initialBalance: string
-    cashCordobaTotal: string
-    cashDollarTotal: string
-    totalSales: string
-    state: string
-    closedAt: string
-    createdAt: string
-    user: {
-        name: string
-    }
+
+    totalCordobas: string
+    missingInDollars: string
+    missingInCordobas: string
+    dollarsSurplus: string
+    cordobasSurplus: string
 }
 
 
 const ViewCash = () => {
     const { id } = useParams<IParams>()
-    const {user} = AuthState();
+    const { user } = AuthState();
     const { get, data } = useForm<IViewCash>({
         //expenses: [],
         denomination: {
@@ -47,25 +43,36 @@ const ViewCash = () => {
             TotalDollar: "",
             TotalCordoba: "",
         },
+        totalCordobas: "",
+        missingInDollars: "",
+        missingInCordobas: "",
+        dollarsSurplus: "",
+        cordobasSurplus: "",
         initialBalance: "",
-        cashCordobaTotal: "",
-        cashDollarTotal: "",
         totalSales: "",
+        totalDollars: "",
         state: "",
         closedAt: "",
         createdAt: "",
         user: {
             name: "",
-        }
+        },
+        expenses: []
     })
     //const totalSales = ((parseFloat(data.cashDollarTotal) * parseFloat(company.PriceDollar)) + parseFloat(data.totalSales))
-    const totalSales =  parseFloat(data.totalSales)
     //const totalRegisterDenomination = ((parseFloat(company.PriceDollar) * parseFloat(data.denomination.TotalDollar)) + parseFloat(data.denomination.TotalCordoba))
-    const totalRegisterDenomination = parseFloat(data.denomination.TotalCordoba)
-    //const totalExpenses = data.expenses ? data.expenses.reduce((a, b) => a + parseFloat(b.Amount), 0) : 0
-    const totalArqueado = totalSales + parseFloat(data.initialBalance);
-    const sobrante = totalRegisterDenomination > totalArqueado
-    const sobroNum = sobrante ? totalRegisterDenomination - totalArqueado : totalArqueado - totalRegisterDenomination
+    // const initialBalance = Number(data.initialBalance)
+    // const totalDollars = Number(data.totalDollars)
+    // const totalSales = Number(data.totalSales)
+    // const totalExpenses = Number(data.expenses.map(x => x.Amount).reduce((a, b) => a + parseFloat(b), 0))
+
+    // const totalCordobas = ((initialBalance + totalSales) - totalExpenses) - (Number(company.PriceDollar) * totalDollars)
+
+    const valIgualadoC = Number(data.missingInCordobas).toFixed(2) == Number(data.cordobasSurplus).toFixed(2)
+    const valSobranteC = Number(data.cordobasSurplus).toFixed(2) != "0.00"
+
+    const valIgualadoD = Number(data.missingInDollars).toFixed(2) == Number(data.dollarsSurplus).toFixed(2)
+    const valSobranteD = Number(data.dollarsSurplus).toFixed(2) != "0.00"
 
     useEffect(() => {
         get(user.Role == "admin" ? `/cash-register/show/${id}` : `/cash-register/show/my/${id}`)
@@ -76,13 +83,16 @@ const ViewCash = () => {
                 Visualizar caja
             </h1>
             <div className="flex flex-col gap-7 items-center my-5">
-                <div className="rounded-xl shadow-xl px-4 py-3 flex justify-between w-[700px] border">
+                <div className="rounded-xl shadow-xl px-4 py-2 flex justify-between w-[700px] border">
                     <div className="flex">
                         <img src={cashImage} alt="cashImage" width={90} />
                         <div className="flex flex-col justify-center ml-3">
                             <h1 className="font-bold text-xl">Caja</h1>
                             <h2 className="text-gray-500 font-bold">{data.user.name}</h2>
-                            <h3 className="text-red-700 mt-3">
+                            <h3 className="text-green-700">
+                                {dayjs(data.createdAt).format("DD/MM/YYYY")}
+                            </h3>
+                            <h3 className="text-red-700">
                                 {dayjs(data.closedAt).format("DD/MM/YYYY")}
                             </h3>
                         </div>
@@ -90,17 +100,14 @@ const ViewCash = () => {
 
                     <div className="flex flex-col justify-between ml-4">
                         <h1 className="text-red-700 text-end font-bold">
-                            Cerrada |
-                            <IconButton color="success">
-                                <FaPrint className="text-md" />
-                            </IconButton>
+                            Cerrada
                         </h1>
                         <div className="flex flex-col text-lg">
                             <span>
                                 Saldo inicial: C$ {formatNumber(data.initialBalance)}
                             </span>
                             <span>
-                                Total ventas: C$ {formatNumber(totalSales + "")}
+                                Total ventas: C$ {data.totalSales == "0" ? "0.00" : formatNumber(data.totalSales)}
                             </span>
                         </div>
                     </div>
@@ -127,9 +134,9 @@ const ViewCash = () => {
                     </div>
                 </div>
 
-                {/* <div className="rounded-xl shadow-xl px-4 py-3 w-[700px] border">
+                <div className="rounded-xl shadow-xl px-4 py-3 w-[700px] border">
                     <Expenses expenses={data.expenses} isView />
-                </div> */}
+                </div>
                 <div className="rounded-xl shadow-xl px-4 py-3 w-[700px] border">
                     <h1 className="font-bold text-xl text-gray-600 text-center mb-2">
                         Denominación de dinero
@@ -218,7 +225,7 @@ const ViewCash = () => {
                     <div className="mt-2">
                         <div className="flex justify-evenly">
                             <h1 className="text-lg font-bold">
-                                Efectivo córdobas:
+                                Total:
                             </h1>
                             <h1 className="text-gray-600 font-bold">
                                 C$ {formatNumber(data.denomination.TotalCordoba)}
@@ -226,42 +233,67 @@ const ViewCash = () => {
                         </div>
                         <div className="flex justify-evenly">
                             <h1 className="text-lg font-bold">
-                                Efectivo dólares:
+                                Total:
                             </h1>
                             <h1 className="text-gray-600 font-bold">
-                                $ {formatNumber(data.denomination.TotalDollar)}
+                                $ {data.denomination.TotalDollar == "0" ? "0.00" : formatNumber(data.denomination.TotalDollar)}
                             </h1>
                         </div>
 
                     </div>
                 </div>
-                <div className="rounded-xl shadow-xl px-4 py-6 w-[700px] border">
+                <div className="rounded-xl shadow-xl px-4 pb-6 w-[700px] border">
+                <h1 className="text-center mt-1 -mb-1 font-bold">Arqueo</h1>
 
                     <div className="flex justify-evenly">
-                        <h1 className="text-xl font-bold">Total efectivo córdobas: </h1>
+                        <h1 className="text-xl font-bold">Total córdobas: </h1>
                         <h2 className="text-xl text-gray-600 font-bold">
                             C$ {
-                                formatNumber(totalRegisterDenomination + "")
+                                formatNumber(data.totalCordobas + "")
                             }
                         </h2>
                     </div>
-                    <div className="flex justify-evenly">
-                        <h1 className="text-xl font-bold">Total arqueado: </h1>
-                        <h2 className="text-xl text-gray-600 font-bold">
-                            C$ {formatNumber(totalArqueado + "")}
-                        </h2>
-                    </div>
-                    <div className={`flex justify-evenly font-bold ${sobrante || totalRegisterDenomination === totalArqueado ? "text-green-700" : "text-red-700"}`}>
+
+                    <div className={`flex justify-evenly font-bold ${valSobranteC || valIgualadoC ? "text-green-700" : "text-red-700"}`}>
                         {
-                            totalRegisterDenomination.toFixed(2) === totalArqueado.toFixed(2) ?
+                            valIgualadoC ?
                                 <h1>
                                     Igualado
                                 </h1>
                                 :
                                 <>
-                                    <h1 className="text-lg">{sobrante ? "Sobrante" : "Faltante"}: </h1>
+                                    <h1 className="text-lg">{valSobranteC ? "Sobrante" : "Faltante"}: </h1>
                                     <h2 className="text-md">
-                                        {sobrante ? "+" : "-"} C$ {formatNumber(sobroNum + "")}
+                                        {valSobranteC ? "+" : "-"} C$ {valSobranteC ? formatNumber(data.cordobasSurplus + "") : formatNumber(data.missingInCordobas + "")}
+                                    </h2>
+                                </>
+                        }
+
+                    </div>
+                </div>
+
+                <div className="rounded-xl shadow-xl px-4 pb-6 w-[700px] border">
+                    <h1 className="text-center mt-1 -mb-1 font-bold">Arqueo</h1>
+                    <div className="flex justify-evenly">
+                        <h1 className="text-xl font-bold">Total dólares: </h1>
+                        <h2 className="text-xl text-gray-600 font-bold">
+                            C$ {
+                                formatNumber(data.totalDollars + "")
+                            }
+                        </h2>
+                    </div>
+
+                    <div className={`flex justify-evenly font-bold ${valSobranteD || valIgualadoD ? "text-green-700" : "text-red-700"}`}>
+                        {
+                            valIgualadoD ?
+                                <h1>
+                                    Igualado
+                                </h1>
+                                :
+                                <>
+                                    <h1 className="text-lg">{valSobranteD ? "Sobrante" : "Faltante"}: </h1>
+                                    <h2 className="text-md">
+                                        {valSobranteD ? "+" : "-"} C$ {valSobranteD ? formatNumber(data.dollarsSurplus + "") : formatNumber(data.missingInDollars + "")}
                                     </h2>
                                 </>
                         }

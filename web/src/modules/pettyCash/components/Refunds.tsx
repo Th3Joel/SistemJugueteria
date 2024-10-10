@@ -24,7 +24,7 @@ export const Refunds = () => {
     return (
         <div>
             <AddRefund getData={getData} RenderModal={RenderModal} setModalShow={setModalShow} />
-            <div className="shadow-lg rounded-lg p-3">
+            <div className="shadow-lg rounded-lg p-3 pettyCashRefunds">
                 <div className="flex justify-between items-center mb-1">
                     <h1 className="text-xl font-bold mb-2 my-auto">
                         Reembolsos

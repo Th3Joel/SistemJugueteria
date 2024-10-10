@@ -8,7 +8,7 @@ interface IDataState {
     balance: number
     Limit: number
 
-    fetchData: () => void
+    fetchData: () => Promise<void>
 }
 
 export const pettyCashState = create<IDataState>((set) => ({

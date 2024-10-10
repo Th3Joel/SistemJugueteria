@@ -14,15 +14,20 @@ import (
 )
 
 type CashRegisterC struct {
-	ID               string `json:"id"`
-	UserID           string `json:"userID"`
-	State            string `json:"state"`
-	InitialBalance   string `json:"initialBalance"`
-	TotalCashBalance string `json:"totalCashBalance"`
-	TotalSales       string `json:"totalSales"`
+	ID     string `json:"id"`
+	UserID string `json:"userID"`
+	State  string `json:"state"`
 
-	CashCordobaTotal string `json:"cashCordobaTotal" gorm:"-"`
-	CashDollarTotal  string `json:"cashDollarTotal" gorm:"-"`
+	InitialBalance    string `json:"initialBalance"`
+	TotalSales        string `json:"totalSales"`
+	TotalExpenses     string `json:"totalExpenses"`
+	TotalCordobas     string `json:"totalCordobas"`
+	MissingInCordobas string `json:"missingInCordobas"`
+	CordobasSurplus   string `json:"cordobasSurplus"`
+	TotalDollars      string `json:"totalDollars"`
+	MissingInDollars  string `json:"missingInDollars"`
+	DollarsSurplus    string `json:"dollarsSurplus"`
+	//TotalCashBalance string `json:"totalCashBalance"`
 
 	ClosedAt  string `json:"closedAt"`
 	CreatedAt string `json:"createdAt"`
@@ -32,12 +37,12 @@ type CashRegisterC struct {
 	Model        models.CashRegister `json:"-" gorm:"-"`
 	Array        []CashRegisterC     `json:"-" gorm:"-"`
 	// Sales        []Sales      `json:"sale" gorm:"foreignKey:CashRegisterID"`
-	Expenses Expenses `json:"expense" gorm:"foreignKey:CashRegisterID"`
+	Expenses []Expenses `json:"expenses" gorm:"foreignKey:CashRegisterID"`
 	// Denomination Denomination `json:"denomination" gorm:"foreignKey:CashRegisterID"`
 }
 
 type Expenses struct {
-	ID             string `json:"-"`
+	ID             string `json:"id"`
 	CashRegisterID string `json:"-"`
 	NumInvoice     string `json:"NumInvoice"`
 	Detail         string `json:"Detail"`
@@ -51,6 +56,7 @@ type Users struct {
 
 type Denomination struct {
 	CashRegisterID string `json:"-"`
+	ZeroPointFive  string `json:"ZeroPointFive"`
 	One            string `json:"One"`
 	Five           string `json:"Five"`
 	Ten            string `json:"Ten"`
@@ -62,7 +68,6 @@ type Denomination struct {
 	OneThousand    string `json:"OneThousand"`
 	TotalDollar    string `json:"TotalDollar"`
 	TotalCordoba   string `json:"TotalCordoba"`
-	Total          string `json:"Total"`
 }
 
 func (c CashRegisterC) All(f *fiber.Ctx, my bool) error {
@@ -106,8 +111,8 @@ func (c CashRegisterC) All(f *fiber.Ctx, my bool) error {
 			query, query, query, query, query, query, query).
 			Find(&c.Array)
 	}
-	db.Count(&count)
-	data := make([]interface{}, count)
+	db.Model(c.Model).Select("COUNT(id) AS count").Count(&count)
+	data := make([]interface{}, len(c.Array))
 	for i, v := range c.Array {
 		data[i] = v
 	}
@@ -133,12 +138,14 @@ func (c CashRegisterC) Verify(f *fiber.Ctx) error {
 func (c CashRegisterC) Save(f *fiber.Ctx) error {
 
 	_ = f.BodyParser(&c)
+	userId := f.Locals("userId").(string)
 	initialBalance, _ := strconv.ParseFloat(c.InitialBalance, 64)
 	sql := config.DB.Create(&models.CashRegister{
 		ID:             uuid.NewString(),
-		UserID:         f.Locals("userId").(string),
+		UserID:         userId,
 		InitialBalance: initialBalance,
 		CreatedAt:      time.Now(),
+		ClosedAt:       nil,
 	})
 
 	if sql.RowsAffected == 0 {
@@ -154,21 +161,27 @@ func (c CashRegisterC) Save(f *fiber.Ctx) error {
 }
 
 func (c CashRegisterC) Show(f *fiber.Ctx) error {
-	cashTotal := struct {
-		CashCordobaTotal float64
-		CashDollarTotal  float64
+	totals := struct {
+		TotalSales   float64
+		TotalDollars float64
 	}{}
-	config.DB.Model(models.Sales{}).
-		Select("SUM(cash_cordoba - exchange) as CashCordobaTotal, SUM(cash_dollar) as CashDollarTotal").
-		Where("cash_register_id = ?", f.Locals("cashRegisterId").(string)).
-		Scan(&cashTotal)
+	cashRegisterId := f.Locals("cashRegisterId").(string)
+	userId := f.Locals("userId").(string)
+
+	config.DB.
+		Model(models.Sales{}).
+		Select("SUM(total) as total_sales, SUM(cash_dollar) as total_dollars").
+		Where("cash_register_id = ? AND user_id = ?", cashRegisterId, userId).
+		Scan(&totals)
+	fmt.Println(cashRegisterId)
 	db := config.DB.Model(c.Model)
 	db.
+		Preload("Expenses").
 		Preload("Users").
 		Where("user_id = ? AND state != 0", f.Locals("userId").(string)).
 		First(&c)
-	c.CashCordobaTotal = fmt.Sprintf("%.2f", cashTotal.CashCordobaTotal)
-	c.CashDollarTotal = fmt.Sprintf("%.2f", cashTotal.CashDollarTotal)
+	c.TotalSales = fmt.Sprintf("%.2f", totals.TotalSales)
+	c.TotalDollars = fmt.Sprintf("%.2f", totals.TotalDollars)
 	if db.RowsAffected == 0 {
 		return f.JSON(types.Response{
 			Status: false,
@@ -187,7 +200,7 @@ func (c CashRegisterC) ShowId(f *fiber.Ctx, my bool) error {
 
 	sql := config.DB.
 		Model(c.Model).
-		Preload("expenses").
+		Preload("Expenses").
 		Preload("Users").
 		Preload("Denomination")
 	if my {
@@ -202,16 +215,6 @@ func (c CashRegisterC) ShowId(f *fiber.Ctx, my bool) error {
 			Msj:    "No hay resultados",
 		})
 	}
-	cashTotal := struct {
-		CashCordobaTotal float64
-		CashDollarTotal  float64
-	}{}
-	config.DB.Model(models.Sales{}).
-		Select("SUM(cash_cordoba - exchange) as CashCordobaTotal, SUM(cash_dollar) as CashDollarTotal").
-		Where("cash_register_id = ?", id).
-		Scan(&cashTotal)
-	c.CashCordobaTotal = fmt.Sprintf("%.2f", cashTotal.CashCordobaTotal)
-	c.CashDollarTotal = fmt.Sprintf("%.2f", cashTotal.CashDollarTotal)
 
 	return f.JSON(types.Response{
 		Status: true,
@@ -222,11 +225,37 @@ func (c CashRegisterC) Close(f *fiber.Ctx) error {
 
 	userId := f.Locals("userId").(string)
 	cashId := f.Locals("cashRegisterId").(string)
-	_ = f.BodyParser(&c.Denomination)
+	_ = f.BodyParser(&c)
+
+	sql2 := config.DB.
+		Model(c.Model).
+		Where("user_id = ? AND id = ?", userId, cashId).
+		Updates(types.Json{
+			"state":          0,
+			"closed_at":      time.Now(),
+			"total_expenses": c.TotalExpenses,
+			"total_sales":    c.TotalSales,
+
+			"total_cordobas":      c.TotalCordobas,
+			"missing_in_cordobas": c.MissingInCordobas,
+			"cordobas_surplus":    c.CordobasSurplus,
+
+			"total_dollars":      c.TotalDollars,
+			"missing_in_dollars": c.MissingInDollars,
+			"dollars_surplus":    c.DollarsSurplus,
+		})
+
+	if sql2.RowsAffected == 0 {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "No se ha actualizado el caja",
+		})
+	}
 
 	sql := config.DB.
 		Model(models.Denomination{}).
 		Where("cash_register_id = ?", cashId)
+	zeroPointFive, _ := strconv.ParseFloat(c.Denomination.ZeroPointFive, 64)
 	one, _ := strconv.Atoi(c.Denomination.One)
 	five, _ := strconv.Atoi(c.Denomination.Five)
 	ten, _ := strconv.Atoi(c.Denomination.Ten)
@@ -238,11 +267,11 @@ func (c CashRegisterC) Close(f *fiber.Ctx) error {
 	oneThousand, _ := strconv.Atoi(c.Denomination.OneThousand)
 	totalDollar, _ := strconv.ParseFloat(c.Denomination.TotalDollar, 64)
 	totalCordoba, _ := strconv.ParseFloat(c.Denomination.TotalCordoba, 64)
-	total, _ := strconv.ParseFloat(c.Denomination.Total, 64)
 
 	sql.Create(&models.Denomination{
 		ID:             uuid.NewString(),
 		CashRegisterID: cashId,
+		ZeroPointFive:  zeroPointFive,
 		One:            int64(one),
 		Five:           int64(five),
 		Ten:            int64(ten),
@@ -254,28 +283,31 @@ func (c CashRegisterC) Close(f *fiber.Ctx) error {
 		OneThousand:    int64(oneThousand),
 		TotalDollar:    totalDollar,
 		TotalCordoba:   totalCordoba,
-		Total:          total,
 	})
+
+	// sql.Create(types.Json{
+	// 	"id":               uuid.NewString(),
+	// 	"cash_register_id": cashId,
+	// 	"ZeroPointFive":    c.Denomination.ZeroPointFive,
+	// 	"One":              c.Denomination.One,
+	// 	"Five":             c.Denomination.Five,
+	// 	"Ten":              c.Denomination.Ten,
+	// 	"Twenty":           c.Denomination.Twenty,
+	// 	"Fyfty":            c.Denomination.Fyfty,
+	// 	"OneHundred":       c.Denomination.OneHundred,
+	// 	"TwoHundred":       c.Denomination.TwoHundred,
+	// 	"FiveHundred":      c.Denomination.FiveHundred,
+	// 	"OneThousand":      c.Denomination.OneThousand,
+	// 	"TotalDollar":      c.Denomination.TotalDollar,
+	// 	"TotalCordoba":     c.Denomination.TotalCordoba,
+	// })
 
 	if sql.RowsAffected == 0 {
 		return f.JSON(types.Response{
 			Status: false,
-			Msj:    "Ha ocurrido un error",
+			Msj:    "No se guardó las denominaciones",
 		})
 	}
-
-	var totalSales float64
-	config.DB.Model(models.Sales{}).
-		Where("cash_register_id = ?", cashId).
-		Select("SUM(total)").
-		Scan(&totalSales)
-
-	config.DB.
-		Model(c.Model).
-		Where("user_id = ? AND id = ?", userId, cashId).
-		Update("state", 0).
-		Update("closed_at", time.Now()).
-		Update("total_sales", totalSales)
 
 	return f.JSON(types.Response{
 		Status: true,

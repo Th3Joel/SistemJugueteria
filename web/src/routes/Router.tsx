@@ -52,6 +52,8 @@ import PurchasesReport from "@/pages/reports/PurchasesReport";
 import SalesReport from "@/pages/reports/SalesReport";
 import PettyCash from "@/pages/pettyCash/PettyCash";
 import Business from "@/pages/business/Business";
+import CashRegisterReport from "@/pages/reports/CashRegisterReport";
+import OtherInventoryOutputs from "@/pages/reports/OtherInventoryOutputs";
 
 const Router = () => {
     const auth = AuthState();
@@ -153,6 +155,10 @@ const Router = () => {
                             <Route path="costumers" element={<CostumersReport />} />
                             <Route path="purchases/:filter?" element={<PurchasesReport />} />
                             <Route path="sales/:filter?" element={<SalesReport />} />
+
+                            <Route path="cashRegister/:filter?" element={<CashRegisterReport />} />
+                            <Route path="othersInventoryOutputs/:filter?" element={<OtherInventoryOutputs />} />
+
                         </Route>
                     }
 

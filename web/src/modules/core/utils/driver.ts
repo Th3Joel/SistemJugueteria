@@ -2,16 +2,162 @@ import { driver, DriveStep } from "driver.js"
 import { toast } from "sonner";
 import { create } from "zustand";
 
+export const stepsAddPurchase: DriveStep[] = [
+    {
+        element: ".dataPurchaseGen",
+        popover: {
+            description: "Aquí puedes ingresar los datos de la compra, como el número de factura,elegir el proveedor y la fecha"
+        }
+    },
+    {
+        element:".boxDetails",
+        popover: {
+            description: "En esta sección puedes elegir una caja de artículos registrada con anterioridad, ingresar el costo de la caja y la cantidad de artículos que contaste al inventariar la caja"
+        }
+    },
+
+    {
+        element:".btnAddArticle",
+        popover: {
+            description: "Este botón abrirá un modal que te permetirá elegir un artículo para ingresarlo al detalle de la compra"
+        }
+    }
+]
+
+export const stepsAddSale: DriveStep[] = [
+    {
+        element: ".dataSaleGen",
+        popover: {
+            description: "Aquí puedes ingresar los datos de la venta, como el número de factura (autoincremental),elegir el cliente"
+        }
+    },
+    {
+        element:".btnAddArticle",
+        popover: {
+            description: "Este botón abrirá un modal que te permetirá elegir un artículo para ingresarlo al detalle de la venta"
+        }
+    }
+]
+
+export const stepsMaintenance: DriveStep[] = [
+    {
+        element: ".backupStep",
+        popover: {
+            description: "En esta sección vas a poder realizar una copia de seguridad de la base de datos y poder restaurarla en caso de una pérdida de datos, cada véz que cierre sesión se te preguntará si desea hacer un respaldo"
+        }
+    }
+]
+
+export const stepsCompany: DriveStep[] = [
+    {
+        element: ".companyForm",
+        popover: {
+            description: "Aquí vas a poder ingresar la información de la empresa"
+        }
+    }
+]
+
+export const stepsFormAdd: DriveStep[] = [
+    {
+        element: ".formAdd",
+        popover: {
+            description: "En esta sección puedes ingresar la información nueva en el formulario"
+        }
+    }
+]
+
+export const stepsPettyCash: DriveStep[] = [
+    {
+        element: ".pettyCashGeneral",
+        popover: {
+            description: "En esta sección, puedes editar los datos generales de la caja chica. El monto inicial establece un límite sobre cuánto se puede reembolsar. Además, el límite de saldo mínimo determina cuándo el saldo se mostrará en rojo, si es inferior a dicho límite."
+        }
+    },
+    {
+        element: ".pettyCashExpenses",
+        popover: {
+            description: "Te muestra una lista de los egresos realizados, tambien puedes agregar nuevos egresos y eliminar en caso de ingresar datos erróneos"
+        }
+    },
+    {
+        element: ".pettyCashRefunds",
+        popover: {
+            description: "Te muestra una lista de los reembolsos realizados, tambien puedes agregar nuevos egresos y el saldo disponible se actualizará automáticamente"
+        }
+    }
+]
+
+export const stepsCashRegisterHistory: DriveStep[] = [
+    {
+        element: ".cashRegisterHistory",
+        popover: {
+            description: "Muestra un historial de todas las cajas, puedes ver los detalles de una caja solo si está cerrada haciendo click en ella"
+        }
+    }
+]
+
+export const stepsCashRegister: DriveStep[] = [
+    //CashRegister
+    {
+        element: ".cashRegisterReqOpen",
+        popover: {
+            description: "Aquí vas a poder ingresar el monto de la caja para aperturarla"
+        }
+    },
+    {
+        element: ".cashRegisterGen",
+        popover: {
+            description: "Muestra información básica de la caja: Nombre de cajero, fecha de apertura (marcado en color verde), estado de la caja (marcado en color verde), botón para cerrar la caja"
+        }
+    },
+    {
+        element: ".cashRegisterDetails",
+        popover: {
+            description: "Muestra detalles de la caja: Saldo inicial, total de ventas, total de egresos, total de córdobas, faltantes en córdobas, sobrantes en córdobas,total dólares, faltante en dólares, sobrantes en dólares."
+        }
+    },
+    {
+        element: ".cashRegisterDenomination",
+        popover: {
+            description: "Aquí puedes ingresar las cantidades de dinero que tienes en la caja, para poder hacer el arqueo"
+        }
+    },
+    {
+        element: ".cashRegisterDenominationTotalDollar",
+        popover: {
+            description: "Aqui puedes ingresar la cantidad total de dólares que tienes en la caja"
+        }
+    },
+    {
+        element: ".cashRegisterDenominationTotalCordoba",
+        popover: {
+            description: "Te muestra el total de córdobas de los cálculos de la denominación"
+        }
+    },
+    {
+        element: ".cashRegisterDenominationTotalClean",
+        popover: {
+            description: "Aqui puedes limpiar los datos de la denominación"
+        }
+    },
+    {
+        element: ".cashRegisterExpenses",
+        popover: {
+            description: "Te muestra una lista de los egresos realizados, tambien puedes agregar nuevos egresos y eliminar en caso de ingresar datos erróneos"
+        }
+    }
+]
+
 export const stepsDashboard: DriveStep[] = [
     {
-        element:".counters",
+        element: ".counters",
         popover: {
             description: "Muestra información general del sistema"
         }
-    },{
-        element:".graphSales",
+    }, {
+        element: ".graphSales",
         popover: {
-            description: "Muestra información de ventas en un gráfico"
+            description: "Muestra información del total de ventas por mes en un gráfico"
         }
     }
 ]
@@ -52,7 +198,7 @@ export const stepsTable: DriveStep[] = [
         }
     },
     //--------------------------------------------------------------------------------------
-    
+
     {
         element: ".btnView",
         popover: {
@@ -118,7 +264,7 @@ export const StateDriver = create<IStateDriver>((set, get) => ({
     setSteps: (steps: DriveStep[]) => set({ steps }),
     run: () => {
         let { steps } = get();
-        
+
         steps = steps.filter(s => stepIfExist(s.element as string));
         if (steps.length === 0) {
             toast.error("Si no hay información, se explica solo")

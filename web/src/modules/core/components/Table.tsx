@@ -50,9 +50,7 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body, v2, v3 }) => {
     }
   };
 
-  const getDatos = () => {
-    get(`/${ruta}?page=${page}&pageSize=${pageSize}`);
-  };
+ 
 
   const img = (name: string) => {
     return `${process.env.NEXT_PUBLIC_URL}/${ruta}/picture/${name}`;
@@ -64,6 +62,13 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body, v2, v3 }) => {
     setPageSize(num);
     setAc(1);
     setPage(1);
+  };
+
+
+//  const newUrlProtected = `/${ruta + (user.Role === "vendedor" && isSales ? "/my" : "")}`
+  const getDatos = () => {
+    get(`/${ruta}?page=${page}&pageSize=${pageSize}`);
+   // get(`${newUrlProtected}?page=${page}&pageSize=${pageSize}`);
   };
   let setTime: NodeJS.Timeout;
 
@@ -83,7 +88,7 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body, v2, v3 }) => {
     alertBox("warning", "Está seguro?", texto, "Si", async () => {
       await remove(`/${ruta}/${id}`);
       getDatos();
-    });
+    }); 
   };
 
   useEffect(() => {

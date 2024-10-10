@@ -18,7 +18,6 @@ const PurchasesReport = () => {
       } else if (filter) {
           get("/reports/purchases?filter=" + filter)
       }
-      console.log(data)
   }
   const msj: Record<string, string> = {
       day: `De este día`,
@@ -27,7 +26,7 @@ const PurchasesReport = () => {
       year: `De este año ${dayjs().format("YYYY")}`
   }
   useEffect(() => {
-      getData()
+      getData() 
   }, [])
   return (
       <div>
@@ -41,7 +40,6 @@ const PurchasesReport = () => {
                               <small className="font-bold">
                                   Filtrar por: {startDate && endDate ? "De " + startDate + " a " + endDate : msj[(filter ?? "")]}
                               </small>
-                              <div className="overflow-y-auto max-h-[300px] w-full">
                                   <table>
                                       <thead className="sticky top-0">
                                           <tr>
@@ -50,6 +48,7 @@ const PurchasesReport = () => {
                                               <th>Caja</th>
                                               <th>Total</th>
                                               <th>Fecha</th>
+                                              <th>Estado</th>
                                           </tr>
                                       </thead>
                                       <tbody>
@@ -61,12 +60,12 @@ const PurchasesReport = () => {
                                                   <td>bla</td>
                                                   <td>C$ {formatNumber(d.total+"")}</td>
                                                   <td>{dayjs(d.date).format("DD/MM/YYYY")}</td>
+                                                  <td className={`font-bold ${d.state == 0 ? "text-red-500" : "text-green-600"}`}>{d.state == 0 ? "Incompleta" : "Completa"}</td>
                                               </tr>
                                           ))}
                                       </tbody>
                                   </table>
                               </div>
-                          </div>
                       </div>
                   </div>
           }

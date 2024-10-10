@@ -190,18 +190,26 @@ func (ReportsC) SalesReportPeriodic(f *fiber.Ctx) error {
 		ID   string `json:"-"`
 		Name string `json:"name"`
 	}
+	type User struct {
+		ID   string `json:"-"`
+		Name string `json:"name"`
+	}
+
 	type Sale struct {
 		ID            string    `json:"-"`
 		CostumerID    string    `json:"-"`
+		UserId        string    `json:"-"`
 		Code          string    `json:"code"`
 		Total         float64   `json:"total"`
 		Neto          float64   `json:"neto"`
+		State         int       `json:"state"`
 		CashDollar    float64   `json:"cashDollar"`
 		CashCordoba   float64   `json:"cashCordoba"`
 		DiscountTotal float64   `json:"discountTotal"`
 		Exchange      float64   `json:"exchange"`
 		CreatedAt     time.Time `json:"date"`
 
+		User     User      `json:"user"`
 		Costumer Costumers `json:"costumer"`
 	}
 
@@ -218,23 +226,25 @@ func (ReportsC) SalesReportPeriodic(f *fiber.Ctx) error {
 	model := []Sale{}
 	db := config.DB.Model(models.Sales{})
 	db.
-		Preload("Costumer")
+		Preload("Costumer").
+		Preload("User")
+
 	if que.StartDate != "" && que.EndDate != "" {
-		db.Where("created_at BETWEEN ? AND ?", que.StartDate, que.EndDate)
+		db.Where("DATE(created_at) BETWEEN ? AND ?", que.StartDate, que.EndDate)
 	} else if que.Filter == "day" {
-		db.Where("created_at LIKE ?", "%"+time.Now().Format("2006-01-02")+"%")
+		db.Where("DATE(created_at) = ?", time.Now().Format("2006-01-02"))
 	} else if que.Filter == "week" {
 		dateNow := time.Now().Format("2006-01-02")
 		dateMinusOneWeek := time.Now().AddDate(0, 0, -7).Format("2006-01-02")
-		db.Where("created_at BETWEEN ? AND ?", dateMinusOneWeek, dateNow)
+		db.Where("DATE(created_at) BETWEEN ? AND ?", dateMinusOneWeek, dateNow)
 	} else if que.Filter == "month" {
 		dateNow := time.Now().Format("2006-01-02")
 		dateMinusOneMonth := time.Now().AddDate(0, -1, 0).Format("2006-01-02")
-		db.Where("created_at BETWEEN ? AND ?", dateMinusOneMonth, dateNow)
+		db.Where("DATE(created_at) BETWEEN ? AND ?", dateMinusOneMonth, dateNow)
 	} else if que.Filter == "year" {
 		dateNow := time.Now().Format("2006-01-02")
 		dateMinusOneYear := time.Now().AddDate(-1, 0, 0).Format("2006-01-02")
-		db.Where("created_at BETWEEN ? AND ?", dateMinusOneYear, dateNow)
+		db.Where("DATE(created_at) BETWEEN ? AND ?", dateMinusOneYear, dateNow)
 	}
 
 	db.Order("created_at DESC").Find(&model)
@@ -261,6 +271,7 @@ func (ReportsC) PurchasesReportPeriodic(f *fiber.Ctx) error {
 		ID           string    `json:"-"`
 		SupplierID   string    `json:"-"`
 		ArticleBoxID string    `json:"-"`
+		State        int       `json:"state"`
 		Code         string    `json:"code"`
 		Total        float64   `json:"total"`
 		CreatedAt    time.Time `json:"date"`
@@ -283,21 +294,116 @@ func (ReportsC) PurchasesReportPeriodic(f *fiber.Ctx) error {
 	db.
 		Preload("Supplier")
 	if que.StartDate != "" && que.EndDate != "" {
-		db.Where("created_at BETWEEN ? AND ?", que.StartDate, que.EndDate)
+		db.Where("DATE(created_at) BETWEEN ? AND ?", que.StartDate, que.EndDate)
 	} else if que.Filter == "day" {
-		db.Where("created_at LIKE ?", "%"+time.Now().Format("2006-01-02")+"%")
+		db.Where("DATE(created_at) = ?", time.Now().Format("2006-01-02"))
 	} else if que.Filter == "week" {
 		dateNow := time.Now().Format("2006-01-02")
 		dateMinusOneWeek := time.Now().AddDate(0, 0, -7).Format("2006-01-02")
-		db.Where("created_at BETWEEN ? AND ?", dateMinusOneWeek, dateNow)
+		db.Where("DATE(created_at) BETWEEN ? AND ?", dateMinusOneWeek, dateNow)
 	} else if que.Filter == "month" {
 		dateNow := time.Now().Format("2006-01-02")
 		dateMinusOneMonth := time.Now().AddDate(0, -1, 0).Format("2006-01-02")
-		db.Where("created_at BETWEEN ? AND ?", dateMinusOneMonth, dateNow)
+		db.Where("DATE(created_at) BETWEEN ? AND ?", dateMinusOneMonth, dateNow)
 	} else if que.Filter == "year" {
 		dateNow := time.Now().Format("2006-01-02")
 		dateMinusOneYear := time.Now().AddDate(-1, 0, 0).Format("2006-01-02")
-		db.Where("created_at BETWEEN ? AND ?", dateMinusOneYear, dateNow)
+		db.Where("DATE(created_at) BETWEEN ? AND ?", dateMinusOneYear, dateNow)
+	}
+
+	db.Order("created_at DESC").Find(&model)
+	if db.RowsAffected == 0 {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "No se encontraron registros",
+		})
+	}
+
+	return f.JSON(types.Response{
+		Status: true,
+		Find:   model,
+	})
+}
+
+func (ReportsC) CashRegisterReportPeriodic(f *fiber.Ctx) error {
+	que := struct {
+		StartDate string `param:"startDate"`
+		EndDate   string `param:"endDate"`
+		Filter    string `param:"filter"`
+	}{}
+	err := f.QueryParser(&que)
+	if err != nil {
+		return err
+	}
+
+	model := []CashRegisterC{}
+	db := config.DB.Model(models.CashRegister{})
+	db.
+		Preload("Users")
+	if que.StartDate != "" && que.EndDate != "" {
+		db.Where("DATE(created_at) BETWEEN ? AND ?", que.StartDate, que.EndDate)
+	} else if que.Filter == "day" {
+		db.Where("DATE(created_at) = ?", time.Now().Format("2006-01-02"))
+	} else if que.Filter == "week" {
+		dateNow := time.Now().Format("2006-01-02")
+		dateMinusOneWeek := time.Now().AddDate(0, 0, -7).Format("2006-01-02")
+		db.Where("DATE(created_at) BETWEEN ? AND ?", dateMinusOneWeek, dateNow)
+	} else if que.Filter == "month" {
+		dateNow := time.Now().Format("2006-01-02")
+		dateMinusOneMonth := time.Now().AddDate(0, -1, 0).Format("2006-01-02")
+		db.Where("DATE(created_at) BETWEEN ? AND ?", dateMinusOneMonth, dateNow)
+	} else if que.Filter == "year" {
+		dateNow := time.Now().Format("2006-01-02")
+		dateMinusOneYear := time.Now().AddDate(-1, 0, 0).Format("2006-01-02")
+		db.Where("DATE(created_at) BETWEEN ? AND ?", dateMinusOneYear, dateNow)
+	}
+
+	db.Order("created_at DESC").Find(&model)
+	if db.RowsAffected == 0 {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "No se encontraron registros",
+		})
+	}
+
+	return f.JSON(types.Response{
+		Status: true,
+		Find:   model,
+	})
+}
+
+func (ReportsC) OtherInventoryOutputsReport(f *fiber.Ctx) error {
+	que := struct {
+		StartDate string `param:"startDate"`
+		EndDate   string `param:"endDate"`
+		Filter    string `param:"filter"`
+	}{}
+	err := f.QueryParser(&que)
+	if err != nil {
+		return err
+	}
+
+	model := []BusinessC{}
+	db := config.DB.Model(models.OtherInventoryOutput{})
+	db.
+		Preload("Article").
+		Preload("Article.Category")
+	if que.StartDate != "" && que.EndDate != "" {
+		db.Where("DATE(created_at) BETWEEN ? AND ?", que.StartDate, que.EndDate)
+	} else if que.Filter == "day" {
+		db.Where("DATE(created_at) = ?", time.Now().Format("2006-01-02"))
+	} else if que.Filter == "week" {
+		dateNow := time.Now().Format("2006-01-02")
+		dateMinusOneWeek := time.Now().AddDate(0, 0, -7).Format("2006-01-02")
+		db.Where("DATE(created_at) BETWEEN ? AND ?", dateMinusOneWeek, dateNow)
+	} else if que.Filter == "month" {
+		dateNow := time.Now().Format("2006-01-02")
+		dateMinusOneMonth := time.Now().AddDate(0, -1, 0).Format("2006-01-02")
+		db.Where("DATE(created_at) BETWEEN ? AND ?", dateMinusOneMonth, dateNow)
+	} else if que.Filter == "year" {
+		dateNow := time.Now().Format("2006-01-02")
+		dateMinusOneYear := time.Now().AddDate(-1, 0, 0).Format("2006-01-02")
+		db.Where("DATE(created_at) BETWEEN ? AND ?", dateMinusOneYear, dateNow)
 	}
 
 	db.Order("created_at DESC").Find(&model)

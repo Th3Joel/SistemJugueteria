@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import userImg from "@/assets/user.png";
+import { StateDriver, stepsTable } from "@/modules/core/utils/driver";
 
 interface IUser {
   id: string;
@@ -17,8 +18,10 @@ interface IUser {
 const Users = () => {
   const hook = useTable<IUser>();
   const { setTitle } = TitleState();
+  const { setSteps } = StateDriver();
     useEffect(() => {
         setTitle("Configuración | Usuarios");
+        setSteps(stepsTable)
     }, [])
   return (
     <div className="animate__fadeIn">

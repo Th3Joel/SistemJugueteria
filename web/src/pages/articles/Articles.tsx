@@ -62,7 +62,7 @@ const Articles = () => {
                                         <p className="text-green-600">{d.Stock}</p>
                                 }
                             </td>
-                            <td>C$ {formatNumber(d.SalePrice)}</td>
+                            <td>C$ { d.SalePrice == "" ? "0.00" : formatNumber(d.SalePrice) }</td>
                             <td>
                                 <div className="flex gap-1 justify-center">
                                     <Link to={urlEdit + d.id}>

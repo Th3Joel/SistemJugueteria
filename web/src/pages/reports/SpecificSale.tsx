@@ -164,7 +164,7 @@ const SpecificSale = () => {
                                                 />
                                             </span>
                                         </section>
-                                        <small className="mt-1">Precio dolar: C$ {formatNumber(company.PriceDollar)}</small>
+                                        <small className="mt-1">Precio dólar: C$ {formatNumber(company.PriceDollar)}</small>
                                     </div>
                                 </div>
 

@@ -18,4 +18,6 @@ func ReportsR(app fiber.Router) {
 	r.Get("/costumers", reportsC.CostumerReport)
 	r.Get("/sales", reportsC.SalesReportPeriodic)
 	r.Get("/purchases", reportsC.PurchasesReportPeriodic)
+	r.Get("/cashRegister", reportsC.CashRegisterReportPeriodic)
+	r.Get("/othersInventoryOutputs", reportsC.OtherInventoryOutputsReport)
 }

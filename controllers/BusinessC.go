@@ -16,6 +16,7 @@ type BusinessC struct {
 	ArticleID string `json:"ArticleID"`
 	Quantity  string `json:"Quantity"`
 	Reason    string `json:"Reason"`
+	CreatedAt string `json:"createdAt"`
 
 	Model models.OtherInventoryOutput `gorm:"-" json:"-"`
 	Array []BusinessC                 `gorm:"-" json:"-"`
@@ -24,8 +25,10 @@ type BusinessC struct {
 }
 
 type Article struct {
-	ID          string `json:"-"`
-	Description string `json:"Description"`
+	ID          string   `json:"-"`
+	CategoryID  string   `json:"-"`
+	Description string   `json:"Description"`
+	Category    Category `json:"Category"`
 }
 
 func (business BusinessC) All(c *fiber.Ctx) error {
@@ -38,17 +41,29 @@ func (business BusinessC) All(c *fiber.Ctx) error {
 	take := q.PageSize
 	db.
 		Preload("Article").
+		Preload("Article.Category").
 		Offset(skip).
 		Limit(take)
 	if q.Search == "" {
 		db.Find(&business.Array)
 	} else {
-		db.Where("LOWER(name) LIKE LOWER(?)", "%"+q.Search+"%").
+		search := "%" + q.Search + "%"
+		db.Where(`
+		article_id IN (
+			SELECT id 
+			FROM articles 
+			WHERE  description LIKE ?
+		)
+		OR
+		LOWER(quantity) LIKE LOWER(?)
+		 OR
+		LOWER(reason) LIKE LOWER(?)
+		`, search, search, search).
 			Find(&business.Array)
 	}
-	db.Count(&count)
+	config.DB.Model(business.Model).Select("COUNT(id) AS count").Count(&count)
 
-	data := make([]interface{}, count)
+	data := make([]interface{}, len(business.Array))
 	for i, v := range business.Array {
 		data[i] = v
 	}

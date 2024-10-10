@@ -51,7 +51,85 @@ type DetailSale struct {
 	Article Articles `json:"article"`
 }
 
-func (sale SaleC) All(f *fiber.Ctx, my bool) error {
+// func (sale SaleC) All(f *fiber.Ctx, my bool) error {
+// 	db := config.DB.Model(sale.Model)
+// 	userId := f.Locals("userId").(string)
+// 	var count int64
+// 	var q types.ParamsTable
+// 	_ = f.QueryParser(&q)
+// 	skip := (q.Page - 1) * q.PageSize
+// 	take := q.PageSize
+// 	db.
+// 		Preload("Costumer").
+// 		Order("created_at DESC").
+// 		Offset(skip).
+// 		Limit(take)
+
+// 	if q.Search == "" {
+// 		if my {
+// 			db.Where("user_id = ?", userId).Find(&sale.Array)
+// 		} else {
+// 			db.Find(&sale.Array)
+// 		}
+// 	} else {
+// 		search := "%" + q.Search + "%"
+// 		if my {
+// 			db.
+// 				Where(`
+// 				user_id = ?
+// 				AND
+// 				(
+// 					costumer_id IN (
+// 						SELECT id
+// 						FROM costumers
+// 						WHERE  LOWER(name) LIKE LOWER(?)
+// 					)
+// 					OR
+// 					LOWER(code) LIKE LOWER(?)
+// 					OR
+// 					DATE(created_at) LIKE ?
+// 					OR
+// 					total LIKE ?
+// 				)
+// 		`, userId, search, search, search, search).
+// 				Find(&sale.Array)
+
+// 		} else {
+// 			db.Where(`
+// 			costumer_id IN (
+// 				SELECT id
+// 				FROM costumers
+// 				WHERE  LOWER(name) LIKE LOWER(?)
+// 			)
+// 			OR
+// 			LOWER(code) LIKE LOWER(?)
+// 			OR
+// 			DATE(created_at) LIKE ?
+// 			OR
+// 			total LIKE ?
+// 		`, search, search, search, search).
+// 				Find(&sale.Array)
+// 		}
+// 	}
+// 	config.DB.Model(models.Sales{}).Select("COUNT(id) AS count").Where("user_id = ?", userId).Count(&count)
+
+// 	data := make([]interface{}, len(sale.Array))
+// 	for i, v := range sale.Array {
+// 		data[i] = v
+// 	}
+// 	return f.Status(200).JSON(types.Response{
+// 		Status: true,
+// 		All: &types.All{
+// 			Data:     data,
+// 			Count:    count,
+// 			Pages:    int(math.Ceil(float64(count) / float64(q.PageSize))),
+// 			Page:     q.Page,
+// 			PageSize: q.PageSize,
+// 		},
+// 	})
+// }
+
+func (sale SaleC) All(f *fiber.Ctx) error {
 	db := config.DB.Model(sale.Model)
 	userId := f.Locals("userId").(string)
 	var count int64
@@ -64,17 +142,35 @@ func (sale SaleC) All(f *fiber.Ctx, my bool) error {
 		Order("created_at DESC").
 		Offset(skip).
 		Limit(take)
-	if my {
-		db.Where("user_id = ?", userId)
-	}
+
 	if q.Search == "" {
-		db.Find(&sale.Array)
+		db.Where("user_id = ?", userId).Find(&sale.Array)
 	} else {
-		db.Where("LOWER(code) LIKE LOWER(?)", "%"+q.Search+"%").
+		search := "%" + q.Search + "%"
+
+		db.
+			Where(`
+				user_id = ?
+				AND
+				( 
+					costumer_id IN ( 
+						SELECT id 
+						FROM costumers 
+						WHERE  LOWER(name) LIKE LOWER(?)
+					)
+					OR
+					LOWER(code) LIKE LOWER(?)
+					OR
+					DATE(created_at) LIKE ?
+					OR
+					total LIKE ?
+				)
+		`, userId, search, search, search, search).
 			Find(&sale.Array)
 	}
-	db.Count(&count)
-	data := make([]interface{}, count)
+	config.DB.Model(sale.Model).Select("COUNT(id) AS count").Where("user_id = ?", userId).Count(&count)
+
+	data := make([]interface{}, len(sale.Array))
 	for i, v := range sale.Array {
 		data[i] = v
 	}
@@ -166,11 +262,12 @@ func (sale SaleC) Save(f *fiber.Ctx) error {
 
 func (sale SaleC) ShowId(f *fiber.Ctx) error {
 	id := f.Params("id")
+	userId := f.Locals("userId").(string)
 	config.DB.Model(models.Sales{}).
 		Preload("Costumer").
 		Preload("DetailSale").
 		Preload("DetailSale.Article").
-		Where("id = ?", id).First(&sale)
+		Where("id = ? AND user_id = ?", id, userId).First(&sale)
 	return f.JSON(types.Response{
 		Status: true,
 		Find:   sale,
@@ -179,11 +276,19 @@ func (sale SaleC) ShowId(f *fiber.Ctx) error {
 
 func (sale SaleC) Cancel(f *fiber.Ctx) error {
 	id := f.Params("id")
+	userId := f.Locals("userId").(string)
 	sql := config.DB.Model(models.Sales{}).
 		Preload("Costumer").
 		Preload("DetailSale").
-		Where("id = ?", id).
+		Where("id = ? AND user_id = ?", id, userId).
 		First(&sale)
+
+	if sale.State == "0" {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "La venta ya fue cancelada",
+		})
+	}
 
 	fecha, err := time.Parse(time.RFC3339, sale.CreatedAt)
 	if err != nil {
@@ -209,13 +314,6 @@ func (sale SaleC) Cancel(f *fiber.Ctx) error {
 		})
 	}
 
-	if sale.State == "0" {
-		return f.JSON(types.Response{
-			Status: false,
-			Msj:    "La venta ya fue cancelada",
-		})
-	}
-
 	for _, value := range sale.DetailSale {
 		art := struct {
 			Stock int
@@ -227,7 +325,6 @@ func (sale SaleC) Cancel(f *fiber.Ctx) error {
 		qua, _ := strconv.Atoi(value.Quantity)
 		stockA := art.Stock + qua
 
-		fmt.Println(stockA)
 		sql2.Update("stock", stockA)
 	}
 	return f.JSON(types.Response{

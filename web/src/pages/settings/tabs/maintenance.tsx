@@ -3,6 +3,7 @@ import LoaderBtn from "@/modules/core/components/LoaderBtn";
 import { useForm } from "@/modules/core/hooks/useForm";
 import { TitleState } from "@/modules/core/states/title-state";
 import alertBox from "@/modules/core/utils/alertBox";
+import { StateDriver, stepsMaintenance } from "@/modules/core/utils/driver";
 import { Button, CircularProgress, IconButton, Tooltip } from "@mui/material";
 import { useEffect } from "react";
 import { FaClockRotateLeft } from "react-icons/fa6";
@@ -12,7 +13,7 @@ const Maintenance = () => {
     const { setTitle } = TitleState();
     const { get, data } = useForm<TFiles>([]);
     const { get: genBackup, loading: genLoading } = useForm<unknown>({});
-
+    const { setSteps } = StateDriver();
     const getFiles = () => {
         get("/backup/files");
     };
@@ -33,10 +34,11 @@ const Maintenance = () => {
     useEffect(() => {
         setTitle("Configuración | Mantenimiento");
         getFiles();
+        setSteps(stepsMaintenance)
     }, [])
     return (
         <div className="flex justify-center m-3">
-            <div className="w-[490px] flex flex-col gap-3 p-2 items-center shadow-md rounded-lg  animate__fadeIn">
+            <div className="w-[490px] flex flex-col gap-3 p-2 items-center shadow-md rounded-lg  animate__fadeIn backupStep">
                 <img src={dbImage} alt="db" width={100} />
                 <h1 className="-mt-3">Copia de seguridad de la base de datos</h1>
                 <div className="border w-full rounded-lg py-1 px-2 overflow-y-auto max-h-[330px]">

@@ -2,7 +2,7 @@ import { InputText } from "@/modules/core/components/Input"
 import LoaderBtn from "@/modules/core/components/LoaderBtn"
 import { useForm } from "@/modules/core/hooks/useForm"
 import { Button, Collapse } from "@mui/material"
-import {  useState } from "react"
+import { useState } from "react"
 import { FaCircleChevronLeft, FaGear } from "react-icons/fa6"
 import { pettyCashState } from "../states/DataState"
 
@@ -29,7 +29,7 @@ export const GeneralData = () => {
     }
 
     return (
-        <div className="shadow-lg rounded-lg p-3">
+        <div className="shadow-lg rounded-lg p-3 pettyCashGeneral">
             <div className="flex justify-between cursor-pointer" onClick={() => setShow((s) => !s)}>
 
                 <h1 className="text-xl font-bold flex items-center">

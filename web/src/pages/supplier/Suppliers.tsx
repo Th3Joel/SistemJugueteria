@@ -31,10 +31,10 @@ const Suppliers = () => {
                 ruta="suppliers"
                 colunms={[
                     "Nombre",
-                    "Email",
+                    "Correo",
                     "Teléfono",
                     "Dirección",
-                    "Acciones",
+                    "Acciónes",
                 ]}
                 body={(urlEdit, eliminar) =>
                     hook.all?.data.map((d, i) => (

@@ -43,8 +43,8 @@ func (r RefundC) All(f *fiber.Ctx) error {
 		`, que, que, que).
 			Find(&r.Array)
 	}
-	db.Count(&count)
-	data := make([]interface{}, count)
+	config.DB.Model(r.Model).Select("COUNT(id) AS count").Count(&count)
+	data := make([]interface{}, len(r.Array))
 	for i, v := range r.Array {
 		data[i] = v
 	}

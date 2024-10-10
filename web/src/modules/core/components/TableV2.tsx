@@ -23,7 +23,7 @@ interface IArticle {
     MinimunStock: string
 }
 
-export const TableV2: React.FC<{ isViewPurchase?: boolean }> = ({ isViewPurchase }) => {
+export const TableV2: React.FC<{ isViewPurchase?: boolean,isSale?: boolean }> = ({ isViewPurchase, isSale }) => {
     const hook = useTable<IArticle>()
     const { pushDetail, exists } = PurchaseState();
     const { setDetail, exists: existsEditPurchase } = PurchaseEditState();
@@ -44,7 +44,7 @@ export const TableV2: React.FC<{ isViewPurchase?: boolean }> = ({ isViewPurchase
                     hook.all?.data.map((d, i) => (
                         <tr key={i}>
                             <td>
-                                <IconButton color="success" sx={{ marginX: "-8px" }} disabled={isViewPurchase ? existsEditPurchase(d.id) : exists(d.id)} onClick={() => {
+                                <IconButton color="success" sx={{ marginX: "-8px" }} disabled={isViewPurchase ? existsEditPurchase(d.id) : (d.Stock == "0" && isSale)  ? true : exists(d.id)} onClick={() => {
 
                                     isViewPurchase ?
                                         setDetail({

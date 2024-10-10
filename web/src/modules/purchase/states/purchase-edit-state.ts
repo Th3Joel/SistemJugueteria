@@ -82,8 +82,10 @@ export const PurchaseEditState = create<IPurchaseEditState>((set, get) => ({
     sumTotalToysDetail: () => {
         const { detail, orgTotalToysDetail } = get();
         const totalToysDetail = detail.reduce((a, b) => a + (parseInt(b.quantity + "") || 0), 0)
+        console.log(orgTotalToysDetail+ totalToysDetail)
         set({
             totalToysDetail: totalToysDetail + orgTotalToysDetail,
+            //totalToysDetail: totalToysDetail + orgTotalToysDetail,
         })
     },
     changeInput: (value, field, id) => {
@@ -113,7 +115,7 @@ export const PurchaseEditState = create<IPurchaseEditState>((set, get) => ({
 
         if (detail.length === 0) {
             errors["isEmpty"] = "--- No hay elementos nuevos ---";
-            pass = false;
+            pass = false; 
         }
 
         //Check errors detail purchase

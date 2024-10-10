@@ -38,12 +38,30 @@ func (user UserC) All(c *fiber.Ctx) error {
 	db.
 		Offset(skip).
 		Limit(take).
-		Select("id, name, role, picture, email").
-		Where("id != ?", c.Locals("userId").(string)).
-		Find(&user.Array).
-		Count(&count)
+		Select("id, name, role, picture, email")
 
-	data := make([]interface{}, count)
+	idCurrentUser := c.Locals("userId").(string)
+	if q.Search == "" {
+		db.Where("id != ?", idCurrentUser).Find(&user.Array)
+	} else {
+		search := "%" + q.Search + "%"
+		db.Where(`
+				id != ?
+				AND
+				(
+				LOWER(name) LIKE LOWER(?)
+				OR
+				Lower(email) LIKE LOWER(?)
+				OR
+				LOWER(role) LIKE LOWER(?)
+				)
+			`, idCurrentUser, search, search, search).
+			Find(&user.Array)
+	}
+
+	config.DB.Model(user.Model).Select("COUNT(id) AS count").Where("id != ?", idCurrentUser).Count(&count)
+
+	data := make([]interface{}, len(user.Array))
 	for i, v := range user.Array {
 		data[i] = v
 	}
@@ -246,6 +264,14 @@ func (user UserC) Delete(c *fiber.Ctx) error {
 	db := config.DB
 
 	id := c.Params("id")
+	idUserCurrent := c.Locals("userId").(string)
+
+	if id == idUserCurrent {
+		return c.JSON(types.Response{
+			Status: false,
+			Msj:    "No puedes eliminar a ti mismo",
+		})
+	}
 
 	sql := db.
 		Where("id = ?", id).

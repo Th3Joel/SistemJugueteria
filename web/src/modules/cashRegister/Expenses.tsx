@@ -1,15 +1,16 @@
 import { Button, IconButton } from "@mui/material"
-import { useEffect, useState } from "react"
 import { FaTrash } from "react-icons/fa6"
 import { useFetch } from "../core/hooks/useFetch"
 import { formatNumber } from "../core/utils/formatNumber"
 import { useModal } from "../core/components/Modal"
 import alertBox from "../core/utils/alertBox"
 import { AddExpenses } from "../pettyCash/components/AddExpenses"
+import CashRegisterState, { IExpenses } from "./states/cashRegisterState"
+import { useEffect, useState } from "react"
 
 interface ExpensesProps {
     isView?: boolean
-    expenses?: ExpensesData[]
+    expenses?: IExpenses[]
 }
 
 
@@ -21,16 +22,17 @@ export interface ExpensesData {
     Amount: string
 }
 
-export const Expenses: React.FC<ExpensesProps> = ({ isView, expenses }) => {
-    const [data, setData] = useState<ExpensesData[]>([])
+export const Expenses: React.FC<ExpensesProps> = ({ isView,expenses }) => {
+    const { expenses: dat, fetchData } = CashRegisterState()
+    const [data, setData] = useState<IExpenses[]>([])
     const { RenderModal, setModalShow } = useModal()
 
-    const getData = async () => {
-        const res = await useFetch<{ status: boolean, find: ExpensesData[] }>("/expenses/all", "GET")
-        if (res.status) {
-            setData(res.find)
-        }
-    }
+    // const getData = async () => {
+    //     const res = await useFetch<{ status: boolean, find: ExpensesData[] }>("/expenses/all", "GET")
+    //     if (res.status) {
+    //         setData(res.find)
+    //     }
+    // }
 
     const deleteItem = async (id: string, detail: string) => {
         alertBox(
@@ -41,26 +43,29 @@ export const Expenses: React.FC<ExpensesProps> = ({ isView, expenses }) => {
             async () => {
                 const res = await useFetch<{ status: boolean }>(`/expenses/${id}`, "DELETE");
                 if (res.status) {
-                    getData()
+                    fetchData()
                 }
             }
         )
 
     }
 
+    // useEffect(() => {
+    //     if (!isView) {
+    //         getData()
+    //     }
+    // }, [])
     useEffect(() => {
-        if (!isView) {
-            getData()
+        if (isView) {
+            setData(expenses || [])
+        }else{
+            setData(dat)
         }
-    }, [])
-    useEffect(() => {
-        if (expenses) {
-            setData(expenses)
-        }
-    }, [expenses])
+
+    }, [expenses,dat])
     return (
         <div>
-            <AddExpenses getData={getData} RenderModal={RenderModal} setModalShow={setModalShow} />
+            <AddExpenses isCash getData={fetchData} RenderModal={RenderModal} setModalShow={setModalShow} />
             <div className={`flex items-center ${isView ? 'justify-center' : 'justify-between'}`}>
                 <span className="font-bold text-xl text-gray-600">
                     {

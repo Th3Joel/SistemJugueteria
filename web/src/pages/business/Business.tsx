@@ -2,7 +2,7 @@ import { Card } from "@/modules/core/components/Card"
 import { InputText, IOptions } from "@/modules/core/components/Input"
 import { useFetch } from "@/modules/core/hooks/useFetch";
 import { useEffect, useState } from "react";
-import { FaICursor, FaTruck } from "react-icons/fa6"
+import { FaDatabase, FaICursor, FaTruck } from "react-icons/fa6"
 import { IArticle } from "../articles/Articles";
 import { IResponseFetch } from "@/types";
 import { Button } from "@mui/material";
@@ -11,6 +11,7 @@ import LoaderBtn from "@/modules/core/components/LoaderBtn";
 import { useTable } from "@/modules/core/hooks/useTable";
 import Table from "@/modules/core/components/Table";
 import { toast } from "sonner";
+import { TitleState } from "@/modules/core/states/title-state";
 
 interface IFormData {
     ArticleID: string
@@ -20,15 +21,19 @@ interface IFormData {
 interface IBusiness {
     id: string
     ArticleID: string
-    Article:{
+    Article: {
         Description: string
+        Category:{
+            Name: string
+        }
     }
     Quantity: string
     Reason: string
+    
 }
 
 const Business = () => {
-
+    const { setTitle } = TitleState();
     const { post, errors, loading, data, inputChange } = useForm<IFormData>({
         ArticleID: "",
         Quantity: "",
@@ -42,7 +47,7 @@ const Business = () => {
         const res = await useFetch<IResponseFetch<IArticle>>("/articles?page=1&pageSize=2000", "GET");
         const selectProvee = res.all.data.map((data) => ({
             key: data.id,
-            value: data.Description,
+            value: data.Category.Name + " | " + data.Description,
         }));
         setSelectProvee(selectProvee);
     }
@@ -60,15 +65,13 @@ const Business = () => {
 
     useEffect(() => {
         fecthArticles();
+        setTitle("Otras salidas de inventario");
     }, [])
     return (
         <Card>
             <div className="p-3">
-                <h1 className="text-xl mb-2">Otras salidas de inventario</h1>
-
                 <form className="flex gap-3 w-full flex-wrap justify-center" onSubmit={handleSubmit}>
                     <span className="w-[300px]">
-
                         <InputText
                             label="Artículo"
                             icon={<FaTruck />}
@@ -79,16 +82,13 @@ const Business = () => {
                             helperText={errors?.ArticleID}
                             options={selectProvee}
                             onChange={inputChange}
-                        //valueChange={(e) => {
-                        //if (e != "") changeInput(e, "supplierID");
-                        //}}
                         />
                     </span>
                     <InputText
                         label="Cantidad"
                         name="Quantity"
                         placeholder="Requerido"
-                        icon={<FaICursor />}
+                        icon={<FaDatabase />}
                         value={data.Quantity}
                         onChange={inputChange}
                         error={!!errors?.Quantity}
@@ -124,7 +124,7 @@ const Business = () => {
                 </form>
 
                 <div className="w-full">
-                        <Table
+                    <Table
                         v2
                         hook={hook}
                         colunms={["Artículo", "Cantidad", "Motivo de la salida"]}
@@ -132,13 +132,13 @@ const Business = () => {
                         body={() =>
                             hook.all?.data.map((d, i) => (
                                 <tr key={i}>
-                                    <td>{d.Article.Description}</td>
+                                    <td>{d.Article.Category.Name+" | "+d.Article.Description}</td>
                                     <td>{d.Quantity}</td>
                                     <td>{d.Reason}</td>
                                 </tr>
                             ))
                         }
-                        />
+                    />
                 </div>
             </div>
         </Card>

@@ -69,6 +69,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
     valResto: "",
     exchange: "",
     //----------------
+
     code: "",
     costumerID: "",
     supplierID: "",
@@ -112,25 +113,25 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
       const { isSale, cashCordoba, cashDollar, costDollar } = get();
       if (!isSale) {
         //Calcula el coste de cada articulo en la caja
-        const costArticle = parseFloat(get().costBox) / parseInt(get().quantityBox);
-        set({ costArticle });
+        const costArticle = (parseFloat(get().costBox) / parseInt(get().quantityBox)).toFixed(2);
+        set({ costArticle:Number(costArticle) });
 
         //calcula el total de articulos que hay en el detalle de compra
         const quantityArticleDetail = get().detail.reduce(
           (a, b) => a + parseInt(b.quantity),
           0,
         );
+
         set({ quantityArticleDetail });
       }
       //Saca el subtotal de cada elemento
       const detail = get().detail.map((d) => {
 
         const calSubtotal = isSale ?
-          parseFloat(d.price) * parseInt(d.quantity)
-          : get().costArticle * parseInt(d.quantity);
+          Number(d.price) * Number(d.quantity)
+          : Number(get().costArticle) * Number(d.quantity);
 
         const subtotal = valNumberToString(calSubtotal);
-
         return { ...d, subtotal };
       })
       set({ detail });
@@ -374,7 +375,6 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
 
       });
       set({ errors: validationsErrors, detailErrors: validationsDetailErrors });
-      console.log(valState)
       return valState;
     },
     clear() {
@@ -413,6 +413,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
         cashCordoba,
         cashDollar,
         exchange,
+        quantityArticleDetail
       } = get();
       let js;
       if (isSale) {
@@ -435,6 +436,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
           articleBoxID,
           quantityBox,
           costBox,
+          totalToysDetail:quantityArticleDetail+"",
           date,
           total,
           detail,

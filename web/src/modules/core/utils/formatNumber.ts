@@ -5,5 +5,5 @@ export const formatNumber = (number: string, decimals = 2) => {
         maximumFractionDigits: decimals
       });
       const num = formateador.format(nume);
-    return num == "NaN" ? "" : num;
+    return num == "NaN" || number == "0" ? "" : num;
 };

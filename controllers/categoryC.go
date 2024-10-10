@@ -58,9 +58,8 @@ func (category CategoryC) All(c *fiber.Ctx) error {
 		db.Where("LOWER(name) LIKE LOWER(?)", "%"+q.Search+"%").
 			Find(&category.Array)
 	}
-	db.Count(&count)
-
-	data := make([]interface{}, count)
+	config.DB.Model(category.Model).Select("COUNT(id) AS count").Count(&count)
+	data := make([]interface{}, len(category.Array))
 	for i, v := range category.Array {
 		data[i] = v
 	}
