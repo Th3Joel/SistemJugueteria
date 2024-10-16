@@ -9,7 +9,7 @@ interface IOtherInventoryOutputs {
     Reason: string
     Article: {
         Description: string
-        Category:{
+        Category: {
             Name: string
         }
     }
@@ -44,34 +44,39 @@ const OtherInventoryOutputs = () => {
                 loading ? <CircularProgress />
                     :
                     <div className="w-[800px]">
-                        <div className="print-container">
-                            <h1 className="text-center text-2xl mt-3">Reporte de salidas de inventario</h1>
-                            <div className="mx-2">
-                                <small className="font-bold">
-                                    Filtrar por: {startDate && endDate ? "De " + startDate + " a " + endDate : msj[(filter ?? "")]}
-                                </small>
-                                    <table>
-                                        <thead className="sticky top-0">
-                                            <tr>
-                                                <th>Artículo</th>
-                                                <th>Motivo</th>
-                                                <th>Cantidad</th>
-                                                <th>Fecha</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                        <h1 className="text-center text-2xl mt-3">Reporte de salidas de inventario</h1>
+                        <div className="mx-2">
+                            <small className="font-bold">
+                                Filtrar por: {startDate && endDate ? "De " + startDate + " a " + endDate : msj[(filter ?? "")]}
+                            </small>
 
-                                            {data.map((d, i) => (
-                                                <tr key={i}>
-                                                    <td>{d.Article.Category.Name+" | "+d.Article.Description}</td>
-                                                    <td>{d.Reason}</td>
-                                                    <td>{d.Quantity}</td>
-                                                    <td>{dayjs(d.createdAt).format("DD/MM/YYYY hh:mm A")}</td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                            </div>
+                            <table>
+                                <thead className="sticky top-0">
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Artículo</th>
+                                        <th>Motivo</th>
+                                        <th>Cantidad</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {data.map((d, i) => (
+                                        <tr key={i}>
+                                            <td>{dayjs(d.createdAt).format("DD/MM/YYYY hh:mm A")}</td>
+                                            <td className="text-left">{d.Article.Category.Name + " | " + d.Article.Description}</td>
+                                            <td className="text-left">{d.Reason}</td>
+                                            <td>{d.Quantity}</td>
+                                        </tr>
+                                    ))}
+
+                                    <tr>
+                                        <td colSpan={3}>Total</td>
+                                        <td>{data.reduce((a, b) => a + Number(b.Quantity), 0)}</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
             }

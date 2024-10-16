@@ -6,6 +6,7 @@ import { IExpenses } from "./Expenses"
 import { useState } from "react"
 import { pettyCashState } from "../states/DataState"
 import { formatNumber } from "@/modules/core/utils/formatNumber"
+import CashRegisterState from "@/modules/cashRegister/states/cashRegisterState"
 
 interface IAddExpenses {
     isCash?: boolean
@@ -16,12 +17,13 @@ interface IAddExpenses {
 
 export const AddExpenses: React.FC<IAddExpenses> = ({ getData, RenderModal, setModalShow, isCash }) => {
     const [err, setErr] = useState<Record<string, string>>({})
+    const { TotalCordobas} = CashRegisterState();
     const { balance } = pettyCashState()
     const { post, loading, data, errors, inputChange } = useForm<Omit<IExpenses, "id" | "Date">>({
         NumInvoice: "",
         Detail: "",
         Amount: "",
-    });
+    }); 
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -31,7 +33,18 @@ export const AddExpenses: React.FC<IAddExpenses> = ({ getData, RenderModal, setM
                 "pass": "Debe ser menor a C$" + formatNumber(balance + "")
             })
             return
+        } 
+
+        //Validacion del limite de saldo de la arqueo de caja
+        const amount = Number(data.Amount)
+        if(isCash && (amount > Number(TotalCordobas))){
+            setErr({
+                "pass": "Debe ser menor a C$" + formatNumber(TotalCordobas + "")
+            })
+            return
         }
+        
+        
 
         post(isCash ? "/expenses/cash" : "/expenses", e.currentTarget).then((res) => {
             if (res) {
@@ -43,8 +56,11 @@ export const AddExpenses: React.FC<IAddExpenses> = ({ getData, RenderModal, setM
         setErr({})
     }
     return (
-        <RenderModal title="Nuevo egreso" onSubmit={onSubmit} loadBtn={loading}>
+        <RenderModal title={"Nuevo egreso"} onSubmit={onSubmit} loadBtn={loading}>
             <div className="flex flex-col gap-4 px-3 py-2">
+                <h1 className="text-center -my-2">
+                    Total en caja: C$ {formatNumber(TotalCordobas)}
+                </h1>
                 <small className="text-red-500 text-sm -my-2 text-center">
                     Campo obligatorios *
                 </small>

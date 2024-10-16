@@ -48,7 +48,7 @@ export const Expenses: React.FC<ExpensesProps> = ({ isView,expenses }) => {
             }
         )
 
-    }
+    } 
 
     // useEffect(() => {
     //     if (!isView) {

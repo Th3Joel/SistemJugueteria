@@ -32,7 +32,7 @@ export const BoxCounterInfo: React.FC<IProps> = ({counter, title, color, link, i
            bg-opacity-35"
       >
         <Link to={link} className="flex justify-center items-center">
-          Mas información
+          Más información
           <span className="ml-2 group-hover/link:rotate-180 duration-300">
             <FaCircleArrowLeft />
           </span>

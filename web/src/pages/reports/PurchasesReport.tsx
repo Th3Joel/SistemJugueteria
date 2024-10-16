@@ -34,7 +34,6 @@ const PurchasesReport = () => {
               loading ? <CircularProgress />
                   :
                   <div className="w-[800px]">
-                      <div className="print-container">
                           <h1 className="text-center text-2xl mt-3">Reporte de compras por periodo</h1>
                           <div className="mx-2">
                               <small className="font-bold">
@@ -44,29 +43,33 @@ const PurchasesReport = () => {
                                       <thead className="sticky top-0">
                                           <tr>
                                               <th>N° Factura</th>
+                                              <th>Fecha</th>
                                               <th>Proveedor</th>
                                               <th>Caja</th>
                                               <th>Total</th>
-                                              <th>Fecha</th>
                                               <th>Estado</th>
                                           </tr>
                                       </thead>
                                       <tbody>
-
                                           {data.map((d, i) => (
                                               <tr key={i}>
                                                   <td>{d.code.padStart(4, "0")}</td>
-                                                  <td>{d.supplier.name}</td>
-                                                  <td>bla</td>
-                                                  <td>C$ {formatNumber(d.total+"")}</td>
                                                   <td>{dayjs(d.date).format("DD/MM/YYYY")}</td>
+                                                  <td className="text-left">{d.supplier.name}</td>
+                                                  <td className="text-left">{d.articleBox.description}</td>
+                                                  <td>C$ {formatNumber(d.total+"")}</td>
                                                   <td className={`font-bold ${d.state == 0 ? "text-red-500" : "text-green-600"}`}>{d.state == 0 ? "Incompleta" : "Completa"}</td>
                                               </tr>
                                           ))}
+
+                                          <tr>
+                                            <td colSpan={4}>Total</td>
+                                            <td>C$ {formatNumber(data.reduce((a, b) => a + Number(b.total.toFixed(2)), 0) + "")}</td>
+                                            <td></td>
+                                          </tr>
                                       </tbody>
                                   </table>
                               </div>
-                      </div>
                   </div>
           }
       </div>

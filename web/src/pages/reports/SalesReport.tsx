@@ -42,43 +42,46 @@ const SalesReport = () => {
                 loading ? <CircularProgress />
                     :
                     <div className="w-[800px]">
-                        <div className="print-container">
-                            <h1 className="text-center text-2xl mt-3">Reporte de ventas por periodo</h1>
-                            <div className="mx-2">
-                                <div className="flex justify-between">
+                        <h1 className="text-center text-2xl mt-3">Reporte de ventas por periodo</h1>
+                        <div className="mx-2">
+                            <div className="flex justify-between">
                                 <small className="font-bold">
                                     Filtrar por: {startDate && endDate ? "De " + startDate + " a " + endDate : msj[(filter ?? "")]}
                                 </small>
                                 <small className="font-bold text-red-500">
                                     Marcadas en rojo (Ventas anuladas)
                                 </small>
-                                </div>
-                                    <table>
-                                        <thead className="sticky top-0">
-                                            <tr>
-                                                <th>N° Factura</th>
-                                                <th>Cajero</th>
-                                                <th>Cliente</th>
-                                                <th>Neto</th>
-                                                <th>Total</th>
-                                                <th>Fecha</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            {data.map((d, i) => (
-                                                <tr key={i} className={d.state == 0 ? "bg-red-300" : ""}>
-                                                    <td>{d.code.padStart(4, "0")}</td>
-                                                    <td>{d.user.name}</td>
-                                                    <td>{d.costumer.name}</td>
-                                                    <td>C$ {formatNumber(d.neto)}</td>
-                                                    <td>C$ {formatNumber(d.total)}</td>
-                                                    <td>{dayjs(d.date).format("DD/MM/YYYY")}</td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
                             </div>
+                            <table>
+                                <thead className="sticky top-0">
+                                    <tr>
+                                        <th>N° Factura</th>
+                                        <th>Fecha</th>
+                                        <th>Cajero</th>
+                                        <th>Cliente</th>
+                                        <th>Neto</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {data.map((d, i) => (
+                                        <tr key={i} className={d.state == 0 ? "bg-red-300" : ""}>
+                                            <td>{d.code.padStart(4, "0")}</td>
+                                            <td>{dayjs(d.date).format("DD/MM/YYYY")}</td>
+                                            <td className="text-left">{d.user.name}</td>
+                                            <td className="text-left">{d.costumer.name}</td>
+                                            <td>C$ {formatNumber(d.neto)}</td>
+                                            <td>C$ {formatNumber(d.total)}</td>
+                                        </tr>
+                                    ))}
+                                    <tr>
+                                        <td colSpan={4}>Total</td>
+                                        <td>C$ {formatNumber(data.filter(d => d.state == 1).reduce((a, b) => a + Number(Number(b.neto).toFixed(2)), 0) + "")}</td>
+                                        <td>C$ {formatNumber(data.filter(d => d.state == 1).reduce((a, b) => a + Number(Number(b.total).toFixed(2)), 0) + "")}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
             }

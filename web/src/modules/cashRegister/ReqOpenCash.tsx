@@ -5,24 +5,37 @@ import cashImage from "@/assets/cash.png";
 import { useForm } from "../core/hooks/useForm";
 import LoaderBtn from "../core/components/LoaderBtn";
 import CashRegisterState from "./states/cashRegisterState";
+import alertBox from "../core/utils/alertBox";
 
 interface IReqOpenCash {
     InitialBalance: string
 }
 export const ReqOpenCash = () => {
-    const { post, loading, inputChange, data,errors } = useForm<IReqOpenCash>({
+    const { post, loading, inputChange, data, errors } = useForm<IReqOpenCash>({
         InitialBalance: "",
     });
-    const {verify} = CashRegisterState();
+    const { verify } = CashRegisterState();
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        post("/cash-register/open", e.currentTarget).then((res) => {
-           if(res){
-                verify()
-           }
-        })
+        const form = e.currentTarget;
+        const handle = () => {
+            post("/cash-register/open", form).then((res) => {
+                if (res) {
+                    verify()
+                }
+            })
+        }
+        alertBox(
+            "warning",
+            "",
+            "Verifica si la fecha u hora de tu computador es correcta, ya que con ese tiempo se registran los datos en el sistema.",
+            "Abrir caja",
+            () => {
+                handle();
+            }
+        )
     }
- 
+
     return (
         <div className="flex justify-center my-5">
             <form className="flex shadow-lg rounded-xl p-3 cashRegisterReqOpen" onSubmit={handleSubmit}>
@@ -45,7 +58,7 @@ export const ReqOpenCash = () => {
                         />
                     </span>
                     <Button type="submit" disabled={loading} variant="contained" sx={{ marginTop: "20px", width: "100px" }}>
-                        {loading ? <LoaderBtn /> : "Hecho"}
+                        {loading ? <LoaderBtn /> : "Abrir"}
                     </Button>
                 </div>
             </form>

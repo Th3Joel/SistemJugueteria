@@ -12,6 +12,7 @@ import { useTable } from "@/modules/core/hooks/useTable";
 import Table from "@/modules/core/components/Table";
 import { toast } from "sonner";
 import { TitleState } from "@/modules/core/states/title-state";
+import { noLetters, TErrors } from "@/modules/purchase/states/purchase-state";
 
 interface IFormData {
     ArticleID: string
@@ -23,18 +24,19 @@ interface IBusiness {
     ArticleID: string
     Article: {
         Description: string
-        Category:{
+        Category: {
             Name: string
         }
+        Stock: string
     }
     Quantity: string
     Reason: string
-    
+
 }
 
 const Business = () => {
     const { setTitle } = TitleState();
-    const { post, errors, loading, data, inputChange } = useForm<IFormData>({
+    const { post, loading, data, inputChange } = useForm<IFormData>({
         ArticleID: "",
         Quantity: "",
         Reason: ""
@@ -42,18 +44,67 @@ const Business = () => {
 
     const [selectProvee, setSelectProvee] = useState<IOptions[]>([{ key: "", value: "" }]);
     const hook = useTable<IBusiness>();
+    const [articles, setArticles] = useState<IArticle[]>([])
+    const [errors, setErrors] = useState<TErrors>({})
 
     const fecthArticles = async () => {
         const res = await useFetch<IResponseFetch<IArticle>>("/articles?page=1&pageSize=2000", "GET");
-        const selectProvee = res.all.data.map((data) => ({
-            key: data.id,
-            value: data.Category.Name + " | " + data.Description,
-        }));
-        setSelectProvee(selectProvee);
+        const op: IOptions[] = []
+        res.all.data.map((data) => {
+            if (data.Stock != "0") {
+                op.push({
+                    key: data.id,
+                    value: data.Category.Name + " | " + data.Description,
+                })
+            }
+        }
+        );
+        setArticles(res.all.data)
+        setSelectProvee(op);
     }
-
+    
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        let val = true
+        const form = new FormData(e.currentTarget)
+        const artId = form.get("ArticleID") as string
+        const quan = form.get("Quantity") as string
+        const reason = form.get("Reason") as string
+        console.log(artId, quan, reason)
+
+        const art = articles.find(d => d.id == artId)
+        const err: TErrors = {}
+        if (artId == "") {
+            err["ArticleID"] = "Debe selecionar un artículo"
+            val = false
+        }
+        if (quan == "") {
+            err["Quantity"] = "Debe ingresar una cantidad"
+            val = false
+
+        } else if (!noLetters(quan)) {
+            // setErrors({Quantity:"Debe ingresar un número"})
+            err["Quantity"] = "Debe ingresar un número"
+            val = false
+
+        }else if(!art){
+            err["Quantity"] = "Debes de seleccionar el artículo"
+            val = false
+        } 
+        else if (Number(quan) > Number(art?.Stock)) {
+            //setErrors({Quantity:"La cantidad ingresada excede el stock de este artículo"})
+            err["Quantity"] = "Solo hay disponible " + art?.Stock+" en stock"
+            val = false
+
+        }
+        if (reason == "") {
+            err["Reason"] = "Debe ingresar un motivo"
+            val = false
+        }
+
+        setErrors(err)
+
+        if (!val) return
         post("/business", e.currentTarget).then((res) => {
             if (res) {
                 toast.success("Guardado correctamente")
@@ -109,7 +160,6 @@ const Business = () => {
                             options={
                                 [
                                     { key: "Daño", value: "Daño" },
-                                    { key: "Vencimiento", value: "Vencimiento" },
                                     { key: "Uso personal", value: "Uso personal" },
                                     { key: "Regalía", value: "Regalía" },
                                 ]
@@ -132,7 +182,7 @@ const Business = () => {
                         body={() =>
                             hook.all?.data.map((d, i) => (
                                 <tr key={i}>
-                                    <td>{d.Article.Category.Name+" | "+d.Article.Description}</td>
+                                    <td>{d.Article.Category.Name + " | " + d.Article.Description}</td>
                                     <td>{d.Quantity}</td>
                                     <td>{d.Reason}</td>
                                 </tr>

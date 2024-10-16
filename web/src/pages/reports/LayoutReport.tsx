@@ -27,21 +27,24 @@ const LayoutReport = () => {
                             </h1>
                         </header>
 
-                        <div className="flex flex-col items-center">
-                            <header className="header w-[800px]">
+                        <div className="flex flex-col items-center print-container">
+                            <header className="header w-[800px]"> 
                                 <div className="flex gap-2">
-                                    <div className="bg-slate-500 h-[100px] w-[80%] rounded-md">
+                                    <div className="bg-slate-500 h-[100px] w-[100%] rounded-md">
                                         <div className="flex flex-col justify-center items-center h-full text-white">
                                             <h1 className="text-3xl">{company.Name}</h1>
                                             {
-                                                company.Phone && <h1>Contacto: {company.Phone}</h1>
+                                                company.Phone &&
+                                                <h1>
+                                                    Contacto: {company.Phone}
+                                                </h1>
                                             }
                                             {
                                                 company.Email && <h1>Correo: {company.Email}</h1>
                                             }
                                         </div>
-                                    </div> 
-                                    <div className="h-[100px] w-[20%] bg-slate-500 rounded-md">
+                                    </div>
+                                    <div className="h-[100px] w-[150px] bg-slate-500 rounded-md">
                                         <div className="flex justify-center items-center h-full">
                                             <img src={company.Logo == "" ? logoImg : "/api/settings/company/logo"} alt="" width={80} />
                                         </div>

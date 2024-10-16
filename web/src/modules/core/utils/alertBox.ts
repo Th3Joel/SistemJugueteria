@@ -9,7 +9,7 @@ const alertBox = (tipo: SweetAlertIcon, title: string, text: string, textbtn: st
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
     confirmButtonText: textbtn,
-    cancelButtonText: cancelHandler ? "No, cerrar sesión" :"Cancelar",
+    cancelButtonText: cancelHandler ? "No, cerrar sesión" : "Cancelar",
   }).then((result) => {
     if (result.isConfirmed) {
       callback();

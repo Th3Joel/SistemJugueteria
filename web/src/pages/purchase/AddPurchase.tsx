@@ -192,17 +192,7 @@ const AddPurchase = () => {
 
 
             </section>
-            <div className="mt-3">
 
-              <Button
-                variant="contained"
-                color="primary"
-                disabled={loading}
-                onClick={handleSubmit}
-              >
-                {loading ? <LoaderBtn /> : "Guardar compra"}
-              </Button>
-            </div>
           </div>
           <div className="flex flex-col items-center border rounded-md p-3 mt-3 shadow-lg boxDetails">
             <header className="text-gray-500 my-1">
@@ -367,6 +357,17 @@ const AddPurchase = () => {
                 </section>
               </>
             )}
+          </div>
+          <div className="mt-4 flex justify-center">
+
+            <Button
+              variant="contained"
+              color="primary"
+              disabled={loading}
+              onClick={handleSubmit}
+            >
+              {loading ? <LoaderBtn /> : "Guardar compra"}
+            </Button>
           </div>
         </div>
 

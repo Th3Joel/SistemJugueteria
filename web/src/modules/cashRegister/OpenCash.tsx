@@ -136,19 +136,19 @@ export const OpenCash = () => {
                         <InputText
                             label="Total dólares"
                             value={formatNumber(TotalDollars)}
-                            icon={<p>C$</p>}
+                            icon={<p>$</p>}
                         />
 
                         <InputText
                             label="Faltante en dólares"
                             value={formatNumber(MissingInDollars)}
-                            icon={<p>C$</p>}
+                            icon={<p>$</p>}
                         />
 
                         <InputText
                             label="Sobrante en dólares"
                             value={formatNumber(DollarsSurplus)}
-                            icon={<p>C$</p>}
+                            icon={<p>$</p>}
                         />
 
                         {/* <span className="flex justify-evenly">

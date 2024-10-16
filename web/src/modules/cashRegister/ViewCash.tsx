@@ -243,13 +243,13 @@ const ViewCash = () => {
                     </div>
                 </div>
                 <div className="rounded-xl shadow-xl px-4 pb-6 w-[700px] border">
-                <h1 className="text-center mt-1 -mb-1 font-bold">Arqueo</h1>
+                    <h1 className="text-center mt-1 -mb-1 font-bold">Arqueo</h1>
 
                     <div className="flex justify-evenly">
                         <h1 className="text-xl font-bold">Total córdobas: </h1>
                         <h2 className="text-xl text-gray-600 font-bold">
                             C$ {
-                                formatNumber(data.totalCordobas + "")
+                                Number(data.totalCordobas).toFixed(2) == "0.00" ? "0.00" : formatNumber(data.totalCordobas) 
                             }
                         </h2>
                     </div>
@@ -278,7 +278,7 @@ const ViewCash = () => {
                         <h1 className="text-xl font-bold">Total dólares: </h1>
                         <h2 className="text-xl text-gray-600 font-bold">
                             C$ {
-                                formatNumber(data.totalDollars + "")
+                                Number(data.totalDollars).toFixed(2) == "0.00" ? "0.00" : formatNumber(data.totalDollars)
                             }
                         </h2>
                     </div>

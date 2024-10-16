@@ -37,7 +37,6 @@ const SpecificPurchase = () => {
                     <CircularProgress />
                     :
                     <div className="w-[800px]">
-                        <div className="print-container">
                         <h1 className="text-center text-2xl mt-3">Reporte de compra</h1>
                             <div className="flex flex-col items-center border rounded-md p-3 mx-3 my-5 shadow-lg">
                                 <header className="text-gray-700 mb-2">
@@ -129,7 +128,6 @@ const SpecificPurchase = () => {
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
                         </div>
                     </div>
             }

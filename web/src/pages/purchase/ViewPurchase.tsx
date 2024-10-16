@@ -88,7 +88,7 @@ const ViewPurchase = () => {
   const [showDetails, setShowDetails] = useState(false)
   const [showDrawer, setShowDrawer] = useState(false);
   const { detail, total, costArticle, errorsDetail, pass, errors, totalToysDetail,
-    deleteDetail, changeInput, setOrgTotal, setArticleBox, setCostArticle, setOrgTotalToysDetail, parseJson, checkErrors, clear,sumTotalToysDetail } = PurchaseEditState();
+    deleteDetail, changeInput, setOrgTotal, setArticleBox, setCostArticle, setOrgTotalToysDetail, parseJson, checkErrors, clear, sumTotalToysDetail } = PurchaseEditState();
 
   const { get, data, loading, post } = useForm<IPurchase>({
     code: "",
@@ -202,14 +202,7 @@ const ViewPurchase = () => {
                     />
                   </span>
                 </section>
-                {
-                  data.state == 0 &&
-                  <span className="mt-2">
-                    <Button variant="contained" onClick={() => handleSubmit()}>
-                      Actualizar
-                    </Button>
-                  </span>
-                }
+
 
               </div>
 
@@ -242,7 +235,7 @@ const ViewPurchase = () => {
                 </section>
               </div>
 
-              <div className="flex flex-col items-center border rounded-md px-3 mx-3 my-5 shadow-lg">
+              <div className="flex flex-col items-center border rounded-md px-3 mx-3 mt-5 mb-3 shadow-lg">
                 {
                   data.state == 1 ?
                     <header className="text-gray-700 mt-2 mb-2">
@@ -386,6 +379,14 @@ const ViewPurchase = () => {
 
 
               </div>
+              {
+                data.state == 0 &&
+                <span className="mb-3 flex justify-center">
+                  <Button variant="contained" onClick={() => handleSubmit()}>
+                    Actualizar
+                  </Button>
+                </span>
+              }
             </div>
         }
       </div>

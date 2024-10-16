@@ -186,17 +186,7 @@ const AddSale = () => {
 
 
                   </section>
-                  <div className="mt-3">
 
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      disabled={loading}
-                      onClick={handleSubmit}
-                    >
-                      {loading ? <LoaderBtn /> : "Guardar venta"}
-                    </Button>
-                  </div>
                 </div>
 
                 <div className="border rounded-md px-3 mt-5 mx-3 shadow-lg">
@@ -360,10 +350,21 @@ const AddSale = () => {
                             readonly
                           />
                         </section>
-                        <h1 className="text-gray-600 text-center">Cambio dolar: {formatNumber(company.PriceDollar)}</h1>
+                        <h1 className="text-gray-600 ml-8">Cambio dolar: {formatNumber(company.PriceDollar)}</h1>
                       </div>
                     </>
                   )}
+                </div>
+                <div className="mt-5 flex justify-center">
+
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={loading}
+                    onClick={handleSubmit}
+                  >
+                    {loading ? <LoaderBtn /> : "Guardar venta"}
+                  </Button>
                 </div>
               </div>
             </div>

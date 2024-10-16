@@ -73,7 +73,7 @@ export const TableV2: React.FC<{ isViewPurchase?: boolean,isSale?: boolean }> = 
                                 </IconButton>
                             </td>
                             <td>{d.Code}</td>
-                            <td>{d.Description}</td>
+                            <td>{d.Category.Name} | {d.Description}</td>
                             <td className="text-lg font-extrabold">
                                 {
                                     parseInt(d.Stock) <= parseInt(d.MinimunStock) ?
@@ -81,7 +81,7 @@ export const TableV2: React.FC<{ isViewPurchase?: boolean,isSale?: boolean }> = 
                                         <p className="text-green-600">{d.Stock}</p>
                                 }
                             </td>
-                            <td>C$ {formatNumber(d.SalePrice)}</td>
+                            <td>C$ {formatNumber(d.SalePrice == "0" ? "0.00" : d.SalePrice)}</td>
                         </tr>
                     ))
                 }

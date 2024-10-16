@@ -37,7 +37,6 @@ const SpecificSale = () => {
                 loading ? <CircularProgress />
                     :
                     <div className="w-[800px]">
-                        <div className="print-container">
 
                             <h1 className="text-center text-2xl mt-3">Reporte de venta</h1>
                             <div className="mt-5">
@@ -169,7 +168,6 @@ const SpecificSale = () => {
                                 </div>
 
                             </div>
-                        </div>
                     </div>
             }
 

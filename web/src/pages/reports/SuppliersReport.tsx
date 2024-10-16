@@ -19,7 +19,6 @@ const SuppliersReport = () => {
           loading ? <CircularProgress />
             :
             <div className="w-[800px]">
-              <div className="print-container">
 
                 <h1 className="text-center text-2xl mt-3">
                   Proveedores registrados
@@ -40,10 +39,10 @@ const SuppliersReport = () => {
                         data.length === 0 ? <tr><td colSpan={6}>No hay elementos</td></tr> :
                           data.map((item, index) => (
                             <tr key={index}>
-                              <td>{item.Name}</td>
-                              <td>{item.Email}</td>
-                              <td>{item.Phone}</td>
-                              <td>{item.Address}</td>
+                              <td className="text-left">{item.Name}</td>
+                              <td className="text-left">{item.Email}</td>
+                              <td className="text-left">{item.Phone}</td>
+                              <td className="text-left">{item.Address}</td>
                             </tr>
                           ))
                       }
@@ -51,7 +50,6 @@ const SuppliersReport = () => {
                   </table>
                 </div>
               </div>
-            </div>
         }
 
       </div>

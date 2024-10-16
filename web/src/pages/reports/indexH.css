@@ -1,15 +1,20 @@
 @media print {
   @page {
     size: A4 landscape;
+    /* margin: 110px 20px 20px 20px; */
   }
 
   .print-container {
     /* Estilos específicos para impresión */
     /* margin: 120px 20px 20px 20px; */
-    margin-top: 110px;
+    /* margin-top: 110px; */
     page-break-before: always;
     /* Opcional: Inserta un salto de página antes del contenido */
   }
+
+  /* .print-container:last-child {
+    margin-bottom: 110px; /* Ajusta según tus necesidades *
+  } */
 
   .no-print {
     display: none;
@@ -20,17 +25,18 @@
   .header,
   .footer {
     width: 100%;
+    height: 100px;
     /* Alineación centrada del texto */
     /* padding: 10px; */
     /* Espaciado superior e inferior */
-    position: fixed;
+    /* position: fixed; */
     /* Fijo en la parte superior e inferior */
-    left: 0;
-    right: 0;
+    /* left: 0;
+    right: 0; */
   }
 
   .header {
-    top: 0;
+    /* top: 0; */
     /* Altura del encabezado */
   }
 
@@ -40,10 +46,10 @@
     /* Altura del pie de página */
   }
 
-  .header,
+  /* .header,
   .footer {
     display: block;
-    /* Asegura que se muestre en cada página */
-  }
+    /* Asegura que se muestre en cada página *
+  } */
 
 }
