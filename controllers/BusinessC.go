@@ -43,7 +43,7 @@ func (business BusinessC) All(c *fiber.Ctx) error {
 		Preload("Article").
 		Preload("Article.Category").
 		Offset(skip).
-		Limit(take)
+		Limit(take).Order("created_at desc")
 	if q.Search == "" {
 		db.Find(&business.Array)
 	} else {

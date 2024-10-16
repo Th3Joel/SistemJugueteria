@@ -276,7 +276,8 @@ func (ReportsC) PurchasesReportPeriodic(f *fiber.Ctx) error {
 		Total        float64   `json:"total"`
 		CreatedAt    time.Time `json:"date"`
 
-		Supplier Suppliers `json:"supplier"`
+		Supplier   Suppliers   `json:"supplier"`
+		ArticleBox ArticlesBox `json:"articleBox"`
 	}
 
 	que := struct {
@@ -292,6 +293,7 @@ func (ReportsC) PurchasesReportPeriodic(f *fiber.Ctx) error {
 	model := []Purchase{}
 	db := config.DB.Model(models.Purchases{})
 	db.
+		Preload("ArticleBox").
 		Preload("Supplier")
 	if que.StartDate != "" && que.EndDate != "" {
 		db.Where("DATE(created_at) BETWEEN ? AND ?", que.StartDate, que.EndDate)

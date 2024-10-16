@@ -40,9 +40,10 @@ func (BackupC) Generate(f *fiber.Ctx) error {
 	user := "joel"
 	password := "Jo12el34//"
 	database := "jugueteria"
-	outputFile := "backups/" + time.Now().Format("2006_01_02 15_04_05") + ".sql"
+	outputFile := "backups/" + time.Now().Format("2006_01_02t15_04_05") + ".sql"
 
-	cmd := exec.Command("mysqldump", "-u"+user, "-p"+password, database)
+	//cmd := exec.Command("mysqldump", "-h", "db", "-u"+user, "-p"+password, database)
+	cmd := exec.Command("mysqldump", "-h", "localhost", "-u"+user, "-p"+password, database)
 
 	// Redirige la salida del comando al archivo de salida
 	output, err := os.Create(outputFile)
@@ -80,7 +81,8 @@ func (BackupC) Restore(f *fiber.Ctx) error {
 	password := "Jo12el34//"
 	database := "jugueteria"
 	// Crea el comando mysql
-	cmd := exec.Command("mysql", "-u"+user, "-p"+password, database)
+	//cmd := exec.Command("mysql", "-h", "db", "-u"+user, "-p"+password, database)
+	cmd := exec.Command("mariadb", "-u"+user, "-p"+password, database)
 
 	// Abre el archivo de entrada
 	input, err := os.Open("backups/" + file + ".sql")
