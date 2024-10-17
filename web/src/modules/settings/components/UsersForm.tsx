@@ -31,7 +31,7 @@ export const UsersForm: React.FC<IProps> = ({ isEdit, id, isProfile }) => {
         Name: isProfile ? user.Name : '',
         Email: isProfile ? user.Email : '',
         Role: '',
-        Picture:"",
+        Picture: "",
         Password: "",
         Confirm: ""
     });
@@ -64,28 +64,29 @@ export const UsersForm: React.FC<IProps> = ({ isEdit, id, isProfile }) => {
                 <div className="flex items-center gap-3">
                     <img
                         src={
-                            img ? img 
-                            : 
-                            isProfile ? user.Picture ? `/api/settings/users/picture/${user.Email}` : userImg
-                            : 
-                            data.Picture ? `/api/settings/users/picture/${data.Email}` 
-                            : 
-                            userImg}
+                            img ? img
+                                :
+                                isProfile ? user.Picture ? `/api/settings/users/picture/${user.Email}` : userImg
+                                    :
+                                    data.Picture ? `/api/settings/users/picture/${data.Email}`
+                                        :
+                                        userImg}
                         alt="profile pic"
                         width={60}
                         height={60}
                         className="rounded-full"
-                    /> 
+                    />
                     <div onClick={handleInputFile}
-                            className={'mx-auto bg-gray-300 cursor-pointer w-full text-center border px-3 py-2 rounded-lg'}>
-                            Seleccionar imagen
-                            <input type="file" accept='image/*' name="file0" onChange={handleFile} className="hidden" ref={fileRef} />
+                        className={'mx-auto bg-gray-300 cursor-pointer w-full text-center border px-3 py-2 rounded-lg'}>
+                        Seleccionar imagen
+                        <input type="file" accept='image/*' name="file0" onChange={handleFile} className="hidden" ref={fileRef} />
 
-                        </div>
+                    </div>
                 </div>
+                <h2 className="text-center text-red-500 text-sm">Campo obligatorios *</h2>
                 <section className="mt-3 flex flex-col gap-3">
                     <InputText
-                        label="Nombre"
+                        label="Nombre *"
                         name="Name"
                         icon={<FaICursor />}
                         isRequired
@@ -96,7 +97,7 @@ export const UsersForm: React.FC<IProps> = ({ isEdit, id, isProfile }) => {
                     />
 
                     <InputText
-                        label="Correo electrónico"
+                        label="Correo electrónico *"
                         name="Email"
                         isRequired
                         icon={<FaEnvelope />}
@@ -107,7 +108,7 @@ export const UsersForm: React.FC<IProps> = ({ isEdit, id, isProfile }) => {
                     />
                     {!isProfile &&
                         <InputText
-                            label="Tipo de usuario"
+                            label="Tipo de usuario *"
                             name="Role"
                             icon={<FaUserLock />}
                             type="select"
@@ -123,10 +124,9 @@ export const UsersForm: React.FC<IProps> = ({ isEdit, id, isProfile }) => {
 
                     {isEdit && <h4 className="text-gray-500 ml-2 -my-2">Actualizar contraseña (opcional)</h4>}
                     <InputText
-                        label="Contraseña"
+                        label={`Contraseña ${isEdit ? "" : "*"}`}
                         name="Password"
                         type="password"
-                        isRequired
                         icon={<FaUnlockKeyhole />}
                         onChange={inputChange}
                         error={!!errors?.Password}
@@ -134,10 +134,9 @@ export const UsersForm: React.FC<IProps> = ({ isEdit, id, isProfile }) => {
                         value={data.Password || ''}
                     />
                     <InputText
-                        label="Repetir contraseña"
+                        label={`Repetir contraseña ${isEdit ? "" : "*"}`}
                         name="Confirm"
                         type="password"
-                        isRequired
                         onChange={inputChange}
                         error={!!errors?.Confirm}
                         helperText={errors?.Confirm}

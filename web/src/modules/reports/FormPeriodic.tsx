@@ -26,17 +26,27 @@ export const FormPeriodic: React.FC<IProps> = ({ reportType }) => {
         othersInventoryOutputs: "/sis/report/othersInventoryOutputs",
     }
     const submit = (e: React.FormEvent<HTMLFormElement>) => {
+        let val = true;
         e.preventDefault()
         const startDate = data.startDate
         const endDate = data.endDate
 
         const start = new Date(startDate)
         const end = new Date(endDate)
+        const now = new Date()
+        const err:Record<string,string> = {}
 
         if (start > end) {
-            setErrors({ startDate: "La fecha de inicio debe ser menor a la de fin" })
-            return
+            err["startDate"] = "La fecha de inicio debe ser menor a la de fin"
+            val = false
         }
+
+        if(end > now){
+            err["endDate"] = "La fecha de fin no puede ser mayor a la actual"
+            val = false
+        }
+        setErrors(err)
+        if (!val) return
         setErrors({})
         window.open(`${urls[reportType]}?startDate=${startDate}&endDate=${endDate}`, "_blank")
     }
@@ -74,6 +84,7 @@ export const FormPeriodic: React.FC<IProps> = ({ reportType }) => {
                     onChange={onChange}
                     icon={<FaCalendarDays />}
                     error={!!errors.startDate}
+                    helperText={errors.startDate}
                 />
                 <InputText
                     label="Fecha final"
@@ -82,12 +93,9 @@ export const FormPeriodic: React.FC<IProps> = ({ reportType }) => {
                     value={data.endDate}
                     onChange={onChange}
                     icon={<FaCalendarDays />}
+                    error={!!errors.endDate}
+                    helperText={errors.endDate}
                 />
-                <small>
-                    {
-                        errors.startDate && <span className="text-red-500">{errors.startDate}</span>
-                    }
-                </small>
                 <div className="mb-2">
                     <Button type="submit" variant="contained" color="primary" className="w-full">
                         Generar

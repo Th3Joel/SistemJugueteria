@@ -13,6 +13,7 @@ import (
 
 type SupplierC struct {
 	ID      string `json:"id"`
+	Company string `json:"Company"`
 	Name    string `json:"Name"`
 	Address string `json:"Address"`
 	Phone   string `json:"Phone"`
@@ -38,7 +39,18 @@ func (supplier SupplierC) All(c *fiber.Ctx) error {
 	if q.Search == "" {
 		db.Find(&supplier.Array)
 	} else {
-		db.Where("LOWER(name) LIKE LOWER(?)", "%"+q.Search+"%").
+		search := "%" + q.Search + "%"
+		db.Where(`
+			LOWER(company) LIKE LOWER(?)
+			OR
+			LOWER(name) LIKE LOWER(?)
+			OR
+			LOWER(email) LIKE LOWER(?)
+			OR
+			LOWER(address) LIKE LOWER(?)
+			OR
+			LOWER(phone) LIKE LOWER(?)
+		`, search, search, search, search, search).
 			Find(&supplier.Array)
 	}
 	config.DB.Model(supplier.Model).Select("COUNT(id) AS count").Count(&count)
@@ -66,15 +78,17 @@ func (supplier SupplierC) AllSelect(f *fiber.Ctx) error {
 	db.Find(&supplier.Array)
 
 	type Perz struct {
-		ID   string `json:"id"`
-		Name string `json:"name"`
+		ID      string `json:"id"`
+		Company string `json:"company"`
+		Name    string `json:"name"`
 	}
 
 	var custom []Perz
 	for _, v := range supplier.Array {
 		custom = append(custom, Perz{
-			ID:   v.ID,
-			Name: v.Name,
+			ID:      v.ID,
+			Name:    v.Name,
+			Company: v.Company,
 		})
 	}
 
@@ -114,6 +128,7 @@ func (supplier SupplierC) Save(c *fiber.Ctx) error {
 
 	sql := db.Create(&models.Suppliers{
 		ID:      supplier.ID,
+		Company: supplier.Company,
 		Email:   supplier.Email,
 		Name:    supplier.Name,
 		Address: supplier.Address,
@@ -145,7 +160,7 @@ func (supplier SupplierC) UpdateId(c *fiber.Ctx) error {
 
 	db.
 		Where("id = ?", id).
-		Select("name", "address", "phone", "email").
+		Select("company", "name", "address", "phone", "email").
 		Updates(supplier)
 
 	return c.JSON(types.Response{
@@ -175,6 +190,7 @@ func (supplier SupplierC) Delete(c *fiber.Ctx) error {
 }
 
 func (SupplierC) trim(u *SupplierC) {
+	u.Company = strings.TrimSpace(u.Company)
 	u.Name = strings.TrimSpace(u.Name)
 	u.Email = strings.TrimSpace(u.Email)
 	u.Address = strings.TrimSpace(u.Address)

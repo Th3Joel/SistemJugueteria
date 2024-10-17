@@ -2,16 +2,17 @@ package val
 
 // MsjUserVal Mapa de mensajes de validación personalizados
 var MsjUserVal = map[string]string{
-	"Name.required":         "Nombre requerido.",
-	"Role.required":         "Tipo de usuario requerido.",
-	"Email.required":        "Correo requerido.",
-	"Email.email":           "Correo inválido.",
-	"Email.isRepeat":        "Este correo ya existe",
-	"Password.required":     "Contraseña requerida.",
-	"Password.gte":          "La contraseña debe ser mayor o igual a 4.",
-	"Confirm.required":      "Confirmación requerida.",
-	"Confirm.confirmPasswd": "Las contraseñas no coinciden",
-	"Confirm.omitCustom":    "Confirmación requerida",
+	"Name.required":              "Nombre requerido.",
+	"Role.required":              "Tipo de usuario requerido.",
+	"Email.required":             "Correo requerido.",
+	"Email.email":                "Correo inválido.",
+	"Email.isRepeat":             "Este correo ya existe",
+	"Password.valStrongPassword": "La contraseña debe contener mayúsculas, minúsculas, números y caracteres especiales !@#$%^&",
+	"Password.required":          "Contraseña requerida.",
+	"Password.min":               "Debe tener al menos 6 caracteres",
+	"Confirm.required":           "Confirmación requerida.",
+	"Confirm.confirmPasswd":      "Las contraseñas no coinciden",
+	"Confirm.omitCustom":         "Confirmación requerida",
 }
 
 // MsjAuthVal *Authentication
@@ -58,8 +59,9 @@ var MsjCompanyVal = map[string]string{
 
 	"Address.lte": "Caracteres máximo 50",
 
-	"PriceDollar.numeric": "Debe ser numérico",
-	"PriceDollar.gtC":     "Debe ser mayor a 35 córdobas",
+	"PriceDollar.numeric":  "Debe ser numérico",
+	"PriceDollar.required": "Campo requerido",
+	"PriceDollar.gtC":      "Debe ser mayor a 35 córdobas",
 }
 
 // ArticleBox
@@ -129,8 +131,9 @@ var MsjPasswordResetVal = map[string]string{
 	"Code.required": "Código requerido.",
 	"Code.valToken": "Código inválido",
 
-	"Password.required": "La contraseña es requerida.",
-	"Password.gte":      "La contraseña debe ser mayor o igual a 4.",
+	"Password.required":          "La contraseña es requerida.",
+	"Password.min":               "Debe tener al menos 6 caracteres",
+	"Password.valStrongPassword": "La contraseña debe contener mayúsculas, minúsculas, números y caracteres especiales !@#$%^&",
 
 	"Confirm.required":      "Confirmación requerida.",
 	"Confirm.confirmPasswd": "Las contraseñas no coinciden",

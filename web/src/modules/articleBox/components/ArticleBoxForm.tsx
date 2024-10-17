@@ -17,7 +17,7 @@ interface IFormData {
   Description: string;
   ToysQuantity: string;
   PurchasePrice: string;
-} 
+}
 
 export const ArticleBoxForm: React.FC<IProps> = ({ isEdit, id }) => {
   const { post, errors, loading, data, get, inputChange } = useForm<IFormData>({
@@ -45,10 +45,11 @@ export const ArticleBoxForm: React.FC<IProps> = ({ isEdit, id }) => {
 
   }, []);
   return (
-    <div className="w-[350px] p-5 shadow-lg rounded-lg">
+    <div className="w-[350px] pb-5 px-5 shadow-lg rounded-lg border">
+      <h2 className="text-center text-red-500 text-sm my-2">Campo obligatorios *</h2>
       <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
         <InputText
-          label="Código"
+          label="Código *"
           name="Code"
           icon={<FaBarcode />}
           value={data?.Code}
@@ -57,7 +58,7 @@ export const ArticleBoxForm: React.FC<IProps> = ({ isEdit, id }) => {
           helperText={errors?.Code}
         />
         <InputText
-          label="Descripción"
+          label="Descripción *"
           name="Description"
           multiline
           rows={2}
@@ -87,10 +88,10 @@ export const ArticleBoxForm: React.FC<IProps> = ({ isEdit, id }) => {
           error={!!errors?.PurchasePrice}
           helperText={errors?.PurchasePrice}
         /> */}
-       
-          <Button variant="contained" type="submit">
-            {loading ? <LoaderBtn /> : isEdit ? "Actualizar" : "Guardar"}
-          </Button>
+
+        <Button variant="contained" type="submit">
+          {loading ? <LoaderBtn /> : isEdit ? "Actualizar" : "Guardar"}
+        </Button>
       </form>
     </div>
   );

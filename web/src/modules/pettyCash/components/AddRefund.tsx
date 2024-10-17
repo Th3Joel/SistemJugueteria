@@ -15,7 +15,7 @@ interface IRefund {
 export const AddRefund: React.FC<IRefund> = ({ getData, RenderModal, setModalShow }) => {
     const [err, setErr] = useState<Record<string, string>>({})
     const { InitialBalance, balance } = pettyCashState()
-    const { post, loading, data, errors, inputChange } = useForm<Omit<IRefunds, "id" | "date">>({
+    const { post, loading, data, errors, inputChange,setData } = useForm<Omit<IRefunds, "id" | "date">>({
         Observation: "",
         Amount: "",
     });
@@ -37,6 +37,7 @@ export const AddRefund: React.FC<IRefund> = ({ getData, RenderModal, setModalSho
         post("/refunds", e.currentTarget).then((res) => {
             if (res) {
                 getData()
+                setData({Observation:"",Amount:""})
                 setModalShow(false)
             }
         });

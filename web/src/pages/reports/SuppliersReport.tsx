@@ -28,6 +28,7 @@ const SuppliersReport = () => {
                   <table>
                     <thead className="sticky top-0">
                       <tr>
+                        <th>Empresa</th>
                         <th>Nombre</th>
                         <th>Correo</th>
                         <th>Contacto</th>
@@ -39,6 +40,7 @@ const SuppliersReport = () => {
                         data.length === 0 ? <tr><td colSpan={6}>No hay elementos</td></tr> :
                           data.map((item, index) => (
                             <tr key={index}>
+                              <td className="text-left">{item.Company}</td>
                               <td className="text-left">{item.Name}</td>
                               <td className="text-left">{item.Email}</td>
                               <td className="text-left">{item.Phone}</td>

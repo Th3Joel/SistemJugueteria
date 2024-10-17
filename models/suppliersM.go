@@ -6,10 +6,11 @@ import (
 
 type Suppliers struct {
 	ID        string `gorm:"primaryKey"`
-	Name      string
-	Email     string
-	Address   string
-	Phone     string
+	Company   string `gorm:"size:100"`
+	Name      string `gorm:"size:100"`
+	Email     string `gorm:"size:100"`
+	Address   string `gorm:"size:100"`
+	Phone     string `gorm:"size:100"`
 	CreatedAt time.Time
 	UpdateAt  time.Time `gorm:"autoUpdateTime"`
 

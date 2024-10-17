@@ -5,6 +5,7 @@ import { Drawer } from "@/modules/core/components/Drawer";
 import { InputText, IOptions } from "@/modules/core/components/Input";
 import LoaderBtn from "@/modules/core/components/LoaderBtn";
 import LoaderSmall from "@/modules/core/components/LoaderSmall";
+import { useModal } from "@/modules/core/components/Modal";
 import { TableV2 } from "@/modules/core/components/TableV2";
 import { useFetch } from "@/modules/core/hooks/useFetch";
 import { useForm } from "@/modules/core/hooks/useForm";
@@ -28,6 +29,7 @@ import {
   FaUserGroup,
 } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { AddCostumer } from "./AddCostumer";
 
 interface ISelectCostumer {
   id: string;
@@ -35,6 +37,7 @@ interface ISelectCostumer {
 }
 
 const AddSale = () => {
+  const {RenderModal,setModalShow} = useModal();
   const { setSteps } = StateDriver();
   const [showDrawer, setShowDrawer] = useState<boolean>(false);
   const { setTitle } = TitleState();
@@ -125,6 +128,7 @@ const AddSale = () => {
 
   return (
     <Card btnBack btnBackLink="/sales">
+      <AddCostumer getData={fetchData} RenderModal={RenderModal} setModalShow={setModalShow} />
       {
         loadCash ?
           <div className="p-8 flex justify-center">
@@ -169,20 +173,29 @@ const AddSale = () => {
                       />
                     </span>
 
-                    <span className="w-[200px]">
-                      <InputText
-                        label="Cliente"
-                        icon={<FaUserGroup />}
-                        type="select"
-                        value={costumerID}
-                        error={!!errors.costumerID}
-                        helperText={errors.costumerID}
-                        options={select2}
-                        valueChange={(e) => {
-                          if (e != "") changeInput(e, "costumerID");
-                        }}
-                      />
-                    </span>
+                    <div className="flex">
+                      <span className="w-[200px]">
+
+                        <InputText
+                          label="Cliente"
+                          icon={<FaUserGroup />}
+                          type="select"
+                          value={costumerID}
+                          error={!!errors.costumerID}
+                          helperText={errors.costumerID}
+                          options={select2}
+                          valueChange={(e) => {
+                            if (e != "") changeInput(e, "costumerID");
+                          }}
+                        />
+
+                      </span>
+                      <Tooltip title="Agregar cliente">
+                        <IconButton color="secondary" onClick={() => setModalShow(true)}>
+                          <FaPlusCircle />
+                        </IconButton>
+                      </Tooltip>
+                    </div>
 
 
                   </section>

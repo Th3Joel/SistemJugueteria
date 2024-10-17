@@ -10,6 +10,7 @@ import { StateDriver, stepsTable } from "@/modules/core/utils/driver";
 
 export interface ISupplier {
     id: string
+    Company:string
     Name: string
     Email: string
     Phone: string
@@ -30,15 +31,17 @@ const Suppliers = () => {
                 hook={hook}
                 ruta="suppliers"
                 colunms={[
+                    "Empresa",
                     "Nombre",
                     "Correo",
                     "Teléfono",
                     "Dirección",
                     "Acciónes",
-                ]}
+                ]} 
                 body={(urlEdit, eliminar) =>
                     hook.all?.data.map((d, i) => (
                         <tr key={i}>
+                            <td>{d.Company}</td>
                             <td>{d.Name}</td>
                             <td>{d.Email}</td>
                             <td>{d.Phone}</td>

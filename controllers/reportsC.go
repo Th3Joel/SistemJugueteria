@@ -156,6 +156,7 @@ func (ReportsC) PurchaseReport(f *fiber.Ctx) error {
 func (ReportsC) SuppliersReport(f *fiber.Ctx) error {
 	type Suppliers struct {
 		ID      string `json:"-"`
+		Company string `json:"Company"`
 		Name    string `json:"Name"`
 		Email   string `json:"Email"`
 		Phone   string `json:"Phone"`

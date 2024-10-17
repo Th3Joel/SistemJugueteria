@@ -32,8 +32,9 @@ type PurchaseC struct {
 	Array           []PurchaseC      `json:"-" gorm:"-"`
 }
 type Supplier struct {
-	ID   string `json:"-"`
-	Name string `json:"name"`
+	ID      string `json:"-"`
+	Company string `json:"company"`
+	Name    string `json:"name"`
 }
 type ArticlesBox struct {
 	ID            string  `json:"-"`

@@ -7,7 +7,7 @@ type UserPut struct {
 	Role     string
 	Picture  string
 	Email    string `validate:"required,email,isRepeat"`
-	Password string `validate:"omitempty,gte=4"`
+	Password string `validate:"omitempty,min=6,valStrongPassword"`
 	Confirm  string `validate:"omitCustom=Password,confirmPasswd"`
 }
 
@@ -15,7 +15,7 @@ type UserPost struct {
 	Name     string `validate:"required"`
 	Role     string `validate:"required"`
 	Picture  string
-	Password string `validate:"required,gte=4"`
+	Password string `validate:"required,min=6,valStrongPassword"`
 	Email    string `validate:"required,email,isRepeat"`
 	Confirm  string `validate:"required,confirmPasswd"`
 }
@@ -33,7 +33,7 @@ type CompanyPost struct {
 	Phone       string `validate:"omitempty,numeric,min=8,max=8"`
 	Address     string `validate:"omitempty,max=50"`
 	Email       string `validate:"omitempty,email"`
-	PriceDollar string `validate:"omitempty,numeric,gtC=35"`
+	PriceDollar string `validate:"required,numeric,gtC=35"`
 }
 
 // SupplierPost
@@ -81,7 +81,7 @@ type PriceCategoryPost struct {
 
 type PasswordReset struct {
 	Code     string `validate:"required,valToken"`
-	Password string `validate:"required,gte=4"`
+	Password string `validate:"required,min=6,valStrongPassword"`
 	Confirm  string `validate:"required,confirmPasswd"`
 }
 

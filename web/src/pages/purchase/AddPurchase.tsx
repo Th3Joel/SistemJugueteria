@@ -32,6 +32,7 @@ interface ISelectArticleBox {
 }
 interface ISelectSupplier {
   id: string;
+  company: string;
   name: string;
 }
 // interface IArticleBox {
@@ -84,7 +85,7 @@ const AddPurchase = () => {
       setSelect2(
         res2.map((data) => ({
           key: data.id,
-          value: data.name,
+          value: data.company+" | "+data.name,
         })),
       );
     }

@@ -13,10 +13,10 @@ func CostumerR(f fiber.Router) {
 	costumerC := controllers.CostumerC{}
 	r := f.Group("/clientes", mdd.AuthM)
 	r.Get("/select", costumerC.AllSelect)
+	r.Post("", mdd.ValM(val.MsjCostumerVal, val.CostumerPost{}, models.Costumers{}), costumerC.Save)
 	admin := r.Group("", mdd.RoleM([]string{}))
 	admin.Get("", costumerC.All)
 	admin.Get("/:id", costumerC.ShowId)
-	admin.Post("", mdd.ValM(val.MsjCostumerVal, val.CostumerPost{}, models.Costumers{}), costumerC.Save)
 	admin.Put("/:id", mdd.ValM(val.MsjCostumerVal, val.CostumerPost{}, models.Costumers{}), costumerC.UpdateId)
 	admin.Delete("/:id", costumerC.Delete)
 }

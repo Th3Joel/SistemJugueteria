@@ -139,11 +139,11 @@ export const InputText: React.FC<InputProps> = ({
     const InputPassword = () => {
         return (
             <FormControl variant="outlined" size="small" error={error}>
-                <InputLabel>Contraseña</InputLabel>
+                <InputLabel>{label}</InputLabel>
                 <OutlinedInput
                     type={showPassword ? 'text' : 'password'}
                     value={value}
-                    label="Contraseña"
+                    label={label}
                     name={name}
                     onFocus={handleFocus}
                     onBlur={handleBlur}

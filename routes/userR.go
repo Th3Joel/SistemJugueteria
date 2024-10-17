@@ -16,7 +16,10 @@ func UserR(f fiber.Router) {
 	//Mostrar usuario logeado
 	r.Get("/user", userC.Show)
 	r.Get("/picture/:email", userC.GetPicture)
-
+	// Actualizar usuario registrado
+	r.Put("/",
+		mdd.ValM(val.MsjUserVal, val.UserPut{}, models.Users{}),
+		userC.Update)
 	//Ruta protegidas solo el administrador
 	admin := r.Group("", mdd.RoleM([]string{}))
 	//Lista todos los usuarios
@@ -28,10 +31,7 @@ func UserR(f fiber.Router) {
 		mdd.ValM(val.MsjUserVal, val.UserPost{}, models.Users{}),
 		userC.Save,
 	)
-	//Actualizar usuario registrado
-	admin.Put("/",
-		mdd.ValM(val.MsjUserVal, val.UserPut{}, models.Users{}),
-		userC.Update)
+
 	//Actualizar usuario por id
 	admin.Put("/:id",
 		mdd.ValM(val.MsjUserVal, val.UserPut{}, models.Users{}),

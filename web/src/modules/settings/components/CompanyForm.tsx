@@ -40,7 +40,7 @@ export const CompanyForm = () => {
 
     useEffect(() => {
         get("/settings/company");
-    }, []); 
+    }, []);
     return (
         <div className="animate__fadeIn">
             <div
@@ -61,8 +61,9 @@ export const CompanyForm = () => {
 
                         </div>
                     </span>
+                    <h2 className="text-center text-red-500 text-sm -my-1">Campo obligatorios *</h2>
                     <InputText
-                        label="Nombre de la empresa"
+                        label="Nombre de la empresa *"
                         name="Name"
                         isRequired
                         onChange={inputChange}
@@ -113,7 +114,7 @@ export const CompanyForm = () => {
                     />
 
                     <InputText
-                        label="Precio del dólar"
+                        label="Precio del dólar *"
                         name="PriceDollar"
                         onChange={inputChange}
                         error={!!errors?.PriceDollar}

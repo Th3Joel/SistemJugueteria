@@ -6,6 +6,7 @@ import (
 	"Jugueteria/models"
 	"fmt"
 	"reflect"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -67,6 +68,29 @@ func ConfirmPassword[T any](str *T) func(validator.FieldLevel) bool {
 			return false
 		}
 		return true
+	}
+}
+
+func ValStrongPassword() func(validator.FieldLevel) bool {
+	return func(fl validator.FieldLevel) bool {
+		field := fl.Field().String()
+		regexCapitalLetters := `[A-Z]`
+		regexLowerCase := `[a-z]`
+		regexEspecial := `[!@#$%^&]`
+		regexNumber := `[0-9]`
+
+		rNumber := regexp.MustCompile(regexNumber)
+		rLowerCase := regexp.MustCompile(regexLowerCase)
+		rCappitalLetters := regexp.MustCompile(regexCapitalLetters)
+		rEspecial := regexp.MustCompile(regexEspecial)
+		// fmt.Println("Minúsculas: ", rMinuscula.MatchString(field))
+		// fmt.Println("Mayusculas: ", rMayuscula.MatchString(field))
+		// fmt.Println("Especiales: ", rEspecial.MatchString(field))
+		// fmt.Println("Números: ", rNumber.MatchString(field))
+		return rCappitalLetters.MatchString(field) &&
+			rEspecial.MatchString(field) &&
+			rLowerCase.MatchString(field) &&
+			rNumber.MatchString(field)
 	}
 }
 

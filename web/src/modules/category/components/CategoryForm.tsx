@@ -39,10 +39,11 @@ export const CategoryForm: React.FC<IProps> = ({ isEdit, id }) => {
 
     }, []);
     return (
-        <div className="w-[350px] p-5 shadow-lg rounded-lg">
+        <div className="w-[350px] pb-5 px-5 shadow-lg rounded-lg border">
+            <h2 className="text-center text-red-500 text-sm my-2">Campo obligatorios *</h2>
             <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
                 <InputText
-                    label="Nombre"
+                    label="Nombre *"
                     name="Name"
                     placeholder="Nombre"
                     icon={<FaICursor />}

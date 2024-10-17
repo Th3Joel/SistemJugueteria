@@ -17,6 +17,7 @@ interface IPurchase {
   date: string
   state: number
   supplier: {
+    company: string
     name: string
   }
   articleBox: {
@@ -41,7 +42,7 @@ const Purchase = () => {
           hook.all?.data.map((d, i) => (
             <tr key={i}>
               <td>{d.code.padStart(4, "0")}</td>
-              <td>{d.supplier.name}</td>
+              <td>{d.supplier.company} | {d.supplier.name}</td>
               <td>{d.articleBox.description}</td>
               <td>C$ {formatNumber(d.total)}</td>
               <td>{dayjs(d.date).format("DD/MM/YYYY")}</td>

@@ -63,7 +63,7 @@ export const Expenses: React.FC<ExpensesProps> = ({ isView,expenses }) => {
         }
 
     }, [expenses,dat])
-    return (
+    return ( 
         <div>
             <AddExpenses isCash getData={fetchData} RenderModal={RenderModal} setModalShow={setModalShow} />
             <div className={`flex items-center ${isView ? 'justify-center' : 'justify-between'}`}>

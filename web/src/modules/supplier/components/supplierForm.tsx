@@ -1,5 +1,5 @@
 import { InputText } from "@/modules/core/components/Input";
-import { FaEnvelope, FaICursor, FaMapLocationDot, FaPhone } from "react-icons/fa6";
+import { FaBuilding, FaEnvelope, FaICursor, FaMapLocationDot, FaPhone } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import LoaderBtn from "@/modules/core/components/LoaderBtn.tsx";
@@ -11,6 +11,7 @@ interface IProps {
     id?: string;
 }
 interface IFormData {
+    Company: string,
     Name: string,
     Email: string,
     Address: string,
@@ -19,6 +20,7 @@ interface IFormData {
 
 export const SupplierForm: React.FC<IProps> = ({ isEdit, id }) => {
     const { post, errors, loading, data, get, inputChange } = useForm<IFormData>({
+        Company: "",
         Name: "",
         Email: "",
         Address: "",
@@ -44,11 +46,22 @@ export const SupplierForm: React.FC<IProps> = ({ isEdit, id }) => {
         }
     }, []);
     return (
-        <div className="w-[350px] p-5 shadow-lg rounded-lg border">
+        <div className="w-[350px] pb-5 px-5 shadow-lg rounded-lg border">
+            <h2 className="text-center text-red-500 text-sm my-2">Campo obligatorios *</h2>
             <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
+                <InputText
+                    label="Empresa"
+                    name="Company"
+                    value={data?.Company}
+                    isRequired={true}
+                    onChange={inputChange}
+                    error={!!errors?.Company}
+                    helperText={errors?.Company}
+                    icon={<FaBuilding />}
+                />
 
                 <InputText
-                    label="Nombre"
+                    label="Nombre *"
                     name="Name"
                     value={data?.Name}
                     isRequired={true}

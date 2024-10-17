@@ -13,7 +13,7 @@ interface IProps {
 }
 interface IFormData {
   //ArticleBoxID: string,
-  MinimunStock:string,
+  MinimunStock: string,
   CategoryID: string,
   Code: string,
   Description: string,
@@ -35,7 +35,7 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
   const { post, errors, loading, data, get, inputChange } = useForm<IFormData>({
     CategoryID: "",
     //ArticleBoxID: "",
-    MinimunStock:"",
+    MinimunStock: "",
     Code: "",
     Description: "",
     Stock: "",
@@ -54,7 +54,7 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
   };
 
   const fetchData = async () => {
-    
+
 
     const res2 = await useFetch<ISelectCategory[]>("/categories/select", "GET");
     if (res2) {
@@ -83,7 +83,8 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
       }
     })()
   }, []);
-  return (<div className="w-[350px] p-5 shadow-lg rounded-lg">
+  return (<div className="w-[350px] pb-5 px-5 shadow-lg rounded-lg border">
+    <h2 className="text-center text-red-500 text-sm my-2">Campo obligatorios *</h2>
     <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
       {/*<InputText
         label="Asignar a una caja de artículos"
@@ -99,7 +100,7 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
       />*/}
 
       {<InputText
-        label="Categoría"
+        label="Categoría *"
         name="CategoryId"
         value={data?.CategoryID}
         onChange={inputChange}
@@ -112,7 +113,7 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
 
 
       <InputText
-        label="Descripción"
+        label="Descripción *"
         name="Description"
         multiline
         rows={2}
@@ -124,7 +125,7 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
         helperText={errors?.Description}
       />
       <InputText
-        label="Código"
+        label="Código *"
         name="Code"
         placeholder="Código"
         icon={<FaBarcode />}
@@ -153,7 +154,7 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
         error={!!errors?.Stock}
         helperText={errors?.Stock}
       />
-      
+
 
       <InputText
         label="Precio de venta"
@@ -166,9 +167,9 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
         helperText={errors?.SalePrice}
         iconSize="13px"
       />
-        <Button variant="contained" type="submit" disabled={loading || select[0].key == "" }>
-          {loading || select[0].key == ""  ? <LoaderBtn /> : isEdit ? "Actualizar" : "Guardar"}
-        </Button>
+      <Button variant="contained" type="submit" disabled={loading || select[0].key == ""}>
+        {loading || select[0].key == "" ? <LoaderBtn /> : isEdit ? "Actualizar" : "Guardar"}
+      </Button>
     </form>
   </div>)
 }

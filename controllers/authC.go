@@ -132,15 +132,15 @@ func (a AuthC) ForgotPassword(f *fiber.Ctx) error {
 			 asociada a esta dirección de correo electrónico ( %s ).</h3>
 
 			<h3>Para obtener el código de restablecimiento de contraseña, haga clic en el siguiente enlace:</h3>
-			http://%s/auth/reset-password?code=%s
+			http://%s/sis/auth/reset-password?code=%s
 			<h3>También puede copiar y pegar el enlace anterior en una nueva ventana del 
 			navegador o ingresar el código 
-			de restablecimiento directamente en la página http://%s/auth/reset-password :</h3>
+			de restablecimiento directamente en la página http://%s/sis/auth/reset-password :</h3>
 			 %s
 			 <h3>Este código de cambio de contraseña caducará en 30 minutos después 
 			 de que se envió este correo electrónico. Para reiniciar el proceso 
 			 de cambio de contraseña, haga clic aquí:</h3>
-			 http://%s/auth/forgot-password
+			 http://%s/sis/auth/forgot-password
 			 <h3>Si no realizó la solicitud, ignore este correo electrónico.</h3>
 			 <h2>Gracias.</h2>
 		`, a.Email, f.Hostname(), genToken, f.Hostname(), genToken, f.Hostname()),

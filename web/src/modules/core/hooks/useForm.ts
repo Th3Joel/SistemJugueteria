@@ -72,6 +72,7 @@ export const useForm = <T>(object: IData<T>) => {
     loading,
     errors,
     data,
+    setData,
     inputChange,
   };
 
