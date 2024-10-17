@@ -5,7 +5,7 @@ export const useFetch = async <T>(
   body?: string | FormData,
   isFormData?: boolean,
 ): Promise<T> => {
-  const uri = "/api"
+const uri = "/api"
 
   const content_type = isFormData ? null : {
     "Content-Type": "application/json",
@@ -19,7 +19,7 @@ export const useFetch = async <T>(
       ...content_type
     },
   });
-
+  
   const res: T = await req.json();
 
 
