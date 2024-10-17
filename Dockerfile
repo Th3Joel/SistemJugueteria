@@ -16,4 +16,5 @@ COPY sis .
 #RUN /usr/local/go/bin/go mod download \
  #   && CGO_ENABLED=1 /usr/local/go/bin/go build -ldflags "-s -w" -o sis .
  EXPOSE 5000
+ EXPOSE 8080
 CMD ./sis
