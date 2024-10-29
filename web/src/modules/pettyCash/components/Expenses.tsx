@@ -32,13 +32,18 @@ export const Expenses = () => {
             "Eliminar egreso: " + detail,
             "Aceptar",
             async () => {
-                const res = await useFetch<{ status: boolean }>(`/expenses/${id}`, "DELETE");
+                const res = await useFetch<{ status: boolean }>(`/expenses/petty/${id}`, "DELETE");
                 if (res.status) {
                     getData()
                 }
             }
         )
 
+    }
+    function limitDate(date: string) {
+        const fechaLimite = dayjs(date);
+        const ne = fechaLimite.add(2, "hour");
+        return ne
     }
     return (
         <div>
@@ -65,9 +70,15 @@ export const Expenses = () => {
                                 <td>C$ {formatNumber(data.Amount)}</td>
                                 <td>{dayjs(data.Date).format("DD/MM/YYYY, hh:mm A")}</td>
                                 <td>
-                                    <IconButton color="error" onClick={() => deleteItem(data.id, data.Detail)}>
-                                        <FaTrash />
-                                    </IconButton>
+                                    {
+                                        dayjs().isBefore(limitDate(data.Date)) ?
+                                            <IconButton color="error" onClick={() => deleteItem(data.id, data.Detail)}>
+                                                <FaTrash />
+                                            </IconButton>
+                                            :
+                                            "---"
+                                    }
+
                                 </td>
                             </tr>
                         ))

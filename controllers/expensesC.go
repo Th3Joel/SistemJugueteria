@@ -6,6 +6,7 @@ import (
 	"Jugueteria/types"
 	"math"
 	"strconv"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -45,22 +46,26 @@ func (c ExpensesC) All(f *fiber.Ctx) error {
 		Offset(skip).
 		Limit(take)
 	if q.Search == "" {
-		db.Find(&c.Array)
+		db.Where("petty_cash_id = 1").Find(&c.Array)
 	} else {
 		query := "%" + q.Search + "%"
 		db.Where(
-			`LOWER(num_invoice) LIKE LOWER(?)
-			 OR 
-			 LOWER(detail) LIKE LOWER(?)
-			 OR 
-			 LOWER(amount) LIKE LOWER(?)
-			 OR
-			 LOWER(created_at) LIKE LOWER(?)
+			`
+			petty_cash_id = 1
+			AND(
+				LOWER(num_invoice) LIKE LOWER(?)
+				OR 
+				LOWER(detail) LIKE LOWER(?)
+				OR 
+				LOWER(amount) LIKE LOWER(?)
+				OR
+				LOWER(created_at) LIKE LOWER(?)
+			)
 			`,
 			query, query, query, query).
 			Find(&c.Array)
 	}
-	config.DB.Model(c.Model).Select("COUNT(id) AS count").Count(&count)
+	config.DB.Model(c.Model).Select("COUNT(id) AS count").Where("petty_cash_id = 1").Count(&count)
 	data := make([]interface{}, len(c.Array))
 	for i, v := range c.Array {
 		data[i] = v
@@ -118,13 +123,39 @@ func (c ExpensesC) Save(f *fiber.Ctx, isCash bool) error {
 	})
 }
 
-func (c ExpensesC) Delete(f *fiber.Ctx) error {
+func (c ExpensesC) DeletePetty(f *fiber.Ctx) error {
 	id := f.Params("id")
 	sql := config.DB.Model(c.Model).
 		Where("id = ?", id).
-		First(&c).
-		Delete(&models.Expenses{})
+		First(&c)
+
 	if sql.RowsAffected == 0 {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "Egreso no encontrado",
+		})
+	}
+
+	fecha, err := time.Parse(time.RFC3339, c.CreatedAt)
+	if err != nil {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "Ocurrio un error en la fecha",
+		})
+	}
+	fechaLimite := fecha.Add(2 * time.Hour)
+
+	if fechaLimite.Before(time.Now()) {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "Caducó el limite de anulación",
+		})
+	}
+
+	sql2 := config.DB.
+		Delete(&models.Expenses{}, "id = ?", c.ID)
+
+	if sql2.RowsAffected == 0 {
 		return f.JSON(types.Response{
 			Status: false,
 			Msj:    "No se ha eliminado el egreso",
@@ -139,6 +170,34 @@ func (c ExpensesC) Delete(f *fiber.Ctx) error {
 		amo = petty.InitialBalance
 	}
 	sql.Update("balance", amo)
+
+	return f.JSON(types.Response{
+		Status: true,
+		Msj:    "Detalle de egreso eliminado",
+	})
+}
+
+func (c ExpensesC) Delete(f *fiber.Ctx) error {
+	id := f.Params("id")
+	sql := config.DB.Model(c.Model).
+		Where("id = ?", id).
+		First(&c)
+
+	if sql.RowsAffected == 0 {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "Egreso no encontrado",
+		})
+	}
+	sql2 := config.DB.
+		Delete(&models.Expenses{}, "id = ?", c.ID)
+
+	if sql2.RowsAffected == 0 {
+		return f.JSON(types.Response{
+			Status: false,
+			Msj:    "No se ha eliminado el egreso",
+		})
+	}
 
 	return f.JSON(types.Response{
 		Status: true,

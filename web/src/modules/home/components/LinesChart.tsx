@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
 
 interface ILineChart {
@@ -7,10 +7,24 @@ interface ILineChart {
 }
 export const LinesChart: React.FC<ILineChart> = ({ labels, data }) => {
   const canvaRef = useRef<HTMLCanvasElement>(null);
+  const [randomColors, setRandomColors] = useState<string[]>([]);
 
+  function getRandomRGBColor() {
+    const r = Math.floor(Math.random() * 256); // Valor aleatorio para el canal rojo
+    const g = Math.floor(Math.random() * 256); // Valor aleatorio para el canal verde
+    const b = Math.floor(Math.random() * 256); // Valor aleatorio para el canal azul
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+  function actualizarColors() {
+    const randomColors: string[] = [];
+    for (let i = 0; i < 10; i++) {
+      randomColors.push(getRandomRGBColor());
+    }
+    setRandomColors(randomColors);
+  }
+  
   useEffect(() => {
-
-
+    actualizarColors();
     const myChart = new Chart(canvaRef.current!, {
       type: "bar",
       data: {
@@ -19,7 +33,9 @@ export const LinesChart: React.FC<ILineChart> = ({ labels, data }) => {
           {
             label: "Total ventas",
             data,
-            backgroundColor: "#505c6d",
+            backgroundColor: randomColors,
+            borderRadius: 20,
+            borderSkipped: false
           },
         ],
       },
@@ -40,11 +56,14 @@ export const LinesChart: React.FC<ILineChart> = ({ labels, data }) => {
         },
         plugins: {
           legend: {
-            position: "top",
+            display:false
           },
           title: {
             display: true,
             text: "Ventas por mes",
+            font:{
+              size: 20
+            }
           },
           tooltip: {
             callbacks: {

@@ -21,10 +21,10 @@ var (
 )
 
 func ConnectDB() {
-	dsn := "VwgHAVyMup7XfY6.root:D21sfVrtNmTuZPgy@tcp(gateway01.us-east-1.prod.aws.tidbcloud.com:4000)/jugueteria?parseTime=true&tls=true"
+	//dsn := "VwgHAVyMup7XfY6.root:D21sfVrtNmTuZPgy@tcp(gateway01.us-east-1.prod.aws.tidbcloud.com:4000)/jugueteria?parseTime=true&tls=true"
 	var db *gorm.DB
 	var err error
-	//dsn := "joel:Jo12el34//@tcp(localhost:3306)/jugueteria?charset=utf8mb4&parseTime=true&loc=Local"
+	dsn := "joel:Jo12el34//@tcp(localhost:3306)/jugueteria?charset=utf8mb4&parseTime=true&loc=Local"
 	for {
 		db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 			TranslateError:         true,

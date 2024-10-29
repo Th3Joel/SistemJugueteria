@@ -54,6 +54,7 @@ import PettyCash from "@/pages/pettyCash/PettyCash";
 import Business from "@/pages/business/Business";
 import CashRegisterReport from "@/pages/reports/CashRegisterReport";
 import OtherInventoryOutputs from "@/pages/reports/OtherInventoryOutputs";
+import About from "@/pages/about/About";
 
 const Router = () => {
     const auth = AuthState();
@@ -132,7 +133,7 @@ const Router = () => {
                             <Route path="/business" element={<Business/>} />
 
                         <Route path="/cash-register" element={<CashRegister />} />
-
+                        <Route path="/about" element={<About/>} />
 
                         <Route path="/sales" element={<Sale />} />
                         <Route path="/sales/add" element={<AddSale />} />

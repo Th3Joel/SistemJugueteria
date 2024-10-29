@@ -47,7 +47,7 @@ const PettyCash = () => {
                                     <h1 className={balance <= parseFloat(Limit + "") ? "text-red-600" : ""}>C$ {formatNumber(balance + "")}</h1>
                                     {
                                         user.Role == "admin" && <h1>
-                                            C$ {formatNumber((InitialBalance - balance) + "")}
+                                            C$ {formatNumber((InitialBalance - balance) <= 0 ? "0.00" : (InitialBalance - balance) + "")}
                                         </h1>
                                     }
                                 </div>

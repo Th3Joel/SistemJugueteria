@@ -17,7 +17,8 @@ import {
   FaPeopleCarryBox,
   FaNewspaper,
   FaWallet,
-  FaBriefcase
+  FaBriefcase,
+  FaCircleInfo
 } from "react-icons/fa6";
 
 export const Sidebar = () => {
@@ -216,6 +217,17 @@ export const Sidebar = () => {
           <Link to="/settings" className="flex">
             <FaGear className="text-2xl" />
             <p className="pl-2">Configuración</p>
+          </Link>
+        </div>
+
+        <div
+          className={`border duration-300 border-[#0071BC] ${pathname.startsWith("/about") &&
+            "bg-[#E261B1] border-[#E261B1]"
+            } rounded-lg px-3 py-2 my-3`}
+        >
+          <Link to="/about" className="flex">
+            <FaCircleInfo className="text-2xl" />
+            <p className="pl-2">Acerca de</p>
           </Link>
         </div>
       </div>
