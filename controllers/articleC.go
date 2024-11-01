@@ -22,7 +22,6 @@ type ArticleC struct {
 	Stock         int     `json:"Stock"`
 	SalePrice     float64 `json:"SalePrice"`
 	PurchasePrice float64 `json:"PurchasePrice"`
-	Profit        float64 `json:"Profit"`
 
 	Category Category `json:"Category"`
 

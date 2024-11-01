@@ -38,7 +38,6 @@ func main() {
 		_ = app.Shutdown()
 	}(app)
 	config.ConnectDB()
-
 	app.Use(func(f *fiber.Ctx) error {
 		//Secure options to headers
 		f.Set("X-Powered-By", "Triceratox software")

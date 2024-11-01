@@ -9,12 +9,6 @@ services:
     ports:
       - "5000:5000"
     build: .
-    deploy:
-      resources:
-        limits:
-          cpus: 0.5
-        reservations:
-          cpus: 0.2
 
   db:
     image: mysql:latest
@@ -22,7 +16,7 @@ services:
       MYSQL_ROOT_PASSWORD: root_password
       MYSQL_DATABASE: jugueteria
       MYSQL_USER: joel
-      MYSQL_PASSWORD: Jo12el34//
+      MYSQL_PASSWORD: Jo12el34
     ports:
       - "3306:3306"
     volumes:

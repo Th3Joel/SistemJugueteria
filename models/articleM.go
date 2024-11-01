@@ -12,7 +12,7 @@ type Articles struct {
 	SalePrice     float64
 	PurchasePrice float64
 	State         int `gorm:"default:1"`
-	Profit        float64
+	//Profit        float64
 
 	CreatedAt time.Time
 	UpdateAt  time.Time `gorm:"autoUpdateTime"`

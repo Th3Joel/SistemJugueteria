@@ -11,8 +11,8 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
-	_ "modernc.org/sqlite"
-	//"github.com/mattn/go-sqlite3"
+	//_ "modernc.org/sqlite"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 var (
@@ -24,7 +24,7 @@ func ConnectDB() {
 	//dsn := "VwgHAVyMup7XfY6.root:D21sfVrtNmTuZPgy@tcp(gateway01.us-east-1.prod.aws.tidbcloud.com:4000)/jugueteria?parseTime=true&tls=true"
 	var db *gorm.DB
 	var err error
-	dsn := "joel:Jo12el34//@tcp(localhost:3306)/jugueteria?charset=utf8mb4&parseTime=true&loc=Local"
+	dsn := "joel:Jo12el34@tcp(localhost:3306)/jugueteria?charset=utf8mb4&parseTime=true&loc=Local"
 	for {
 		db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 			TranslateError:         true,
@@ -70,7 +70,7 @@ func ConnectDB() {
 	DB = db
 
 	//base de datos utilizada para los tokens y token csfr
-	d, err := sql.Open("sqlite", "./system.db")
+	d, err := sql.Open("sqlite3", "./system.db")
 	if err != nil {
 		log.Fatal("No se pudo conectar a la base de datos sqlite3. \n")
 	}
