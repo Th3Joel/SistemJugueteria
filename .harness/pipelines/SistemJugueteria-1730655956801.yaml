@@ -24,7 +24,7 @@ pipeline:
                   name: go_build
                   spec:
                     shell: Bash
-                    command: go build -ldflags="-s -w" o sis
+                    command: mkdir joelprueba
                   timeout: ""
                   type: Run
           platform:
