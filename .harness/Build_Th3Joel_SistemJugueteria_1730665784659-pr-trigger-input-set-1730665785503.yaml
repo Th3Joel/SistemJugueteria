@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_Th3Joel_SistemJugueteria_1730665784659-pr-trigger-input-set
+  identifier: Build_Th3Joel_SistemJugueteria_1730665784659prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_Th3Joel_SistemJugueteria_1730665784659
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
