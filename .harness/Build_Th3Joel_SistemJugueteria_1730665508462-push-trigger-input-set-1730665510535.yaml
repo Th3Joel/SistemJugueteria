@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_Th3Joel_SistemJugueteria_1730665508462-push-trigger-input-set
+  identifier: Build_Th3Joel_SistemJugueteria_1730665508462pushtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_Th3Joel_SistemJugueteria_1730665508462
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
