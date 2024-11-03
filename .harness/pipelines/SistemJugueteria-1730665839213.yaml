@@ -33,10 +33,7 @@ pipeline:
                   identifier: build_bun
                   spec:
                     shell: Bash
-                    command: |-
-                      export BUN_INSTALL="$HOME/.bun"
-                      export PATH=$BUN_INSTALL/bin:$PATH
-                      cd web && bun run build
+                    command: ls && uname -r && pwd
               - step:
                   identifier: gotestreport
                   name: go_aub
