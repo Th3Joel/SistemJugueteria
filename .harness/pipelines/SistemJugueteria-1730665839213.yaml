@@ -28,13 +28,6 @@ pipeline:
                   timeout: ""
                   type: Run
               - step:
-                  type: Run
-                  name: build bun
-                  identifier: build_bun
-                  spec:
-                    shell: Bash
-                    command: curl -fsSL https://bun.sh/install | bash && cd web && ~/.bun/bin/bun install && ~/.bun/bin/bun run build
-              - step:
                   identifier: gotestreport
                   name: go_aub
                   spec:
