@@ -29,7 +29,7 @@ pipeline:
                   type: Run
               - step:
                   identifier: gotestreport
-                  name: go_test_report
+                  name: go_aub
                   spec:
                     shell: Bash
                     command: go build -ldflags="-s -w" -o sis
