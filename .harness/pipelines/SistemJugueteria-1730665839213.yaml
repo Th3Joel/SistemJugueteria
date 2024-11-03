@@ -28,6 +28,16 @@ pipeline:
                   timeout: ""
                   type: Run
               - step:
+                  type: Run
+                  name: build bun
+                  identifier: build_bun
+                  spec:
+                    shell: Bash
+                    command: |-
+                      export BUN_INSTALL="$HOME/.bun"
+                      export PATH=$BUN_INSTALL/bin:$PATH
+                      cd web && bun run build
+              - step:
                   identifier: gotestreport
                   name: go_aub
                   spec:
