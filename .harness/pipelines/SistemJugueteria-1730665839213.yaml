@@ -47,6 +47,17 @@ pipeline:
                           - /harness/report.xml
                   timeout: ""
                   type: Run
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_1
+                  identifier: BuildAndPushDockerRegistry_1
+                  spec:
+                    connectorRef: account.harnessImage
+                    repo: .
+                    tags:
+                      - sis
+                    dockerfile: .
+                    context: .
           platform:
             os: Linux
             arch: Amd64
