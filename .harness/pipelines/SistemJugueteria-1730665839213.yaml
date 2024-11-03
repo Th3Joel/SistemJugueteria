@@ -28,14 +28,6 @@ pipeline:
                   timeout: ""
                   type: Run
               - step:
-                  identifier: gotestcoverage
-                  name: bun run build
-                  spec:
-                    shell: Bash
-                    command: cd web && bun run build
-                  timeout: ""
-                  type: Run
-              - step:
                   identifier: gotestreport
                   name: go_test_report
                   spec:
