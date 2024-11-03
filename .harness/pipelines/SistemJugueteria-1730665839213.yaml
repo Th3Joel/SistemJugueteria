@@ -28,19 +28,6 @@ pipeline:
                   timeout: ""
                   type: Run
               - step:
-                  identifier: gotestreport
-                  name: go_aub
-                  spec:
-                    shell: Bash
-                    command: go build -ldflags="-s -w" -o sis
-                    reports:
-                      type: JUnit
-                      spec:
-                        paths:
-                          - /harness/report.xml
-                  timeout: ""
-                  type: Run
-              - step:
                   type: BuildAndPushDockerRegistry
                   name: BuildAndPushDockerRegistry_1
                   identifier: BuildAndPushDockerRegistry_1
