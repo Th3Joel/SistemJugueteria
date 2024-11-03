@@ -1,0 +1,5 @@
+service:
+  name: cosas
+  identifier: cosas
+  orgIdentifier: default
+  projectIdentifier: default_project
