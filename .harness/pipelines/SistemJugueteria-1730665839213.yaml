@@ -33,7 +33,7 @@ pipeline:
                   identifier: build_bun
                   spec:
                     shell: Bash
-                    command: curl -fsSL https://bun.sh/install | bash && cd web && bun run build
+                    command: curl -fsSL https://bun.sh/install | bash && cd web && ~/.bun/bin/bun run build
               - step:
                   identifier: gotestreport
                   name: go_aub
