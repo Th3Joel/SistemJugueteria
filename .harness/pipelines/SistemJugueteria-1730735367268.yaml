@@ -14,11 +14,11 @@ pipeline:
             steps:
               - step:
                   type: Run
-                  name: Echo Welcome Message
+                  name: Install dependency of frontend
                   identifier: Echo_Welcome_Message
                   spec:
                     shell: Sh
-                    command: echo "Welcome to Harness CI"
+                    command: cd web && bun install
           platform:
             os: Linux
             arch: Amd64
