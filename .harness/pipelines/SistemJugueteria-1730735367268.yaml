@@ -17,7 +17,7 @@ pipeline:
                   name: Install dependency of frontend
                   identifier: Echo_Welcome_Message
                   spec:
-                    shell: Sh
+                    shell: Bash
                     command: whoami
           platform:
             os: Linux
