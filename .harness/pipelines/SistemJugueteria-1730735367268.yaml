@@ -25,7 +25,7 @@ pipeline:
                   identifier: Echo_Welcome_Message
                   spec:
                     shell: Bash
-                    command: cd web && ls && pwd
+                    command: cd web && ls && pwd && bun i
           platform:
             os: Linux
             arch: Amd64
