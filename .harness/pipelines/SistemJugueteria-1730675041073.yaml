@@ -18,7 +18,7 @@ pipeline:
                   identifier: Echo_Welcome_Message
                   spec:
                     shell: Bash
-                    command: /home/admin/.bun/bin/bun -v
+                    command: bun -v
           platform:
             os: Linux
             arch: Amd64
