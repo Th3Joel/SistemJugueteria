@@ -17,8 +17,8 @@ pipeline:
                   name: Install dependency of frontend
                   identifier: Echo_Welcome_Message
                   spec:
-                    shell: Bash
-                    command: cd web && ls && pwd && /snap/bin/bun i
+                    shell: Sh
+                    command: cd web && ls && pwd && bun i
               - step:
                   type: Run
                   name: install mod gol
