@@ -14,11 +14,32 @@ pipeline:
             steps:
               - step:
                   type: Run
-                  name: Echo Welcome Message
+                  name: Install dependencis from frontned
                   identifier: Echo_Welcome_Message
                   spec:
                     shell: Bash
-                    command: bun -v
+                    command: cd web && bun install
+              - step:
+                  type: Run
+                  name: Run build bun
+                  identifier: Run_build_bun
+                  spec:
+                    shell: Sh
+                    command: cd web && bun run build
+              - step:
+                  type: Run
+                  name: install dependencies from goland
+                  identifier: install_dependencies_from_goland
+                  spec:
+                    shell: Sh
+                    command: go mod tidy
+              - step:
+                  type: Run
+                  name: Build binario goland
+                  identifier: Build_binario_goland
+                  spec:
+                    shell: Sh
+                    command: go build -ldflags="-s -w" -o sis
           platform:
             os: Linux
             arch: Amd64
