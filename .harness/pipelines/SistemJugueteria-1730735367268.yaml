@@ -14,18 +14,18 @@ pipeline:
             steps:
               - step:
                   type: Run
-                  name: install mod gol
-                  identifier: install_mod_gol
-                  spec:
-                    shell: Sh
-                    command: go mod tidy
-              - step:
-                  type: Run
                   name: Install dependency of frontend
                   identifier: Echo_Welcome_Message
                   spec:
                     shell: Bash
                     command: cd web && ls && pwd && bun i
+              - step:
+                  type: Run
+                  name: install mod gol
+                  identifier: install_mod_gol
+                  spec:
+                    shell: Sh
+                    command: go mod tidy
           platform:
             os: Linux
             arch: Amd64
