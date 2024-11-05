@@ -1,6 +1,6 @@
-FROM debian:latest
+FROM ubuntu:latest
 
-RUN apt-get update && apt-get install -y wget mariadb-client nmap \
+RUN apt-get update && apt-get install -y wget mysql-client \
  #   wget curl unzip gcc \
     && apt-get clean && rm -rf /var/lib/apt/list/*
 
