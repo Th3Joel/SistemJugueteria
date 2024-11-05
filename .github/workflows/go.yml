@@ -37,5 +37,6 @@ jobs:
     - name: Remove files unused
       run: find . -type f ! -name 'sis' ! -name 'Dockerfile' ! -name 'docker-compose.yaml' -exec rm -f {} +
     - name: Remove folders unused
-      run: find . -type d ! -name 'web' ! -name 'docker' ! -name 'docs' ! -name 'sis' ! -name 'Dockerfile' ! -name 'docker-compose.yaml' -exec rm -rf {} +
+      run: find . -type d ! -name '.' ! -name '..' ! -name 'sis' ! -name 'Dockerfile' ! -name 'docker-compose.yaml' -exec rmdir {} 2>/dev/null
+
 
