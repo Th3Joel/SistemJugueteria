@@ -1,7 +1,7 @@
 # This workflow will build a golang project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
 
-name: Go
+name: Build and deploy Sistema Jugueteria
 
 on:
   push:
@@ -11,31 +11,36 @@ on:
 
 jobs:
 
-  build:
+  build-system:
     runs-on: self-hosted #ubuntu-latest ejecuta en la nube
     steps:
     - uses: actions/checkout@v4
 
-    #- name: Set up Go
-   #   uses: actions/setup-go@v4
-  #    with:
- #       go-version: '1.20'
     # - name: apt update
     #   run: sudo apt update
     # - name: install bun js
     #   run: sudo snap install bun-js
     # - name: install go
     #   run: sudo snap install go --classic
+
     - name: Install dependencies frontend
       run: cd web && bun install
+
     - name: Install dependencies backend
       run: go mod tidy
+
     - name: Build frontend
       run: cd web && bun run build
+
     - name: Build backend
       run: go build -ldflags="-s -w" -o sis 
+
     - name: Remove all files
       run:  mkdir /tmp/files && cp Dockerfile sis docker-compose.yaml /tmp/files/ && rm -rf * && cp /tmp/files/* . && rm -rf /tmp/files
-
-
+  
+  deploy-in-docker:
+    runs-on: self-hosted
+    steps:
+    - name: Deploy in docker
+      run: echo "Deploying in docker"
 
