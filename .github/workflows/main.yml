@@ -40,6 +40,8 @@ jobs:
     runs-on: self-hosted
     needs: build
     steps:
-    - name: build services
-      run: docker compose up -d --build
+    - name: build image
+      run: docker compose build
+    - name: deploy
+      run: docker compose up -d
 
