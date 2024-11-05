@@ -34,9 +34,10 @@ jobs:
       run: cd web && bun run build
     - name: Build backend
       run: go build -ldflags="-s -w" -o sis 
+    - name: Remove folders unused
+      run: find . -type d -exec rm -r {} +
     - name: Remove files unused
       run: find . -type f ! -name 'sis' ! -name 'Dockerfile' ! -name 'docker-compose.yaml' -exec rm -f {} +
-    - name: Remove folders unused
-      run: find . -type d ! -name '.' ! -name '..' ! -name 'sis' ! -name 'Dockerfile' ! -name 'docker-compose.yaml' -exec rmdir {} 2>/dev/null
+
 
 
