@@ -39,6 +39,8 @@ jobs:
     steps:
     - name: build image
       run: docker compose build
+    - name: Stop services
+      run: docker compose stop
     - name: deploy
       run: docker compose up -d 
 
