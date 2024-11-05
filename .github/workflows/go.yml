@@ -34,3 +34,5 @@ jobs:
       run: cd web && bun run build
     - name: Build backend
       run: go build -ldflags="-s -w" -o sis 
+    - name: Check docker
+      run: docker ps
