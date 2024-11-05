@@ -21,5 +21,5 @@ jobs:
   #    with:
  #       go-version: '1.20'
 
-    - name: Prueba
-      run: echo "hola"
+    - name: Install dependencies frontend
+      run: cd web && bun install
