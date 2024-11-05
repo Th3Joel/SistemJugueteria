@@ -30,5 +30,7 @@ jobs:
       run: cd web && bun install
     - name: Install dependencies backend
       run: go mod tidy
+    - name: Build frontend
+      run: cd web && bun run build
     - name: Build backend
       run: go build -ldflags="-s -w" -o sis 
