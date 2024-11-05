@@ -3,6 +3,7 @@ services:
     ##image: jugueteria
     volumes:
       - app_data:/app
+      - ./sis:/app/sis
     depends_on:
       - db
     #command: ./sis migrate seed
