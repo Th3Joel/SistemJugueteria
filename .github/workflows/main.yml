@@ -27,11 +27,8 @@ jobs:
     - name: Install dependencies backend
       run: go mod tidy
 
-    - name: Build frontend
-      run: cd web && bun run build
-
-    - name: Build backend
-      run: go build -ldflags="-s -w" -o sis
+    - name: Build frontend and backend
+      run: bash push.sh b
 
     - name: Remove all files
       run:  mkdir /tmp/files && cp Dockerfile sis docker-compose.yaml /tmp/files/ && rm -rf * && cp /tmp/files/* . && rm -rf /tmp/files
