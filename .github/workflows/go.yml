@@ -35,7 +35,7 @@ jobs:
     - name: Build backend
       run: go build -ldflags="-s -w" -o sis 
     - name: Remove all files
-      run:  mkdir /tmp/builder && cp Dockerfile sis docker-compose.yaml /tmp/builder/ && rm -rf * && cp /tmp/Dockerfile/* . && rm -rf /tmp/builder
+      run:  mkdir /tmp/files && cp Dockerfile sis docker-compose.yaml /tmp/files/ && rm -rf * && cp /tmp/files/* . && rm -rf /tmp/files
 
 
 
