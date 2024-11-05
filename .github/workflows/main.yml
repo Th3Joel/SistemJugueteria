@@ -43,5 +43,5 @@ jobs:
     - name: build image
       run: docker compose build
     - name: deploy
-      run: docker compose up -d
+      run: docker compose up -d 
 
