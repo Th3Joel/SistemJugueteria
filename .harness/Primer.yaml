@@ -1,0 +1,35 @@
+pipeline:
+  name: Primer
+  identifier: Primer
+  projectIdentifier: default_project
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: account.Github_OAuth_1730655910162
+        repoName: SistemJugueteria
+        build: <+input>
+  stages:
+    - stage:
+        name: build
+        identifier: build
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Docker
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Go version
+                  identifier: Go_version
+                  spec:
+                    shell: Sh
+                    command: go version
