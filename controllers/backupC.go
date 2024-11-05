@@ -60,7 +60,7 @@ func (BackupC) Generate(f *fiber.Ctx) error {
 
 	// Ejecuta el comando
 	if err := cmd.Run(); err != nil {
-		fmt.Println("Error al crear elc comando:", err)
+		fmt.Println("Error al crear elc comando:", err, cmd.Stderr)
 		return f.JSON(types.Response{
 			Status: false,
 			Msj:    "Error al ejecutar el comando",
