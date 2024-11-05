@@ -28,3 +28,8 @@ jobs:
       run: sudo snap install go --classic
     - name: Install dependencies frontend
       run: cd web && bun install
+    - name: Install dependencies backend
+      run: go mod tidy
+    - name: Build backend
+      run: go build -ldflags="-s -w" -o sis 
+      working-directory: ./backend
