@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y wget mariadb-client nmap \
  #   && tar -C /usr/local -xzf go1.22.2.linux-amd64.tar.gz
 
 WORKDIR /app
-COPY sis .
+#COPY sis .
 #COPY uploads/ ./uploads/
 #RUN cd web && ~/.bun/bin/bun install && ~/.bun/bin/bun run build
 #RUN /usr/local/go/bin/go mod download \
