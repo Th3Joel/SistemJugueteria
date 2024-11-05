@@ -16,7 +16,7 @@ then
     cd web
     bun run build
     cd ..
-
+ 
     #sed -i '8s/.*/const uri = "http:\/\/localhost:5000\/api"/' $pathFile
 
     go build -ldflags="-s -w" -o sis
