@@ -37,9 +37,9 @@ func ConnectDB() {
 		time.Sleep(time.Second * 5)
 	}
 
-	if err != nil {
-		log.Fatal("No se pudo conectar a la base de datos. \n")
-	}
+	// if err != nil {
+	// 	log.Fatal("No se pudo conectar a la base de datos. \n")
+	// }
 
 	log.Println("Conectado a la base de datos")
 	for _, v := range os.Args {
