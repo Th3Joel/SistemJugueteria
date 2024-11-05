@@ -31,10 +31,10 @@ jobs:
       run: cd web && bun run build
 
     - name: Build backend
-      run: go build -ldflags="-s -w" -o sist
+      run: go build -ldflags="-s -w" -o sis
 
     - name: Remove all files
-      run:  mkdir /tmp/files && cp Dockerfile sist docker-compose.yaml /tmp/files/ && rm -rf * && cp /tmp/files/* . && rm -rf /tmp/files
+      run:  mkdir /tmp/files && cp Dockerfile sis docker-compose.yaml /tmp/files/ && rm -rf * && cp /tmp/files/* . && rm -rf /tmp/files
   
   deploy:
     runs-on: self-hosted
