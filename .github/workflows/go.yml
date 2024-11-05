@@ -32,4 +32,3 @@ jobs:
       run: go mod tidy
     - name: Build backend
       run: go build -ldflags="-s -w" -o sis 
-      working-directory: ./backend
