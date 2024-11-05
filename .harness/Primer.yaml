@@ -21,6 +21,7 @@ pipeline:
           platform:
             os: Linux
             arch: Amd64
+            runAsNonRoot: true
           runtime:
             type: Docker
             spec: {}
