@@ -12,7 +12,7 @@ on:
 jobs:
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted #ubuntu-latest ejecuta en la nube
     steps:
     - uses: actions/checkout@v4
 
@@ -20,12 +20,12 @@ jobs:
    #   uses: actions/setup-go@v4
   #    with:
  #       go-version: '1.20'
-    - name: apt update
-      run: sudo apt update
-    - name: install bun js
-      run: sudo snap install bun-js
-    - name: install go
-      run: sudo snap install go --classic
+    # - name: apt update
+    #   run: sudo apt update
+    # - name: install bun js
+    #   run: sudo snap install bun-js
+    # - name: install go
+    #   run: sudo snap install go --classic
     - name: Install dependencies frontend
       run: cd web && bun install
     - name: Install dependencies backend
