@@ -9,7 +9,7 @@ on:
 
 jobs:
 
-  build-system:
+  build:
     runs-on: self-hosted #ubuntu-latest ejecuta en la nube
     steps:
     - uses: actions/checkout@v4
@@ -36,10 +36,10 @@ jobs:
     - name: Remove all files
       run:  mkdir /tmp/files && cp Dockerfile sis docker-compose.yaml /tmp/files/ && rm -rf * && cp /tmp/files/* . && rm -rf /tmp/files
   
-  deploy-in-docker:
+  deploy:
     runs-on: self-hosted
-    needs: build-system
+    needs: build
     steps:
-    - name: Deploy in docker
-      run: echo "Deploying in docker"
+    - name: build services
+      run: docker compose up -d --build
 

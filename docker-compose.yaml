@@ -13,7 +13,7 @@ services:
   db:
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_ROOT_PASSWORD: Joji7283**039
       MYSQL_DATABASE: jugueteria
       MYSQL_USER: joel
       MYSQL_PASSWORD: Jo12el34
