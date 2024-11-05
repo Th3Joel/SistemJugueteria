@@ -35,5 +35,7 @@ jobs:
     - name: Build backend
       run: go build -ldflags="-s -w" -o sis 
     - name: Remove files unused
-      run: find . -type df ! -name 'sis' ! -name 'Dockerfile' ! -name 'docker-compose.yaml' -exec rm -rf {} +
+      run: find . -type f ! -name 'sis' ! -name 'Dockerfile' ! -name 'docker-compose.yaml' -exec rm -f {} +
+    - name: Remove folders unused
+      run: find . -type d ! -name 'web' ! -name 'docker' ! -name 'docs' ! -name 'sis' ! -name 'Dockerfile' ! -name 'docker-compose.yaml' -exec rm -rf {} +
 
