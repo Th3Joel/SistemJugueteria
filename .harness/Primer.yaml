@@ -8,8 +8,9 @@ pipeline:
     ci:
       codebase:
         connectorRef: account.Github_OAuth_1730655910162
-        repoName: SistemJugueteria
+        repoName: https://github.com/Th3Joel/SistemJugueteria.git
         build: <+input>
+        sparseCheckout: []
   stages:
     - stage:
         name: build
@@ -21,7 +22,6 @@ pipeline:
           platform:
             os: Linux
             arch: Amd64
-            runAsNonRoot: true
           runtime:
             type: Docker
             spec: {}
@@ -34,3 +34,5 @@ pipeline:
                   spec:
                     shell: Sh
                     command: go version
+        delegateSelectors:
+          - docker-delegate
