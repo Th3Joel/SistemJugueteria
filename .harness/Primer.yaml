@@ -11,6 +11,7 @@ pipeline:
         repoName: https://github.com/Th3Joel/SistemJugueteria.git
         build: <+input>
         sparseCheckout: []
+        runAsNonRoot: true
   stages:
     - stage:
         name: build
@@ -18,7 +19,6 @@ pipeline:
         description: ""
         type: CI
         spec:
-          runAsNonRoot: true
           cloneCodebase: true
           platform:
             os: Linux
