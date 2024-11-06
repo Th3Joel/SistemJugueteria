@@ -33,12 +33,12 @@ pipeline:
                       type: branch
                       spec:
                         branch: final
-          sharedPaths:
-            - ""
           caching:
             enabled: false
             paths: []
           buildIntelligence:
             enabled: false
+          sharedPaths:
+            - /home/joel/runner
         delegateSelectors:
           - docker-delegate
