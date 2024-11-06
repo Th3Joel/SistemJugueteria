@@ -4,6 +4,10 @@ pipeline:
   projectIdentifier: default_project
   orgIdentifier: default
   tags: {}
+  volumes:
+    - type: volume
+      spec: host
+      path: /home/joel
   stages:
     - stage:
         name: build
