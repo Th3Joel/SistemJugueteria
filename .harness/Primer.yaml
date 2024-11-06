@@ -24,7 +24,7 @@ pipeline:
                   type: Run
                   name: Run_1
                   identifier: Run_1
-                  privileged: true
+                  privileged: false
                   spec:
                     shell: Bash
                     command: ls && pwd
