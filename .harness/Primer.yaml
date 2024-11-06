@@ -15,7 +15,7 @@ pipeline:
             - name: cache
               path: /home/joel/runner
               type: temp
-          cloneCodebase: false
+          cloneCodebase: true
           platform:
             os: Linux
             arch: Amd64
@@ -25,21 +25,22 @@ pipeline:
           execution:
             steps:
               - step:
-                  type: GitClone
-                  name: GitClone_1
-                  identifier: GitClone_1
-                  spec:
-                    connectorRef: account.Github_OAuth_1730655910162
-                    repoName: Th3Joel/SistemJugueteria.git
-                    cloneDirectory: /home/joel
-                    build:
-                      type: branch
-                      spec:
-                        branch: final
-              - step:
                   type: Run
                   name: Run_1
                   identifier: Run_1
                   spec:
                     shell: Bash
                     command: ls && pwd
+          caching:
+            enabled: false
+            paths: []
+          buildIntelligence:
+            enabled: false
+  properties:
+    ci:
+      codebase:
+        connectorRef: account.Github_OAuth_1730655910162
+        repoName: Th3Joel/SistemJugueteria.git
+        build: <+input>
+        sparseCheckout: []
+        cloneDirectory: /home/joel/runner
