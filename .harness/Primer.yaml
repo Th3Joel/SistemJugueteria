@@ -11,7 +11,7 @@ pipeline:
         description: ""
         type: CI
         spec:
-          cloneCodebase: true
+          cloneCodebase: false
           platform:
             os: Linux
             arch: Amd64
@@ -36,10 +36,3 @@ pipeline:
             enabled: false
         delegateSelectors:
           - docker-delegate
-  properties:
-    ci:
-      codebase:
-        connectorRef: account.Github_OAuth_1730655910162
-        repoName: Th3Joel/SistemJugueteria.git
-        build: <+input>
-        sparseCheckout: []
