@@ -33,6 +33,14 @@ pipeline:
                       type: branch
                       spec:
                         branch: final
+              - step:
+                  type: Run
+                  name: Run_1
+                  identifier: Run_1
+                  spec:
+                    shell: Sh
+                    command: bun -v
+                    runAsUser: "1000"
           caching:
             enabled: false
             paths:
