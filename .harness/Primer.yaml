@@ -26,7 +26,7 @@ pipeline:
                   identifier: Run_1
                   spec:
                     shell: Sh
-                    command: bun -v
+                    command: cd web && bun i
           caching:
             enabled: false
             paths:
