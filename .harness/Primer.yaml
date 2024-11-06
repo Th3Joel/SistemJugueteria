@@ -11,10 +11,6 @@ pipeline:
         description: ""
         type: CI
         spec:
-          volumes:
-            - name: cache
-              path: /home/joel/runner
-              type: temp
           cloneCodebase: true
           platform:
             os: Linux
@@ -28,6 +24,7 @@ pipeline:
                   type: Run
                   name: Run_1
                   identifier: Run_1
+                  privileged: true
                   spec:
                     shell: Bash
                     command: ls && pwd
