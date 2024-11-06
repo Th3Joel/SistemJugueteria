@@ -27,7 +27,6 @@ pipeline:
                   spec:
                     shell: Sh
                     command: bun -v
-                    runAsUser: "1000"
           caching:
             enabled: false
             paths:
