@@ -37,7 +37,7 @@ pipeline:
                   identifier: Run_1
                   spec:
                     shell: Bash
-                    command: cd web && bun i
+                    command: ls && pwd
                     runAsUser: "1000"
           caching:
             enabled: false
