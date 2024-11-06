@@ -40,4 +40,5 @@ pipeline:
         repoName: Th3Joel/SistemJugueteria.git
         build: <+input>
         sparseCheckout: []
-        cloneDirectory: /home/joel/runner
+  flowControl:
+    barriers: []
