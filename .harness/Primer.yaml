@@ -13,8 +13,7 @@ pipeline:
         spec:
           volumes:
             - name: cache
-              spec:
-                path: /home/joel/runner
+              path: /home/joel/runner
               type: temp
           cloneCodebase: false
           platform:
