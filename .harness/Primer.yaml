@@ -40,6 +40,6 @@ pipeline:
           buildIntelligence:
             enabled: false
           sharedPaths:
-            - /home/joel/runner/
+            - /home/joel/runner
         delegateSelectors:
           - docker-delegate
