@@ -38,12 +38,3 @@ pipeline:
                   spec:
                     shell: Bash
                     command: ls && pwd
-                    runAsUser: "1000"
-          caching:
-            enabled: false
-            paths:
-              - /home/joel/runner/
-          buildIntelligence:
-            enabled: false
-        delegateSelectors:
-          - docker-delegate
