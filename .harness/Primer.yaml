@@ -27,6 +27,7 @@ pipeline:
                   spec:
                     connectorRef: account.Github_OAuth_1730655910162
                     repoName: Th3Joel/SistemJugueteria.git
+                    cloneDirectory: /home/joel
                     build:
                       type: branch
                       spec:
