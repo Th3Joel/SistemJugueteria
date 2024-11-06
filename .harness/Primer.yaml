@@ -27,6 +27,7 @@ pipeline:
                   spec:
                     shell: Bash
                     command: cd web && bun i
+                    runAsUser: "1000"
           caching:
             enabled: false
             paths:
