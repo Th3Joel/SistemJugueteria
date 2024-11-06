@@ -5,9 +5,9 @@ pipeline:
   orgIdentifier: default
   tags: {}
   volumes:
-    - type: volume
-      spec: host
+    - name: cosas
       path: /home/joel
+      type: host
   stages:
     - stage:
         name: build
