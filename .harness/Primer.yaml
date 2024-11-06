@@ -35,5 +35,12 @@ pipeline:
                   spec:
                     shell: Sh
                     command: go version
+          sharedPaths:
+            - /home/joel/runner
+          caching:
+            enabled: false
+            paths: []
+          buildIntelligence:
+            enabled: false
         delegateSelectors:
           - docker-delegate
