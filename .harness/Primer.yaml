@@ -11,7 +11,7 @@ pipeline:
         description: ""
         type: CI
         spec:
-          cloneCodebase: false
+          cloneCodebase: true
           platform:
             os: Linux
             arch: Amd64
@@ -34,11 +34,19 @@ pipeline:
                       spec:
                         branch: final
           caching:
-            enabled: false
-            paths: []
+            enabled: true
+            paths:
+              - /home/joel/runner/
           buildIntelligence:
             enabled: false
           sharedPaths:
-            - /home/joel/runner
+            - /home/joel/runner/
         delegateSelectors:
           - docker-delegate
+  properties:
+    ci:
+      codebase:
+        connectorRef: account.Github_OAuth_1730655910162
+        repoName: https://github.com/Th3Joel/SistemJugueteria.git
+        build: <+input>
+        sparseCheckout: []
