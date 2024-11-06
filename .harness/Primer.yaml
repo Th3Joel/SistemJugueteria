@@ -4,10 +4,6 @@ pipeline:
   projectIdentifier: default_project
   orgIdentifier: default
   tags: {}
-  volumes:
-    - name: cosas
-      path: /home/joel
-      type: host
   stages:
     - stage:
         name: build
@@ -15,6 +11,11 @@ pipeline:
         description: ""
         type: CI
         spec:
+          volumes:
+            - name: cache
+              spec:
+                path: /home/joel/runner
+              type: temp
           cloneCodebase: false
           platform:
             os: Linux
