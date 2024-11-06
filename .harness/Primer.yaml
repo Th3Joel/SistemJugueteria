@@ -18,6 +18,7 @@ pipeline:
         description: ""
         type: CI
         spec:
+          runAsNonRoot: true
           cloneCodebase: true
           platform:
             os: Linux
