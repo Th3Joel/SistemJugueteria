@@ -38,7 +38,5 @@ pipeline:
               - /home/joel/runner/
           buildIntelligence:
             enabled: false
-          sharedPaths:
-            - ""
         delegateSelectors:
           - docker-delegate
