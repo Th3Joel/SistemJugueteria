@@ -4,13 +4,6 @@ pipeline:
   projectIdentifier: default_project
   orgIdentifier: default
   tags: {}
-  properties:
-    ci:
-      codebase:
-        connectorRef: account.Github_OAuth_1730655910162
-        repoName: https://github.com/Th3Joel/SistemJugueteria.git
-        build: <+input>
-        sparseCheckout: []
   stages:
     - stage:
         name: build
@@ -18,7 +11,7 @@ pipeline:
         description: ""
         type: CI
         spec:
-          cloneCodebase: true
+          cloneCodebase: false
           platform:
             os: Linux
             arch: Amd64
@@ -28,15 +21,20 @@ pipeline:
           execution:
             steps:
               - step:
-                  type: Run
-                  name: Go version
-                  identifier: Go_version
+                  type: GitClone
+                  name: GitClone_1
+                  identifier: GitClone_1
                   spec:
-                    shell: Sh
-                    command: go version
+                    connectorRef: account.Github_OAuth_1730655910162
+                    repoName: Th3Joel/SistemJugueteria.git
+                    cloneDirectory: /home/joel/runner
                     runAsUser: "1000"
+                    build:
+                      type: branch
+                      spec:
+                        branch: final
           sharedPaths:
-            - /home/joel/runner
+            - ""
           caching:
             enabled: false
             paths: []
