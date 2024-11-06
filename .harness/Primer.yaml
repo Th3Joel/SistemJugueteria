@@ -35,7 +35,6 @@ pipeline:
                     shell: Sh
                     command: go version
                     runAsUser: "1000"
-                    runAsNonUser: true
           sharedPaths:
             - /home/joel/runner
           caching:
