@@ -40,6 +40,6 @@ pipeline:
     ci:
       codebase:
         connectorRef: account.Github_OAuth_1730655910162
-        repoName: https://github.com/Th3Joel/SistemJugueteria.git
+        repoName: Th3Joel/SistemJugueteria.git
         build: <+input>
         sparseCheckout: []
