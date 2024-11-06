@@ -11,7 +11,6 @@ pipeline:
         repoName: https://github.com/Th3Joel/SistemJugueteria.git
         build: <+input>
         sparseCheckout: []
-        runAsNonRoot: true
   stages:
     - stage:
         name: build
@@ -35,6 +34,8 @@ pipeline:
                   spec:
                     shell: Sh
                     command: go version
+                    runAsUser: "1000"
+                    runAsNonUser: true
           sharedPaths:
             - /home/joel/runner
           caching:
