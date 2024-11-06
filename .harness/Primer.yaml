@@ -11,7 +11,7 @@ pipeline:
         description: ""
         type: CI
         spec:
-          cloneCodebase: false
+          cloneCodebase: true
           platform:
             os: Linux
             arch: Amd64
@@ -20,19 +20,6 @@ pipeline:
             spec: {}
           execution:
             steps:
-              - step:
-                  type: GitClone
-                  name: GitClone_1
-                  identifier: GitClone_1
-                  spec:
-                    connectorRef: account.Github_OAuth_1730655910162
-                    repoName: Th3Joel/SistemJugueteria.git
-                    cloneDirectory: /home/joel/runner
-                    runAsUser: "1000"
-                    build:
-                      type: branch
-                      spec:
-                        branch: final
               - step:
                   type: Run
                   name: Run_1
@@ -49,3 +36,10 @@ pipeline:
             enabled: false
         delegateSelectors:
           - docker-delegate
+  properties:
+    ci:
+      codebase:
+        connectorRef: account.Github_OAuth_1730655910162
+        repoName: https://github.com/Th3Joel/SistemJugueteria.git
+        build: <+input>
+        sparseCheckout: []
