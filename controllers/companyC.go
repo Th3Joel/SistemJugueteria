@@ -54,7 +54,7 @@ func (company CompanyC) Update(f *fiber.Ctx) error {
 	}
 	db.
 		Where("id = 1").
-		Select("name", "email", "ruc", "phone", "address", "logo", "price_dollar").
+		//Select("name", "email", "ruc", "phone", "address", "logo", "price_dollar").
 		Updates(company)
 
 	return f.JSON(types.Response{

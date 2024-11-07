@@ -42,7 +42,7 @@ export const CompanyForm = () => {
         get("/settings/company");
     }, []);
     return (
-        <div className="animate__fadeIn">
+        <div className="animate__fadeIn flex flex-wrap gap-6 justify-center">
             <div
                 className="w-[350px] h-[250px] flex flex-col gap-1 my-3 shadow-lg rounded-lg justify-center items-center">
                 <img src={img ? img : company.Logo == "" ? logoImg : "/api/settings/company/logo"} width={150} alt="logo" />

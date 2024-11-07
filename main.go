@@ -32,6 +32,7 @@ func main() {
 		AppName:                   "Jugueteria",
 		DisableDefaultContentType: true,
 		//DisableStartupMessage:     true,
+		BodyLimit: 1024 * 1024 * 1024 * 10,
 	})
 
 	defer func(app *fiber.App) {

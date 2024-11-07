@@ -1,20 +1,24 @@
 import { useRef, useState } from "react";
 
-export const useImg = () => { 
+export const useImg = () => {
     const [img, setImg] = useState<string>('');
+    const [fileName, setFileName] = useState<string>('');
 
     const fileRef = useRef<HTMLInputElement | null>(null);
 
     const handleFile = () => {
         if (fileRef.current) {
             const file = fileRef.current.files?.[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onloadend = () => {
-                    setImg(reader.result as string);
-
-                };
+            setFileName("Seleccionar archivo");
+            setFileName(file!.name);
+            if (file?.type.includes("image")) {
+                if (file) {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onloadend = () => {
+                        setImg(reader.result as string);
+                    };
+                }
             }
         }
     };
@@ -28,6 +32,8 @@ export const useImg = () => {
 
     return {
         fileRef,
+        fileName,
+        setFileName,
         img,
         handleFile,
         handleInputFile

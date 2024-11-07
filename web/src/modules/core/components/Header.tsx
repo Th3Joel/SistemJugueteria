@@ -31,7 +31,6 @@ export const Header = () => {
       <div className="flex items-center gap-4">
         <Tooltip title="Información de pagina" arrow>
           <div>
-
             <FaQuestion className="cursor-pointer" onClick={() => run()} />
           </div>
         </Tooltip>

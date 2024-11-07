@@ -12,6 +12,7 @@ func BackupR(f fiber.Router) {
 	app := f.Group("/backup", mdd.AuthM, mdd.RoleM([]string{}))
 	app.Get("/gen", backupC.Generate)
 	app.Get("/files", backupC.GetFiles)
-	app.Get("/restore/:file", backupC.Restore)
+	app.Get("/restore/:file", func(c *fiber.Ctx) error { return backupC.Restore(c, false) })
+	app.Post("/restore", func(c *fiber.Ctx) error { return backupC.Restore(c, true) })
 	app.Get("/download/:file", backupC.Download)
 }
