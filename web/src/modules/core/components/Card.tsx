@@ -26,7 +26,7 @@ type Props = BtnBackProps | NoBtnBackProps;
 
 export const Card: React.FC<Props> = ({ children, notAnimate, btnBack, btnBackLink }) => {
   return (
-    <div className={`${!notAnimate && 'animate__fadeInLeft'} bg-white rounded-lg px-2 border border-[#EA4D1C]`}>
+    <div className={`${!notAnimate && 'animate__fadeInLeft'} bg-slate-100 rounded-lg px-2 border border-[#EA4D1C]`}>
       {
         btnBack &&
         <Tooltip title="Volver" sx={{ zIndex: 50 }}>

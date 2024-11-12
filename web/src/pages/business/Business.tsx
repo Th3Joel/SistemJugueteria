@@ -13,6 +13,7 @@ import Table from "@/modules/core/components/Table";
 import { toast } from "sonner";
 import { TitleState } from "@/modules/core/states/title-state";
 import { noLetters, TErrors } from "@/modules/purchase/states/purchase-state";
+import dayjs from "dayjs";
 
 interface IFormData {
     ArticleID: string
@@ -31,6 +32,7 @@ interface IBusiness {
     }
     Quantity: string
     Reason: string
+    createdAt: string
 
 }
 
@@ -177,7 +179,7 @@ const Business = () => {
                     <Table
                         v2
                         hook={hook}
-                        colunms={["Artículo", "Cantidad", "Motivo de la salida"]}
+                        colunms={["Artículo", "Cantidad", "Motivo de la salida","Fecha"]}
                         ruta="business"
                         body={() =>
                             hook.all?.data.map((d, i) => (
@@ -185,6 +187,7 @@ const Business = () => {
                                     <td>{d.Article.Category.Name + " | " + d.Article.Description}</td>
                                     <td>{d.Quantity}</td>
                                     <td>{d.Reason}</td>
+                                    <td>{dayjs(d.createdAt).format("DD/MM/YYYY hh:mm A")}</td>
                                 </tr>
                             ))
                         }

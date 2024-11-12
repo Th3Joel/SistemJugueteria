@@ -137,7 +137,7 @@ func (b BackupC) Restore(f *fiber.Ctx, upload bool) error {
 	user := "joel"
 	password := "Jo12el34"
 	database := "jugueteria"
-	host := "db"
+	host := "127.0.0.1"
 	cnf, rm := b.FileMysql(user, password, host)
 	// Crea el comando mysql
 	//cmd := exec.Command("mysql", "-h", "db", "-u"+user, "-p"+password, database)

@@ -15,7 +15,7 @@ export const Header = () => {
 
   return (
     <div className={`border px-3 h-[50px]
-     bg-white flex items-center justify-between`}>
+     bg-slate-100 flex items-center justify-between`}>
       <div className="flex items-center">
           <Tooltip title="Abrir / cerrar menu" arrow>
             <div>
@@ -26,7 +26,7 @@ export const Header = () => {
             </div>
           </Tooltip>
 
-        <p className="ml-2 text-xl font-semibold text-gray-500">{title}</p>
+        <p className="ml-2 text-xl font-semibold text-gray-700">{title}</p>
       </div>
       <div className="flex items-center gap-4">
         <Tooltip title="Información de pagina" arrow>

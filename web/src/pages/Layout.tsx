@@ -10,7 +10,7 @@ const Layout = () => {
   const { estado, inc } = SidebarState();
   const auth = AuthState();
 
-  if (!auth.estado ) {
+  if (!auth.estado) {
     return <Navigate to="/auth/login" replace />;
   }
 
@@ -37,8 +37,11 @@ const Layout = () => {
   return (
     <>
       <Sidebar />
-      <div className={`h-[100dvh] bg-slate-100 animate__fadeIn duration-300
-        ${estado ? "pl-0" : "pl-[260px]"}`}>
+      <div className={`h-[100dvh] animate__fadeIn duration-300
+        ${estado ? "pl-0" : "pl-[260px]"}`}
+        style={{ background: "linear-gradient(135deg, #5c83ba,#c4d2ec,#f2f1ed)" }}
+
+      >
         <Header />
         <div className="overflow-auto p-3"
           style={{ height: "calc(100dvh - 50px)" }}>
