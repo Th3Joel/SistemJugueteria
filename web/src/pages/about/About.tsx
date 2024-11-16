@@ -5,7 +5,7 @@ import { FaEnvelope, FaGithub, FaPhone } from "react-icons/fa6"
 import { useEffect } from "react"
 import { TitleState } from "@/modules/core/states/title-state"
 const About = () => {
-    const {setTitle} = TitleState();
+    const { setTitle } = TitleState();
     useEffect(() => {
         setTitle("Acerca de");
     }, [])
@@ -37,7 +37,7 @@ const About = () => {
                         </span>
                     </main>
                 </div>
-                <hr className="w-[400px]"/>
+                <hr className="w-[400px]" />
                 <div className="flex items-center">
                     <section className="w-[150px] h-[150px] rounded-full border-2 grid place-items-center overflow-hidden">
                         <img src={juanImg} alt="Ing. Juan Jenkins" width={150} />

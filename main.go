@@ -43,7 +43,7 @@ func main() {
 		//Secure options to headers
 		f.Set("X-Powered-By", "Triceratox software")
 		f.Set("X-Frame-Options", "DENY")
-		//f.Set("Content-Security-Policy", "default-src 'self'; connect-src *; font-src *; script-src-elem * 'unsafe-inline'; img-src * data:; style-src * 'unsafe-inline';")
+		f.Set("Content-Security-Policy", "default-src 'self'; connect-src *; font-src *; script-src-elem * 'unsafe-inline'; img-src * data:; style-src * 'unsafe-inline';")
 		f.Set("X-XSS-Protection", "1; mode=block")
 		f.Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
 		f.Set("Referrer-Policy", "strict-origin")

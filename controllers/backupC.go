@@ -65,7 +65,7 @@ func (b BackupC) Generate(f *fiber.Ctx) error {
 	user := "joel"
 	password := "Jo12el34"
 	database := "jugueteria"
-	host := "db"
+	host := "127.0.0.1"
 	outputFile := "backups/" + time.Now().Format("Fecha2006_01_02Hora15_04_05") + ".sql"
 	cnf, rm := b.FileMysql(user, password, host) //Para mayor seguridad
 	// Crea el archivo de salida
