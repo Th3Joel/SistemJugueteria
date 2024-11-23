@@ -43,8 +43,8 @@ interface ISelectSupplier {
 const AddPurchase = () => {
   const { setSteps } = StateDriver();
   const [showDrawer, setShowDrawer] = useState(false);
-  const [select, setSelect] = useState<IOptions[]>([{ key: "", value: "" }]);
-  const [select2, setSelect2] = useState<IOptions[]>([{ key: "", value: "" }]);
+  const [select, setSelect] = useState<IOptions[]>([{ id: "", label: "" }]);
+  const [select2, setSelect2] = useState<IOptions[]>([{ id: "", label: "" }]);
   const { post, loading } = useForm<string>("");
   const { setTitle } = TitleState();
   const navigate = useNavigate();
@@ -75,8 +75,8 @@ const AddPurchase = () => {
     if (res) {
       setSelect(
         res.map((data) => ({
-          key: data.id,
-          value: data.code + " - " + data.description,
+          id: data.id,
+          label: data.code + " - " + data.description,
         })),
       );
     }
@@ -84,8 +84,8 @@ const AddPurchase = () => {
     if (res2) {
       setSelect2(
         res2.map((data) => ({
-          key: data.id,
-          value: data.company+" | "+data.name,
+          id: data.id,
+          label: data.company+" | "+data.name,
         })),
       );
     }

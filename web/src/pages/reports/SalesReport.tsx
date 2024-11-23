@@ -60,7 +60,8 @@ const SalesReport = () => {
                                         <th>Cajero</th>
                                         <th>Cliente</th>
                                         <th>Neto</th>
-                                        <th>Total</th>
+                                        <th>Total (descuento)</th>
+                                        <th>Descuento</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -73,12 +74,14 @@ const SalesReport = () => {
                                             <td className="text-left">{d.costumer.name}</td>
                                             <td>C$ {formatNumber(d.neto)}</td>
                                             <td>C$ {formatNumber(d.total)}</td>
+                                            <td>C$ {formatNumber(Number(d.discountTotal) == 0 ? "0.00" : d.discountTotal)}</td>
                                         </tr>
                                     ))}
                                     <tr>
                                         <td colSpan={4}>Total</td>
                                         <td>C$ {formatNumber(data.filter(d => d.state == 1).reduce((a, b) => a + Number(Number(b.neto).toFixed(2)), 0) + "")}</td>
                                         <td>C$ {formatNumber(data.filter(d => d.state == 1).reduce((a, b) => a + Number(Number(b.total).toFixed(2)), 0) + "")}</td>
+                                        <td>C$ {formatNumber(data.filter(d => d.state == 1).reduce((a, b) => a + Number(Number(b.discountTotal).toFixed(2)), 0) + "")}</td>
                                     </tr>
                                 </tbody>
                             </table>

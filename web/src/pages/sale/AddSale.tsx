@@ -44,7 +44,7 @@ const AddSale = () => {
   const { company } = AuthState()
   const { verify, state } = CashRegisterState();
   const [loadCash, setLoadCash] = useState(true);
-  const [select2, setSelect2] = useState<IOptions[]>([{ key: "", value: "" }]);
+  const [select2, setSelect2] = useState<IOptions[]>([{ id: "", label: "" }]);
   const { post, loading } = useForm<string>("");
   const navigate = useNavigate();
   const {
@@ -75,8 +75,8 @@ const AddSale = () => {
     if (res2) {
       setSelect2(
         res2.map((data) => ({
-          key: data.id,
-          value: data.name,
+          id: data.id,
+          label: data.name,
         })),
       );
     }

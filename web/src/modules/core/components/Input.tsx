@@ -1,13 +1,12 @@
 import {
+    Autocomplete,
     FormControl,
     FormHelperText,
     IconButton,
     InputAdornment,
     InputLabel,
-    MenuItem,
     OutlinedInput,
-    Select,
-    SelectChangeEvent,
+    //SelectChangeEvent,
     TextField,
     TextFieldProps,
 } from "@mui/material";
@@ -16,8 +15,8 @@ import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
 
 export interface IOptions {
-    key: string;
-    value: string;
+    id: string;
+    label: string;
 }
 interface IProps {
     isRequired?: boolean;
@@ -55,16 +54,17 @@ export const InputText: React.FC<InputProps> = ({
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     const [isFocused, setIsFocused] = useState(false);
-    const [selected, setSelected] = useState("");
+    const [selected, setSelected] = useState<IOptions>({id: "", label: ""});
+
     const handleFocus = () => {
         setIsFocused(true);
     };
     const handleBlur = () => {
         setIsFocused(false);
     };
-    const handleSelectChange = (event: SelectChangeEvent) => {
-        setSelected(event.target.value as string);
-    }
+    const handleSelectChange = (_event: unknown, newValue: IOptions) => {
+        setSelected(newValue);
+    };
     const cloneIcon = React.cloneElement(icon, {
         style: {
             margin: "0 2px 0 2px",
@@ -77,39 +77,55 @@ export const InputText: React.FC<InputProps> = ({
 
     useEffect(() => {
         if (value != "")
-            setSelected(value!);
+            setSelected(options.find(d => d.id == value) ?? {id: "", label: ""});
     }, [value])
 
     useEffect(() => {
-        valueChange && valueChange(selected);
+        valueChange && valueChange(selected.id);
     }, [selected])
 
 
     const InputSelect = () => {
         return (
-            <FormControl fullWidth size="small" error={error}>
-                <InputLabel id="demo-simple-select-filled-label">
-                    {label}
-                </InputLabel>
-                <Select
-                    labelId="demo-simple-select-filled-label"
-                    id="demo-simple-select-filled"
+            // <FormControl fullWidth size="small" error={error}>
+            //     {/* <InputLabel id="demo-simple-select-filled-label">
+            //         {label}
+            //     </InputLabel> */}
+            //     {/* <Select
+            //         labelId="demo-simple-select-filled-label"
+            //         id="demo-simple-select-filled"
+            //         value={selected}
+            //         label={label}
+            //         name={name}
+            //         onChange={handleSelectChange}
+            //         onFocus={handleFocus}
+            //         onBlur={handleBlur}
+            //     >
+            //         {options.map((data) => (
+            //             <MenuItem key={data.key} value={data.key}>
+            //                 <div className="flex justify-center w-full">{data.value}</div>
+            //             </MenuItem>
+            //         ))}
+            //     </Select> */}
+            //     </FormControl>
+            <>
+                <Autocomplete
+                    disableClearable={true}
+                    isOptionEqualToValue={(option, value) => option.id != value.id}
+                    disablePortal
+                    size="small"
+                    fullWidth
                     value={selected}
-                    label={label}
-                    name={name}
+                    options={options}
                     onChange={handleSelectChange}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
-
-                >
-                    {options.map((data) => (
-                        <MenuItem key={data.key} value={data.key}>
-                            <div className="flex justify-center w-full">{data.value}</div>
-                        </MenuItem>
-                    ))}
-                </Select>
-                {helperText && <FormHelperText>{helperText}</FormHelperText>}
-            </FormControl>
+                    renderInput={(params) =>
+                        <TextField {...params} error={error} helperText={helperText} label={label} />
+                    }
+                />
+                <input type="text" className="hidden" onChange={() => { }} name={name} value={selected?.id} />
+            </>
         );
     }
     const InputTextField = () => {

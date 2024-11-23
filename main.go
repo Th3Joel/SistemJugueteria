@@ -52,7 +52,6 @@ func main() {
 
 		return f.Next()
 	})
-
 	app.Use(logger.New(logger.Config{
 		Format:     "[${time}] ${ip}  ${status} - ${latency} ${method} ${path}\n",
 		TimeFormat: "02-Jan-2006 03:04:05 PM",

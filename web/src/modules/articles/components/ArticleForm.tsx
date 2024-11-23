@@ -28,7 +28,7 @@ interface ISelectCategory {
 }
 
 export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
-  const [select, setSelect] = useState<IOptions[]>([{ key: "", value: "" }]);
+  const [select, setSelect] = useState<IOptions[]>([{ id: "", label: "" }]);
   //const [select2, setSelect2] = useState<IOptions[]>([{ key: "", value: "" }]);
   //const [cost, setCost] = useState<string>("");
 
@@ -59,8 +59,8 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
     const res2 = await useFetch<ISelectCategory[]>("/categories/select", "GET");
     if (res2) {
       setSelect(res2.map((data) => ({
-        key: data.id,
-        value: data.name,
+        id: data.id,
+        label: data.name,
       })));
     }
 
@@ -102,7 +102,7 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
       {<InputText
         label="Categoría *"
         name="CategoryId"
-        value={data?.CategoryID}
+        value={data.CategoryID}
         onChange={inputChange}
         error={!!errors?.CategoryID}
         helperText={errors?.CategoryID}
@@ -167,8 +167,8 @@ export const ArticleForm: React.FC<IProps> = ({ isEdit, id }) => {
         helperText={errors?.SalePrice}
         iconSize="13px"
       />
-      <Button variant="contained" type="submit" disabled={loading || select[0].key == ""}>
-        {loading || select[0].key == "" ? <LoaderBtn /> : isEdit ? "Actualizar" : "Guardar"}
+      <Button variant="contained" type="submit" disabled={loading || select[0].id == ""}>
+        {loading || select[0].id == "" ? <LoaderBtn /> : isEdit ? "Actualizar" : "Guardar"}
       </Button>
     </form>
   </div>)

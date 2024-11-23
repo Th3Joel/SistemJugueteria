@@ -44,7 +44,7 @@ const Business = () => {
         Reason: ""
     });
 
-    const [selectProvee, setSelectProvee] = useState<IOptions[]>([{ key: "", value: "" }]);
+    const [selectProvee, setSelectProvee] = useState<IOptions[]>([{ id: "", label: "" }]);
     const hook = useTable<IBusiness>();
     const [articles, setArticles] = useState<IArticle[]>([])
     const [errors, setErrors] = useState<TErrors>({})
@@ -55,8 +55,8 @@ const Business = () => {
         res.all.data.map((data) => {
             if (data.Stock != "0") {
                 op.push({
-                    key: data.id,
-                    value: data.Category.Name + " | " + data.Description,
+                    id: data.id,
+                    label: data.Category.Name + " | " + data.Description,
                 })
             }
         }
@@ -105,7 +105,6 @@ const Business = () => {
         }
 
         setErrors(err)
-
         if (!val) return
         post("/business", e.currentTarget).then((res) => {
             if (res) {
@@ -161,9 +160,9 @@ const Business = () => {
                             type="select"
                             options={
                                 [
-                                    { key: "Daño", value: "Daño" },
-                                    { key: "Uso personal", value: "Uso personal" },
-                                    { key: "Regalía", value: "Regalía" },
+                                    { id: "Daño", label: "Daño" },
+                                    { id: "Uso personal", label: "Uso personal" },
+                                    { id: "Regalía", label: "Regalía" },
                                 ]
                             }
                         />

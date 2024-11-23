@@ -116,8 +116,8 @@ export const UsersForm: React.FC<IProps> = ({ isEdit, id, isProfile }) => {
                             helperText={errors?.Role}
                             value={data.Role}
                             options={[
-                                { key: "admin", value: "Administrador" },
-                                { key: "vendedor", value: "Vendedor" }
+                                { id: "admin", label: "Administrador" },
+                                { id: "vendedor", label: "Vendedor" }
                             ]}
                         />
                     }
