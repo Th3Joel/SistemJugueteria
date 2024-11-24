@@ -99,9 +99,7 @@ const Router = () => {
                                 <Route path="/categories/edit/:id" element={<EditCategory />} />
                                 <Route path="/categories/add" element={<AddCategory />} />
 
-
                                 <Route path="/reports" element={<Reports />} />
-
                             </>
                         }
                         <Route path="/petty-cash" element={<PettyCash />} />
@@ -128,10 +126,7 @@ const Router = () => {
                             }
                         </Route>
 
-
-
-                            <Route path="/business" element={<Business/>} />
-
+                        <Route path="/business" element={<Business/>} />
                         <Route path="/cash-register" element={<CashRegister />} />
                         <Route path="/about" element={<About/>} />
 
