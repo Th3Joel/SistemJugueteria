@@ -72,16 +72,21 @@ const SalesReport = () => {
                                             <td>{dayjs(d.date).format("DD/MM/YYYY")}</td>
                                             <td className="text-left">{d.user.name}</td>
                                             <td className="text-left">{d.costumer.name}</td>
-                                            <td>C$ {formatNumber(d.neto)}</td>
+                                            <td className="text-nowrap">C$ {formatNumber(d.neto)}</td>
                                             <td>C$ {formatNumber(d.total)}</td>
                                             <td>C$ {formatNumber(Number(d.discountTotal) == 0 ? "0.00" : d.discountTotal)}</td>
                                         </tr>
                                     ))}
                                     <tr>
                                         <td colSpan={4}>Total</td>
-                                        <td>C$ {formatNumber(data.filter(d => d.state == 1).reduce((a, b) => a + Number(Number(b.neto).toFixed(2)), 0) + "")}</td>
+                                        <td className="text-nowrap" >C$ {formatNumber(data.filter(d => d.state == 1).reduce((a, b) => a + Number(Number(b.neto).toFixed(2)), 0) + "")}</td>
                                         <td>C$ {formatNumber(data.filter(d => d.state == 1).reduce((a, b) => a + Number(Number(b.total).toFixed(2)), 0) + "")}</td>
-                                        <td>C$ {formatNumber(data.filter(d => d.state == 1).reduce((a, b) => a + Number(Number(b.discountTotal).toFixed(2)), 0) + "")}</td>
+                                        <td>C$ {
+
+                                        formatNumber(data.filter(d => d.state == 1).reduce((a, b) => a + Number(Number(b.discountTotal).toFixed(2)), 0) + "") == "" ? "0.00" : 
+                                        formatNumber(data.filter(d => d.state == 1).reduce((a, b) => a + Number(Number(b.discountTotal).toFixed(2)), 0) + "")
+                                        
+                                        }</td>
                                     </tr>
                                 </tbody>
                             </table>

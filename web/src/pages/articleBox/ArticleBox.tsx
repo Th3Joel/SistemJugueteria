@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import { useTable } from "@/modules/core/hooks/useTable.ts";
 import { FaPencil, FaTrash } from "react-icons/fa6";
-import { formatNumber } from "@/modules/core/utils/formatNumber";
 import { TitleState } from "@/modules/core/states/title-state";
 import { useEffect } from "react";
 import { StateDriver, stepsTable } from "@/modules/core/utils/driver";
@@ -32,8 +31,8 @@ const ArticleBox = () => {
                 colunms={[
                     "Código",
                     "Descripción",
-                    "Cantidad artículos",
-                    "Precio",
+                    //"Cantidad artículos",
+                    //"Precio",
                     "Acciones"
                 ]}
                 body={(urlEdit, eliminar) =>
@@ -41,8 +40,8 @@ const ArticleBox = () => {
                         <tr key={i}>
                             <td>{d.Code}</td>
                             <td>{d.Description}</td>
-                            <td>{d.ToysQuantity}</td>
-                            <td>C$ {formatNumber(d.PurchasePrice)}</td>
+                            {/* <td>{d.ToysQuantity}</td>
+                            <td>C$ {formatNumber(d.PurchasePrice) == "" ? "0.00" : formatNumber(d.PurchasePrice)}</td> */}
                             <td>
                                 <div className="flex gap-1 justify-center">
                                     <Link to={urlEdit + d.id}>

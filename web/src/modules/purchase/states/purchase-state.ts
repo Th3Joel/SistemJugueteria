@@ -223,6 +223,12 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
       if (code == "") {
         validationsErrors["code"] = reqMsj;
         valState = false;
+      }else if(!noLetters(code)){
+        validationsErrors["code"] = "Solo números";
+        valState = false;
+      }else if(!isInt(code)){
+        validationsErrors["code"] = "No decimales";
+        valState = false;
       }
       if (date == "") {
         validationsErrors["date"] = reqMsj;
