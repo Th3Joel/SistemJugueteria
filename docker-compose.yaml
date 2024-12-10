@@ -6,7 +6,7 @@ services:
       - ./sis:/app/sis
     depends_on:
       - db
-    #command: ./sis migrate seed
+    command: ./sis migrate seed
     ports:
       - "5000:5000"
     build: .
