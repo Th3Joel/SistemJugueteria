@@ -22,6 +22,8 @@ type PurchaseC struct {
 	QuantityBox     string           `gorm:"-"`
 	TotalToysDetail string           `json:"totalToysDetail" gorm:"-"`
 	State           int              `json:"state"`
+	PurchasePrice   float64          `json:"purchase_price"`
+	ToysQuantity    int64            `json:"toys_quantity"`
 	Code            string           `json:"code"`
 	Total           string           `json:"total"`
 	CreatedAt       string           `json:"date"`
@@ -53,10 +55,11 @@ type DetailPurchase struct {
 	Article Articles `json:"article"`
 }
 type Articles struct {
-	ID          string `json:"-"`
-	Code        string `json:"code"`
-	Description string `json:"description"`
-	SalePrice   string `json:"price"`
+	ID            string `json:"-"`
+	Code          string `json:"code"`
+	Description   string `json:"description"`
+	PurchasePrice string `json:"purchase_price"`
+	SalePrice     string `json:"price"`
 }
 
 func (purchase PurchaseC) All(f *fiber.Ctx) error {
@@ -140,14 +143,16 @@ func (purchase PurchaseC) Save(f *fiber.Ctx) error {
 	}
 
 	info := config.DB.Create(&models.Purchases{
-		ID:           newId,
-		UserID:       f.Locals("userId").(string),
-		SupplierID:   purchase.SupplierID,
-		ArticleBoxID: purchase.ArticleBoxID,
-		State:        state,
-		Code:         code,
-		Total:        total,
-		CreatedAt:    time.Now(),
+		ID:            newId,
+		UserID:        f.Locals("userId").(string),
+		SupplierID:    purchase.SupplierID,
+		ArticleBoxID:  purchase.ArticleBoxID,
+		State:         state,
+		PurchasePrice: costBox,
+		ToysQuantity:  int64(quantityBox),
+		Code:          code,
+		Total:         total,
+		CreatedAt:     time.Now(),
 	})
 	if info.RowsAffected == 0 {
 		return f.JSON(types.Response{
@@ -156,13 +161,13 @@ func (purchase PurchaseC) Save(f *fiber.Ctx) error {
 		})
 	}
 
-	config.DB.
-		Where("id = ?", purchase.ArticleBoxID).
-		Select("purchase_price", "toys_quantity").
-		Updates(models.ArticlesBox{
-			PurchasePrice: costBox,
-			ToysQuantity:  int64(quantityBox),
-		})
+	// config.DB.
+	// 	Where("id = ?", purchase.ArticleBoxID).
+	// 	Select("purchase_price", "toys_quantity").
+	// 	Updates(models.ArticlesBox{
+	// 		PurchasePrice: costBox,
+	// 		ToysQuantity:  int64(quantityBox),
+	// 	})
 	for _, value := range purchase.DetailPurchase {
 		//fmt.Println(key, value)
 		quan, _ := strconv.Atoi(value.Quantity)

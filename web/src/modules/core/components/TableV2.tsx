@@ -29,7 +29,7 @@ export const TableV2: React.FC<{ isViewPurchase?: boolean,isSale?: boolean }> = 
     const { setDetail, exists: existsEditPurchase } = PurchaseEditState();
     return (
         <div>
-            <Table
+            <Table 
                 v2
                 hook={hook}
                 ruta="articles"
@@ -52,8 +52,10 @@ export const TableV2: React.FC<{ isViewPurchase?: boolean,isSale?: boolean }> = 
                                             article: {
                                                 code: d.Code,
                                                 description: d.Description,
+                                                purchase_price: parseInt(d.PurchasePrice),
+                                                price:0
                                             },
-                                            price: parseInt(d.SalePrice),
+                                            price: parseInt(d.PurchasePrice),
                                             quantity: 1,
                                             subtotal: parseInt(d.PurchasePrice)
                                         })

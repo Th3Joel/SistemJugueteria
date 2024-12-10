@@ -114,7 +114,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
       if (!isSale) {
         //Calcula el coste de cada articulo en la caja
         const costArticle = (parseFloat(get().costBox) / parseInt(get().quantityBox)).toFixed(2);
-        set({ costArticle:Number(costArticle) });
+        set({ costArticle: Number(costArticle) });
 
         //calcula el total de articulos que hay en el detalle de compra
         const quantityArticleDetail = get().detail.reduce(
@@ -129,7 +129,8 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
 
         const calSubtotal = isSale ?
           Number(d.price) * Number(d.quantity)
-          : Number(get().costArticle) * Number(d.quantity);
+          :
+          Number(get().costArticle) * Number(d.quantity);
 
         const subtotal = valNumberToString(calSubtotal);
         return { ...d, subtotal };
@@ -211,7 +212,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
       const validationsErrors = errors;
       const validationsDetailErrors = detailErrors;
       const reqMsj = "Campo requerido";
- 
+
       //Validaciones generales
       const cashCordobaParse = parseFloat(cashCordoba) || 0;
       const cashDollarParse = parseFloat(cashDollar) || 0;
@@ -223,10 +224,10 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
       if (code == "") {
         validationsErrors["code"] = reqMsj;
         valState = false;
-      }else if(!noLetters(code)){
+      } else if (!noLetters(code)) {
         validationsErrors["code"] = "Solo números";
         valState = false;
-      }else if(!isInt(code)){
+      } else if (!isInt(code)) {
         validationsErrors["code"] = "No decimales";
         valState = false;
       }
@@ -252,7 +253,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
       } else {
         //Validations of purchase
         if (quantityArticleDetail > parseInt(quantityBox)) {
-          validationsErrors["quantityArticleDetail"] = "Excede la cantidad de articulos de la caja." ;
+          validationsErrors["quantityArticleDetail"] = "Excede la cantidad de articulos de la caja.";
           valState = false;
         }
 
@@ -427,7 +428,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
           code,
           date,
           total,
-          detail:detail.map(d=>({...d,articleId:d.id})),
+          detail: detail.map(d => ({ ...d, articleId: d.id })),
           discountTotal,
           neto,
           costumerID,
@@ -442,7 +443,7 @@ export const PurchaseState = create<PurchaseState>((set, get) => {
           articleBoxID,
           quantityBox,
           costBox,
-          totalToysDetail:quantityArticleDetail+"",
+          totalToysDetail: quantityArticleDetail + "",
           date,
           total,
           detail,

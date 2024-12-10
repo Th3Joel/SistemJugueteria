@@ -15,6 +15,8 @@ const SpecificPurchase = () => {
         code: "",
         total: 0,
         date: "",
+        purchase_price: 0,
+        toys_quantity: 0,
         state: 0,
         supplier: {
             name: ""
@@ -82,14 +84,14 @@ const SpecificPurchase = () => {
                                     <span className="w-[200px]">
                                         <InputText
                                             label="Costo de caja"
-                                            value={formatNumber(data.articleBox.purchasePrice+"")}
+                                            value={formatNumber(data.purchase_price+"")}
                                             icon={<p>C$</p>}
                                         />
                                     </span>
                                     <span className="w-[200px]">
                                         <InputText
                                             label="Cantidad"
-                                            value={data.articleBox.toysQuantity+""}
+                                            value={data.toys_quantity+""}
                                             icon={<FaDatabase />}
                                         />
                                     </span>
@@ -106,7 +108,8 @@ const SpecificPurchase = () => {
                                             <tr>
                                                 <th>Código</th>
                                                 <th>Artículo</th>
-                                                <th>Precio</th>
+                                                <th>Precio compra</th>
+                                                <th>Precio venta</th>
                                                 <th>Cantidad</th>
                                                 <th>Subtotal</th>
                                             </tr>
@@ -116,14 +119,15 @@ const SpecificPurchase = () => {
                                                 <tr key={i}>
                                                     <td>{d.article.code}</td>
                                                     <td>{d.article.description}</td>
-                                                    <td>C$ {formatNumber(d.price+"")}</td>
+                                                    <td>C$ {formatNumber((Number(data.purchase_price) / Number(data.toys_quantity)) + "")}</td>
+                                                    <td>C$ {formatNumber(d.article.price+"")}</td>
                                                     <td>{d.quantity}</td>
-                                                    <td>C$ {formatNumber(d.subtotal+"")}</td>
+                                                    <td className="text-nowrap">C$ {formatNumber(d.subtotal+"")}</td>
                                                 </tr>
                                             ))}
                                             <tr>
-                                                <td colSpan={4}>Total</td>
-                                                <td>C$ {formatNumber(data.total+"")}</td>
+                                                <td colSpan={5}>Total</td>
+                                                <td className="text-nowrap">C$ {formatNumber(data.total+"")}</td>
                                             </tr>
                                         </tbody>
                                     </table>

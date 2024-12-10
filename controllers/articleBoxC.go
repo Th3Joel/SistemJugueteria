@@ -13,13 +13,13 @@ import (
 )
 
 type ArticleBoxC struct {
-	ID            string             `json:"id"`
-	Code          string             `json:"Code"`
-	Description   string             `json:"Description"`
-	ToysQuantity  int64              `json:"ToysQuantity"`
-	PurchasePrice float64            `json:"PurchasePrice"`
-	Model         models.ArticlesBox `gorm:"-" json:"-"`
-	Array         []ArticleBoxC      `gorm:"-" json:"-"`
+	ID          string `json:"id"`
+	Code        string `json:"Code"`
+	Description string `json:"Description"`
+	// ToysQuantity  int64              `json:"ToysQuantity"`
+	// PurchasePrice float64            `json:"PurchasePrice"`
+	Model models.ArticlesBox `gorm:"-" json:"-"`
+	Array []ArticleBoxC      `gorm:"-" json:"-"`
 }
 
 func (article ArticleBoxC) All(c *fiber.Ctx) error {
@@ -151,11 +151,11 @@ func (article ArticleBoxC) Save(c *fiber.Ctx) error {
 	article.ID = uuid.NewString()
 
 	sql := db.Create(&models.ArticlesBox{
-		ID:            article.ID,
-		Code:          article.Code,
-		Description:   article.Description,
-		ToysQuantity:  article.ToysQuantity,
-		PurchasePrice: article.PurchasePrice,
+		ID:          article.ID,
+		Code:        article.Code,
+		Description: article.Description,
+		// ToysQuantity:  article.ToysQuantity,
+		// PurchasePrice: article.PurchasePrice,
 	})
 	if sql.RowsAffected == 0 {
 		return c.Status(200).JSON(types.Response{

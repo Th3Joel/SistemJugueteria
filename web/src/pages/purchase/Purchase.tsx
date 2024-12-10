@@ -44,7 +44,7 @@ const Purchase = () => {
               <td>{d.code.padStart(4, "0")}</td>
               <td>{d.supplier.company} | {d.supplier.name}</td>
               <td>{d.articleBox.description}</td>
-              <td>C$ {formatNumber(d.total)}</td>
+              <td className="text-nowrap">C$ {formatNumber(d.total)}</td>
               <td>{dayjs(d.date).format("DD/MM/YYYY")}</td>
               <td className="font-bold">{d.state == 0 ?
                 <h1 className="text-red-700 txtIncompletePurchase">

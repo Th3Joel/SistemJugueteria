@@ -21,6 +21,8 @@ export interface IPurchase {
   total: number;
   state: number;
   date: string;
+  purchase_price: number;
+  toys_quantity: number;
   supplier: {
     name: string;
   }
@@ -39,6 +41,8 @@ export interface IPurchaseDetail {
   article: {
     code: string;
     description: string;
+    purchase_price: number;
+    price: number;
   }
 }
 
@@ -61,8 +65,8 @@ const Table: React.FC<{ data: IPurchase, isView?: boolean }> = ({ data, isView }
             <tr key={i}>
               <td>{d.article.code}</td>
               <td>{d.article.description}</td>
-              <td>C$ {formatNumber((data.articleBox.purchasePrice / data.articleBox.toysQuantity) + "")}</td>
-              <td>C$ {formatNumber(d.price + "")}</td>
+              <td>C$ {formatNumber((Number(data.purchase_price) / Number(data.toys_quantity)) + "")}</td>
+              <td>C$ {formatNumber(d.article.price + "")}</td>
               <td>{d.quantity}</td>
               <td>C$ {formatNumber(d.subtotal + "")}</td>
             </tr>
@@ -71,7 +75,7 @@ const Table: React.FC<{ data: IPurchase, isView?: boolean }> = ({ data, isView }
             isView &&
             <tr>
               <td colSpan={5}>Total</td>
-              <td>C$ {formatNumber(data.total + "")}</td>
+              <td className="text-nowrap">C$ {formatNumber(data.total + "")}</td>
             </tr>
           }
 
@@ -95,6 +99,8 @@ const ViewPurchase = () => {
     total: 0,
     date: "",
     state: 0,
+    purchase_price: 0,
+    toys_quantity: 0,
     supplier: {
       name: ""
     },
@@ -133,9 +139,13 @@ const ViewPurchase = () => {
   useEffect(() => {
     //setDetail(data.detail)
     setOrgTotal(data.total)
-    setArticleBox(data.articleBox)
-    setCostArticle(Number((data.articleBox.purchasePrice / data.articleBox.toysQuantity).toFixed(2)))
+    setArticleBox({
+      purchasePrice: data.purchase_price,
+      toysQuantity: data.toys_quantity
+    })
+    setCostArticle(Number((data.purchase_price / data.toys_quantity).toFixed(2)))
     setOrgTotalToysDetail(data.detail.reduce((a, b) => a + parseInt(b.quantity + ""), 0))
+    //setOrgTotalToysDetail(data.toys_quantity)
     sumTotalToysDetail()
   }, [data])
 
@@ -221,14 +231,14 @@ const ViewPurchase = () => {
                   <span className="w-[200px]">
                     <InputText
                       label="Costo de caja"
-                      value={formatNumber(data.articleBox.purchasePrice + "")}
+                      value={formatNumber(data.purchase_price + "")}
                       icon={<p>C$</p>}
                     />
                   </span>
                   <span className="w-[200px]">
                     <InputText
                       label="Cantidad"
-                      value={data.articleBox.toysQuantity + ""}
+                      value={data.toys_quantity + ""}
                       icon={<FaDatabase />}
                     />
                   </span>
@@ -278,7 +288,7 @@ const ViewPurchase = () => {
                     data.state == 0 &&
                     <small className="text-[15px]">
                       {/* Cantidad de articulos: {(totalToysDetail || 0) > 0 ? totalToysDetail : orgTotalToysDetail} */}
-                      Cantidad disponible para ingresar: {(data.articleBox.toysQuantity - totalToysDetail) < 0 ? 0 : (data.articleBox.toysQuantity - totalToysDetail)}
+                      Cantidad disponible para ingresar: {(data.toys_quantity - totalToysDetail) < 0 ? 0 : (data.toys_quantity - totalToysDetail)}
                     </small>
                   }
 

@@ -102,15 +102,16 @@ func (ReportsC) PurchaseReport(f *fiber.Ctx) error {
 		Name string `json:"name"`
 	}
 	type ArticlesBox struct {
-		ID            string  `json:"-"`
-		Description   string  `json:"description"`
-		PurchasePrice float64 `json:"purchasePrice"`
-		ToysQuantity  int     `json:"toysQuantity"`
+		ID          string `json:"-"`
+		Description string `json:"description"`
+		// PurchasePrice float64 `json:"purchasePrice"`
+		// ToysQuantity  int     `json:"toysQuantity"`
 	}
 	type Articles struct {
-		ID          string `json:"-"`
-		Code        string `json:"code"`
-		Description string `json:"description"`
+		ID            string `json:"-"`
+		Code          string `json:"code"`
+		Description   string `json:"description"`
+		PurchasePrice string `json:"price"`
 	}
 	type DetailPurchase struct {
 		PurchaseID string   `json:"-"`
@@ -121,12 +122,14 @@ func (ReportsC) PurchaseReport(f *fiber.Ctx) error {
 		Article    Articles `json:"article"`
 	}
 	type Purchase struct {
-		ID           string    `json:"-"`
-		SupplierID   string    `json:"-"`
-		ArticleBoxID string    `json:"-"`
-		Code         string    `json:"code"`
-		Total        float64   `json:"total"`
-		CreatedAt    time.Time `json:"date"`
+		ID            string    `json:"-"`
+		SupplierID    string    `json:"-"`
+		ArticleBoxID  string    `json:"-"`
+		Code          string    `json:"code"`
+		PurchasePrice float64   `json:"purchase_price"`
+		ToysQuantity  int       `json:"toys_quantity"`
+		Total         float64   `json:"total"`
+		CreatedAt     time.Time `json:"date"`
 
 		PurchaseDetail []DetailPurchase `json:"detail"`
 		Supplier       Suppliers        `json:"supplier"`

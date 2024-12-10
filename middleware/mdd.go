@@ -160,7 +160,7 @@ func genCookieCSRF(f *fiber.Ctx, h *helpers.TokenH, t string) {
 	h.Remove(t)
 
 	tok, _ := h.Gen()
-	tiempo := time.Minute * 10
+	tiempo := time.Minute * 30
 	h.Save(tok, "Token csrf", tiempo, f.IP())
 
 	f.Cookie(&fiber.Cookie{
