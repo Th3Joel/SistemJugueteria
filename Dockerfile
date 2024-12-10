@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y wget mysql-client \
 #RUN curl -fsSL https://bun.sh/install | bash
 
 #RUN wget https://go.dev/dl/go1.22.2.linux-amd64.tar.gz \
- #   && tar -C /usr/local -xzf go1.22.2.linux-amd64.tar.gz
+#   && tar -C /usr/local -xzf go1.22.2.linux-amd64.tar.gz
 
 WORKDIR /app
 #COPY sis .
