@@ -1,11 +1,11 @@
 import { Button } from "@mui/material"
-import { InputText } from "../core/components/Input"
-import { Raya } from "../core/components/Raya"
+import { InputText } from "@/modules/core/components/Input"
+import { Raya } from "@/modules/core/components/Raya"
 import cashImage from "@/assets/cash.png";
-import { useForm } from "../core/hooks/useForm";
-import LoaderBtn from "../core/components/LoaderBtn";
-import CashRegisterState from "./states/cashRegisterState";
-import alertBox from "../core/utils/alertBox";
+import { useForm } from "@/modules/core/hooks/useForm";
+import LoaderBtn from "@/modules/core/components/LoaderBtn";
+import CashRegisterState from "@/modules/cashRegister/states/cashRegisterState";
+import alertBox from "@/modules/core/utils/alertBox";
 
 interface IReqOpenCash {
     InitialBalance: string

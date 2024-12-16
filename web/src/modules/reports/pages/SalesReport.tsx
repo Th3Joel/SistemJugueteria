@@ -1,7 +1,7 @@
 import { useForm } from "@/modules/core/hooks/useForm";
 import { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { ISaleView } from "../sale/ViewSale";
+import { ISaleView } from "../../sale/pages/ViewSale";
 import { CircularProgress } from "@mui/material";
 import { formatNumber } from "@/modules/core/utils/formatNumber";
 import dayjs from "dayjs";

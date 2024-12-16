@@ -1,11 +1,11 @@
 import { Button, IconButton } from "@mui/material"
 import { FaTrash } from "react-icons/fa6"
-import { useFetch } from "../core/hooks/useFetch"
-import { formatNumber } from "../core/utils/formatNumber"
-import { useModal } from "../core/components/Modal"
-import alertBox from "../core/utils/alertBox"
-import { AddExpenses } from "../pettyCash/components/AddExpenses"
-import CashRegisterState, { IExpenses } from "./states/cashRegisterState"
+import { useFetch } from "@/modules/core/hooks/useFetch"
+import { formatNumber } from "@/modules/core/utils/formatNumber"
+import { useModal } from "@/modules/core/components/Modal"
+import alertBox from "@/modules/core/utils/alertBox"
+import { AddExpenses } from "@/modules/pettyCash/components/AddExpenses"
+import CashRegisterState, { IExpenses } from "@/modules/cashRegister/states/cashRegisterState"
 import { useEffect, useState } from "react"
 
 interface ExpensesProps {

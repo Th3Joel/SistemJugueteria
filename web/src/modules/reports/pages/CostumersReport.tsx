@@ -2,7 +2,7 @@ import { useForm } from "@/modules/core/hooks/useForm";
 import { AuthState } from "@/modules/core/states/auth-state";
 import { CircularProgress } from "@mui/material";
 import { useEffect } from "react";
-import { ICliente } from "../costumer/Costumer";
+import { ICliente } from "../../costumer/pages/Costumer";
 
 
 const CostumersReport = () => {

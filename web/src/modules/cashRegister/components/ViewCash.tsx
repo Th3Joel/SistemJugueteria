@@ -1,12 +1,12 @@
 import cashImage from "@/assets/cash.png";
-import { Raya } from "../core/components/Raya";
+import { Raya } from "@/modules/core/components/Raya";
 import { useParams } from "react-router-dom";
-import { useForm } from "../core/hooks/useForm";
+import { useForm } from "@/modules/core/hooks/useForm";
 import { useEffect } from "react";
 import { IDenomination } from "./Denomination";
-import { formatNumber } from "../core/utils/formatNumber";
+import { formatNumber } from "@/modules/core/utils/formatNumber";
 import dayjs from "dayjs";
-import { AuthState } from "../core/states/auth-state";
+import { AuthState } from "@/modules/core/states/auth-state";
 import { ICashRegister } from "@/types";
 import { Expenses } from "./Expenses";
 interface IParams {

@@ -3,7 +3,7 @@ import { InputText, IOptions } from "@/modules/core/components/Input"
 import { useFetch } from "@/modules/core/hooks/useFetch";
 import { useEffect, useState } from "react";
 import { FaDatabase, FaICursor, FaTruck } from "react-icons/fa6"
-import { IArticle } from "../articles/Articles";
+import { IArticle } from "../articles/pages/Articles";
 import { IResponseFetch } from "@/types";
 import { Button } from "@mui/material";
 import { useForm } from "@/modules/core/hooks/useForm";

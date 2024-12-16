@@ -1,6 +1,6 @@
 import { Button } from "@mui/material"
 import { FaFileInvoice } from "react-icons/fa6"
-import { InputText } from "../core/components/Input"
+import { InputText } from "../../core/components/Input"
 import { useState } from "react"
 interface IProrps {
     isPurchase?: boolean

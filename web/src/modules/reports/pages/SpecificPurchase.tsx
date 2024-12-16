@@ -5,7 +5,7 @@ import dayjs from "dayjs"
 import { useEffect } from "react"
 import { FaFileInvoice, FaCalendarDays, FaPeopleCarryBox, FaBoxOpen, FaDatabase } from "react-icons/fa6"
 import { useParams } from "react-router-dom"
-import { IPurchase } from "../purchase/ViewPurchase"
+import { IPurchase } from "../../purchase/pages/ViewPurchase"
 import { formatNumber } from "@/modules/core/utils/formatNumber"
 import { CircularProgress } from "@mui/material"
 

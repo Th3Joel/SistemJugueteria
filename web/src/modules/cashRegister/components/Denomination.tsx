@@ -1,7 +1,7 @@
-import { InputText } from "../core/components/Input"
-import { useForm } from "../core/hooks/useForm"
-import { formatNumber } from "../core/utils/formatNumber"
-import CashRegisterState from "./states/cashRegisterState"
+import { InputText } from "@/modules/core/components/Input"
+import { useForm } from "@/modules/core/hooks/useForm"
+import { formatNumber } from "@/modules/core/utils/formatNumber"
+import CashRegisterState from "@/modules/cashRegister/states/cashRegisterState"
 import { Button } from "@mui/material"
 
 export interface IDenomination {

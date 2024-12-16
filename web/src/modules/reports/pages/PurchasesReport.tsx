@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom"
-import { IPurchase } from "../purchase/ViewPurchase";
+import { IPurchase } from "../../purchase/pages/ViewPurchase";
 import { useForm } from "@/modules/core/hooks/useForm";
 import dayjs from "dayjs";
 import { CircularProgress } from "@mui/material";

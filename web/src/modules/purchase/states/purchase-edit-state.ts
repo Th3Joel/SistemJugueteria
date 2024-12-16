@@ -1,4 +1,4 @@
-import { IPurchaseDetail } from "@/pages/purchase/ViewPurchase";
+import { IPurchaseDetail } from "@/modules/purchase/pages/ViewPurchase";
 import { create } from "zustand";
 import { isInt, noLetters, TDetailErrors, TErrors } from "./purchase-state";
 

@@ -2,7 +2,7 @@ import { useForm } from "@/modules/core/hooks/useForm";
 import { IParams } from "@/types";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { ISaleView } from "../sale/ViewSale";
+import { ISaleView } from "../../sale/pages/ViewSale";
 import { CircularProgress } from "@mui/material";
 import { InputText } from "@/modules/core/components/Input";
 import { formatNumber } from "@/modules/core/utils/formatNumber";

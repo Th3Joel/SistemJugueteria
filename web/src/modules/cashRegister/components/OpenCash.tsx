@@ -1,17 +1,17 @@
 import cashImage from "@/assets/cash.png";
 import { Button } from "@mui/material";
 import { useEffect } from "react";
-import { formatNumber } from "../core/utils/formatNumber";
+import { formatNumber } from "@/modules/core/utils/formatNumber";
 import dayjs from "dayjs";
 import { Denomination } from "./Denomination";
-import { AuthState } from "../core/states/auth-state";
+import { AuthState } from "@/modules/core/states/auth-state";
 import { Expenses } from "./Expenses";
-import { InputText } from "../core/components/Input";
-import CashRegisterState from "./states/cashRegisterState";
-import { useFetch } from "../core/hooks/useFetch";
+import { InputText } from "@/modules/core/components/Input";
+import CashRegisterState from "@/modules/cashRegister/states/cashRegisterState";
+import { useFetch } from "@/modules/core/hooks/useFetch";
 import { IResponseFetch } from "@/types";
 import { toast } from "sonner";
-import alertBox from "../core/utils/alertBox";
+import alertBox from "@/modules/core/utils/alertBox";
 
 
 export const OpenCash = () => {
