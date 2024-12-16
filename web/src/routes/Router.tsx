@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 import LoaderSplash from "@/modules/core/components/LoaderSplash";
 import { AuthState } from "@/modules/core/states/auth-state";
-import Layout from "@/pages/Layout";
+import Layout from "@/modules/layouts/Layout";
 import Login from "@/modules/auth/pages/Login";
 import AddCostumer from "@/modules/costumer/pages/AddCostumer";
 import Clientes from "@/modules/costumer/pages/Costumer";
@@ -54,7 +54,7 @@ import PettyCash from "@/modules/pettyCash/pages/PettyCash";
 import Business from "@/modules/business/Business";
 import CashRegisterReport from "@/modules/reports/pages/CashRegisterReport";
 import OtherInventoryOutputs from "@/modules/reports/pages/OtherInventoryOutputs";
-import About from "@/pages/about/About";
+import About from "@/modules/about/About";
 
 const Router = () => {
     const auth = AuthState();
