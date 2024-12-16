@@ -1,5 +1,5 @@
-import { OpenCash } from "@/modules/cashRegister/OpenCash";
-import { ReqOpenCash } from "@/modules/cashRegister/ReqOpenCash";
+import { OpenCash } from "@/modules/cashRegister/components/OpenCash";
+import { ReqOpenCash } from "@/modules/cashRegister/components/ReqOpenCash";
 import CashRegisterState from "@/modules/cashRegister/states/cashRegisterState";
 import LoaderSmall from "@/modules/core/components/LoaderSmall";
 import { StateDriver, stepsCashRegister } from "@/modules/core/utils/driver";

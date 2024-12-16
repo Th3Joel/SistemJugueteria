@@ -1,6 +1,6 @@
 import { Card } from "@/modules/core/components/Card"
 import { TitleState } from "@/modules/core/states/title-state"
-import { FormPeriodic } from "@/modules/reports/FormPeriodic"
+import { FormPeriodic } from "@/modules/reports/components/FormPeriodic"
 import { FormSpicific } from "@/modules/reports/components/FormSpicific"
 import { Collapse } from "@mui/material"
 import { useEffect, useState } from "react"

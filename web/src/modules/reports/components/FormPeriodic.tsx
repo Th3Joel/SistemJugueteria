@@ -1,6 +1,6 @@
 import { Button, Chip } from "@mui/material"
 import { FaCalendarDays } from "react-icons/fa6"
-import { InputText } from "../core/components/Input"
+import { InputText } from "@/modules/core/components/Input"
 import dayjs from "dayjs"
 import { useState } from "react"
 

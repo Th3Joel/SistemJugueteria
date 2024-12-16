@@ -1,4 +1,4 @@
-import { ReqOpenCash } from "@/modules/cashRegister/ReqOpenCash";
+import { ReqOpenCash } from "@/modules/cashRegister/components/ReqOpenCash";
 import CashRegisterState from "@/modules/cashRegister/states/cashRegisterState";
 import { Card } from "@/modules/core/components/Card";
 import { Drawer } from "@/modules/core/components/Drawer";
