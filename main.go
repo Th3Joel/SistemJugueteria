@@ -7,6 +7,7 @@ import (
 	"Jugueteria/routes"
 	"Jugueteria/web"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/gofiber/fiber/v2"
@@ -14,6 +15,23 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )
+
+const defaultPort = ":5000"
+
+func registerRoutes(api fiber.Router) {
+	routes.CategoryR(api)
+	routes.HomeR(api)
+	routes.ArticleR(api)
+	routes.PurchaseR(api)
+	routes.SaleR(api)
+	routes.CashRegisterR(api)
+	routes.ExpensesR(api)
+	routes.ReportsR(api)
+	routes.RefundR(api)
+	routes.PettyCashR(api)
+	routes.BackupR(api)
+	routes.BusinessR(api)
+}
 
 func main() {
 	if !fiber.IsChild() {
@@ -79,51 +97,15 @@ func main() {
 
 	//Sistema api
 	api := app.Group("/api", mdd.Csrf)
-	//AuthR
-	routes.AuthR(api)
-	//AccountR
-	routes.UserR(api)
-	//ProveedorR
-	routes.SupllierR(api)
-	//ClienteR
-	routes.CostumerR(api)
-	//CompanyR
-	routes.CompanyR(api)
-	//ArticleBoxR
-	routes.ArticleBoxR(api)
-	//CategoryR
-	routes.CategoryR(api)
-	//HomeR
-	routes.HomeR(api)
-	//ArticleR
-	routes.ArticleR(api)
-	//PurchaseR
-	routes.PurchaseR(api)
-	//SaleR
-	routes.SaleR(api)
-	//CashRegisterR
-	routes.CashRegisterR(api)
-	//ExpensesR
-	routes.ExpensesR(api)
-	//ReportsR
-	routes.ReportsR(api)
-	//RefundR
-	routes.RefundR(api)
-	//PettyCashR
-	routes.PettyCashR(api)
-	//BackupR
-	routes.BackupR(api)
-	//BusinessR
-	routes.BusinessR(api)
+	registerRoutes(api)
 
 	port := ""
 	if os.Getenv("PORT") == "" {
-		port = ":5000"
+		port = defaultPort
 	} else {
 		port = ":" + os.Getenv("PORT")
 	}
-	err := app.Listen(port)
-	if err != nil {
-		println("Error al iniciar el servidor: ", err.Error())
+	if err := app.Listen(port); err != nil {
+		log.Fatal("Error al iniciar el servidor: ", err)
 	}
 }
