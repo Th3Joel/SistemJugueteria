@@ -19,18 +19,24 @@ import (
 const defaultPort = ":5000"
 
 func registerRoutes(api fiber.Router) {
-	routes.CategoryR(api)
-	routes.HomeR(api)
+	routes.ArticleBoxR(api)
 	routes.ArticleR(api)
-	routes.PurchaseR(api)
-	routes.SaleR(api)
-	routes.CashRegisterR(api)
-	routes.ExpensesR(api)
-	routes.ReportsR(api)
-	routes.RefundR(api)
-	routes.PettyCashR(api)
+	routes.AuthR(api)
 	routes.BackupR(api)
 	routes.BusinessR(api)
+	routes.CashRegisterR(api)
+	routes.CategoryR(api)
+	routes.CompanyR(api)
+	routes.CostumerR(api)
+	routes.ExpensesR(api)
+	routes.HomeR(api)
+	routes.PettyCashR(api)
+	routes.PurchaseR(api)
+	routes.RefundR(api)
+	routes.ReportsR(api)
+	routes.SaleR(api)
+	routes.SupllierR(api)
+	routes.UserR(api)
 }
 
 func main() {
