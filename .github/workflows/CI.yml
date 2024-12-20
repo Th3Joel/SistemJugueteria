@@ -38,9 +38,9 @@ jobs:
     needs: build
     steps:
     - name: build image
-      run: podman compose build app
+      run: docker compose build app
     # - name: Stop services
     #   run: docker compose stop
     - name: deploy
-      run: podman compose up -d --build app
+      run: docker compose up -d --build app
 
