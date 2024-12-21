@@ -24,7 +24,7 @@ pipeline:
                   name: go_build
                   spec:
                     shell: Bash
-                    command: go version
+                    command: whoami
                   timeout: ""
                   type: Run
           platform:
