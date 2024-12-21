@@ -25,6 +25,7 @@ pipeline:
                   spec:
                     shell: Bash
                     command: whoami
+                    runAsUser: "1000"
                   timeout: ""
                   type: Run
           platform:
