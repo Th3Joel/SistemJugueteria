@@ -62,10 +62,10 @@ func (BackupC) GetFiles(f *fiber.Ctx) error {
 
 func (b BackupC) Generate(f *fiber.Ctx) error {
 
-	user := "joel"
-	password := "Jo12el34"
+	user := "root"
+	password := "Jo12el34//"
 	database := "jugueteria"
-	host := "db"
+	host := "127.0.0.1"
 	outputFile := "backups/" + time.Now().Format("Fecha2006_01_02Hora15_04_05") + ".sql"
 	cnf, rm := b.FileMysql(user, password, host) //Para mayor seguridad
 	// Crea el archivo de salida
@@ -134,10 +134,10 @@ func (b BackupC) Restore(f *fiber.Ctx, upload bool) error {
 		file = f.Params("file") + ".sql"
 	}
 
-	user := "joel"
-	password := "Jo12el34"
+	user := "root"
+	password := "Jo12el34//"
 	database := "jugueteria"
-	host := "db"
+	host := "127.0.0.1"
 	cnf, rm := b.FileMysql(user, password, host)
 	// Crea el comando mysql
 	//cmd := exec.Command("mysql", "-h", "db", "-u"+user, "-p"+password, database)
