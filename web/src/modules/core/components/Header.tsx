@@ -14,7 +14,7 @@ export const Header = () => {
  
 
   return (
-    <div className={`border px-3 h-[50px]
+    <div className={` px-3 h-[50px]
      bg-slate-100 flex items-center justify-between`}>
       <div className="flex items-center">
           <Tooltip title="Abrir / cerrar menu" arrow>

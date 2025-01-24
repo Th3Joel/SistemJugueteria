@@ -27,9 +27,8 @@ export const BoxCounterInfo: React.FC<IProps> = ({counter, title, color, link, i
         </p>
       </div>
       <div
-        className="group/link bg-gray-600 w-full mb-[200px] flex
-           justify-center text-white
-           bg-opacity-35"
+        className="group/link bg-gray-600/30 w-full mb-[200px] flex
+           justify-center text-white"
       >
         <Link to={link} className="flex justify-center items-center">
           Más información
