@@ -50,8 +50,8 @@ func (business BusinessC) All(c *fiber.Ctx) error {
 		search := "%" + q.Search + "%"
 		db.Where(`
 		article_id IN (
-			SELECT id 
-			FROM articles 
+			SELECT id
+			FROM articles
 			WHERE  description LIKE ?
 		)
 		OR

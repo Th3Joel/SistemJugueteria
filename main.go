@@ -87,6 +87,7 @@ func main() {
 		AllowCredentials: true,
 		AllowMethods:     "GET,POST,PUT,DELETE",
 	}))
+
 	app.Get("/", func(c *fiber.Ctx) error {
 		c.Set("Content-Type", "text/html")
 		return c.Send([]byte("<h1><a href='/sis'>Ir al sistema</a></h1>"))
@@ -111,6 +112,7 @@ func main() {
 	} else {
 		port = ":" + os.Getenv("PORT")
 	}
+
 	if err := app.Listen(port); err != nil {
 		log.Fatal("Error al iniciar el servidor: ", err)
 	}
