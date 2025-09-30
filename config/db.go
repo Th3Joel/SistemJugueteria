@@ -22,7 +22,7 @@ var (
 
 func ConnectDB() {
 
-	dsn := "VwgHAVyMup7XfY6.root:w7s2jkcU8liQoIex@tcp(gateway01.us-east-1.prod.aws.tidbcloud.com:4000)/jugueteria?parseTime=true&tls=true"
+	dsn := "VwgHAVyMup7XfY6.root:zbqOatUOhvNyOW6y@tcp(gateway01.us-east-1.prod.aws.tidbcloud.com:4000)/jugueteria?parseTime=true&tls=true"
 	var db *gorm.DB
 	var err error
 	//dsn := "root:Jo12el34//@tcp(localhost:3306)/jugueteria?charset=utf8mb4&parseTime=true&loc=Local"

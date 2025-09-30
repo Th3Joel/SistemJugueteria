@@ -16,7 +16,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
-const defaultPort = ":5000"
+const defaultPort = ":1200"
 
 func registerRoutes(api fiber.Router) {
 	routes.ArticleBoxR(api)
