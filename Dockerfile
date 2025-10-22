@@ -10,7 +10,7 @@ RUN wget https://go.dev/dl/go1.25.3.linux-amd64.tar.gz \
     && tar -C /usr/local -xzf go1.25.3.linux-amd64.tar.gz
 
 WORKDIR /app
-COPY sis .
+#COPY sis .
 #COPY uploads/ ./uploads/
 RUN cd web && ~/.bun/bin/bun install && ~/.bun/bin/bun run build
 RUN /usr/local/go/bin/go mod download \
