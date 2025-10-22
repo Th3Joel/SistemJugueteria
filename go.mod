@@ -1,6 +1,6 @@
 module Jugueteria
 
-go 1.22.6
+go 1.25.3
 
 require (
 	github.com/go-playground/validator/v10 v10.22.0
