@@ -29,6 +29,7 @@ export const LoginForm = () => {
           error={!(!errors.Email)}
           helperText={errors.Email}
           icon={<FaEnvelope />}
+          value="admin@gmail.com"
         />
         <InputText
           name="Password"
@@ -37,6 +38,7 @@ export const LoginForm = () => {
           helperText={errors.Password}
           label="Contraseña"
           icon={<FaKey />}
+          value="1234"
         />
         <Button type="submit" disabled={errors.loading} variant="contained">
           {errors.loading ? <LoaderBtn /> : "Iniciar sesión"}
