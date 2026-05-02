@@ -20,7 +20,7 @@ export interface IOptions {
 }
 interface IProps {
     isRequired?: boolean;
-    icon: ReactElement;
+    icon: ReactElement<{ style?: React.CSSProperties }>;
     options?: IOptions[];
     value?: string;
     readonly?: boolean;
@@ -146,8 +146,10 @@ export const InputText: React.FC<InputProps> = ({
             rows={rows}
             defaultValue={defaultValue}
             fullWidth
-            InputProps={{
-                readOnly: readonly
+            slotProps={{
+                input: {
+                    readOnly: readonly
+                }
             }}
 
         />

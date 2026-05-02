@@ -87,7 +87,7 @@ export const LinesChart: React.FC<ILineChart> = ({ labels, data }) => {
                 return resultado; // Formato personalizado del título del tooltip
               },
               label: function (context) {
-                return ' C$ ' + context.parsed.y.toFixed(2); // Agrega "C$" al valor del tooltip
+                return ' C$ ' + (context.parsed.y ?? 0).toFixed(2); // Agrega "C$" al valor del tooltip
               }
             }
           }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import LoaderSmall from "@/modules/core/components/LoaderSmall";
 import alertBox from "@/modules/core/utils/alertBox";
 import { AuthState } from "../states/auth-state";
@@ -36,6 +36,7 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body, v2, v3 }) => {
   //muestra detalles del numero de registro en acumulador
   const [ac, setAc] = useState(1);
   const [ac2, setAc2] = useState(pageSize);
+  const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const pagSig = () => {
     if (page < (all?.pages ?? 0)) {
@@ -53,7 +54,7 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body, v2, v3 }) => {
  
 
   const img = (name: string) => {
-    return `${process.env.NEXT_PUBLIC_URL}/${ruta}/picture/${name}`;
+    return `${import.meta.env.VITE_URL}/${ruta}/picture/${name}`;
   };
 
   //Reinicia cuando el select cambia de el numero de pagina
@@ -70,13 +71,13 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body, v2, v3 }) => {
     get(`/${ruta}?page=${page}&pageSize=${pageSize}`);
    // get(`${newUrlProtected}?page=${page}&pageSize=${pageSize}`);
   };
-  let setTime: NodeJS.Timeout;
-
   const buscador = (e: { target: { value: string } }) => {
     const val = e.target.value;
     //Agregar retraso
-    clearTimeout(setTime);
-    setTime = setTimeout(() => {
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+    searchTimeoutRef.current = setTimeout(() => {
       get(`/${ruta}?page=${page}&pageSize=${pageSize}&search=${val}`);
       setAc(1);
       setPage(1);
@@ -107,6 +108,14 @@ const Table: React.FC<IProps> = ({ ruta, colunms, hook, body, v2, v3 }) => {
       setAvoid(true);
     }
   }, [user]);
+
+  useEffect(() => {
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <>

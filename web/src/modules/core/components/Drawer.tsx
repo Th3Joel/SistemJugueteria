@@ -11,7 +11,7 @@ const DrawerTeme = createTheme({
     components: {
         MuiDrawer: {
             styleOverrides: {
-                paperAnchorBottom: {
+                paper: {
                     borderRadius:"20px 20px 0 0",
                 }
             }

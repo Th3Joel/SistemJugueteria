@@ -4,6 +4,35 @@ import react from '@vitejs/plugin-react-swc'
 import path from "path"
 import tailwindcss from '@tailwindcss/vite'
 
+const chunkGroups: Record<string, string[]> = {
+  index: [
+    'react',
+    'react-dom',
+    'sonner',
+    'driver.js',
+    'sweetalert2',
+    'path',
+  ],
+  index2: [
+    'chart.js',
+    'zustand',
+    'react-icons',
+    'react-router-dom',
+  ],
+  index1: [
+    '@mui/material',
+    '@emotion/react',
+    '@emotion/styled',
+  ],
+}
+
+const manualChunks = (id: string) => {
+  for (const [chunkName, packages] of Object.entries(chunkGroups)) {
+    if (packages.some((pkg) => id.includes(`/node_modules/${pkg}/`) || id.includes(`\\node_modules\\${pkg}\\`))) {
+      return chunkName
+    }
+  }
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -20,27 +49,7 @@ export default defineConfig({
     //chunkSizeWarningLimit:1000
     rollupOptions: {
       output: {
-        manualChunks: {
-          index: [
-            'react',
-            'react-dom',
-            'sonner',
-            'driver.js',
-            'sweetalert2',
-            'path',
-          ],
-          index2:[
-            'chart.js',
-            'zustand',
-            'react-icons',
-            'react-router-dom',
-          ],
-          index1: [
-            '@mui/material',
-            '@emotion/react',
-            '@emotion/styled',
-          ], // Agrupa librerías en un chunk separado
-        },
+        manualChunks,
       },
     },
   }
